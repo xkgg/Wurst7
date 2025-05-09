@@ -1,4 +1,4 @@
-name: Code Style Check
+name: 执行 spotlessCheck
 
 on:
   pull_request:
