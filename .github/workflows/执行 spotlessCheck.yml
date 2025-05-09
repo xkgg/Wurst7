@@ -1,7 +1,8 @@
 name: 执行 spotlessCheck
 
 on:
-
+  pull_request:
+    branches: [ 1.20.1 ]  
 
 jobs:
   check-code-style:
@@ -18,3 +19,4 @@ jobs:
 
       - name: Validate code style
         run: ./gradlew spotlessCheck
+      - run: git commit -am "Auto-format code"  # 提交修复后的代码
