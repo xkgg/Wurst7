@@ -32,28 +32,28 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 public final class AntiAfkHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final CheckboxSetting useAi = new CheckboxSetting("Use AI",
+	private final CheckboxSetting useAi = new CheckboxSetting("使用 AI",
 		"description.wurst.setting.antiafk.use_ai", true);
 	
-	private final SliderSetting aiRange = new SliderSetting("AI range",
+	private final SliderSetting aiRange = new SliderSetting("AI 系列",
 		"description.wurst.setting.antiafk.ai_range", 16, 1, 64, 1,
 		ValueDisplay.AREA_FROM_RADIUS);
 	
-	private final SliderSetting nonAiRange = new SliderSetting("Non-AI range",
+	private final SliderSetting nonAiRange = new SliderSetting("非 AI 范围",
 		"description.wurst.setting.antiafk.non-ai_range", 1, 1, 64, 1,
 		ValueDisplay.AREA_FROM_RADIUS);
 	
-	private final SliderSetting waitTime = new SliderSetting("Wait time",
+	private final SliderSetting waitTime = new SliderSetting("等待时间",
 		"description.wurst.setting.antiafk.wait_time", 2.5, 0, 60, 0.05,
 		ValueDisplay.DECIMAL.withSuffix("s"));
 	
 	private final SliderSetting waitTimeRand = new SliderSetting(
-		"Wait time randomization",
+		"随机等待时间",
 		"description.wurst.setting.antiafk.wait_time_randomization", 0.5, 0, 60,
 		0.05, ValueDisplay.DECIMAL.withPrefix("\u00b1").withSuffix("s"));
 	
 	private final CheckboxSetting showWaitTime =
-		new CheckboxSetting("Show wait time",
+		new CheckboxSetting("显示等待时间",
 			"description.wurst.setting.antiafk.show_wait_time", true);
 	
 	private int timer;
@@ -67,7 +67,7 @@ public final class AntiAfkHack extends Hack
 	
 	public AntiAfkHack()
 	{
-		super("AntiAFK");
+		super("防止挂机踢出");
 		
 		setCategory(Category.OTHER);
 		addSetting(useAi);
