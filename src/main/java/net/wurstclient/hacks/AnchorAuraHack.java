@@ -49,7 +49,7 @@ import net.wurstclient.util.RotationUtils;
 public final class AnchorAuraHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", "description.wurst.setting.anchoraura.range",
+		new SliderSetting("范围", "description.wurst.setting.anchoraura.range",
 			6, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting autoPlace =
@@ -77,7 +77,7 @@ public final class AnchorAuraHack extends Hack implements UpdateListener
 	
 	public AnchorAuraHack()
 	{
-		super("AnchorAura");
+		super("自动爆炸重生锚");
 		
 		setCategory(Category.COMBAT);
 		addSetting(range);
