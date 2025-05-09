@@ -32,7 +32,7 @@ public final class AirPlaceHack extends Hack
 	implements RightClickListener, UpdateListener, RenderListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting guide = new CheckboxSetting("Guide",
 		"description.wurst.setting.airplace.guide", true);
@@ -44,7 +44,7 @@ public final class AirPlaceHack extends Hack
 	
 	public AirPlaceHack()
 	{
-		super("AirPlace");
+		super("空中放置");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		addSetting(guide);
