@@ -2,9 +2,9 @@ name: 执行 spotlessCheck
 
 on:
   pull_request:
-    branches: [ 1.20.1 ]
+    branches: [ main, master ]
   push:
-    branches: [ 1.20.1 ]
+    branches: [ main, master ]
 
 jobs:
   check-code-style:
