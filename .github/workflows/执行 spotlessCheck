@@ -1,0 +1,23 @@
+name: 执行 spotlessCheck
+
+on:
+  pull_request:
+    branches: [ 1.20.1 ]
+  push:
+    branches: [ 1.20.1 ]
+
+jobs:
+  check-code-style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Validate code style
+        run: ./gradlew spotlessCheck
