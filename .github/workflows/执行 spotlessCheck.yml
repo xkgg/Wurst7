@@ -2,9 +2,9 @@ name: Auto Format Code
 
 on:
   pull_request:
-    branches: [ main, master ]
+    branches: [ 1.20.1 ]
   push:
-    branches: [ main, master ]
+    branches: [ 1.20.1 ]
 
 jobs:
   auto-format:
