@@ -19,4 +19,4 @@ jobs:
 
       - name: Validate code style
         run: ./gradlew spotlessCheck
-      - run: git commit -am "Auto-format code"  # 提交修复后的代码
+#      - run: git commit -am "Auto-format code"  # 提交修复后的代码
