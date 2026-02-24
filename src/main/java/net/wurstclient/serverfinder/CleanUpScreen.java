@@ -23,6 +23,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
+import net.minecraft.util.Colors;
 import net.wurstclient.mixinterface.IMultiplayerScreen;
 
 public class CleanUpScreen extends Screen
@@ -46,9 +47,8 @@ public class CleanUpScreen extends Screen
 	@Override
 	public void init()
 	{
-		addDrawableChild(
-			new CleanUpButton(width / 2 - 100, height / 4 + 168 + 12,
-				() -> "Cancel", "", b -> client.setScreen(prevScreen)));
+		addDrawableChild(new CleanUpButton(width / 2 - 100,
+			height / 4 + 168 + 12, () -> "Cancel", "", b -> close()));
 		
 		addDrawableChild(cleanUpButton = new CleanUpButton(width / 2 - 100,
 			height / 4 + 144 + 12, () -> "Clean Up",
@@ -200,15 +200,27 @@ public class CleanUpScreen extends Screen
 	}
 	
 	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button)
+	{
+		if(button == GLFW.GLFW_MOUSE_BUTTON_4)
+		{
+			close();
+			return true;
+		}
+		
+		return super.mouseClicked(mouseX, mouseY, button);
+	}
+	
+	@Override
 	public void render(DrawContext context, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		renderBackground(context);
 		context.drawCenteredTextWithShadow(textRenderer, "Clean Up", width / 2,
-			20, 16777215);
+			20, Colors.WHITE);
 		context.drawCenteredTextWithShadow(textRenderer,
 			"Please select the servers you want to remove:", width / 2, 36,
-			10526880);
+			0xFFA0A0A0);
 		
 		super.render(context, mouseX, mouseY, partialTicks);
 		renderButtonTooltip(context, mouseX, mouseY);
@@ -230,6 +242,12 @@ public class CleanUpScreen extends Screen
 			context.drawTooltip(textRenderer, cuButton.tooltip, mouseX, mouseY);
 			break;
 		}
+	}
+	
+	@Override
+	public void close()
+	{
+		client.setScreen(prevScreen);
 	}
 	
 	private final class CleanUpButton extends ButtonWidget

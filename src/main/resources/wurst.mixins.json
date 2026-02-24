@@ -1,6 +1,5 @@
 {
   "required": true,
-  "minVersion": "0.8",
   "package": "net.wurstclient.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
@@ -26,7 +25,6 @@
     "ClientWorldMixin",
     "ControlsListWidgetMixin",
     "CreativeInventoryScreenMixin",
-    "CustomPayloadC2SPacketAccessor",
     "DeathScreenMixin",
     "DirectConnectScreenMixin",
     "DisconnectedRealmsScreenMixin",
@@ -56,6 +54,7 @@
     "RenderLayersMixin",
     "RenderTickCounterMixin",
     "ScreenMixin",
+    "ServerResourcePackProviderMixin",
     "ShulkerBoxScreenMixin",
     "SimpleOptionMixin",
     "SodiumBlockOcclusionCacheMixin",
@@ -70,5 +69,8 @@
   ],
   "injectors": {
     "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
   }
 }
