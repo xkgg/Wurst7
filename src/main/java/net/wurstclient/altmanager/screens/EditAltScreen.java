@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,8 +7,8 @@
  */
 package net.wurstclient.altmanager.screens;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.wurstclient.altmanager.Alt;
 import net.wurstclient.altmanager.AltManager;
 import net.wurstclient.altmanager.MojangAlt;
@@ -21,7 +21,7 @@ public final class EditAltScreen extends AltEditorScreen
 	public EditAltScreen(Screen prevScreen, AltManager altManager,
 		Alt editedAlt)
 	{
-		super(prevScreen, Text.literal("Edit Alt"));
+		super(prevScreen, Component.literal("Edit Alt"));
 		this.altManager = altManager;
 		this.editedAlt = editedAlt;
 	}
@@ -50,6 +50,6 @@ public final class EditAltScreen extends AltEditorScreen
 	protected void pressDoneButton()
 	{
 		altManager.edit(editedAlt, getNameOrEmail(), getPassword());
-		client.setScreen(prevScreen);
+		minecraft.setScreen(prevScreen);
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -30,6 +30,10 @@ public abstract class Hack extends Feature
 		this.name = Objects.requireNonNull(name);
 		description = "description.wurst.hack." + name.toLowerCase();
 		addPossibleKeybind(name, "Toggle " + name);
+		
+		if(name.contains(" "))
+			throw new IllegalArgumentException(
+				"Feature name must not contain spaces: " + name);
 	}
 	
 	@Override
@@ -38,6 +42,12 @@ public abstract class Hack extends Feature
 		return name;
 	}
 	
+	/**
+	 * Returns the name of the hack to be displayed in HackList.
+	 *
+	 * <p>
+	 * WARNING: This method can be called while <code>MC.player</code> is null.
+	 */
 	public String getRenderName()
 	{
 		return name;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -10,9 +10,9 @@ package net.wurstclient.hacks;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.wurstclient.Category;
 import net.wurstclient.events.MouseUpdateListener;
 import net.wurstclient.events.UpdateListener;
@@ -139,7 +139,7 @@ public final class AimAssistHack extends Hack
 		target = null;
 		
 		// don't aim when a container/inventory screen is open
-		if(MC.currentScreen instanceof HandledScreen)
+		if(MC.screen instanceof AbstractContainerScreen)
 			return;
 		
 		if(!aimWhileBlocking.isChecked() && MC.player.isUsingItem())
@@ -149,7 +149,7 @@ public final class AimAssistHack extends Hack
 		if(target == null)
 			return;
 		
-		Vec3d hitVec = aimAt.getAimPoint(target);
+		Vec3 hitVec = aimAt.getAimPoint(target);
 		if(checkLOS.isChecked() && !BlockUtils.hasLineOfSight(hitVec))
 		{
 			target = null;
@@ -173,7 +173,7 @@ public final class AimAssistHack extends Hack
 		Stream<Entity> stream = EntityUtils.getAttackableEntities();
 		
 		double rangeSq = range.getValueSq();
-		stream = stream.filter(e -> MC.player.squaredDistanceTo(e) <= rangeSq);
+		stream = stream.filter(e -> MC.player.distanceToSqr(e) <= rangeSq);
 		
 		if(fov.getValue() < 360.0)
 			stream = stream.filter(e -> RotationUtils.getAngleToLookVec(
@@ -193,8 +193,8 @@ public final class AimAssistHack extends Hack
 		if(target == null || MC.player == null)
 			return;
 		
-		float curYaw = MC.player.getYaw();
-		float curPitch = MC.player.getPitch();
+		float curYaw = MC.player.getYRot();
+		float curPitch = MC.player.getXRot();
 		int diffYaw = (int)(nextYaw - curYaw);
 		int diffPitch = (int)(nextPitch - curPitch);
 		

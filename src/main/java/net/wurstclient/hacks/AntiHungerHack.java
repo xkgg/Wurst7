@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,7 +7,7 @@
  */
 package net.wurstclient.hacks;
 
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.PacketOutputListener;
@@ -41,13 +41,13 @@ public final class AntiHungerHack extends Hack implements PacketOutputListener
 	@Override
 	public void onSentPacket(PacketOutputEvent event)
 	{
-		if(!(event.getPacket() instanceof PlayerMoveC2SPacket packet))
+		if(!(event.getPacket() instanceof ServerboundMovePlayerPacket packet))
 			return;
 		
-		if(!MC.player.isOnGround() || MC.player.fallDistance > 0.5)
+		if(!MC.player.onGround() || MC.player.fallDistance > 0.5)
 			return;
 		
-		if(MC.interactionManager.isBreakingBlock())
+		if(MC.gameMode.isDestroying())
 			return;
 		
 		event.setPacket(PacketUtils.modifyOnGround(packet, false));

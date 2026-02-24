@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,11 +7,11 @@
  */
 package net.wurstclient.settings.filters;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.entity.passive.AxolotlEntity;
-import net.minecraft.entity.passive.PufferfishEntity;
-import net.minecraft.entity.passive.WaterAnimalEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.AgeableWaterCreature;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.fish.Pufferfish;
+import net.minecraft.world.entity.animal.fish.WaterAnimal;
 
 public final class FilterPassiveWaterSetting extends EntityFilterCheckbox
 {
@@ -28,11 +28,11 @@ public final class FilterPassiveWaterSetting extends EntityFilterCheckbox
 	public boolean test(Entity e)
 	{
 		// never filter out pufferfish
-		if(e instanceof PufferfishEntity)
+		if(e instanceof Pufferfish)
 			return true;
 		
-		return !(e instanceof WaterCreatureEntity
-			|| e instanceof WaterAnimalEntity || e instanceof AxolotlEntity);
+		return !(e instanceof WaterAnimal || e instanceof AgeableWaterCreature
+			|| e instanceof Axolotl);
 	}
 	
 	public static FilterPassiveWaterSetting genericCombat(boolean checked)

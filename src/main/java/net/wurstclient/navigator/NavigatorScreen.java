@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,14 +9,11 @@ package net.wurstclient.navigator;
 
 import java.awt.Rectangle;
 
-import org.joml.Matrix4f;
-
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
 import net.wurstclient.WurstClient;
 import net.wurstclient.clickgui.ClickGui;
 import net.wurstclient.util.RenderUtils;
@@ -35,7 +32,7 @@ public abstract class NavigatorScreen extends Screen
 	
 	public NavigatorScreen()
 	{
-		super(Text.literal(""));
+		super(Component.literal(""));
 	}
 	
 	@Override
@@ -46,36 +43,38 @@ public abstract class NavigatorScreen extends Screen
 	}
 	
 	@Override
-	public final boolean keyPressed(int keyCode, int scanCode, int int_3)
+	public final boolean keyPressed(KeyEvent context)
 	{
-		onKeyPress(keyCode, scanCode, int_3);
-		return super.keyPressed(keyCode, scanCode, int_3);
+		onKeyPress(context);
+		return super.keyPressed(context);
 	}
 	
 	@Override
-	public final boolean mouseClicked(double x, double y, int button)
+	public final boolean mouseClicked(MouseButtonEvent context,
+		boolean doubleClick)
 	{
 		// scrollbar
-		if(new Rectangle(width / 2 + 170, 60, 12, height - 103).contains(x, y))
+		if(new Rectangle(width / 2 + 170, 60, 12, height - 103)
+			.contains(context.x(), context.y()))
 			scrolling = true;
 		
-		onMouseClick(x, y, button);
+		onMouseClick(context);
 		
 		// vanilla buttons
-		return super.mouseClicked(x, y, button);
+		return super.mouseClicked(context, doubleClick);
 	}
 	
 	@Override
-	public final boolean mouseDragged(double mouseX, double mouseY,
-		int mouseButton, double double_3, double double_4)
+	public final boolean mouseDragged(MouseButtonEvent context, double double_3,
+		double double_4)
 	{
 		// scrollbar
-		if(scrolling && !scrollbarLocked && mouseButton == 0)
+		if(scrolling && !scrollbarLocked && context.button() == 0)
 		{
 			if(maxScroll == 0)
 				scroll = 0;
 			else
-				scroll = (int)((mouseY - 72) * maxScroll / (height - 131));
+				scroll = (int)((context.y() - 72) * maxScroll / (height - 131));
 			
 			if(scroll > 0)
 				scroll = 0;
@@ -90,22 +89,22 @@ public abstract class NavigatorScreen extends Screen
 			scrollKnobPosition += 2;
 		}
 		
-		onMouseDrag(mouseX, mouseY, mouseButton, double_3, double_4);
-		
-		return super.mouseDragged(mouseX, mouseY, mouseButton, double_3,
+		onMouseDrag(context.x(), context.y(), context.button(), double_3,
 			double_4);
+		
+		return super.mouseDragged(context, double_3, double_4);
 	}
 	
 	@Override
-	public final boolean mouseReleased(double x, double y, int button)
+	public final boolean mouseReleased(MouseButtonEvent context)
 	{
 		// scrollbar
 		scrolling = false;
 		
-		onMouseRelease(x, y, button);
+		onMouseRelease(context.x(), context.y(), context.button());
 		
 		// vanilla buttons
-		return super.mouseReleased(x, y, button);
+		return super.mouseReleased(context);
 	}
 	
 	@Override
@@ -141,7 +140,7 @@ public abstract class NavigatorScreen extends Screen
 	}
 	
 	@Override
-	public final void render(DrawContext context, int mouseX, int mouseY,
+	public final void render(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		// background
@@ -168,9 +167,11 @@ public abstract class NavigatorScreen extends Screen
 			y1 += scrollKnobPosition;
 			y2 = y1 + 24;
 			drawBackgroundBox(context, x1, y1, x2, y2);
-			int i;
-			for(x1++, x2--, y1 += 8, y2 -= 15, i = 0; i < 3; y1 += 4, y2 +=
-				4, i++)
+			x1++;
+			x2--;
+			y1 += 8;
+			y2 -= 15;
+			for(int i = 0; i < 3; y1 += 4, y2 += 4, i++)
 				drawDownShadow(context, x1, y1, x2, y2);
 		}
 		
@@ -178,16 +179,23 @@ public abstract class NavigatorScreen extends Screen
 	}
 	
 	@Override
-	public final boolean shouldPause()
+	public void renderBackground(GuiGraphics context, int mouseX, int mouseY,
+		float deltaTicks)
+	{
+		// Don't blur
+	}
+	
+	@Override
+	public final boolean isPauseScreen()
 	{
 		return false;
 	}
 	
 	protected abstract void onResize();
 	
-	protected abstract void onKeyPress(int keyCode, int scanCode, int int_3);
+	protected abstract void onKeyPress(KeyEvent context);
 	
-	protected abstract void onMouseClick(double x, double y, int button);
+	protected abstract void onMouseClick(MouseButtonEvent context);
 	
 	protected abstract void onMouseDrag(double mouseX, double mouseY,
 		int button, double double_3, double double_4);
@@ -196,12 +204,12 @@ public abstract class NavigatorScreen extends Screen
 	
 	protected abstract void onUpdate();
 	
-	protected abstract void onRender(DrawContext context, int mouseX,
+	protected abstract void onRender(GuiGraphics context, int mouseX,
 		int mouseY, float partialTicks);
 	
 	protected final int getStringHeight(String s)
 	{
-		int fontHeight = client.textRenderer.fontHeight;
+		int fontHeight = minecraft.font.lineHeight;
 		int height = fontHeight;
 		
 		for(int i = 0; i < s.length(); i++)
@@ -222,33 +230,23 @@ public abstract class NavigatorScreen extends Screen
 			scroll = maxScroll;
 	}
 	
-	protected final void drawDownShadow(DrawContext context, int x1, int y1,
+	protected final void drawDownShadow(GuiGraphics context, int x1, int y1,
 		int x2, int y2)
 	{
 		float[] acColor = WurstClient.INSTANCE.getGui().getAcColor();
 		
 		// line
-		float yi1 = y1 + 0.1F;
 		int lineColor = RenderUtils.toIntColor(acColor, 0.5F);
-		RenderUtils.drawLine2D(context, x1, yi1, x2, yi1, lineColor);
+		RenderUtils.drawLine2D(context, x1 + 0.1F, y1, x2 + 0.1F, y1,
+			lineColor);
 		
 		// shadow
 		int shadowColor1 = RenderUtils.toIntColor(acColor, 0.75F);
 		int shadowColor2 = 0x00000000;
-		
-		MatrixStack matrixStack = context.getMatrices();
-		Matrix4f matrix = matrixStack.peek().getPositionMatrix();
-		
-		context.draw(consumers -> {
-			VertexConsumer buffer = consumers.getBuffer(RenderLayer.getGui());
-			buffer.vertex(matrix, x1, y1, 0).color(shadowColor1);
-			buffer.vertex(matrix, x1, y2, 0).color(shadowColor2);
-			buffer.vertex(matrix, x2, y2, 0).color(shadowColor2);
-			buffer.vertex(matrix, x2, y1, 0).color(shadowColor1);
-		});
+		context.fillGradient(x1, y1, x2, y2, shadowColor1, shadowColor2);
 	}
 	
-	protected final void drawBox(DrawContext context, int x1, int y1, int x2,
+	protected final void drawBox(GuiGraphics context, int x1, int y1, int x2,
 		int y2, int color)
 	{
 		context.fill(x1, y1, x2, y2, color);
@@ -262,7 +260,7 @@ public abstract class NavigatorScreen extends Screen
 		return RenderUtils.toIntColor(gui.getBgColor(), gui.getOpacity());
 	}
 	
-	protected final void drawBackgroundBox(DrawContext context, int x1, int y1,
+	protected final void drawBackgroundBox(GuiGraphics context, int x1, int y1,
 		int x2, int y2)
 	{
 		drawBox(context, x1, y1, x2, y2, getBackgroundColor());

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import net.minecraft.client.session.Session;
+import net.minecraft.client.User;
 import net.wurstclient.WurstClient;
 import net.wurstclient.util.json.JsonException;
 import net.wurstclient.util.json.JsonUtils;
@@ -75,15 +75,15 @@ public enum MicrosoftLoginManager
 		createURL("https://api.minecraftservices.com/minecraft/profile");
 	
 	/**
-	 * Expected data: <code>sFTTag: '&lt;input type="hidden" name="PPFT"
-	 * id="12345" value="random stuff"/&gt;'</code>
+	 * Expected data: <code>"sFTTag": "&lt;input type=\"hidden\" name=\"PPFT\"
+	 * id=\"12345\" value=\"random stuff\"/&gt;"</code>
 	 *
 	 * <p>
 	 * This is all inside a long &lt;script&gt; tag on the {@link #LOGIN_URL}
 	 * webpage.
 	 */
 	private static final Pattern PPFT_REGEX =
-		Pattern.compile("sFTTag:[ ]?'.*value=\"(.*)\"/>");
+		Pattern.compile("\"sFTTag\":\".*value=\\\\\"([^\\\\]+)\\\\\"/>");
 	
 	/**
 	 * Expected data: <code>urlPost: 'https://login.live.com/...'</code>
@@ -92,21 +92,20 @@ public enum MicrosoftLoginManager
 	 * This appears earlier in the same &lt;script&gt; tag.
 	 */
 	private static final Pattern URLPOST_REGEX =
-		Pattern.compile("urlPost:[ ]?'(.+?(?='))");
+		Pattern.compile("\"urlPost\":\"([^\"]+)");
 	
 	private static final Pattern AUTHCODE_REGEX =
-		Pattern.compile("[?|&]code=([\\w.-]+)");
+		Pattern.compile("[?&]code=([\\w\\.-]+)");
 	
 	public static void login(String email, String password)
 		throws LoginException
 	{
 		MinecraftProfile mcProfile = getAccount(email, password);
 		
-		Session session = new Session(mcProfile.getName(), mcProfile.getUUID(),
-			mcProfile.getAccessToken(), Optional.empty(), Optional.empty(),
-			Session.AccountType.MSA);
+		User session = new User(mcProfile.getName(), mcProfile.getUUID(),
+			mcProfile.getAccessToken(), Optional.empty(), Optional.empty());
 		
-		WurstClient.IMC.setSession(session);
+		WurstClient.IMC.setWurstSession(session);
 	}
 	
 	private static MinecraftProfile getAccount(String email, String password)

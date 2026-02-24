@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,9 +7,9 @@
  */
 package net.wurstclient.altmanager.screens;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.network.chat.Component;
 import net.wurstclient.altmanager.LoginException;
 import net.wurstclient.altmanager.LoginManager;
 import net.wurstclient.altmanager.MicrosoftLoginManager;
@@ -18,7 +18,7 @@ public final class DirectLoginScreen extends AltEditorScreen
 {
 	public DirectLoginScreen(Screen prevScreen)
 	{
-		super(prevScreen, Text.literal("Direct Login"));
+		super(prevScreen, Component.literal("Direct Login"));
 	}
 	
 	@Override
@@ -49,6 +49,6 @@ public final class DirectLoginScreen extends AltEditorScreen
 			}
 		
 		message = "";
-		client.setScreen(new TitleScreen());
+		minecraft.setScreen(new TitleScreen());
 	}
 }

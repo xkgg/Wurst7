@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,8 +9,9 @@ package net.wurstclient.clickgui.components;
 
 import org.lwjgl.glfw.GLFW;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.wurstclient.clickgui.ClickGui;
 import net.wurstclient.clickgui.Component;
 import net.wurstclient.settings.Setting;
@@ -19,10 +20,10 @@ import net.wurstclient.util.RenderUtils;
 public abstract class AbstractListEditButton extends Component
 {
 	private static final ClickGui GUI = WURST.getGui();
-	private static final TextRenderer TR = MC.textRenderer;
+	private static final Font TR = MC.font;
 	
 	private final String buttonText = "Edit...";
-	private final int buttonWidth = TR.getWidth(buttonText);
+	private final int buttonWidth = TR.width(buttonText);
 	
 	protected abstract void openScreen();
 	
@@ -31,7 +32,8 @@ public abstract class AbstractListEditButton extends Component
 	protected abstract Setting getSetting();
 	
 	@Override
-	public void handleMouseClick(double mouseX, double mouseY, int mouseButton)
+	public void handleMouseClick(double mouseX, double mouseY, int mouseButton,
+		MouseButtonEvent context)
 	{
 		if(mouseButton != GLFW.GLFW_MOUSE_BUTTON_LEFT)
 			return;
@@ -43,7 +45,7 @@ public abstract class AbstractListEditButton extends Component
 	}
 	
 	@Override
-	public void render(DrawContext context, int mouseX, int mouseY,
+	public void render(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		int x1 = getX();
@@ -69,8 +71,9 @@ public abstract class AbstractListEditButton extends Component
 		
 		// text
 		int txtColor = GUI.getTxtColor();
-		context.drawText(TR, getText(), x1, y1 + 2, txtColor, false);
-		context.drawText(TR, buttonText, x3 + 2, y1 + 2, txtColor, false);
+		context.guiRenderState.up();
+		context.drawString(TR, getText(), x1, y1 + 2, txtColor, false);
+		context.drawString(TR, buttonText, x3 + 2, y1 + 2, txtColor, false);
 	}
 	
 	private int getFillColor(boolean hovering)
@@ -82,7 +85,7 @@ public abstract class AbstractListEditButton extends Component
 	@Override
 	public int getDefaultWidth()
 	{
-		return TR.getWidth(getText()) + buttonWidth + 6;
+		return TR.width(getText()) + buttonWidth + 6;
 	}
 	
 	@Override

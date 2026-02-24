@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -15,11 +15,13 @@ import java.util.TreeMap;
 import org.lwjgl.glfw.GLFW;
 
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
 import net.wurstclient.WurstClient;
 import net.wurstclient.clickgui.ClickGui;
 import net.wurstclient.keybinds.PossibleKeybind;
@@ -31,7 +33,7 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 	private String hoveredKey = "";
 	private String selectedKey = "";
 	private String text = "Select the keybind you want to remove.";
-	private ButtonWidget removeButton;
+	private Button removeButton;
 	
 	public NavigatorRemoveKeybindScreen(
 		TreeMap<String, PossibleKeybind> existingKeybinds,
@@ -45,14 +47,15 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 	protected void onResize()
 	{
 		removeButton =
-			ButtonWidget.builder(Text.literal("Remove"), b -> remove())
-				.dimensions(width / 2 - 151, height - 65, 149, 18).build();
+			Button.builder(Component.literal("Remove"), b -> remove())
+				.bounds(width / 2 - 151, height - 65, 149, 18).build();
 		removeButton.active = !selectedKey.isEmpty();
-		addDrawableChild(removeButton);
+		addRenderableWidget(removeButton);
 		
-		addDrawableChild(ButtonWidget
-			.builder(Text.literal("Cancel"), b -> client.setScreen(parent))
-			.dimensions(width / 2 + 2, height - 65, 149, 18).build());
+		addRenderableWidget(Button
+			.builder(Component.literal("Cancel"),
+				b -> minecraft.setScreen(parent))
+			.bounds(width / 2 + 2, height - 65, 149, 18).build());
 	}
 	
 	private void remove()
@@ -85,20 +88,22 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 		WurstClient.INSTANCE.getNavigator()
 			.addPreference(parent.getFeature().getName());
 		
-		client.setScreen(parent);
+		minecraft.setScreen(parent);
 	}
 	
 	@Override
-	protected void onKeyPress(int keyCode, int scanCode, int int_3)
+	protected void onKeyPress(KeyEvent context)
 	{
-		if(keyCode == GLFW.GLFW_KEY_ESCAPE
-			|| keyCode == GLFW.GLFW_KEY_BACKSPACE)
-			client.setScreen(parent);
+		if(context.key() == GLFW.GLFW_KEY_ESCAPE
+			|| context.key() == GLFW.GLFW_KEY_BACKSPACE)
+			minecraft.setScreen(parent);
 	}
 	
 	@Override
-	protected void onMouseClick(double x, double y, int button)
+	protected void onMouseClick(MouseButtonEvent context)
 	{
+		int button = context.button();
+		
 		// back button
 		if(button == GLFW.GLFW_MOUSE_BUTTON_4)
 		{
@@ -121,16 +126,15 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 	}
 	
 	@Override
-	protected void onRender(DrawContext context, int mouseX, int mouseY,
+	protected void onRender(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		ClickGui gui = WurstClient.INSTANCE.getGui();
-		TextRenderer tr = client.textRenderer;
+		Font tr = minecraft.font;
 		int txtColor = gui.getTxtColor();
 		
 		// title bar
-		context.drawCenteredTextWithShadow(tr, "Remove Keybind", middleX, 32,
-			txtColor);
+		context.drawCenteredString(tr, "Remove Keybind", middleX, 32, txtColor);
 		
 		// background
 		int bgx1 = middleX - 154;
@@ -175,24 +179,26 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 			drawBox(context, x1, y1, x2, y2, buttonColor);
 			
 			// text
-			context.drawTextWithShadow(tr, key.replace("key.keyboard.", "")
-				+ ": " + keybind.getDescription(), x1 + 1, y1 + 1, txtColor);
-			context.drawTextWithShadow(tr, keybind.getCommand(), x1 + 1,
-				y1 + 1 + tr.fontHeight, txtColor);
+			context.guiRenderState.up();
+			context.drawString(tr, key.replace("key.keyboard.", "") + ": "
+				+ keybind.getDescription(), x1 + 1, y1 + 1, txtColor);
+			context.drawString(tr, keybind.getCommand(), x1 + 1,
+				y1 + 1 + tr.lineHeight, txtColor);
 		}
 		
 		// text
 		int textY = bgy1 + scroll + 2;
+		context.guiRenderState.up();
 		for(String line : text.split("\n"))
 		{
-			context.drawTextWithShadow(tr, line, bgx1 + 2, textY, txtColor);
-			textY += tr.fontHeight;
+			context.drawString(tr, line, bgx1 + 2, textY, txtColor);
+			textY += tr.lineHeight;
 		}
 		
 		context.disableScissor();
 		
 		// buttons below scissor box
-		for(ClickableWidget button : Screens.getButtons(this))
+		for(AbstractWidget button : Screens.getButtons(this))
 		{
 			// positions
 			int x1 = button.getX();
@@ -215,8 +221,9 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 			
 			// text
 			String buttonText = button.getMessage().getString();
-			context.drawCenteredTextWithShadow(tr, buttonText, (x1 + x2) / 2,
-				y1 + 5, txtColor);
+			context.guiRenderState.up();
+			context.drawCenteredString(tr, buttonText, (x1 + x2) / 2, y1 + 5,
+				txtColor);
 		}
 	}
 	

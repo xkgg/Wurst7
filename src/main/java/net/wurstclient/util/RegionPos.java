@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,9 +7,9 @@
  */
 package net.wurstclient.util;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.phys.Vec3;
 
 public record RegionPos(int x, int z)
 {
@@ -28,9 +28,9 @@ public record RegionPos(int x, int z)
 		return new RegionPos(-x, -z);
 	}
 	
-	public Vec3d toVec3d()
+	public Vec3 toVec3d()
 	{
-		return new Vec3d(x, 0, z);
+		return new Vec3(x, 0, z);
 	}
 	
 	public BlockPos toBlockPos()

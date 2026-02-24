@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,10 +7,10 @@
  */
 package net.wurstclient.hacks;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket.PositionAndOnGround;
-import net.minecraft.util.hit.HitResult;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket.Pos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.HitResult;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.PlayerAttacksEntityListener;
@@ -41,16 +41,16 @@ public final class MaceDmgHack extends Hack
 	@Override
 	public void onPlayerAttacksEntity(Entity target)
 	{
-		if(MC.crosshairTarget == null
-			|| MC.crosshairTarget.getType() != HitResult.Type.ENTITY)
+		if(MC.hitResult == null
+			|| MC.hitResult.getType() != HitResult.Type.ENTITY)
 			return;
 		
-		if(!MC.player.getMainHandStack().isOf(Items.MACE))
+		if(!MC.player.getMainHandItem().is(Items.MACE))
 			return;
 			
-		// See ServerPlayNetworkHandler.onPlayerMove()
+		// See ServerGamePacketListenerImpl.handleMovePlayer()
 		// for why it's using these numbers.
-		// Also, let me know if you find a way to bypass that check in 1.21.
+		// Also, let me know if you find a way to bypass that check.
 		for(int i = 0; i < 4; i++)
 			sendFakeY(0);
 		sendFakeY(Math.sqrt(500));
@@ -59,8 +59,8 @@ public final class MaceDmgHack extends Hack
 	
 	private void sendFakeY(double offset)
 	{
-		MC.player.networkHandler.sendPacket(
-			new PositionAndOnGround(MC.player.getX(), MC.player.getY() + offset,
+		MC.player.connection
+			.send(new Pos(MC.player.getX(), MC.player.getY() + offset,
 				MC.player.getZ(), false, MC.player.horizontalCollision));
 	}
 }

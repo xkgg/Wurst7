@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,69 +9,54 @@ package net.wurstclient;
 
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.pipeline.RenderPipeline.Snippet;
 import com.mojang.blaze3d.platform.DepthTestFunction;
-import com.mojang.blaze3d.vertex.VertexFormat.DrawMode;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 
 public enum WurstShaderPipelines
 {
 	;
 	
 	/**
-	 * Similar to the DEBUG_LINE_STIP ShaderPipeline, but as a non-srip
-	 * version with support for transparency.
+	 * Similar to the RENDERTYPE_LINES Snippet, but without fog.
 	 */
-	public static final RenderPipeline ONE_PIXEL_LINES = RenderPipelines
-		.register(RenderPipeline.builder(RenderPipelines.MATRICES_COLOR_SNIPPET)
-			.withLocation("pipeline/wurst_1px_lines")
-			.withVertexShader("core/position_color")
-			.withFragmentShader("core/position_color")
-			.withBlend(BlendFunction.TRANSLUCENT).withCull(false)
-			.withVertexFormat(VertexFormats.POSITION_COLOR,
-				DrawMode.DEBUG_LINES)
+	public static final Snippet FOGLESS_LINES_SNIPPET = RenderPipeline
+		.builder(RenderPipelines.MATRICES_FOG_SNIPPET,
+			RenderPipelines.GLOBALS_SNIPPET)
+		.withVertexShader(Identifier.parse("wurst:core/fogless_lines"))
+		.withFragmentShader(Identifier.parse("wurst:core/fogless_lines"))
+		.withBlend(BlendFunction.TRANSLUCENT).withCull(false)
+		.withVertexFormat(DefaultVertexFormat.POSITION_COLOR_NORMAL_LINE_WIDTH,
+			Mode.LINES)
+		.buildSnippet();
+	
+	/**
+	 * Similar to the LINES ShaderPipeline, but with no fog.
+	 */
+	public static final RenderPipeline DEPTH_TEST_LINES =
+		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
+			.withLocation(
+				Identifier.parse("wurst:pipeline/wurst_depth_test_lines"))
 			.build());
 	
 	/**
-	 * Similar to the DEBUG_LINE_STIP ShaderPipeline, but with support for
-	 * transparency.
+	 * Similar to the LINES ShaderPipeline, but with no depth test or fog.
 	 */
-	public static final RenderPipeline ONE_PIXEL_LINE_STRIP = RenderPipelines
-		.register(RenderPipeline.builder(RenderPipelines.MATRICES_COLOR_SNIPPET)
-			.withLocation("pipeline/wurst_1px_line_strip")
-			.withVertexShader("core/position_color")
-			.withFragmentShader("core/position_color")
-			.withBlend(BlendFunction.TRANSLUCENT).withCull(false)
-			.withVertexFormat(VertexFormats.POSITION_COLOR,
-				DrawMode.DEBUG_LINE_STRIP)
-			.build());
-	
-	/**
-	 * Similar to the LINES ShaderPipeline, but with no depth test.
-	 */
-	public static final RenderPipeline ESP_LINES = RenderPipelines.register(
-		RenderPipeline.builder(RenderPipelines.RENDERTYPE_LINES_SNIPPET)
-			.withLocation("pipeline/wurst_esp_lines")
-			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST).build());
-	
-	/**
-	 * Similar to the LINE_STRIP ShaderPipeline, but with no depth test.
-	 */
-	public static final RenderPipeline ESP_LINE_STRIP =
-		RenderPipelines.register(RenderPipeline
-			.builder(RenderPipelines.RENDERTYPE_LINES_SNIPPET)
-			.withLocation("pipeline/wurst_esp_line_strip")
-			.withVertexFormat(VertexFormats.POSITION_COLOR_NORMAL,
-				DrawMode.LINE_STRIP)
+	public static final RenderPipeline ESP_LINES =
+		RenderPipelines.register(RenderPipeline.builder(FOGLESS_LINES_SNIPPET)
+			.withLocation(Identifier.parse("wurst:pipeline/wurst_esp_lines"))
 			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST).build());
 	
 	/**
 	 * Similar to the DEBUG_QUADS ShaderPipeline, but with culling enabled.
 	 */
 	public static final RenderPipeline QUADS = RenderPipelines
-		.register(RenderPipeline.builder(RenderPipelines.POSITION_COLOR_SNIPPET)
-			.withLocation("pipeline/wurst_quads")
+		.register(RenderPipeline.builder(RenderPipelines.DEBUG_FILLED_SNIPPET)
+			.withLocation(Identifier.parse("wurst:pipeline/wurst_quads"))
 			.withDepthTestFunction(DepthTestFunction.LEQUAL_DEPTH_TEST)
 			.build());
 	
@@ -80,15 +65,16 @@ public enum WurstShaderPipelines
 	 * and no depth test.
 	 */
 	public static final RenderPipeline ESP_QUADS = RenderPipelines
-		.register(RenderPipeline.builder(RenderPipelines.POSITION_COLOR_SNIPPET)
-			.withLocation("pipeline/wurst_esp_quads")
+		.register(RenderPipeline.builder(RenderPipelines.DEBUG_FILLED_SNIPPET)
+			.withLocation(Identifier.parse("wurst:pipeline/wurst_esp_quads"))
 			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST).build());
 	
 	/**
 	 * Similar to the DEBUG_QUADS ShaderPipeline, but with no depth test.
 	 */
 	public static final RenderPipeline ESP_QUADS_NO_CULLING = RenderPipelines
-		.register(RenderPipeline.builder(RenderPipelines.POSITION_COLOR_SNIPPET)
-			.withLocation("pipeline/wurst_esp_quads").withCull(false)
+		.register(RenderPipeline.builder(RenderPipelines.DEBUG_FILLED_SNIPPET)
+			.withLocation(Identifier.parse("wurst:pipeline/wurst_esp_quads"))
+			.withCull(false)
 			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST).build());
 }

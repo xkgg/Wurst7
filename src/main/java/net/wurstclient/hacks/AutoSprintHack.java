@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,7 +7,7 @@
  */
 package net.wurstclient.hacks;
 
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.player.LocalPlayer;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
@@ -47,17 +47,17 @@ public final class AutoSprintHack extends Hack implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		ClientPlayerEntity player = MC.player;
-		if(player.horizontalCollision || player.isSneaking())
+		LocalPlayer player = MC.player;
+		if(player.horizontalCollision || player.isShiftKeyDown())
 			return;
 		
-		if(player.isTouchingWater() || player.isSubmergedInWater())
+		if(player.isInWater() || player.isUnderWater())
 			return;
 		
-		if(!allDirections.isChecked() && player.forwardSpeed <= 0)
+		if(!allDirections.isChecked() && player.zza <= 0)
 			return;
 		
-		if(player.input.getMovementInput().length() <= 1e-5F)
+		if(player.input.getMoveVector().length() <= 1e-5F)
 			return;
 		
 		player.setSprinting(true);

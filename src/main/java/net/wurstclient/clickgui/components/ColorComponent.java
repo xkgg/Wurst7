@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,19 +9,21 @@ package net.wurstclient.clickgui.components;
 
 import org.lwjgl.glfw.GLFW;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.wurstclient.clickgui.ClickGui;
 import net.wurstclient.clickgui.Component;
 import net.wurstclient.clickgui.screens.EditColorScreen;
 import net.wurstclient.settings.ColorSetting;
 import net.wurstclient.util.ColorUtils;
 import net.wurstclient.util.RenderUtils;
+import net.wurstclient.util.text.WText;
 
 public final class ColorComponent extends Component
 {
 	private static final ClickGui GUI = WURST.getGui();
-	private static final TextRenderer TR = MC.textRenderer;
+	private static final Font TR = MC.font;
 	private static final int TEXT_HEIGHT = 11;
 	
 	private final ColorSetting setting;
@@ -34,7 +36,8 @@ public final class ColorComponent extends Component
 	}
 	
 	@Override
-	public void handleMouseClick(double mouseX, double mouseY, int mouseButton)
+	public void handleMouseClick(double mouseX, double mouseY, int mouseButton,
+		MouseButtonEvent context)
 	{
 		if(mouseY < getY() + TEXT_HEIGHT)
 			return;
@@ -42,7 +45,7 @@ public final class ColorComponent extends Component
 		switch(mouseButton)
 		{
 			case GLFW.GLFW_MOUSE_BUTTON_LEFT:
-			MC.setScreen(new EditColorScreen(MC.currentScreen, setting));
+			MC.setScreen(new EditColorScreen(MC.screen, setting));
 			break;
 			
 			case GLFW.GLFW_MOUSE_BUTTON_RIGHT:
@@ -52,7 +55,7 @@ public final class ColorComponent extends Component
 	}
 	
 	@Override
-	public void render(DrawContext context, int mouseX, int mouseY,
+	public void render(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		int x1 = getX();
@@ -84,26 +87,29 @@ public final class ColorComponent extends Component
 		// text
 		String name = setting.getName();
 		String value = ColorUtils.toHex(setting.getColor());
-		int valueWidth = TR.getWidth(value);
+		int valueWidth = TR.width(value);
 		int txtColor = GUI.getTxtColor();
-		context.drawText(TR, name, x1, y1 + 2, txtColor, false);
-		context.drawText(TR, value, x2 - valueWidth, y1 + 2, txtColor, false);
+		context.guiRenderState.up();
+		context.drawString(TR, name, x1, y1 + 2, txtColor, false);
+		context.drawString(TR, value, x2 - valueWidth, y1 + 2, txtColor, false);
 	}
 	
 	private String getColorTooltip()
 	{
-		String tooltip = "\u00a7cR:\u00a7r" + setting.getRed();
-		tooltip += " \u00a7aG:\u00a7r" + setting.getGreen();
-		tooltip += " \u00a79B:\u00a7r" + setting.getBlue();
-		tooltip += "\n\n\u00a7e[left-click]\u00a7r to edit";
-		tooltip += "\n\u00a7e[right-click]\u00a7r to reset";
-		return tooltip;
+		return WText.literal("\u00a7cR:\u00a7r" + setting.getRed())
+			.append(WText.literal(" \u00a7aG:\u00a7r" + setting.getGreen()))
+			.append(WText.literal(" \u00a79B:\u00a7r" + setting.getBlue()))
+			.append(WText.literal("\n\n"))
+			.append(WText.translated("gui.wurst.generic.left_click_to_edit"))
+			.append(WText.literal("\n"))
+			.append(WText.translated("gui.wurst.generic.right_click_to_reset"))
+			.toString();
 	}
 	
 	@Override
 	public int getDefaultWidth()
 	{
-		return TR.getWidth(setting.getName() + "#FFFFFF") + 6;
+		return TR.width(setting.getName() + "#FFFFFF") + 6;
 	}
 	
 	@Override

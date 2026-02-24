@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,7 +7,7 @@
  */
 package net.wurstclient.hacks.chattranslator;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import net.wurstclient.settings.EnumSetting;
 
 public final class LanguageSetting extends EnumSetting<LanguageSetting.Language>
@@ -93,9 +93,9 @@ public final class LanguageSetting extends EnumSetting<LanguageSetting.Language>
 			return prefix;
 		}
 		
-		public Text prefixText(String s)
+		public Component prefixText(String s)
 		{
-			return Text.literal(prefix + s);
+			return Component.literal(prefix + s);
 		}
 		
 		@Override

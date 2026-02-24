@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,17 +18,17 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import org.joml.Matrix3x2fStack;
 import org.lwjgl.glfw.GLFW;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.wurstclient.Category;
 import net.wurstclient.Feature;
 import net.wurstclient.WurstClient;
@@ -41,7 +41,7 @@ import net.wurstclient.util.json.JsonUtils;
 public final class ClickGui
 {
 	private static final WurstClient WURST = WurstClient.INSTANCE;
-	private static final MinecraftClient MC = WurstClient.MC;
+	private static final Minecraft MC = WurstClient.MC;
 	
 	private final ArrayList<Window> windows = new ArrayList<>();
 	private final ArrayList<Popup> popups = new ArrayList<>();
@@ -87,6 +87,7 @@ public final class ClickGui
 		uiSettings.add(new FeatureButton(WURST.getOtfs().wurstLogoOtf));
 		uiSettings.add(new FeatureButton(WURST.getOtfs().hackListOtf));
 		uiSettings.add(new FeatureButton(WURST.getOtfs().keybindManagerOtf));
+		uiSettings.add(new FeatureButton(WURST.getOtfs().wurstOptionsOtf));
 		ClickGuiHack clickGuiHack = WURST.getHax().clickGuiHack;
 		Stream<Setting> settings = clickGuiHack.getSettings().values().stream();
 		settings.map(Setting::getComponent).forEach(c -> uiSettings.add(c));
@@ -99,7 +100,7 @@ public final class ClickGui
 		
 		int x = 5;
 		int y = 5;
-		int scaledWidth = MC.getWindow().getScaledWidth();
+		int scaledWidth = MC.getWindow().getGuiScaledWidth();
 		for(Window window : windows)
 		{
 			window.pack();
@@ -191,8 +192,11 @@ public final class ClickGui
 		}
 	}
 	
-	public void handleMouseClick(int mouseX, int mouseY, int mouseButton)
+	public void handleMouseClick(MouseButtonEvent context)
 	{
+		int mouseX = (int)context.x();
+		int mouseY = (int)context.y();
+		int mouseButton = context.button();
 		if(mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT)
 			leftMouseButtonPressed = true;
 		
@@ -200,7 +204,7 @@ public final class ClickGui
 			handlePopupMouseClick(mouseX, mouseY, mouseButton);
 		
 		if(!popupClicked)
-			handleWindowMouseClick(mouseX, mouseY, mouseButton);
+			handleWindowMouseClick(mouseX, mouseY, mouseButton, context);
 		
 		for(Popup popup : popups)
 			if(popup.getOwner().getParent().isClosing())
@@ -265,12 +269,13 @@ public final class ClickGui
 	}
 	
 	public void handleNavigatorMouseClick(double cMouseX, double cMouseY,
-		int mouseButton, Window window)
+		int mouseButton, Window window, MouseButtonEvent context)
 	{
 		if(mouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT)
 			leftMouseButtonPressed = true;
 		
-		handleComponentMouseClick(window, cMouseX, cMouseY, mouseButton);
+		handleComponentMouseClick(window, cMouseX, cMouseY, mouseButton,
+			context);
 		
 		for(Popup popup : popups)
 			if(popup.getOwner().getParent().isClosing())
@@ -314,7 +319,8 @@ public final class ClickGui
 		return false;
 	}
 	
-	private void handleWindowMouseClick(int mouseX, int mouseY, int mouseButton)
+	private void handleWindowMouseClick(int mouseX, int mouseY, int mouseButton,
+		MouseButtonEvent context)
 	{
 		for(int i = windows.size() - 1; i >= 0; i--)
 		{
@@ -351,7 +357,7 @@ public final class ClickGui
 						cMouseY -= window.getScrollOffset();
 					
 					handleComponentMouseClick(window, cMouseX, cMouseY,
-						mouseButton);
+						mouseButton, context);
 				}
 				
 			}else
@@ -436,7 +442,7 @@ public final class ClickGui
 	}
 	
 	private void handleComponentMouseClick(Window window, double mouseX,
-		double mouseY, int mouseButton)
+		double mouseY, int mouseButton, MouseButtonEvent context)
 	{
 		for(int i2 = window.countChildren() - 1; i2 >= 0; i2--)
 		{
@@ -448,18 +454,18 @@ public final class ClickGui
 				|| mouseY >= c.getY() + c.getHeight())
 				continue;
 			
-			c.handleMouseClick(mouseX, mouseY, mouseButton);
+			c.handleMouseClick(mouseX, mouseY, mouseButton, context);
 			break;
 		}
 	}
 	
-	public void render(DrawContext context, int mouseX, int mouseY,
+	public void render(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		updateColors();
 		
-		MatrixStack matrixStack = context.getMatrices();
-		matrixStack.push();
+		Matrix3x2fStack matrixStack = context.pose();
+		matrixStack.pushMatrix();
 		
 		tooltip = "";
 		for(Window window : windows)
@@ -484,19 +490,19 @@ public final class ClickGui
 				else
 					window.stopDraggingScrollbar();
 				
-			matrixStack.translate(0, 0, 300);
+			context.guiRenderState.up();
 			renderWindow(context, window, mouseX, mouseY, partialTicks);
 		}
 		
 		renderPopups(context, mouseX, mouseY);
 		renderTooltip(context, mouseX, mouseY);
 		
-		matrixStack.pop();
+		matrixStack.popMatrix();
 	}
 	
-	public void renderPopups(DrawContext context, int mouseX, int mouseY)
+	public void renderPopups(GuiGraphics context, int mouseX, int mouseY)
 	{
-		MatrixStack matrixStack = context.getMatrices();
+		Matrix3x2fStack matrixStack = context.pose();
 		for(Popup popup : popups)
 		{
 			Component owner = popup.getOwner();
@@ -506,45 +512,43 @@ public final class ClickGui
 			int y1 =
 				parent.getY() + 13 + parent.getScrollOffset() + owner.getY();
 			
-			matrixStack.push();
-			matrixStack.translate(x1, y1, 300);
+			matrixStack.pushMatrix();
+			matrixStack.translate(x1, y1);
+			context.guiRenderState.up();
 			
 			int cMouseX = mouseX - x1;
 			int cMouseY = mouseY - y1;
 			popup.render(context, cMouseX, cMouseY);
 			
-			matrixStack.pop();
+			matrixStack.popMatrix();
 		}
 	}
 	
-	public void renderTooltip(DrawContext context, int mouseX, int mouseY)
+	public void renderTooltip(GuiGraphics context, int mouseX, int mouseY)
 	{
-		MatrixStack matrixStack = context.getMatrices();
-		
 		if(tooltip.isEmpty())
 			return;
 		
 		String[] lines = tooltip.split("\n");
-		TextRenderer tr = MC.textRenderer;
+		Font tr = MC.font;
 		
 		int tw = 0;
-		int th = lines.length * tr.fontHeight;
+		int th = lines.length * tr.lineHeight;
 		for(String line : lines)
 		{
-			int lw = tr.getWidth(line);
+			int lw = tr.width(line);
 			if(lw > tw)
 				tw = lw;
 		}
-		int sw = MC.currentScreen.width;
-		int sh = MC.currentScreen.height;
+		int sw = MC.screen.width;
+		int sh = MC.screen.height;
 		
 		int xt1 = mouseX + tw + 11 <= sw ? mouseX + 8 : mouseX - tw - 8;
 		int xt2 = xt1 + tw + 3;
 		int yt1 = mouseY + th - 2 <= sh ? mouseY - 4 : mouseY - th - 4;
 		int yt2 = yt1 + th + 2;
 		
-		matrixStack.push();
-		matrixStack.translate(0, 0, 300);
+		context.guiRenderState.up();
 		
 		// background
 		context.fill(xt1, yt1, xt2, yt2,
@@ -555,27 +559,23 @@ public final class ClickGui
 			RenderUtils.toIntColor(acColor, 0.5F));
 		
 		// text
+		context.guiRenderState.up();
 		for(int i = 0; i < lines.length; i++)
-			context.drawText(tr, lines[i], xt1 + 2, yt1 + 2 + i * tr.fontHeight,
-				txtColor, false);
-		
-		matrixStack.pop();
+			context.drawString(tr, lines[i], xt1 + 2,
+				yt1 + 2 + i * tr.lineHeight, txtColor, false);
 	}
 	
-	public void renderPinnedWindows(DrawContext context, float partialTicks)
+	public void renderPinnedWindows(GuiGraphics context, float partialTicks)
 	{
-		MatrixStack matrixStack = context.getMatrices();
-		matrixStack.push();
-		
 		for(Window window : windows)
-			if(window.isPinned() && !window.isInvisible())
-			{
-				matrixStack.translate(0, 0, 300);
-				renderWindow(context, window, Integer.MIN_VALUE,
-					Integer.MIN_VALUE, partialTicks);
-			}
-		
-		matrixStack.pop();
+		{
+			if(!window.isPinned() || window.isInvisible())
+				continue;
+			
+			context.guiRenderState.up();
+			renderWindow(context, window, Integer.MIN_VALUE, Integer.MIN_VALUE,
+				partialTicks);
+		}
 	}
 	
 	public void updateColors()
@@ -595,7 +595,7 @@ public final class ClickGui
 			acColor = clickGui.getAccentColor();
 	}
 	
-	private void renderWindow(DrawContext context, Window window, int mouseX,
+	private void renderWindow(GuiGraphics context, Window window, int mouseX,
 		int mouseY, float partialTicks)
 	{
 		int x1 = window.getX();
@@ -607,7 +607,7 @@ public final class ClickGui
 		int windowBgColor = RenderUtils.toIntColor(bgColor, opacity);
 		int outlineColor = RenderUtils.toIntColor(acColor, 0.5F);
 		
-		MatrixStack matrixStack = context.getMatrices();
+		Matrix3x2fStack matrixStack = context.pose();
 		
 		if(window.isMinimized())
 			y2 = y3;
@@ -671,8 +671,8 @@ public final class ClickGui
 			
 			context.enableScissor(x1, y3, x2, y2);
 			
-			matrixStack.push();
-			matrixStack.translate(x1, y4, 0);
+			matrixStack.pushMatrix();
+			matrixStack.translate(x1, y4);
 			
 			// window background
 			// between children
@@ -706,7 +706,7 @@ public final class ClickGui
 				window.getChild(i).render(context, cMouseX, cMouseY,
 					partialTicks);
 			
-			matrixStack.pop();
+			matrixStack.popMatrix();
 			context.disableScissor();
 		}
 		
@@ -762,13 +762,15 @@ public final class ClickGui
 		context.fill(x1, y1, x3, y3, titleBgColor);
 		
 		// window title
-		TextRenderer tr = MC.textRenderer;
-		String title = tr.trimToWidth(Text.literal(window.getTitle()), x3 - x1)
-			.getString();
-		context.drawText(tr, title, x1 + 2, y1 + 3, txtColor, false);
+		Font tr = MC.font;
+		String title = tr.substrByWidth(
+			net.minecraft.network.chat.Component.literal(window.getTitle()),
+			x3 - x1).getString();
+		context.guiRenderState.up();
+		context.drawString(tr, title, x1 + 2, y1 + 3, txtColor, false);
 	}
 	
-	private void renderTitleBarButton(DrawContext context, int x1, int y1,
+	private void renderTitleBarButton(GuiGraphics context, int x1, int y1,
 		int x2, int y2, boolean hovering)
 	{
 		int x3 = x2 + 2;

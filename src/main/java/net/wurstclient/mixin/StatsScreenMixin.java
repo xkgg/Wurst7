@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -13,74 +13,98 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.fabricmc.fabric.api.client.screen.v1.Screens;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.StatsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.Text;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LayoutElement;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.achievement.StatsScreen;
+import net.minecraft.network.chat.Component;
 import net.wurstclient.WurstClient;
+import net.wurstclient.options.WurstOptionsScreen;
 
 @Mixin(StatsScreen.class)
 public abstract class StatsScreenMixin extends Screen
 {
 	@Unique
-	private ButtonWidget toggleWurstButton;
+	private Button wurstOptionsButton;
 	
-	private StatsScreenMixin(WurstClient wurst, Text title)
+	public StatsScreenMixin(WurstClient wurst, Component title)
 	{
 		super(title);
 	}
 	
-	/**
-	 * Adds the hidden "Enable/Disable Wurst" button on the Statistics screen.
-	 */
-	@Inject(at = @At("TAIL"), method = "createButtons()V")
-	private void onCreateButtons(CallbackInfo ci)
+	@WrapOperation(at = @At(value = "INVOKE",
+		target = "Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addToFooter(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;",
+		ordinal = 0), method = "init()V")
+	private <T extends LayoutElement> T onAddToFooter(
+		HeaderAndFooterLayout layout, T doneWidget, Operation<T> original)
 	{
-		if(WurstClient.INSTANCE.getOtfs().disableOtf.shouldHideEnableButton())
-			return;
+		if(!(doneWidget instanceof Button doneButton))
+			throw new IllegalStateException(
+				"The done button in the statistics screen somehow isn't a button");
 		
-		toggleWurstButton = ButtonWidget
-			.builder(Text.literal(""), this::toggleWurst).width(150).build();
+		WurstClient wurst = WurstClient.INSTANCE;
+		if(wurst.getOtfs().disableOtf.shouldHideEnableButton())
+			return original.call(layout, doneButton);
 		
-		ClickableWidget doneButton = getDoneButton();
-		doneButton.setX(width / 2 + 2);
-		doneButton.setWidth(150);
+		LinearLayout vLayout = LinearLayout.vertical().spacing(5);
+		LinearLayout hLayout = LinearLayout.horizontal().spacing(5);
 		
-		toggleWurstButton.setPosition(width / 2 - 152, doneButton.getY());
+		Button toggleButton =
+			Button.builder(getToggleButtonText(), this::toggleWurst).width(100)
+				.build();
+		hLayout.addChild(toggleButton);
 		
-		updateWurstButtonText(toggleWurstButton);
-		addDrawableChild(toggleWurstButton);
+		doneButton.setWidth(100);
+		hLayout.addChild(doneButton);
+		
+		if(wurst.getOtfs().wurstOptionsOtf.isVisibleInStatistics())
+		{
+			layout.setFooterHeight(58);
+			wurstOptionsButton = WurstClient.INSTANCE.getOtfs().wurstOptionsOtf
+				.buttonBuilder(this::openWurstOptions).width(205).build();
+			vLayout.addChild(wurstOptionsButton);
+		}
+		
+		vLayout.addChild(hLayout);
+		return original.call(layout, vLayout);
+	}
+	
+	@Inject(at = @At("TAIL"),
+		method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V")
+	private void onRender(GuiGraphics context, int mouseX, int mouseY,
+		float partialTicks, CallbackInfo ci)
+	{
+		WurstClient.INSTANCE.getOtfs().wurstOptionsOtf
+			.drawWurstLogoOnButton(context, wurstOptionsButton);
 	}
 	
 	@Unique
-	private ClickableWidget getDoneButton()
+	private void openWurstOptions(Button button)
 	{
-		for(ClickableWidget button : Screens.getButtons(this))
-			if(button.getMessage().getString()
-				.equals(I18n.translate("gui.done")))
-				return button;
-			
-		throw new IllegalStateException(
-			"Can't find the done button on the statistics screen.");
+		minecraft.setScreen(new WurstOptionsScreen(this));
 	}
 	
 	@Unique
-	private void toggleWurst(ButtonWidget button)
+	private void toggleWurst(Button toggleButton)
 	{
 		WurstClient wurst = WurstClient.INSTANCE;
 		wurst.setEnabled(!wurst.isEnabled());
-		
-		updateWurstButtonText(button);
+		toggleButton.setMessage(getToggleButtonText());
+		if(wurstOptionsButton != null)
+			wurstOptionsButton.active = wurst.isEnabled();
 	}
 	
 	@Unique
-	private void updateWurstButtonText(ButtonWidget button)
+	private Component getToggleButtonText()
 	{
 		WurstClient wurst = WurstClient.INSTANCE;
 		String text = (wurst.isEnabled() ? "Disable" : "Enable") + " Wurst";
-		button.setMessage(Text.literal(text));
+		return Component.literal(text);
 	}
 }

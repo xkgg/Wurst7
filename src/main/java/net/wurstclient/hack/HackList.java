@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,8 +18,8 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.minecraft.util.crash.CrashException;
-import net.minecraft.util.crash.CrashReport;
+import net.minecraft.CrashReport;
+import net.minecraft.ReportedException;
 import net.wurstclient.WurstClient;
 import net.wurstclient.event.EventManager;
 import net.wurstclient.events.UpdateListener;
@@ -109,6 +109,7 @@ public final class HackList implements UpdateListener
 	public final HealthTagsHack healthTagsHack = new HealthTagsHack();
 	public final HighJumpHack highJumpHack = new HighJumpHack();
 	public final InfiniChatHack infiniChatHack = new InfiniChatHack();
+	public final InstaBuildHack instaBuildHack = new InstaBuildHack();
 	public final InstantBunkerHack instantBunkerHack = new InstantBunkerHack();
 	public final InvWalkHack invWalkHack = new InvWalkHack();
 	public final ItemEspHack itemEspHack = new ItemEspHack();
@@ -143,6 +144,7 @@ public final class HackList implements UpdateListener
 	public final NoShieldOverlayHack noShieldOverlayHack =
 		new NoShieldOverlayHack();
 	public final NoSlowdownHack noSlowdownHack = new NoSlowdownHack();
+	public final NoVignetteHack noVignetteHack = new NoVignetteHack();
 	public final NoWeatherHack noWeatherHack = new NoWeatherHack();
 	public final NoWebHack noWebHack = new NoWebHack();
 	public final NukerHack nukerHack = new NukerHack();
@@ -216,8 +218,8 @@ public final class HackList implements UpdateListener
 		}catch(Exception e)
 		{
 			String message = "Initializing Wurst hacks";
-			CrashReport report = CrashReport.create(e, message);
-			throw new CrashException(report);
+			CrashReport report = CrashReport.forThrowable(e, message);
+			throw new ReportedException(report);
 		}
 		
 		eventManager.add(UpdateListener.class, this);

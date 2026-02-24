@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.TreeMap;
 
-import net.minecraft.util.crash.CrashException;
-import net.minecraft.util.crash.CrashReport;
+import net.minecraft.CrashReport;
+import net.minecraft.ReportedException;
 import net.wurstclient.commands.*;
 
 public final class CmdList
@@ -89,8 +89,8 @@ public final class CmdList
 		}catch(Exception e)
 		{
 			String message = "Initializing Wurst commands";
-			CrashReport report = CrashReport.create(e, message);
-			throw new CrashException(report);
+			CrashReport report = CrashReport.forThrowable(e, message);
+			throw new ReportedException(report);
 		}
 	}
 	

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,12 +7,13 @@
  */
 package net.wurstclient.settings;
 
-import net.minecraft.util.math.random.Random;
+import net.minecraft.util.RandomSource;
 import net.wurstclient.WurstClient;
 
 public final class AttackSpeedSliderSetting extends SliderSetting
 {
-	private final Random random = Random.createLocal();
+	private final RandomSource random =
+		RandomSource.createNewThreadLocalInstance();
 	private int tickTimer;
 	
 	public AttackSpeedSliderSetting()
@@ -71,7 +72,7 @@ public final class AttackSpeedSliderSetting extends SliderSetting
 	public boolean isTimeToAttack()
 	{
 		double value = getValue();
-		if(value <= 0 && WurstClient.MC.player.getAttackCooldownProgress(0) < 1)
+		if(value <= 0 && WurstClient.MC.player.getAttackStrengthScale(0) < 1)
 			return false;
 		
 		return tickTimer <= 0;

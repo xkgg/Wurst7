@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,7 +7,7 @@
  */
 package net.wurstclient.mixinterface;
 
-import net.minecraft.client.option.SimpleOption;
+import net.minecraft.client.OptionInstance;
 
 public interface ISimpleOption<T>
 {
@@ -22,7 +22,7 @@ public interface ISimpleOption<T>
 	 * to access the forceSetValue() method.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> ISimpleOption<T> get(SimpleOption<T> option)
+	public static <T> ISimpleOption<T> get(OptionInstance<T> option)
 	{
 		return (ISimpleOption<T>)(Object)option;
 	}

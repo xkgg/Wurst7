@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,14 +7,14 @@
  */
 package net.wurstclient.hacks.autofish;
 
-import net.minecraft.entity.projectile.FishingBobberEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.phys.Vec3;
 
-public record FishingSpot(PositionAndRotation input, Vec3d bobberPos,
+public record FishingSpot(PositionAndRotation input, Vec3 bobberPos,
 	boolean openWater)
 {
-	public FishingSpot(PositionAndRotation input, FishingBobberEntity bobber)
+	public FishingSpot(PositionAndRotation input, FishingHook bobber)
 	{
-		this(input, bobber.getPos(), bobber.isInOpenWater());
+		this(input, bobber.position(), bobber.isOpenWaterFishing());
 	}
 }

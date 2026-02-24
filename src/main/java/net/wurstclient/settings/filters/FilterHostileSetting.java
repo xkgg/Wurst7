@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,10 +7,10 @@
  */
 package net.wurstclient.settings.filters;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.mob.PiglinEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.piglin.Piglin;
 
 public final class FilterHostileSetting extends EntityFilterCheckbox
 {
@@ -26,10 +26,10 @@ public final class FilterHostileSetting extends EntityFilterCheckbox
 	public boolean test(Entity e)
 	{
 		// never filter out neutral mobs (including piglins)
-		if(e instanceof Angerable || e instanceof PiglinEntity)
+		if(e instanceof NeutralMob || e instanceof Piglin)
 			return true;
 		
-		return !(e instanceof Monster);
+		return !(e instanceof Enemy);
 	}
 	
 	public static FilterHostileSetting genericCombat(boolean checked)

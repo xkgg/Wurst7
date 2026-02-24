@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,33 +9,31 @@ package net.wurstclient.hacks.chestesp;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.Entity;
-import net.wurstclient.settings.CheckboxSetting;
-import net.wurstclient.settings.ColorSetting;
+import net.minecraft.world.entity.Entity;
 import net.wurstclient.util.EntityUtils;
 
-public final class ChestEspEntityGroup extends ChestEspGroup
+public abstract class ChestEspEntityGroup extends ChestEspGroup
 {
 	private final ArrayList<Entity> entities = new ArrayList<>();
 	
-	public ChestEspEntityGroup(ColorSetting color, CheckboxSetting enabled)
-	{
-		super(color, enabled);
-	}
+	protected abstract boolean matches(Entity e);
 	
-	public void add(Entity e)
+	public final void addIfMatches(Entity e)
 	{
+		if(!matches(e))
+			return;
+		
 		entities.add(e);
 	}
 	
 	@Override
-	public void clear()
+	public final void clear()
 	{
 		entities.clear();
 		super.clear();
 	}
 	
-	public void updateBoxes(float partialTicks)
+	public final void updateBoxes(float partialTicks)
 	{
 		boxes.clear();
 		

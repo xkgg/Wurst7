@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,13 +7,15 @@
  */
 package net.wurstclient.mixinterface;
 
-import net.minecraft.client.session.Session;
+import net.minecraft.client.User;
 
 public interface IMinecraftClient
 {
 	public IClientPlayerInteractionManager getInteractionManager();
 	
-	public IClientPlayerEntity getPlayer();
+	public ILocalPlayer getPlayer();
 	
-	public void setSession(Session session);
+	public User getWurstSession();
+	
+	public void setWurstSession(User session);
 }

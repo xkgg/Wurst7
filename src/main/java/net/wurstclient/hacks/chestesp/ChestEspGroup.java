@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -13,44 +13,48 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import net.minecraft.util.math.Box;
+import net.minecraft.world.phys.AABB;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ColorSetting;
 import net.wurstclient.settings.Setting;
 
 public abstract class ChestEspGroup
 {
-	protected final ArrayList<Box> boxes = new ArrayList<>();
+	protected final ArrayList<AABB> boxes = new ArrayList<>();
 	private final ColorSetting color;
 	private final CheckboxSetting enabled;
 	
-	public ChestEspGroup(ColorSetting color, CheckboxSetting enabled)
+	public ChestEspGroup()
 	{
-		this.color = Objects.requireNonNull(color);
-		this.enabled = enabled;
+		enabled = createIncludeSetting();
+		color = createColorSetting();
 	}
+	
+	protected abstract CheckboxSetting createIncludeSetting();
+	
+	protected abstract ColorSetting createColorSetting();
 	
 	public void clear()
 	{
 		boxes.clear();
 	}
 	
-	public boolean isEnabled()
+	public final boolean isEnabled()
 	{
 		return enabled == null || enabled.isChecked();
 	}
 	
-	public Stream<Setting> getSettings()
+	public final Stream<Setting> getSettings()
 	{
 		return Stream.of(enabled, color).filter(Objects::nonNull);
 	}
 	
-	public int getColorI(int alpha)
+	public final int getColorI(int alpha)
 	{
 		return color.getColorI(alpha);
 	}
 	
-	public List<Box> getBoxes()
+	public final List<AABB> getBoxes()
 	{
 		return Collections.unmodifiableList(boxes);
 	}

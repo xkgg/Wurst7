@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.clickgui.Window;
@@ -83,16 +83,16 @@ public final class RadarHack extends Hack implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		ClientPlayerEntity player = MC.player;
-		ClientWorld world = MC.world;
+		LocalPlayer player = MC.player;
+		ClientLevel world = MC.level;
 		
 		entities.clear();
-		Stream<Entity> stream =
-			StreamSupport.stream(world.getEntities().spliterator(), true)
-				.filter(e -> !e.isRemoved() && e != player)
-				.filter(e -> !(e instanceof FakePlayerEntity))
-				.filter(LivingEntity.class::isInstance)
-				.filter(e -> ((LivingEntity)e).getHealth() > 0);
+		Stream<Entity> stream = StreamSupport
+			.stream(world.entitiesForRendering().spliterator(), true)
+			.filter(e -> !e.isRemoved() && e != player)
+			.filter(e -> !(e instanceof FakePlayerEntity))
+			.filter(LivingEntity.class::isInstance)
+			.filter(e -> ((LivingEntity)e).getHealth() > 0);
 		
 		stream = entityFilters.applyTo(stream);
 		

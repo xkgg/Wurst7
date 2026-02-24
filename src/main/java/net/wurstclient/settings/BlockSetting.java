@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -15,8 +15,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import net.minecraft.block.AirBlock;
-import net.minecraft.block.Block;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.AirBlock;
+import net.minecraft.world.level.block.Block;
 import net.wurstclient.WurstClient;
 import net.wurstclient.clickgui.Component;
 import net.wurstclient.clickgui.components.BlockComponent;
@@ -116,16 +117,19 @@ public final class BlockSetting extends Setting
 	{
 		try
 		{
-			String newName = JsonUtils.getAsString(json);
+			String rawName = JsonUtils.getAsString(json);
 			
-			Block newBlock = BlockUtils.getBlockFromNameOrID(newName);
-			if(newBlock == null)
-				throw new JsonException();
+			Identifier id = Identifier.tryParse(rawName);
+			if(id == null)
+				throw new JsonException("Discarding Block \"" + rawName
+					+ "\" as it is not a valid identifier");
 			
-			if(!allowAir && newBlock instanceof AirBlock)
-				throw new JsonException();
+			String name = id.toString();
+			if(!allowAir && "minecraft:air".equals(name))
+				throw new JsonException("Discarding Block \"" + rawName
+					+ "\" as this setting does not allow air blocks");
 			
-			blockName = BlockUtils.getName(newBlock);
+			blockName = name;
 			
 		}catch(JsonException e)
 		{

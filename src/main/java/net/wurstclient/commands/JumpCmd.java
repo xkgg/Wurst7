@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -25,10 +25,10 @@ public final class JumpCmd extends Command
 		if(args.length != 0)
 			throw new CmdSyntaxError();
 		
-		if(!MC.player.isOnGround() && !WURST.getHax().jetpackHack.isEnabled())
+		if(!MC.player.onGround() && !WURST.getHax().jetpackHack.isEnabled())
 			throw new CmdError("Can't jump in mid-air.");
 		
-		MC.player.jump();
+		MC.player.jumpFromGround();
 	}
 	
 	@Override

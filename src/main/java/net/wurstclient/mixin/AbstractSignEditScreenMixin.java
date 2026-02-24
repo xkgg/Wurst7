@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -14,9 +14,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.AbstractSignEditScreen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
+import net.minecraft.network.chat.Component;
 import net.wurstclient.WurstClient;
 import net.wurstclient.hacks.AutoSignHack;
 
@@ -27,7 +27,7 @@ public abstract class AbstractSignEditScreenMixin extends Screen
 	@Final
 	private String[] messages;
 	
-	private AbstractSignEditScreenMixin(WurstClient wurst, Text title)
+	private AbstractSignEditScreenMixin(WurstClient wurst, Component title)
 	{
 		super(title);
 	}
@@ -44,17 +44,17 @@ public abstract class AbstractSignEditScreenMixin extends Screen
 		for(int i = 0; i < 4; i++)
 			messages[i] = autoSignText[i];
 		
-		finishEditing();
+		onDone();
 	}
 	
-	@Inject(at = @At("HEAD"), method = "finishEditing()V")
+	@Inject(at = @At("HEAD"), method = "onDone()V")
 	private void onFinishEditing(CallbackInfo ci)
 	{
 		WurstClient.INSTANCE.getHax().autoSignHack.setSignText(messages);
 	}
 	
 	@Shadow
-	private void finishEditing()
+	private void onDone()
 	{
 		
 	}

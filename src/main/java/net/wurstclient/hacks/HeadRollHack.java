@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,7 +7,7 @@
  */
 package net.wurstclient.hacks;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
@@ -42,9 +42,9 @@ public final class HeadRollHack extends Hack implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		float timer = MC.player.age % 20 / 10F;
-		float pitch = MathHelper.sin(timer * (float)Math.PI) * 90F;
+		float timer = MC.player.tickCount % 20 / 10F;
+		float pitch = Mth.sin(timer * (float)Math.PI) * 90F;
 		
-		new Rotation(MC.player.getYaw(), pitch).sendPlayerLookPacket();
+		new Rotation(MC.player.getYRot(), pitch).sendPlayerLookPacket();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,23 +9,25 @@ package net.wurstclient.clickgui.components;
 
 import org.lwjgl.glfw.GLFW;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.wurstclient.clickgui.ClickGui;
 import net.wurstclient.clickgui.Component;
 import net.wurstclient.clickgui.Window;
 import net.wurstclient.clickgui.screens.EditBlockScreen;
 import net.wurstclient.settings.BlockSetting;
 import net.wurstclient.util.RenderUtils;
+import net.wurstclient.util.text.WText;
 
 public final class BlockComponent extends Component
 {
 	private static final ClickGui GUI = WURST.getGui();
-	private static final TextRenderer TR = MC.textRenderer;
-	private static final int BLOCK_WITDH = 24;
+	private static final Font TR = MC.font;
+	private static final int BLOCK_WIDTH = 24;
 	
 	private final BlockSetting setting;
 	
@@ -37,15 +39,16 @@ public final class BlockComponent extends Component
 	}
 	
 	@Override
-	public void handleMouseClick(double mouseX, double mouseY, int mouseButton)
+	public void handleMouseClick(double mouseX, double mouseY, int mouseButton,
+		MouseButtonEvent context)
 	{
-		if(mouseX < getX() + getWidth() - BLOCK_WITDH)
+		if(mouseX < getX() + getWidth() - BLOCK_WIDTH)
 			return;
 		
 		switch(mouseButton)
 		{
 			case GLFW.GLFW_MOUSE_BUTTON_LEFT:
-			MC.setScreen(new EditBlockScreen(MC.currentScreen, setting));
+			MC.setScreen(new EditBlockScreen(MC.screen, setting));
 			break;
 			
 			case GLFW.GLFW_MOUSE_BUTTON_RIGHT:
@@ -55,12 +58,12 @@ public final class BlockComponent extends Component
 	}
 	
 	@Override
-	public void render(DrawContext context, int mouseX, int mouseY,
+	public void render(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
 		int x1 = getX();
 		int x2 = x1 + getWidth();
-		int x3 = x2 - BLOCK_WITDH;
+		int x3 = x2 - BLOCK_WIDTH;
 		int y1 = getY();
 		int y2 = y1 + getHeight();
 		
@@ -79,9 +82,11 @@ public final class BlockComponent extends Component
 			RenderUtils.toIntColor(GUI.getBgColor(), GUI.getOpacity());
 		context.fill(x1, y1, x2, y2, bgColor);
 		
+		context.guiRenderState.up();
+		
 		// text
 		String name = setting.getName() + ":";
-		context.drawText(TR, name, x1, y1 + 2, GUI.getTxtColor(), false);
+		context.drawString(TR, name, x1, y1 + 2, GUI.getTxtColor(), false);
 		
 		// block
 		ItemStack stack = new ItemStack(setting.getBlock());
@@ -102,21 +107,24 @@ public final class BlockComponent extends Component
 	private String getBlockTooltip()
 	{
 		Block block = setting.getBlock();
-		BlockState state = block.getDefaultState();
+		BlockState state = block.defaultBlockState();
 		ItemStack stack = new ItemStack(block);
 		
-		String translatedName = stack.isEmpty() ? "\u00a7ounknown block\u00a7r"
-			: stack.getName().getString();
+		String translatedName = stack.isEmpty()
+			? WText.translated("gui.wurst.generic.unknown_block").toString()
+			: stack.getHoverName().getString();
 		String tooltip = "\u00a76Name:\u00a7r " + translatedName;
 		
 		String blockId = setting.getBlockName();
 		tooltip += "\n\u00a76ID:\u00a7r " + blockId;
 		
-		int blockNumber = Block.getRawIdFromState(state);
+		int blockNumber = Block.getId(state);
 		tooltip += "\n\u00a76Block #:\u00a7r " + blockNumber;
 		
-		tooltip += "\n\n\u00a7e[left-click]\u00a7r to edit";
-		tooltip += "\n\u00a7e[right-click]\u00a7r to reset";
+		tooltip +=
+			"\n\n" + WText.translated("gui.wurst.generic.left_click_to_edit");
+		tooltip +=
+			"\n" + WText.translated("gui.wurst.generic.right_click_to_reset");
 		
 		return tooltip;
 	}
@@ -124,12 +132,12 @@ public final class BlockComponent extends Component
 	@Override
 	public int getDefaultWidth()
 	{
-		return TR.getWidth(setting.getName() + ":") + BLOCK_WITDH + 4;
+		return TR.width(setting.getName() + ":") + BLOCK_WIDTH + 4;
 	}
 	
 	@Override
 	public int getDefaultHeight()
 	{
-		return BLOCK_WITDH;
+		return BLOCK_WIDTH;
 	}
 }

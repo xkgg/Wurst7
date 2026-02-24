@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,17 +9,19 @@ package net.wurstclient.hacks;
 
 import java.util.Random;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.BlockItem;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.phys.AABB;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.RenderListener;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
-import net.wurstclient.settings.FacingSetting;
+import net.wurstclient.settings.FaceTargetSetting;
+import net.wurstclient.settings.FaceTargetSetting.FaceTarget;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.SwingHandSetting;
@@ -59,16 +61,8 @@ public final class BuildRandomHack extends Hack
 			"Ensure that BuildRandom won't try to place blocks behind walls.",
 			false);
 	
-	private final FacingSetting facing = FacingSetting.withoutPacketSpam(
-		"How BuildRandom should face the randomly placed blocks.\n\n"
-			+ "\u00a7lOff\u00a7r - Don't face the blocks at all. Will be"
-			+ " detected by anti-cheat plugins.\n\n"
-			+ "\u00a7lServer-side\u00a7r - Face the blocks on the"
-			+ " server-side, while still letting you move the camera freely on"
-			+ " the client-side.\n\n"
-			+ "\u00a7lClient-side\u00a7r - Face the blocks by moving your"
-			+ " camera on the client-side. This is the most legit option, but"
-			+ " can be VERY disorienting to look at.");
+	private final FaceTargetSetting faceTarget =
+		FaceTargetSetting.withoutPacketSpam(this, FaceTarget.SERVER);
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.SERVER);
@@ -103,7 +97,7 @@ public final class BuildRandomHack extends Hack
 		addSetting(maxAttempts);
 		addSetting(checkItem);
 		addSetting(checkLOS);
-		addSetting(facing);
+		addSetting(faceTarget);
 		addSetting(swingHand);
 		addSetting(fastPlace);
 		addSetting(placeWhileBreaking);
@@ -131,21 +125,17 @@ public final class BuildRandomHack extends Hack
 	{
 		lastPos = null;
 		
-		if(WURST.getHax().freecamHack.isEnabled())
-			return;
-		
-		if(!fastPlace.isChecked() && MC.itemUseCooldown > 0)
+		if(!fastPlace.isChecked() && MC.rightClickDelay > 0)
 			return;
 		
 		if(checkItem.isChecked() && !MC.player.isHolding(
 			stack -> !stack.isEmpty() && stack.getItem() instanceof BlockItem))
 			return;
 		
-		if(!placeWhileBreaking.isChecked()
-			&& MC.interactionManager.isBreakingBlock())
+		if(!placeWhileBreaking.isChecked() && MC.gameMode.isDestroying())
 			return;
 		
-		if(!placeWhileRiding.isChecked() && MC.player.isRiding())
+		if(!placeWhileRiding.isChecked() && MC.player.isHandsBusy())
 			return;
 		
 		int maxAttempts = this.maxAttempts.getValueI();
@@ -157,7 +147,7 @@ public final class BuildRandomHack extends Hack
 		do
 		{
 			// generate random position
-			pos = BlockPos.ofFloored(RotationUtils.getEyesPos()).add(
+			pos = BlockPos.containing(RotationUtils.getEyesPos()).offset(
 				random.nextInt(bound) - blockRange,
 				random.nextInt(bound) - blockRange,
 				random.nextInt(bound) - blockRange);
@@ -168,7 +158,7 @@ public final class BuildRandomHack extends Hack
 	
 	private boolean tryToPlaceBlock(BlockPos pos)
 	{
-		if(!BlockUtils.getState(pos).isReplaceable())
+		if(!BlockUtils.getState(pos).canBeReplaced())
 			return false;
 		
 		BlockPlacingParams params = BlockPlacer.getBlockPlacingParams(pos);
@@ -177,8 +167,8 @@ public final class BuildRandomHack extends Hack
 		if(checkLOS.isChecked() && !params.lineOfSight())
 			return false;
 		
-		MC.itemUseCooldown = 4;
-		facing.getSelected().face(params.hitVec());
+		MC.rightClickDelay = 4;
+		faceTarget.face(params.hitVec());
 		lastPos = pos;
 		
 		InteractionSimulator.rightClickBlock(params.toHitResult(),
@@ -187,7 +177,7 @@ public final class BuildRandomHack extends Hack
 	}
 	
 	@Override
-	public void onRender(MatrixStack matrixStack, float partialTicks)
+	public void onRender(PoseStack matrixStack, float partialTicks)
 	{
 		if(lastPos == null || !indicator.isChecked())
 			return;
@@ -200,7 +190,7 @@ public final class BuildRandomHack extends Hack
 		int lineColor = RenderUtils.toIntColor(rgb, 0.5F);
 		
 		// Draw box
-		Box box = new Box(lastPos);
+		AABB box = new AABB(lastPos);
 		RenderUtils.drawSolidBox(matrixStack, box, quadColor, false);
 		RenderUtils.drawOutlinedBox(matrixStack, box, lineColor, false);
 	}

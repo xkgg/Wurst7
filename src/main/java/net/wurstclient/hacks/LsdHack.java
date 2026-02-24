@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,8 +7,8 @@
  */
 package net.wurstclient.hacks;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Player;
 import net.wurstclient.Category;
 import net.wurstclient.hack.DontSaveState;
 import net.wurstclient.hack.Hack;
@@ -25,22 +25,23 @@ public final class LsdHack extends Hack
 	@Override
 	protected void onEnable()
 	{
-		if(!(MC.getCameraEntity() instanceof PlayerEntity))
+		if(!(MC.getCameraEntity() instanceof Player))
 		{
 			setEnabled(false);
 			return;
 		}
 		
-		if(MC.gameRenderer.getPostProcessorId() != null)
-			MC.gameRenderer.clearPostProcessor();
+		if(MC.gameRenderer.currentPostEffect() != null)
+			MC.gameRenderer.clearPostEffect();
 		
-		MC.gameRenderer.setPostProcessor(Identifier.of("wurst", "lsd"));
+		MC.gameRenderer
+			.setPostEffect(Identifier.fromNamespaceAndPath("wurst", "lsd"));
 	}
 	
 	@Override
 	protected void onDisable()
 	{
-		if(MC.gameRenderer.getPostProcessorId() != null)
-			MC.gameRenderer.clearPostProcessor();
+		if(MC.gameRenderer.currentPostEffect() != null)
+			MC.gameRenderer.clearPostEffect();
 	}
 }

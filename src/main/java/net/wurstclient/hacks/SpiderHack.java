@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,8 +7,8 @@
  */
 package net.wurstclient.hacks;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.phys.Vec3;
 import net.wurstclient.Category;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
@@ -36,14 +36,14 @@ public final class SpiderHack extends Hack implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		ClientPlayerEntity player = MC.player;
+		LocalPlayer player = MC.player;
 		if(!player.horizontalCollision)
 			return;
 		
-		Vec3d velocity = player.getVelocity();
+		Vec3 velocity = player.getDeltaMovement();
 		if(velocity.y >= 0.2)
 			return;
 		
-		player.setVelocity(velocity.x, 0.2, velocity.z);
+		player.setDeltaMovement(velocity.x, 0.2, velocity.z);
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -16,8 +16,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.InputConstants;
 
-import net.minecraft.client.util.InputUtil;
 import net.wurstclient.util.json.JsonException;
 import net.wurstclient.util.json.JsonUtils;
 import net.wurstclient.util.json.WsonObject;
@@ -87,7 +87,7 @@ public final class KeybindsFile
 	{
 		try
 		{
-			InputUtil.fromTranslationKey(key);
+			InputConstants.getKey(key);
 			return true;
 			
 		}catch(IllegalArgumentException e)

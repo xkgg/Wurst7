@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -10,12 +10,12 @@ package net.wurstclient.hud;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import org.joml.Matrix3x2fStack;
 import org.lwjgl.glfw.GLFW;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.wurstclient.Category;
 import net.wurstclient.Feature;
 import net.wurstclient.WurstClient;
@@ -29,7 +29,7 @@ import net.wurstclient.util.RenderUtils;
 public final class TabGui implements KeyPressListener
 {
 	private static final WurstClient WURST = WurstClient.INSTANCE;
-	private static final MinecraftClient MC = WurstClient.MC;
+	private static final Minecraft MC = WurstClient.MC;
 	
 	private final ArrayList<Tab> tabs = new ArrayList<>();
 	private final TabGuiOtf tabGuiOtf =
@@ -67,7 +67,7 @@ public final class TabGui implements KeyPressListener
 		width = 64;
 		for(Tab tab : tabs)
 		{
-			int tabWidth = MC.textRenderer.getWidth(tab.name) + 10;
+			int tabWidth = MC.font.width(tab.name) + 10;
 			if(tabWidth > width)
 				width = tabWidth;
 		}
@@ -117,28 +117,30 @@ public final class TabGui implements KeyPressListener
 			}
 	}
 	
-	public void render(DrawContext context, float partialTicks)
+	public void render(GuiGraphics context, float partialTicks)
 	{
 		if(tabGuiOtf.isHidden())
 			return;
 		
-		MatrixStack matrixStack = context.getMatrices();
-		matrixStack.push();
-		matrixStack.translate(2, 23, 100);
+		Matrix3x2fStack matrixStack = context.pose();
+		matrixStack.pushMatrix();
+		matrixStack.translate(2, 23);
+		context.guiRenderState.up();
 		
 		drawBox(context, 0, 0, width, height);
 		context.enableScissor(0, 0, width, height);
 		
 		int textY = 1;
 		int txtColor = WURST.getGui().getTxtColor();
-		TextRenderer tr = MC.textRenderer;
+		Font tr = MC.font;
+		context.guiRenderState.up();
 		for(int i = 0; i < tabs.size(); i++)
 		{
 			String tabName = tabs.get(i).name;
 			if(i == selected)
 				tabName = (tabOpened ? "<" : ">") + tabName;
 			
-			context.drawText(tr, tabName, 2, textY, txtColor, false);
+			context.drawString(tr, tabName, 2, textY, txtColor, false);
 			textY += 10;
 		}
 		
@@ -148,13 +150,14 @@ public final class TabGui implements KeyPressListener
 		{
 			Tab tab = tabs.get(selected);
 			
-			matrixStack.push();
-			matrixStack.translate(width + 2, 0, 0);
+			matrixStack.pushMatrix();
+			matrixStack.translate(width + 2, 0);
 			
 			drawBox(context, 0, 0, tab.width, tab.height);
 			context.enableScissor(0, 0, tab.width, tab.height);
 			
 			int tabTextY = 1;
+			context.guiRenderState.up();
 			for(int i = 0; i < tab.features.size(); i++)
 			{
 				Feature feature = tab.features.get(i);
@@ -166,18 +169,18 @@ public final class TabGui implements KeyPressListener
 				if(i == tab.selected)
 					fName = ">" + fName;
 				
-				context.drawText(tr, fName, 2, tabTextY, txtColor, false);
+				context.drawString(tr, fName, 2, tabTextY, txtColor, false);
 				tabTextY += 10;
 			}
 			
 			context.disableScissor();
-			matrixStack.pop();
+			matrixStack.popMatrix();
 		}
 		
-		matrixStack.pop();
+		matrixStack.popMatrix();
 	}
 	
-	private void drawBox(DrawContext context, int x1, int y1, int x2, int y2)
+	private void drawBox(GuiGraphics context, int x1, int y1, int x2, int y2)
 	{
 		ClickGui gui = WURST.getGui();
 		int bgColor =
@@ -206,7 +209,7 @@ public final class TabGui implements KeyPressListener
 			width = 64;
 			for(Feature feature : features)
 			{
-				int fWidth = MC.textRenderer.getWidth(feature.getName()) + 10;
+				int fWidth = MC.font.width(feature.getName()) + 10;
 				if(fWidth > width)
 					width = fWidth;
 			}

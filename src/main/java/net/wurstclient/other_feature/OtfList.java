@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.TreeMap;
 
-import net.minecraft.util.crash.CrashException;
-import net.minecraft.util.crash.CrashReport;
+import net.minecraft.CrashReport;
+import net.minecraft.ReportedException;
 import net.wurstclient.other_features.*;
 
 public final class OtfList
@@ -33,6 +33,7 @@ public final class OtfList
 	public final WikiDataExportOtf wikiDataExportOtf = new WikiDataExportOtf();
 	public final WurstCapesOtf wurstCapesOtf = new WurstCapesOtf();
 	public final WurstLogoOtf wurstLogoOtf = new WurstLogoOtf();
+	public final WurstOptionsOtf wurstOptionsOtf = new WurstOptionsOtf();
 	public final ZoomOtf zoomOtf = new ZoomOtf();
 	
 	private final TreeMap<String, OtherFeature> otfs =
@@ -54,8 +55,8 @@ public final class OtfList
 		}catch(Exception e)
 		{
 			String message = "Initializing other Wurst features";
-			CrashReport report = CrashReport.create(e, message);
-			throw new CrashException(report);
+			CrashReport report = CrashReport.forThrowable(e, message);
+			throw new ReportedException(report);
 		}
 	}
 	

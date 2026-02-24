@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,20 +7,20 @@
  */
 package net.wurstclient.hacks;
 
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.player.LocalPlayer;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.AirStrafingSpeedListener;
 import net.wurstclient.events.IsNormalCubeListener;
 import net.wurstclient.events.PlayerMoveListener;
-import net.wurstclient.events.SetOpaqueCubeListener;
+import net.wurstclient.events.VisGraphListener;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
 @SearchTags({"no clip"})
 public final class NoClipHack extends Hack
 	implements UpdateListener, PlayerMoveListener, IsNormalCubeListener,
-	SetOpaqueCubeListener, AirStrafingSpeedListener
+	VisGraphListener, AirStrafingSpeedListener
 {
 	public NoClipHack()
 	{
@@ -34,7 +34,7 @@ public final class NoClipHack extends Hack
 		EVENTS.add(UpdateListener.class, this);
 		EVENTS.add(PlayerMoveListener.class, this);
 		EVENTS.add(IsNormalCubeListener.class, this);
-		EVENTS.add(SetOpaqueCubeListener.class, this);
+		EVENTS.add(VisGraphListener.class, this);
 		EVENTS.add(AirStrafingSpeedListener.class, this);
 	}
 	
@@ -44,29 +44,29 @@ public final class NoClipHack extends Hack
 		EVENTS.remove(UpdateListener.class, this);
 		EVENTS.remove(PlayerMoveListener.class, this);
 		EVENTS.remove(IsNormalCubeListener.class, this);
-		EVENTS.remove(SetOpaqueCubeListener.class, this);
+		EVENTS.remove(VisGraphListener.class, this);
 		EVENTS.remove(AirStrafingSpeedListener.class, this);
 		
-		MC.player.noClip = false;
+		MC.player.noPhysics = false;
 	}
 	
 	@Override
 	public void onUpdate()
 	{
-		ClientPlayerEntity player = MC.player;
+		LocalPlayer player = MC.player;
 		
-		player.noClip = true;
+		player.noPhysics = true;
 		player.fallDistance = 0;
 		player.setOnGround(false);
 		
 		player.getAbilities().flying = false;
-		player.setVelocity(0, 0, 0);
+		player.setDeltaMovement(0, 0, 0);
 		
 		float speed = 0.2F;
-		if(MC.options.jumpKey.isPressed())
-			player.addVelocity(0, speed, 0);
-		if(MC.options.sneakKey.isPressed())
-			player.addVelocity(0, -speed, 0);
+		if(MC.options.keyJump.isDown())
+			player.push(0, speed, 0);
+		if(MC.options.keyShift.isDown())
+			player.push(0, -speed, 0);
 	}
 	
 	@Override
@@ -78,7 +78,7 @@ public final class NoClipHack extends Hack
 	@Override
 	public void onPlayerMove()
 	{
-		MC.player.noClip = true;
+		MC.player.noPhysics = true;
 	}
 	
 	@Override
@@ -88,7 +88,7 @@ public final class NoClipHack extends Hack
 	}
 	
 	@Override
-	public void onSetOpaqueCube(SetOpaqueCubeEvent event)
+	public void onVisGraph(VisGraphEvent event)
 	{
 		event.cancel();
 	}

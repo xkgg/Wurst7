@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.joml.Quaternionf;
 import org.junit.jupiter.api.Test;
 
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 
 class RotationTest
 {
@@ -123,7 +123,7 @@ class RotationTest
 	void testToLookVec()
 	{
 		Rotation r = new Rotation(0, 0);
-		Vec3d vec = r.toLookVec();
+		Vec3 vec = r.toLookVec();
 		assertAlmostEquals(0, vec.x);
 		assertAlmostEquals(0, vec.y);
 		assertAlmostEquals(1, vec.z);
@@ -159,9 +159,9 @@ class RotationTest
 		
 		r = new Rotation(90, 0);
 		q = r.toQuaternion();
-		assertAlmostEquals(0.70710677F, q.w);
+		assertAlmostEquals(0.7070389986038208, q.w);
 		assertAlmostEquals(0, q.x);
-		assertAlmostEquals(-0.70710677F, q.y);
+		assertAlmostEquals(-0.7071067690849304, q.y);
 		assertAlmostEquals(0, q.z);
 		
 		r = new Rotation(180, 0);
@@ -173,9 +173,9 @@ class RotationTest
 		
 		r = new Rotation(270, 0);
 		q = r.toQuaternion();
-		assertAlmostEquals(0.70710677F, q.w);
+		assertAlmostEquals(0.7071067690849304, q.w);
 		assertAlmostEquals(0, q.x);
-		assertAlmostEquals(0.70710677F, q.y);
+		assertAlmostEquals(0.7071067690849304, q.y);
 		assertAlmostEquals(0, q.z);
 	}
 	

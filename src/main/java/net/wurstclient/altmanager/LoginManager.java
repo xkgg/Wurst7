@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,8 +9,8 @@ package net.wurstclient.altmanager;
 
 import java.util.Optional;
 
-import net.minecraft.client.session.Session;
-import net.minecraft.util.Uuids;
+import net.minecraft.client.User;
+import net.minecraft.core.UUIDUtil;
 import net.wurstclient.WurstClient;
 
 public enum LoginManager
@@ -19,10 +19,10 @@ public enum LoginManager
 	
 	public static void changeCrackedName(String newName)
 	{
-		Session session =
-			new Session(newName, Uuids.getOfflinePlayerUuid(newName), "",
-				Optional.empty(), Optional.empty(), Session.AccountType.MOJANG);
+		User session =
+			new User(newName, UUIDUtil.createOfflinePlayerUUID(newName), "",
+				Optional.empty(), Optional.empty());
 		
-		WurstClient.IMC.setSession(session);
+		WurstClient.IMC.setWurstSession(session);
 	}
 }

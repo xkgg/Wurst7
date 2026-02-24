@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,12 +7,12 @@
  */
 package net.wurstclient.mixinterface;
 
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public interface IClientPlayerInteractionManager
 {
@@ -26,11 +26,12 @@ public interface IClientPlayerInteractionManager
 	
 	public void rightClickItem();
 	
-	public void rightClickBlock(BlockPos pos, Direction side, Vec3d hitVec);
+	public void rightClickBlock(BlockPos pos, Direction side, Vec3 hitVec);
 	
-	public void sendPlayerActionC2SPacket(PlayerActionC2SPacket.Action action,
-		BlockPos blockPos, Direction direction);
+	public void sendPlayerActionC2SPacket(
+		ServerboundPlayerActionPacket.Action action, BlockPos blockPos,
+		Direction direction);
 	
-	public void sendPlayerInteractBlockPacket(Hand hand,
+	public void sendPlayerInteractBlockPacket(InteractionHand hand,
 		BlockHitResult blockHitResult);
 }

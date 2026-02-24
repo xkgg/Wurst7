@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,14 +11,15 @@ import java.util.ArrayList;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 /**
  * Allows you to build more complex text out of multiple Wurst translations and
  * have everything update automatically when the user's language changes.
  *
  * <p>
- * This is necessary because Minecraft's {@link Text} does not have access to
+ * This is necessary because Minecraft's {@link Component} does not have access
+ * to
  * Wurst's translations for security reasons.
  */
 public final class WText

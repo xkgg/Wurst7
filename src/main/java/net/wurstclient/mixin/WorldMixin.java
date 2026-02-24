@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -12,17 +12,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.wurstclient.WurstClient;
 import net.wurstclient.hacks.NoWeatherHack;
 
-@Mixin(World.class)
-public abstract class WorldMixin implements WorldAccess, AutoCloseable
+@Mixin(Level.class)
+public abstract class WorldMixin implements LevelAccessor, AutoCloseable
 {
-	@Inject(at = @At("HEAD"),
-		method = "getRainGradient(F)F",
-		cancellable = true)
+	@Inject(at = @At("HEAD"), method = "getRainLevel(F)F", cancellable = true)
 	private void onGetRainGradient(float delta,
 		CallbackInfoReturnable<Float> cir)
 	{
@@ -30,25 +30,11 @@ public abstract class WorldMixin implements WorldAccess, AutoCloseable
 			cir.setReturnValue(0F);
 	}
 	
-	@Override
-	public float getSkyAngle(float tickDelta)
+	@ModifyReturnValue(at = @At("RETURN"), method = "getDayTime()J")
+	public long onGetTimeOfDay(long original)
 	{
 		NoWeatherHack noWeather = WurstClient.INSTANCE.getHax().noWeatherHack;
-		
-		long timeOfDay = noWeather.isTimeChanged() ? noWeather.getChangedTime()
-			: getLevelProperties().getTimeOfDay();
-		
-		return getDimension().getSkyAngle(timeOfDay);
-	}
-	
-	@Override
-	public int getMoonPhase()
-	{
-		NoWeatherHack noWeather = WurstClient.INSTANCE.getHax().noWeatherHack;
-		
-		if(noWeather.isMoonPhaseChanged())
-			return noWeather.getChangedMoonPhase();
-		
-		return getDimension().getMoonPhase(getLunarTime());
+		return noWeather.isTimeChanged() ? noWeather.getChangedTime()
+			: original;
 	}
 }

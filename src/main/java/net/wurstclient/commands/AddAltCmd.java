@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,8 +7,8 @@
  */
 package net.wurstclient.commands;
 
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.util.StringHelper;
+import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.util.StringUtil;
 import net.wurstclient.altmanager.AltManager;
 import net.wurstclient.altmanager.CrackedAlt;
 import net.wurstclient.command.CmdException;
@@ -57,12 +57,12 @@ public final class AddAltCmd extends Command
 	{
 		int alts = 0;
 		AltManager altManager = WURST.getAltManager();
-		String playerName = MC.getSession().getUsername();
+		String playerName = MC.getUser().getName();
 		
-		for(PlayerListEntry entry : MC.player.networkHandler.getPlayerList())
+		for(PlayerInfo entry : MC.player.connection.getOnlinePlayers())
 		{
-			String name = entry.getProfile().getName();
-			name = StringHelper.stripTextFormat(name);
+			String name = entry.getProfile().name();
+			name = StringUtil.stripColor(name);
 			
 			if(altManager.contains(name))
 				continue;

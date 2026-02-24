@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -15,18 +15,19 @@ import com.google.gson.JsonParser;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.component.ComponentType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.wurstclient.command.CmdError;
 import net.wurstclient.command.CmdException;
 import net.wurstclient.command.CmdSyntaxError;
 import net.wurstclient.command.Command;
 import net.wurstclient.util.ChatUtils;
+import net.wurstclient.util.InventoryUtils;
 
 public final class ModifyCmd extends Command
 {
@@ -42,13 +43,15 @@ public final class ModifyCmd extends Command
 	@Override
 	public void call(String[] args) throws CmdException
 	{
-		ClientPlayerEntity player = MC.player;
-		if(!player.getAbilities().creativeMode)
+		LocalPlayer player = MC.player;
+		if(!player.getAbilities().instabuild)
 			throw new CmdError("Creative mode only.");
 		if(args.length < 2)
 			throw new CmdSyntaxError();
 		
-		ItemStack stack = player.getInventory().getSelectedStack();
+		Inventory inventory = player.getInventory();
+		int slot = inventory.getSelectedSlot();
+		ItemStack stack = inventory.getSelectedItem();
 		if(stack == null)
 			throw new CmdError("You must hold an item in your main hand.");
 		
@@ -66,10 +69,7 @@ public final class ModifyCmd extends Command
 			throw new CmdSyntaxError();
 		}
 		
-		MC.player.networkHandler
-			.sendPacket(new CreativeInventoryActionC2SPacket(
-				36 + player.getInventory().getSelectedSlot(), stack));
-		
+		InventoryUtils.setCreativeStack(slot, stack);
 		ChatUtils.message("Item modified.");
 	}
 	
@@ -78,19 +78,20 @@ public final class ModifyCmd extends Command
 		if(args.length < 3)
 			throw new CmdSyntaxError();
 		
-		ComponentType<?> type = parseComponentType(args[1]);
+		DataComponentType<?> type = parseComponentType(args[1]);
 		
 		String valueString =
 			String.join(" ", Arrays.copyOfRange(args, 2, args.length))
 				.replace("$", "\u00a7").replace("\u00a7\u00a7", "$");
 		JsonElement valueJson = parseJson(valueString);
-		DataResult<?> valueResult = type.getCodec().parse(
-			MC.player.getRegistryManager().getOps(JsonOps.INSTANCE), valueJson);
+		DataResult<?> valueResult =
+			type.codec().parse(MC.player.registryAccess()
+				.createSerializationContext(JsonOps.INSTANCE), valueJson);
 		Object value = valueResult.resultOrPartial().orElse(null);
 		
-		ComponentMap.Builder builder = ComponentMap.builder();
-		builder.put(type, value);
-		stack.applyComponentsFrom(builder.build());
+		DataComponentMap.Builder builder = DataComponentMap.builder();
+		builder.setUnchecked(type, value);
+		stack.applyComponents(builder.build());
 	}
 	
 	private void remove(ItemStack stack, String[] args) throws CmdException
@@ -101,10 +102,11 @@ public final class ModifyCmd extends Command
 		stack.set(parseComponentType(args[1]), null);
 	}
 	
-	private ComponentType<?> parseComponentType(String typeName) throws CmdError
+	private DataComponentType<?> parseComponentType(String typeName)
+		throws CmdError
 	{
-		ComponentType<?> type =
-			Registries.DATA_COMPONENT_TYPE.get(Identifier.tryParse(typeName));
+		DataComponentType<?> type = BuiltInRegistries.DATA_COMPONENT_TYPE
+			.getValue(Identifier.tryParse(typeName));
 		
 		if(type == null)
 			throw new CmdError(

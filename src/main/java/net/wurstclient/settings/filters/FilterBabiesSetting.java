@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,10 +7,10 @@
  */
 package net.wurstclient.settings.filters;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.entity.passive.TadpoleEntity;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.frog.Tadpole;
+import net.minecraft.world.entity.monster.Enemy;
 
 public final class FilterBabiesSetting extends EntityFilterCheckbox
 {
@@ -26,15 +26,15 @@ public final class FilterBabiesSetting extends EntityFilterCheckbox
 	public boolean test(Entity e)
 	{
 		// never filter out hostile mobs (including hoglins)
-		if(e instanceof Monster)
+		if(e instanceof Enemy)
 			return true;
 		
 		// filter out passive entity babies
-		if(e instanceof PassiveEntity pe && pe.isBaby())
+		if(e instanceof AgeableMob pe && pe.isBaby())
 			return false;
 		
 		// filter out tadpoles
-		if(e instanceof TadpoleEntity)
+		if(e instanceof Tadpole)
 			return false;
 		
 		return true;

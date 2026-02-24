@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,14 +9,15 @@ package net.wurstclient.hacks.newchunks;
 
 import java.util.Set;
 
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.util.math.ChunkPos;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.world.level.ChunkPos;
 
 public interface NewChunksChunkRenderer
 {
 	public void buildBuffer(VertexConsumer buffer, Set<ChunkPos> chunks,
 		int drawDistance);
 	
-	public RenderLayer getLayer();
+	public RenderType getLayer();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -14,11 +14,11 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.SimpleOption;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
 import net.wurstclient.mixinterface.ISimpleOption;
 
-@Mixin(SimpleOption.class)
+@Mixin(OptionInstance.class)
 public class SimpleOptionMixin<T> implements ISimpleOption<T>
 {
 	@Shadow
@@ -26,12 +26,12 @@ public class SimpleOptionMixin<T> implements ISimpleOption<T>
 	
 	@Shadow
 	@Final
-	private Consumer<T> changeCallback;
+	private Consumer<T> onValueUpdate;
 	
 	@Override
 	public void forceSetValue(T newValue)
 	{
-		if(!MinecraftClient.getInstance().isRunning())
+		if(!Minecraft.getInstance().isRunning())
 		{
 			value = newValue;
 			return;
@@ -40,7 +40,7 @@ public class SimpleOptionMixin<T> implements ISimpleOption<T>
 		if(!Objects.equals(value, newValue))
 		{
 			value = newValue;
-			changeCallback.accept(value);
+			onValueUpdate.accept(value);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,15 +7,12 @@
  */
 package net.wurstclient.hacks;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
-import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket.Mode;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.PostMotionListener;
 import net.wurstclient.events.PreMotionListener;
 import net.wurstclient.hack.Hack;
-import net.wurstclient.mixinterface.IKeyBinding;
+import net.wurstclient.mixinterface.IKeyMapping;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.EnumSetting;
 
@@ -66,11 +63,11 @@ public final class SneakHack extends Hack
 		switch(mode.getSelected())
 		{
 			case LEGIT:
-			IKeyBinding.get(MC.options.sneakKey).resetPressedState();
+			IKeyMapping.get(MC.options.keyShift).resetPressedState();
 			break;
 			
 			case PACKET:
-			sendSneakPacket(Mode.RELEASE_SHIFT_KEY);
+			// sendSneakPacket(Mode.RELEASE_SHIFT_KEY);
 			break;
 		}
 	}
@@ -78,7 +75,7 @@ public final class SneakHack extends Hack
 	@Override
 	public void onPreMotion()
 	{
-		IKeyBinding sneakKey = IKeyBinding.get(MC.options.sneakKey);
+		IKeyMapping sneakKey = IKeyMapping.get(MC.options.keyShift);
 		
 		switch(mode.getSelected())
 		{
@@ -86,13 +83,13 @@ public final class SneakHack extends Hack
 			if(offWhileFlying.isChecked() && isFlying())
 				sneakKey.resetPressedState();
 			else
-				sneakKey.setPressed(true);
+				sneakKey.setDown(true);
 			break;
 			
 			case PACKET:
 			sneakKey.resetPressedState();
-			sendSneakPacket(Mode.PRESS_SHIFT_KEY);
-			sendSneakPacket(Mode.RELEASE_SHIFT_KEY);
+			// sendSneakPacket(Mode.PRESS_SHIFT_KEY);
+			// sendSneakPacket(Mode.RELEASE_SHIFT_KEY);
 			break;
 		}
 	}
@@ -100,11 +97,11 @@ public final class SneakHack extends Hack
 	@Override
 	public void onPostMotion()
 	{
-		if(mode.getSelected() != SneakMode.PACKET)
-			return;
-		
-		sendSneakPacket(Mode.RELEASE_SHIFT_KEY);
-		sendSneakPacket(Mode.PRESS_SHIFT_KEY);
+		// if(mode.getSelected() != SneakMode.PACKET)
+		// return;
+		//
+		// sendSneakPacket(Mode.RELEASE_SHIFT_KEY);
+		// sendSneakPacket(Mode.PRESS_SHIFT_KEY);
 	}
 	
 	private boolean isFlying()
@@ -121,13 +118,13 @@ public final class SneakHack extends Hack
 		return false;
 	}
 	
-	private void sendSneakPacket(Mode mode)
-	{
-		ClientPlayerEntity player = MC.player;
-		ClientCommandC2SPacket packet =
-			new ClientCommandC2SPacket(player, mode);
-		player.networkHandler.sendPacket(packet);
-	}
+	// private void sendSneakPacket(Mode mode)
+	// {
+	// ClientPlayerEntity player = MC.player;
+	// ClientCommandC2SPacket packet =
+	// new ClientCommandC2SPacket(player, mode);
+	// player.networkHandler.sendPacket(packet);
+	// }
 	
 	private enum SneakMode
 	{
