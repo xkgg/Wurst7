@@ -66,7 +66,7 @@ jobs:
         cache-read-only: ${{ github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/heads/1.') }}
 
     - name: Build
-      run: ./gradlew build --stacktrace --warning-mode=fail
+      run: ./gradlew remapJar --stacktrace --warning-mode=fail
 
     - name: Create and push tag
       run: |
@@ -118,3 +118,4 @@ jobs:
             "fapi_version": "${{ steps.website_inputs.outputs.fapi_version }}"
           }
         run_timeout_seconds: 600  # 10 minutes
+
