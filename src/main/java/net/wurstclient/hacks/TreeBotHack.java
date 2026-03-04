@@ -43,25 +43,25 @@ import net.wurstclient.util.BlockBreaker.BlockBreakingParams;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.OverlayRenderer;
 
-@SearchTags({"tree bot"})
+@SearchTags({"自动砍树", "TreeBot"})
 @DontSaveState
 public final class TreeBotHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final SliderSetting range = new SliderSetting("Range",
-		"How far TreeBot will reach to break blocks.", 4.5, 1, 6, 0.05,
+	private final SliderSetting range = new SliderSetting("范围",
+		"自动砍树可以到达多远来破坏方块", 4.5, 1, 6, 0.05,
 		ValueDisplay.DECIMAL);
 	
 	private final FacingSetting facing = FacingSetting.withoutPacketSpam(
-		"How TreeBot should face the logs and leaves when breaking them.\n\n"
-			+ "\u00a7lOff\u00a7r - Don't face the blocks at all. Will be"
-			+ " detected by anti-cheat plugins.\n\n"
-			+ "\u00a7lServer-side\u00a7r - Face the blocks on the"
-			+ " server-side, while still letting you move the camera freely on"
-			+ " the client-side.\n\n"
-			+ "\u00a7lClient-side\u00a7r - Face the blocks by moving your"
-			+ " camera on the client-side. This is the most legit option, but"
-			+ " can be disorienting to look at.");
+		"TreeBot在砍伐树木时应如何面对树枝和树叶.\n\n"
+			+ "\u00a7lOff\u00a7r - 完全不要面对这些障碍。将会"
+			+ " 被反作弊插件检测到。\n\n"
+			+ "\u00a7lServer-side\u00a7r - 面对眼前的障碍"
+			+ " server-side, 同时还能让你自由移动屏幕"
+			+ " 客户端\n\n"
+			+ "\u00a7lClient-side\u00a7r - 通过移动你的身体来面对这些障碍物"
+			+ " 客户端的屏幕。这是最合理的选择，但"
+			+ " 看着会让人迷失方向");
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.SERVER);
@@ -76,7 +76,7 @@ public final class TreeBotHack extends Hack
 	
 	public TreeBotHack()
 	{
-		super("TreeBot");
+		super("自动砍树");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		addSetting(facing);
@@ -87,13 +87,13 @@ public final class TreeBotHack extends Hack
 	public String getRenderName()
 	{
 		if(treeFinder != null && !treeFinder.isDone() && !treeFinder.isFailed())
-			return getName() + " [Searching]";
+			return getName() + " [搜索中]";
 		
 		if(processor != null && !processor.isDone())
-			return getName() + " [Going]";
+			return getName() + " [前往中]";
 		
 		if(tree != null && !tree.getLogs().isEmpty())
-			return getName() + " [Chopping]";
+			return getName() + " [砍树中]";
 		
 		return getName();
 	}
@@ -476,3 +476,4 @@ public final class TreeBotHack extends Hack
 		}
 	}
 }
+
