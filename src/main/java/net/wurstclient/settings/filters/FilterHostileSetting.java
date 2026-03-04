@@ -41,7 +41,8 @@ public final class FilterHostileSetting extends EntityFilterCheckbox
 	public static FilterHostileSetting genericVision(boolean checked)
 	{
 		return new FilterHostileSetting(
-			"Won't show hostile mobs like zombies and creepers.", checked);
+			"不会显示敌意生物如僵尸和苦力怕.", checked);
 	}
 }
+
 
