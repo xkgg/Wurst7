@@ -65,7 +65,7 @@ public final class AutoLibrarianHack extends Hack
 			+ "一旦自动图书馆员学会了出售其中一本书 "
 			+ "它就会停止训练当前的村民\n\n您还可以为每本书设置最高价格.\n\n"
 			+ "以防您已经有村民出售它"
-			+ "但您希望它以更便宜的价格出售"
+			+ "但您希望它以更便宜的价格出售",
 
 		"minecraft:depth_strider", "minecraft:efficiency",
 		"minecraft:feather_falling", "minecraft:fortune", "minecraft:looting",
@@ -527,4 +527,5 @@ public final class AutoLibrarianHack extends Hack
 			overlay.render(matrixStack, partialTicks, jobSite);
 	}
 }
+
 
