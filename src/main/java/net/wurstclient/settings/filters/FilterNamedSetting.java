@@ -13,7 +13,7 @@ public final class FilterNamedSetting extends EntityFilterCheckbox
 {
 	public FilterNamedSetting(String description, boolean checked)
 	{
-		super("Filter named", description, checked);
+		super("过滤命名标记生物", description, checked);
 	}
 	
 	@Override
@@ -34,3 +34,4 @@ public final class FilterNamedSetting extends EntityFilterCheckbox
 			"description.wurst.setting.generic.filter_named_vision", checked);
 	}
 }
+
