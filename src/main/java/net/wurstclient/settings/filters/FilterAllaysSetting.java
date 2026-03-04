@@ -14,7 +14,7 @@ public final class FilterAllaysSetting extends EntityFilterCheckbox
 {
 	public FilterAllaysSetting(String description, boolean checked)
 	{
-		super("Filter allays", description, checked);
+		super("过滤盟友", description, checked);
 	}
 	
 	@Override
@@ -35,3 +35,4 @@ public final class FilterAllaysSetting extends EntityFilterCheckbox
 			"description.wurst.setting.generic.filter_allays_vision", checked);
 	}
 }
+
