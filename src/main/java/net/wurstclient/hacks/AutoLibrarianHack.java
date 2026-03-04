@@ -53,20 +53,20 @@ import net.wurstclient.util.*;
 import net.wurstclient.util.BlockBreaker.BlockBreakingParams;
 import net.wurstclient.util.BlockPlacer.BlockPlacingParams;
 
-@SearchTags({"auto librarian", "AutoVillager", "auto villager",
+@SearchTags({"自动图书管理员","auto librarian", "AutoVillager", "auto villager",
 	"VillagerTrainer", "villager trainer", "LibrarianTrainer",
 	"librarian trainer", "AutoHmmm", "auto hmmm"})
 public final class AutoLibrarianHack extends Hack
 	implements UpdateListener, RenderListener
 {
 	private final BookOffersSetting wantedBooks = new BookOffersSetting(
-		"Wanted books",
-		"A list of enchanted books that you want your villagers to sell.\n\n"
-			+ "AutoLibrarian will stop training the current villager"
-			+ " once it has learned to sell one of these books.\n\n"
-			+ "You can also set a maximum price for each book, in case you"
-			+ " already have a villager selling it but you want it for a"
-			+ " cheaper price.",
+		"希望书籍",
+		"你想要村民出售的附魔书清单。\n\n"
+			+ "一旦自动图书馆员学会了出售其中一本书 "
+			+ "它就会停止训练当前的村民\n\n您还可以为每本书设置最高价格.\n\n"
+			+ "以防您已经有村民出售它"
+			+ "但您希望它以更便宜的价格出售"
+
 		"minecraft:depth_strider", "minecraft:efficiency",
 		"minecraft:feather_falling", "minecraft:fortune", "minecraft:looting",
 		"minecraft:mending", "minecraft:protection", "minecraft:respiration",
@@ -119,7 +119,7 @@ public final class AutoLibrarianHack extends Hack
 	
 	public AutoLibrarianHack()
 	{
-		super("AutoLibrarian");
+		super("自动图书管理员");
 		setCategory(Category.OTHER);
 		addSetting(wantedBooks);
 		addSetting(lockInTrade);
@@ -527,3 +527,4 @@ public final class AutoLibrarianHack extends Hack
 			overlay.render(matrixStack, partialTicks, jobSite);
 	}
 }
+
