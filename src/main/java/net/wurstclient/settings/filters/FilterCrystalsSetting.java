@@ -14,7 +14,7 @@ public final class FilterCrystalsSetting extends EntityFilterCheckbox
 {
 	public FilterCrystalsSetting(String description, boolean checked)
 	{
-		super("过滤末影水晶, description, checked);
+		super("过滤末影水晶", description, checked);
 	}
 	
 	@Override
@@ -30,4 +30,5 @@ public final class FilterCrystalsSetting extends EntityFilterCheckbox
 			checked);
 	}
 }
+
 
