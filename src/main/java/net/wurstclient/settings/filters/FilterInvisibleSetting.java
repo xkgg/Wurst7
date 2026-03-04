@@ -13,7 +13,7 @@ public final class FilterInvisibleSetting extends EntityFilterCheckbox
 {
 	public FilterInvisibleSetting(String description, boolean checked)
 	{
-		super("Filter invisible", description, checked);
+		super("过滤透明生物", description, checked);
 	}
 	
 	@Override
@@ -36,3 +36,4 @@ public final class FilterInvisibleSetting extends EntityFilterCheckbox
 			checked);
 	}
 }
+
