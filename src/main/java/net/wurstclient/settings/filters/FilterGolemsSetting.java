@@ -15,7 +15,7 @@ public final class FilterGolemsSetting extends EntityFilterCheckbox
 {
 	public FilterGolemsSetting(String description, boolean checked)
 	{
-		super("Filter golems", description, checked);
+		super("过滤铁傀儡和雪傀儡", description, checked);
 	}
 	
 	@Override
@@ -36,3 +36,4 @@ public final class FilterGolemsSetting extends EntityFilterCheckbox
 			"description.wurst.setting.generic.filter_golems_vision", checked);
 	}
 }
+
