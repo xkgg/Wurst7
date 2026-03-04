@@ -14,7 +14,7 @@ public final class FilterBatsSetting extends EntityFilterCheckbox
 {
 	public FilterBatsSetting(String description, boolean checked)
 	{
-		super("Filter bats", description, checked);
+		super("过滤蝙蝠", description, checked);
 	}
 	
 	@Override
@@ -35,3 +35,4 @@ public final class FilterBatsSetting extends EntityFilterCheckbox
 			"description.wurst.setting.generic.filter_bats_vision", checked);
 	}
 }
+
