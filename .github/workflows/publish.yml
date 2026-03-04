@@ -64,7 +64,8 @@ jobs:
         build-scan-terms-of-use-agree: "yes"
         cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
         cache-read-only: ${{ github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/heads/1.') }}
-
+    - name: Apply Spotless formatting
+      run: ./gradlew spotlessApply
     - name: Build
       run: ./gradlew remapJar --stacktrace --warning-mode=fail
 
@@ -118,4 +119,5 @@ jobs:
             "fapi_version": "${{ steps.website_inputs.outputs.fapi_version }}"
           }
         run_timeout_seconds: 600  # 10 minutes
+
 
