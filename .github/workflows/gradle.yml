@@ -55,6 +55,10 @@ jobs:
         cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
         cache-read-only: ${{ github.ref != 'refs/heads/master' && !startsWith(github.ref, 'refs/heads/1.') }}
 
+    - name: Apply Spotless formatting
+      run: ./gradlew spotlessApply
+
+
     - name: Build
       run: ./gradlew build --stacktrace --warning-mode=fail
 
