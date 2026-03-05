@@ -16,7 +16,7 @@ public final class FilterZombiePiglinsSetting
 	private FilterZombiePiglinsSetting(String description, Mode selected,
 		boolean checked)
 	{
-		super("Filter zombie piglins", description, selected, checked);
+		super("过滤僵尸猪灵", description, selected, checked);
 	}
 	
 	public FilterZombiePiglinsSetting(String description, Mode selected)
@@ -56,3 +56,4 @@ public final class FilterZombiePiglinsSetting
 		return new FilterZombiePiglinsSetting(description, null, onByDefault);
 	}
 }
+
