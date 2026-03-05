@@ -14,7 +14,7 @@ public final class FilterPlayersSetting extends EntityFilterCheckbox
 {
 	public FilterPlayersSetting(String description, boolean checked)
 	{
-		super("Filter players", description, checked);
+		super("过滤玩家", description, checked);
 	}
 	
 	@Override
@@ -35,3 +35,4 @@ public final class FilterPlayersSetting extends EntityFilterCheckbox
 			"description.wurst.setting.generic.filter_players_vision", checked);
 	}
 }
+
