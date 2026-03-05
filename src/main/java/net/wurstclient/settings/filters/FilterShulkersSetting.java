@@ -14,7 +14,7 @@ public final class FilterShulkersSetting extends EntityFilterCheckbox
 {
 	public FilterShulkersSetting(String description, boolean checked)
 	{
-		super("Filter shulkers", description, checked);
+		super("过滤潜影贝", description, checked);
 	}
 	
 	@Override
@@ -37,3 +37,4 @@ public final class FilterShulkersSetting extends EntityFilterCheckbox
 			checked);
 	}
 }
+
