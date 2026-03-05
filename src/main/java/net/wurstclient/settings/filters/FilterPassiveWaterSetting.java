@@ -15,11 +15,11 @@ import net.minecraft.entity.passive.PufferfishEntity;
 public final class FilterPassiveWaterSetting extends EntityFilterCheckbox
 {
 	private static final String EXCEPTIONS_TEXT =
-		"\n\nThis filter does not affect guardians, drowned, and pufferfish.";
+		"\n\n此过滤器不会影响守护者、溺水者和河豚";
 	
 	public FilterPassiveWaterSetting(String description, boolean checked)
 	{
-		super("Filter passive water mobs", description + EXCEPTIONS_TEXT,
+		super("过滤非攻击性水生生物", description + EXCEPTIONS_TEXT,
 			checked);
 	}
 	
@@ -36,13 +36,14 @@ public final class FilterPassiveWaterSetting extends EntityFilterCheckbox
 	
 	public static FilterPassiveWaterSetting genericCombat(boolean checked)
 	{
-		return new FilterPassiveWaterSetting("Won't attack passive water mobs"
-			+ " like fish, squid, dolphins and axolotls.", checked);
+		return new FilterPassiveWaterSetting("不会攻击非攻击性水生生物"
+			+ " 如鱼、鱿鱼、海豚和阿维洛特尔。.", checked);
 	}
 	
 	public static FilterPassiveWaterSetting genericVision(boolean checked)
 	{
-		return new FilterPassiveWaterSetting("Won't show passive water mobs"
-			+ " like fish, squid, dolphins and axolotls.", checked);
+		return new FilterPassiveWaterSetting("不会显示非攻击性水生生物"
+			+ "如鱼、鱿鱼、海豚和阿维洛特尔", checked);
 	}
 }
+
