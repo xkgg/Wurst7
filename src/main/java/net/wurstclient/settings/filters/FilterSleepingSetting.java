@@ -15,7 +15,7 @@ public final class FilterSleepingSetting extends EntityFilterCheckbox
 {
 	public FilterSleepingSetting(String description, boolean checked)
 	{
-		super("Filter sleeping", description, checked);
+		super("过滤睡眠", description, checked);
 	}
 	
 	@Override
@@ -41,3 +41,4 @@ public final class FilterSleepingSetting extends EntityFilterCheckbox
 			checked);
 	}
 }
+
