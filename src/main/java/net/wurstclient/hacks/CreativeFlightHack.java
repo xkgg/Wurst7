@@ -20,7 +20,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"creative flight", "CreativeFly", "creative fly"})
+@SearchTags({"创造飞行", "creative flight", "CreativeFly", "creative fly"})
 public final class CreativeFlightHack extends Hack implements UpdateListener
 {
 	private final CheckboxSetting antiKick = new CheckboxSetting("Anti-Kick",
@@ -28,23 +28,23 @@ public final class CreativeFlightHack extends Hack implements UpdateListener
 		false);
 	
 	private final SliderSetting antiKickInterval =
-		new SliderSetting("Anti-Kick Interval",
-			"How often Anti-Kick should prevent you from getting kicked.\n"
-				+ "Most servers will kick you after 80 ticks.",
+		new SliderSetting("防踢间隔",
+			"反踢应该多久防止你被踢一次.\n"
+				+ "大多数服务器会在80秒后踢你.",
 			30, 5, 80, 1, SliderSetting.ValueDisplay.INTEGER
 				.withSuffix(" ticks").withLabel(1, "1 tick"));
 	
 	private final SliderSetting antiKickDistance = new SliderSetting(
-		"Anti-Kick Distance",
-		"How far Anti-Kick should make you fall.\n"
-			+ "Most servers require at least 0.032m to stop you from getting kicked.",
+		"防踢距离",
+		"反踢能让你倒退多远.\n"
+			+ "大多数服务器要求至少0.032米（注：此处的“0.032m”可能指的是某种距离或数值，具体含义需根据上下文确定）才能防止你被踢出.",
 		0.07, 0.01, 0.2, 0.001, ValueDisplay.DECIMAL.withSuffix("m"));
 	
 	private int tickCounter = 0;
 	
 	public CreativeFlightHack()
 	{
-		super("CreativeFlight");
+		super("创造飞行");
 		setCategory(Category.MOVEMENT);
 		addSetting(antiKick);
 		addSetting(antiKickInterval);
@@ -130,3 +130,4 @@ public final class CreativeFlightHack extends Hack implements UpdateListener
 			IKeyBinding.get(key).resetPressedState();
 	}
 }
+
