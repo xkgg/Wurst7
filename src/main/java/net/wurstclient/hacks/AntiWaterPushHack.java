@@ -25,7 +25,7 @@ public final class AntiWaterPushHack extends Hack implements UpdateListener,
 		false);
 	
 	public AntiWaterPushHack()
-	{s
+	{
 		super("反水流推动");
 		setCategory(Category.MOVEMENT);
 		addSetting(preventSlowdown);
