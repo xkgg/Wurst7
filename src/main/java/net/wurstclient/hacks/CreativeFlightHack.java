@@ -23,8 +23,8 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 @SearchTags({"创造飞行", "creative flight", "CreativeFly", "creative fly"})
 public final class CreativeFlightHack extends Hack implements UpdateListener
 {
-	private final CheckboxSetting antiKick = new CheckboxSetting("Anti-Kick",
-		"Makes you fall a little bit every now and then to prevent you from getting kicked.",
+	private final CheckboxSetting antiKick = new CheckboxSetting("防踢",
+		"时不时让你摔一跤，以防你被踢到.",
 		false);
 	
 	private final SliderSetting antiKickInterval =
@@ -130,4 +130,5 @@ public final class CreativeFlightHack extends Hack implements UpdateListener
 			IKeyBinding.get(key).resetPressedState();
 	}
 }
+
 
