@@ -21,7 +21,7 @@ public final class NukerMultiIdListSetting extends BlockListSetting
 {
 	public NukerMultiIdListSetting(String descriptionKey)
 	{
-		super("MultiID List", descriptionKey, "minecraft:ancient_debris",
+		super("多ID列表", descriptionKey, "minecraft:ancient_debris",
 			"minecraft:bone_block", "minecraft:coal_ore",
 			"minecraft:copper_ore", "minecraft:deepslate_coal_ore",
 			"minecraft:deepslate_copper_ore", "minecraft:deepslate_diamond_ore",
@@ -37,6 +37,6 @@ public final class NukerMultiIdListSetting extends BlockListSetting
 	
 	public NukerMultiIdListSetting()
 	{
-		this("The types of blocks to break in MultiID mode.");
+		this("在多ID模式下要破坏的方块类型。");
 	}
 }
