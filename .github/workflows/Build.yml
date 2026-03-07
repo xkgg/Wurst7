@@ -1,26 +1,6 @@
 name: Build
 
 on:
-  push:
-    branches-ignore:
-    - "dependabot/**"
-    tags-ignore:
-    - "**"
-    paths:
-    - "**.java"
-    - "**.json"
-    - "**.yml"
-    - "gradle**"
-    - "*.gradle"
-    - "*.accesswidener"
-  pull_request:
-    paths:
-    - "**.java"
-    - "**.json"
-    - "**.yml"
-    - "gradle**"
-    - "*.gradle"
-    - "*.accesswidener"
   workflow_dispatch:
     inputs:
       distinct_id:
