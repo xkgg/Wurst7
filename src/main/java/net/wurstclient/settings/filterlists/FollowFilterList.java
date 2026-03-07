@@ -33,26 +33,26 @@ public final class FollowFilterList extends EntityFilterList
 			"description.wurst.setting.follow.filter_flying", 0));
 		
 		builder.add(new FilterHostileSetting(
-			"Won't follow hostile mobs like zombies and creepers.", true));
+			"不会跟随敌对生物，如僵尸和爬行者。", true));
 		
 		builder.add(FilterNeutralSetting.onOffOnly(
 			"description.wurst.setting.follow.filter_neutral", true));
 		
 		builder.add(new FilterPassiveSetting(
-			"Won't follow animals like pigs and cows, ambient mobs like bats, and water mobs like fish, squid and dolphins.",
+			"不会跟随动物，如猪和牛，环境生物，如蝙蝠，以及水生生物，如鱼、鱿鱼和海豚。",
 			true));
 		
 		builder.add(new FilterPassiveWaterSetting(
-			"Won't follow passive water mobs like fish, squid, dolphins and axolotls.",
+			"不会跟随被动水生生物，如鱼、鱿鱼、海豚和蝾螈。",
 			true));
 		
 		builder.add(new FilterBabiesSetting(
-			"Won't follow baby pigs, baby villagers, etc.", true));
+			"不会跟随小猪、小村民等。", true));
 		
 		builder.add(new FilterBatsSetting(
 			"description.wurst.setting.follow.filter_bats", true));
 		
-		builder.add(new FilterSlimesSetting("Won't follow slimes.", true));
+		builder.add(new FilterSlimesSetting("不会跟随史莱姆。", true));
 		
 		builder.add(new FilterPetsSetting(
 			"description.wurst.setting.follow.filter_pets", true));
@@ -67,7 +67,7 @@ public final class FollowFilterList extends EntityFilterList
 			"description.wurst.setting.follow.filter_golems", true));
 		
 		builder
-			.add(FilterPiglinsSetting.onOffOnly("Won't follow piglins.", true));
+			.add(FilterPiglinsSetting.onOffOnly("不会跟随猪灵。", true));
 		
 		builder.add(FilterZombiePiglinsSetting.onOffOnly(
 			"description.wurst.setting.follow.filter_zombie_piglins", true));

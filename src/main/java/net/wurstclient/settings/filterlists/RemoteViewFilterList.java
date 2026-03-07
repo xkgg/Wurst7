@@ -33,25 +33,23 @@ public final class RemoteViewFilterList extends EntityFilterList
 			"description.wurst.setting.remoteview.filter_flying", 0));
 		
 		builder.add(new FilterHostileSetting(
-			"Won't view hostile mobs like zombies and creepers.", true));
+			"不会查看敌对生物，如僵尸和爬行者。", true));
 		
 		builder.add(FilterNeutralSetting.onOffOnly(
 			"description.wurst.setting.remoteview.filter_neutral", true));
 		
-		builder.add(new FilterPassiveSetting("Won't view animals like pigs and"
-			+ " cows, ambient mobs like bats, and water mobs like fish, squid"
-			+ " and dolphins.", true));
+		builder.add(new FilterPassiveSetting("不会查看动物，如猪和牛，环境生物，如蝙蝠，以及水生生物，如鱼、鱿鱼"
+			+ "和海豚。", true));
 		
-		builder.add(new FilterPassiveWaterSetting("Won't view passive water"
-			+ " mobs like fish, squid, dolphins and axolotls.", true));
+		builder.add(new FilterPassiveWaterSetting("不会查看被动水生生物，如鱼、鱿鱼、海豚和蝾螈。", true));
 		
 		builder.add(new FilterBabiesSetting(
-			"Won't view baby pigs, baby villagers, etc.", true));
+			"不会查看小猪、小村民等。", true));
 		
 		builder.add(new FilterBatsSetting(
 			"description.wurst.setting.remoteview.filter_bats", true));
 		
-		builder.add(new FilterSlimesSetting("Won't view slimes.", true));
+		builder.add(new FilterSlimesSetting("不会查看史莱姆。", true));
 		
 		builder.add(new FilterPetsSetting(
 			"description.wurst.setting.remoteview.filter_pets", true));
@@ -67,7 +65,7 @@ public final class RemoteViewFilterList extends EntityFilterList
 			"description.wurst.setting.remoteview.filter_golems", true));
 		
 		builder
-			.add(FilterPiglinsSetting.onOffOnly("Won't view piglins.", true));
+			.add(FilterPiglinsSetting.onOffOnly("不会查看猪灵。", true));
 		
 		builder.add(FilterZombiePiglinsSetting.onOffOnly(
 			"description.wurst.setting.remoteview.filter_zombie_piglins",
