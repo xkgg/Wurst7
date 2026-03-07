@@ -48,66 +48,62 @@ public class CleanUpScreen extends Screen
 	public void init()
 	{
 		addDrawableChild(new CleanUpButton(width / 2 - 100,
-			height / 4 + 168 + 12, () -> "Cancel", "", b -> close()));
+			height / 4 + 168 + 12, () -> "取消", "", b -> close()));
 		
 		addDrawableChild(cleanUpButton = new CleanUpButton(width / 2 - 100,
-			height / 4 + 144 + 12, () -> "Clean Up",
-			"Start the Clean Up with the settings\n" + "you specified above.\n"
-				+ "It might look like the game is not\n"
-				+ "responding for a couple of seconds.",
+			height / 4 + 144 + 12, () -> "清理",
+			"开始使用上面指定的设置进行清理。\n"
+				+ "游戏可能会在几秒钟内看起来没有响应。",
 			b -> cleanUp()));
 		
 		addDrawableChild(
 			new CleanUpButton(width / 2 - 100, height / 4 - 24 + 12,
-				() -> "Unknown Hosts: " + removeOrKeep(cleanupUnknown),
-				"Servers that clearly don't exist.",
+				() -> "未知主机: " + removeOrKeep(cleanupUnknown),
+				"明显不存在的服务器。",
 				b -> cleanupUnknown = !cleanupUnknown));
 		
 		addDrawableChild(new CleanUpButton(width / 2 - 100, height / 4 + 0 + 12,
-			() -> "Outdated Servers: " + removeOrKeep(cleanupOutdated),
-			"Servers that run a different Minecraft\n" + "version than you.",
+			() -> "过时服务器: " + removeOrKeep(cleanupOutdated),
+			"运行与你不同的Minecraft版本的服务器。",
 			b -> cleanupOutdated = !cleanupOutdated));
 		
 		addDrawableChild(
 			new CleanUpButton(width / 2 - 100, height / 4 + 24 + 12,
-				() -> "Failed Ping: " + removeOrKeep(cleanupFailed),
-				"All servers that failed the last ping.\n"
-					+ "Make sure that the last ping is complete\n"
-					+ "before you do this. That means: Go back,\n"
-					+ "press the refresh button and wait until\n"
-					+ "all servers are done refreshing.",
+				() -> "Ping失败: " + removeOrKeep(cleanupFailed),
+				"上次ping失败的所有服务器。\n"
+					+ "在执行此操作之前，请确保上次ping已完成。\n"
+					+ "这意味着：返回，按刷新按钮，等待直到\n"
+					+ "所有服务器都完成刷新。",
 				b -> cleanupFailed = !cleanupFailed));
 		
 		addDrawableChild(
 			new CleanUpButton(width / 2 - 100, height / 4 + 48 + 12,
-				() -> "\"Grief me\" Servers: " + removeOrKeep(cleanupGriefMe),
-				"All servers where the name starts with \"Grief me\"\n"
-					+ "Useful for removing servers found by ServerFinder.",
+				() -> "\"Grief me\" 服务器: " + removeOrKeep(cleanupGriefMe),
+				"所有名称以\"Grief me\"开头的服务器\n"
+					+ "用于删除ServerFinder找到的服务器。",
 				b -> cleanupGriefMe = !cleanupGriefMe));
 		
 		addDrawableChild(
 			new CleanUpButton(width / 2 - 100, height / 4 + 72 + 12,
-				() -> "\u00a7cRemove all Servers: " + yesOrNo(removeAll),
-				"This will completely clear your server\n"
-					+ "list. \u00a7cUse with caution!\u00a7r",
+				() -> "\u00a7c删除所有服务器: " + yesOrNo(removeAll),
+				"这将完全清除你的服务器列表。\u00a7c谨慎使用！\u00a7r",
 				b -> removeAll = !removeAll));
 		
 		addDrawableChild(
 			new CleanUpButton(width / 2 - 100, height / 4 + 96 + 12,
-				() -> "Rename all Servers: " + yesOrNo(cleanupRename),
-				"Renames your servers to \"Grief me #1\",\n"
-					+ "\"Grief me #2\", etc.",
+				() -> "重命名所有服务器: " + yesOrNo(cleanupRename),
+				"将你的服务器重命名为\"Grief me #1\"、\"Grief me #2\"等。",
 				b -> cleanupRename = !cleanupRename));
 	}
 	
 	private String yesOrNo(boolean b)
 	{
-		return b ? "Yes" : "No";
+		return b ? "是" : "否";
 	}
 	
 	private String removeOrKeep(boolean b)
 	{
-		return b ? "Remove" : "Keep";
+		return b ? "删除" : "保留";
 	}
 	
 	private void cleanUp()
@@ -216,10 +212,10 @@ public class CleanUpScreen extends Screen
 		float partialTicks)
 	{
 		renderBackground(context);
-		context.drawCenteredTextWithShadow(textRenderer, "Clean Up", width / 2,
+		context.drawCenteredTextWithShadow(textRenderer, "清理", width / 2,
 			20, Colors.WHITE);
 		context.drawCenteredTextWithShadow(textRenderer,
-			"Please select the servers you want to remove:", width / 2, 36,
+			"请选择你要删除的服务器：", width / 2, 36,
 			0xFFA0A0A0);
 		
 		super.render(context, mouseX, mouseY, partialTicks);
