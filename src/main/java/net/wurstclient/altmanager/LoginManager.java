@@ -50,7 +50,7 @@ public enum LoginManager
 			
 		}catch(AuthenticationUnavailableException e)
 		{
-			throw new LoginException("Cannot contact authentication server!",
+			throw new LoginException("无法联系认证服务器！",
 				e);
 			
 		}catch(AuthenticationException e)
@@ -59,25 +59,25 @@ public enum LoginManager
 			String msg = e.getMessage().toLowerCase();
 			
 			if(msg.contains("invalid username or password."))
-				throw new LoginException("Wrong password! (or shadowbanned)",
+				throw new LoginException("密码错误！（或被 shadowban）",
 					e);
 			
 			if(msg.contains("account migrated"))
-				throw new LoginException("Account migrated to Mojang account.",
+				throw new LoginException("账户已迁移到 Mojang 账户。",
 					e);
 			
 			if(msg.contains("migrated"))
 				throw new LoginException(
-					"Account migrated to Microsoft account.", e);
+					"账户已迁移到 Microsoft 账户。", e);
 			
-			throw new LoginException("Cannot contact authentication server!",
+			throw new LoginException("无法联系认证服务器！",
 				e);
 			
 		}catch(NullPointerException e)
 		{
 			e.printStackTrace();
 			
-			throw new LoginException("Wrong password! (or shadowbanned)", e);
+			throw new LoginException("密码错误！（或被 shadowban）", e);
 		}
 	}
 	

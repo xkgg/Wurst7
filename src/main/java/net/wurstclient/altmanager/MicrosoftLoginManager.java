@@ -171,20 +171,20 @@ public enum MicrosoftLoginManager
 			
 		}catch(IOException e)
 		{
-			throw new LoginException("Connection failed: " + e, e);
+			throw new LoginException("连接失败: " + e, e);
 		}
 		
-		System.out.println("Getting PPFT and urlPost...");
+		System.out.println("获取 PPFT 和 urlPost...");
 		
 		Matcher matcher = PPFT_REGEX.matcher(loginWebpage);
 		if(!matcher.find())
-			throw new LoginException("sFTTag / PPFT regex failed.");
+			throw new LoginException("sFTTag / PPFT 正则表达式失败。");
 		
 		String ppft = matcher.group(1);
 		
 		matcher = URLPOST_REGEX.matcher(loginWebpage);
 		if(!matcher.find())
-			throw new LoginException("urlPost regex failed.");
+			throw new LoginException("urlPost 正则表达式失败。");
 		
 		String urlPost = matcher.group(1);
 		
@@ -229,11 +229,11 @@ public enum MicrosoftLoginManager
 			int responseCode = connection.getResponseCode();
 			if(responseCode >= 500 && responseCode <= 599)
 				throw new LoginException(
-					"Servers are down (code " + responseCode + ").");
+					"服务器宕机（代码 " + responseCode + "）。");
 			
 			if(responseCode != 200)
 				throw new LoginException(
-					"Got code " + responseCode + " from urlPost.");
+					"从 urlPost 获取到代码 " + responseCode + "。");
 			
 			String decodedUrl = URLDecoder.decode(
 				connection.getURL().toString(), StandardCharsets.UTF_8.name());
@@ -241,7 +241,7 @@ public enum MicrosoftLoginManager
 			Matcher matcher = AUTHCODE_REGEX.matcher(decodedUrl);
 			if(!matcher.find())
 				throw new LoginException(
-					"Didn't get authCode. (Wrong email/password?)");
+					"未获取到 authCode。（邮箱/密码错误？）");
 			
 			return matcher.group(1);
 			
@@ -288,11 +288,11 @@ public enum MicrosoftLoginManager
 			
 		}catch(IOException e)
 		{
-			throw new LoginException("Connection failed: " + e, e);
+			throw new LoginException("连接失败: " + e, e);
 			
 		}catch(JsonException e)
 		{
-			throw new LoginException("Server sent invalid JSON.", e);
+			throw new LoginException("服务器发送了无效的 JSON。", e);
 		}
 	}
 	
@@ -337,11 +337,11 @@ public enum MicrosoftLoginManager
 			
 		}catch(IOException e)
 		{
-			throw new LoginException("Connection failed: " + e, e);
+			throw new LoginException("连接失败: " + e, e);
 			
 		}catch(JsonException e)
 		{
-			throw new LoginException("Server sent invalid JSON.", e);
+			throw new LoginException("服务器发送了无效的 JSON。", e);
 		}
 	}
 	
@@ -382,11 +382,11 @@ public enum MicrosoftLoginManager
 			
 		}catch(IOException e)
 		{
-			throw new LoginException("Connection failed: " + e, e);
+			throw new LoginException("连接失败: " + e, e);
 			
 		}catch(JsonException e)
 		{
-			throw new LoginException("Server sent invalid JSON.", e);
+			throw new LoginException("服务器发送了无效的 JSON。", e);
 		}
 	}
 	
@@ -420,11 +420,11 @@ public enum MicrosoftLoginManager
 			
 		}catch(IOException e)
 		{
-			throw new LoginException("Connection failed: " + e, e);
+			throw new LoginException("连接失败: " + e, e);
 			
 		}catch(JsonException e)
 		{
-			throw new LoginException("Server sent invalid JSON.", e);
+			throw new LoginException("服务器发送了无效的 JSON。", e);
 		}
 	}
 	
@@ -442,7 +442,7 @@ public enum MicrosoftLoginManager
 			
 			if(json.has("error"))
 				throw new LoginException(
-					"Error message from api.minecraftservices.com:\n"
+					"来自 api.minecraftservices.com 的错误消息:\n"
 						+ json.getElement("error"));
 			
 			UUID uuid = uuidFromJson(json.getString("id"));
@@ -452,11 +452,11 @@ public enum MicrosoftLoginManager
 			
 		}catch(IOException e)
 		{
-			throw new LoginException("Connection failed: " + e, e);
+			throw new LoginException("连接失败: " + e, e);
 			
 		}catch(JsonException e)
 		{
-			throw new LoginException("Server sent invalid JSON.", e);
+			throw new LoginException("服务器发送了无效的 JSON。", e);
 		}
 	}
 	

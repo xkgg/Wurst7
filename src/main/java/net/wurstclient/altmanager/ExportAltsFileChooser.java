@@ -25,10 +25,10 @@ public final class ExportAltsFileChooser extends JFileChooser
 		SwingUtils.setLookAndFeel();
 		
 		int response = JOptionPane.showConfirmDialog(null,
-			"This will create an unencrypted (plain text) copy of your alt list.\n"
-				+ "Storing passwords in plain text is risky because they can easily be stolen by a virus.\n"
-				+ "Store this copy somewhere safe and keep it outside of your Minecraft folder!",
-			"Warning", JOptionPane.OK_CANCEL_OPTION,
+			"这将创建一个未加密（纯文本）的alt列表副本。\n"
+				+ "以纯文本形式存储密码是有风险的，因为它们很容易被病毒窃取。\n"
+				+ "将此副本存储在安全的地方，并将其保存在Minecraft文件夹之外！",
+			"警告", JOptionPane.OK_CANCEL_OPTION,
 			JOptionPane.WARNING_MESSAGE);
 		
 		if(response != JOptionPane.OK_OPTION)
@@ -40,11 +40,11 @@ public final class ExportAltsFileChooser extends JFileChooser
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		
 		FileNameExtensionFilter txtFilter =
-			new FileNameExtensionFilter("TXT file (username:password)", "txt");
+			new FileNameExtensionFilter("TXT文件 (用户名:密码)", "txt");
 		fileChooser.addChoosableFileFilter(txtFilter);
 		
 		FileNameExtensionFilter jsonFilter =
-			new FileNameExtensionFilter("JSON file", "json");
+			new FileNameExtensionFilter("JSON文件", "json");
 		fileChooser.addChoosableFileFilter(jsonFilter);
 		
 		if(fileChooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION)

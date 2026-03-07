@@ -18,14 +18,14 @@ public final class DirectLoginScreen extends AltEditorScreen
 {
 	public DirectLoginScreen(Screen prevScreen)
 	{
-		super(prevScreen, Text.literal("Direct Login"));
+		super(prevScreen, Text.literal("直接登录"));
 	}
 	
 	@Override
 	protected String getDoneButtonText()
 	{
-		return getPassword().isEmpty() ? "Change Cracked Name"
-			: "Login with Password";
+		return getPassword().isEmpty() ? "更改破解版名称"
+			: "使用密码登录";
 	}
 	
 	@Override
