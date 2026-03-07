@@ -12,19 +12,19 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.EnumSetting;
 
-@SearchTags({"tab gui", "HackMenu", "hack menu", "SideBar", "side bar",
+@SearchTags({"标签GUI", "tab gui", "HackMenu", "hack menu", "SideBar", "side bar",
 	"blocks movement combat render chat fun items other"})
 @DontBlock
 public final class TabGuiOtf extends OtherFeature
 {
 	private final EnumSetting<Status> status =
-		new EnumSetting<>("Status", Status.values(), Status.DISABLED);
+		new EnumSetting<>("状态", Status.values(), Status.DISABLED);
 	
 	public TabGuiOtf()
 	{
-		super("TabGUI", "Allows you to quickly toggle hacks while playing.\n"
-			+ "Use the arrow keys to navigate.\n\n"
-			+ "Change the \u00a76HackList \u00a76Position\u00a7r setting to \u00a76Right\u00a7r to prevent TabGUI from overlapping with the HackList.");
+		super("标签GUI", "允许你在游戏时快速切换黑客。\n"
+			+ "使用方向键导航。\n\n"
+			+ "将\u00a76黑客列表 \u00a76位置\u00a7r设置更改为\u00a76右侧\u00a7r，以防止TabGUI与黑客列表重叠。");
 		
 		addSetting(status);
 	}
@@ -36,8 +36,8 @@ public final class TabGuiOtf extends OtherFeature
 	
 	private enum Status
 	{
-		ENABLED("Enabled"),
-		DISABLED("Disabled");
+		ENABLED("启用"),
+		DISABLED("禁用");
 		
 		private final String name;
 		

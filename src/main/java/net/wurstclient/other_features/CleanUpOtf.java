@@ -11,13 +11,13 @@ import net.wurstclient.DontBlock;
 import net.wurstclient.SearchTags;
 import net.wurstclient.other_feature.OtherFeature;
 
-@SearchTags({"Clean Up"})
+@SearchTags({"清理"})
 @DontBlock
 public final class CleanUpOtf extends OtherFeature
 {
 	public CleanUpOtf()
 	{
-		super("CleanUp", "Cleans up your server list.\n"
-			+ "To use it, press the 'Clean Up' button on the server selection screen.");
+		super("清理", "清理你的服务器列表。\n"
+			+ "要使用它，请在服务器选择屏幕上按'清理'按钮。");
 	}
 }

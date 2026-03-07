@@ -12,21 +12,21 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.options.KeybindManagerScreen;
 import net.wurstclient.other_feature.OtherFeature;
 
-@SearchTags({"KeybindManager", "keybind manager", "KeybindsManager",
+@SearchTags({"按键绑定管理器", "KeybindManager", "keybind manager", "KeybindsManager",
 	"keybinds manager"})
 @DontBlock
 public final class KeybindManagerOtf extends OtherFeature
 {
 	public KeybindManagerOtf()
 	{
-		super("Keybinds",
-			"This is just a shortcut to let you open the Keybind Manager from within the GUI. Normally you would go to Wurst Options > Keybinds.");
+		super("按键绑定",
+			"这只是一个快捷方式，让你从GUI中打开按键绑定管理器。通常你需要前往Wurst选项 > 按键绑定。");
 	}
 	
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Open Keybind Manager";
+		return "打开按键绑定管理器";
 	}
 	
 	@Override

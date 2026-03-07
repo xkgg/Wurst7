@@ -30,13 +30,13 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.util.ChatUtils;
 
 @DontBlock
-@SearchTags({"no chat reports", "NoEncryption", "no encryption",
+@SearchTags({"无聊天报告", "no chat reports", "NoEncryption", "no encryption",
 	"NoChatSigning", "no chat signing"})
 public final class NoChatReportsOtf extends OtherFeature
 	implements UpdateListener, ChatInputListener
 {
 	private final CheckboxSetting disableSignatures =
-		new CheckboxSetting("Disable signatures", true)
+		new CheckboxSetting("禁用签名", true)
 		{
 			@Override
 			public void update()
@@ -47,7 +47,7 @@ public final class NoChatReportsOtf extends OtherFeature
 	
 	public NoChatReportsOtf()
 	{
-		super("NoChatReports", "description.wurst.other_feature.nochatreports");
+		super("无聊天报告", "description.wurst.other_feature.nochatreports");
 		addSetting(disableSignatures);
 		
 		ClientLoginConnectionEvents.INIT.register(this::onLoginStart);
@@ -98,9 +98,9 @@ public final class NoChatReportsOtf extends OtherFeature
 			Text.literal("Original message: ").append(originalText));
 		
 		ChatUtils.component(Text.literal(
-			"The server is refusing to let you chat without enabling chat reports. Click \u00a7nhere\u00a7r to learn more.")
-			.styled(
-				s -> s.withClickEvent(clickEvent).withHoverEvent(hoverEvent)));
+			"服务器拒绝让你在不启用聊天报告的情况下聊天。点击\u00a7n这里\u00a7r了解更多。")
+				.styled(
+					s -> s.withClickEvent(clickEvent).withHoverEvent(hoverEvent)));
 	}
 	
 	private void onLoginStart(ClientLoginNetworkHandler handler,
@@ -119,10 +119,10 @@ public final class NoChatReportsOtf extends OtherFeature
 			return indicator;
 		
 		return new MessageIndicator(0xE84F58, Icon.CHAT_MODIFIED,
-			Text.literal(ChatUtils.WURST_PREFIX + "\u00a7cReportable\u00a7r - "
+			Text.literal(ChatUtils.WURST_PREFIX + "\u00a7c可举报\u00a7r - "
 				+ WURST.translate(
 					"description.wurst.nochatreports.message_is_reportable")),
-			"Reportable");
+			"可举报");
 	}
 	
 	@Override

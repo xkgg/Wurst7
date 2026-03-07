@@ -12,22 +12,22 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.CheckboxSetting;
 
-@SearchTags({"turn off", "hide wurst logo", "ghost mode", "stealth mode",
-	"vanilla Minecraft"})
+@SearchTags({"关闭", "隐藏Wurst标志", "幽灵模式", "隐身模式",
+	"原版Minecraft"})
 @DontBlock
 public final class DisableOtf extends OtherFeature
 {
 	private final CheckboxSetting hideEnableButton = new CheckboxSetting(
-		"Hide enable button",
-		"Removes the \"Enable Wurst\" button as soon as you close the Statistics screen."
-			+ " You will have to restart the game to re-enable Wurst.",
+		"隐藏启用按钮",
+		"当你关闭统计信息屏幕后，移除\"启用Wurst\"按钮。"
+			+ " 你将需要重新启动游戏来重新启用Wurst。",
 		false);
 	
 	public DisableOtf()
 	{
-		super("Disable Wurst",
-			"To disable Wurst, go to the Statistics screen and press the \"Disable Wurst\" button.\n"
-				+ "It will turn into an \"Enable Wurst\" button once pressed.");
+		super("关闭Wurst",
+			"要关闭Wurst，请前往统计信息屏幕并按\"关闭Wurst\"按钮。\n"
+				+ "按下后，它将变成\"启用Wurst\"按钮。");
 		addSetting(hideEnableButton);
 	}
 	

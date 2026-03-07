@@ -13,16 +13,16 @@ import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.CheckboxSetting;
 
 @DontBlock
-@SearchTags({"privacy", "data", "tracking", "snooper", "spyware"})
+@SearchTags({"隐私", "数据", "跟踪", "窥探", "间谍软件", "privacy", "data", "tracking", "snooper", "spyware"})
 public final class NoTelemetryOtf extends OtherFeature
 {
 	private final CheckboxSetting disableTelemetry =
-		new CheckboxSetting("Disable telemetry", true);
+		new CheckboxSetting("禁用遥测", true);
 	
 	public NoTelemetryOtf()
 	{
-		super("NoTelemetry",
-			"Disables the \"required\" telemetry that Mojang introduced in 22w46a. Turns out it's not so required after all.");
+		super("无遥测",
+			"禁用Mojang在22w46a中引入的\"必需\"遥测。事实证明，它根本不是必需的。");
 		addSetting(disableTelemetry);
 	}
 	
@@ -35,7 +35,7 @@ public final class NoTelemetryOtf extends OtherFeature
 	@Override
 	public String getPrimaryAction()
 	{
-		return isEnabled() ? "Re-enable Telemetry" : "Disable Telemetry";
+		return isEnabled() ? "重新启用遥测" : "禁用遥测";
 	}
 	
 	@Override

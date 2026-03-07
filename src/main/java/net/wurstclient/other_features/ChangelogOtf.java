@@ -14,20 +14,20 @@ import net.wurstclient.WurstClient;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.update.Version;
 
-@SearchTags({"change log", "wurst update", "release notes", "what's new",
-	"what is new", "new features", "recently added features"})
+@SearchTags({"更新日志", "Wurst更新", "发布说明", "新增内容",
+	"有什么新内容", "新功能", "最近添加的功能"})
 @DontBlock
 public final class ChangelogOtf extends OtherFeature
 {
 	public ChangelogOtf()
 	{
-		super("Changelog", "Opens the changelog in your browser.");
+		super("更新日志", "在浏览器中打开更新日志。");
 	}
 	
 	@Override
 	public String getPrimaryAction()
 	{
-		return "View Changelog";
+		return "查看更新日志";
 	}
 	
 	@Override

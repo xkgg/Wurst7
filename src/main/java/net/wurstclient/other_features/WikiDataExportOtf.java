@@ -26,16 +26,15 @@ public final class WikiDataExportOtf extends OtherFeature
 {
 	public WikiDataExportOtf()
 	{
-		super("WikiDataExport",
-			"Creates a JSON file full of technical details about all the"
-				+ " different features and settings in this version of Wurst."
-				+ " Primarily used to update the Wurst Wiki.");
+		super("Wiki数据导出",
+			"创建一个包含此版本Wurst中所有不同功能和设置的技术细节的JSON文件。"
+				+ " 主要用于更新Wurst Wiki。");
 	}
 	
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Export Data";
+		return "导出数据";
 	}
 	
 	@Override
