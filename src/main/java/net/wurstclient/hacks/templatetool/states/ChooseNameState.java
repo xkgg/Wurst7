@@ -44,9 +44,9 @@ public final class ChooseNameState extends TemplateToolState
 	{
 		File file = hack.getFile();
 		if(file != null && file.exists())
-			return "WARNING: This file already exists.";
+			return "警告：此文件已存在。";
 		
-		return "Choose a name for this template.";
+		return "为此模板选择一个名称。";
 	}
 	
 	public static final class ChooseNameScreen extends Screen
@@ -82,16 +82,16 @@ public final class ChooseNameState extends TemplateToolState
 			setFocused(nameField);
 			
 			includeTypesBox = new CheckboxWidget(middleX - 99, middleY + 32,
-				150, 20, Text.literal("Include block types"), true);
-			addDrawableChild(includeTypesBox);
-			
-			doneButton = ButtonWidget.builder(Text.literal("Done"), b -> done())
-				.dimensions(middleX - 75, middleY + 56, 150, 20).build();
-			addDrawableChild(doneButton);
-			
-			cancelButton =
-				ButtonWidget.builder(Text.literal("Cancel"), b -> cancel())
-					.dimensions(middleX - 50, middleY + 80, 100, 15).build();
+			150, 20, Text.literal("包含方块类型"), true);
+		addDrawableChild(includeTypesBox);
+		
+		doneButton = ButtonWidget.builder(Text.literal("完成"), b -> done())
+			.dimensions(middleX - 75, middleY + 56, 150, 20).build();
+		addDrawableChild(doneButton);
+		
+		cancelButton =
+			ButtonWidget.builder(Text.literal("取消"), b -> cancel())
+				.dimensions(middleX - 50, middleY + 80, 100, 15).build();
 			addDrawableChild(cancelButton);
 		}
 		

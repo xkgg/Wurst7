@@ -41,7 +41,7 @@ public final class SelectBoxEndState extends SelectPositionState
 	@Override
 	protected String getDefaultMessage()
 	{
-		return "Select end position.";
+		return "选择结束位置。";
 	}
 	
 	@Override

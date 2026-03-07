@@ -72,7 +72,7 @@ public abstract class SelectPositionState extends TemplateToolState
 	protected final String getMessage(TemplateToolHack hack)
 	{
 		if(getSelectedPos(hack) != null)
-			return "Press enter to confirm, or select a different position.";
+			return "按Enter确认，或选择其他位置。";
 		
 		return getDefaultMessage();
 	}

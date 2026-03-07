@@ -37,7 +37,7 @@ public final class SelectBoxStartState extends SelectPositionState
 	@Override
 	protected String getDefaultMessage()
 	{
-		return "Select start position.";
+		return "选择开始位置。";
 	}
 	
 	@Override
