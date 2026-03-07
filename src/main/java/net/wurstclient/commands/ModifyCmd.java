@@ -27,12 +27,12 @@ public final class ModifyCmd extends Command
 {
 	public ModifyCmd()
 	{
-		super("modify", "允许你修改物品的NBT数据。",
+		super("modify", "Allows you to modify NBT data of items.",
 			".modify add <nbt_data>", ".modify set <nbt_data>",
-			".modify remove <nbt_path>", "使用$表示颜色，使用$$表示$", "",
-			"示例:",
+			".modify remove <nbt_path>", "Use $ for colors, use $$ for $.", "",
+			"Example:",
 			".modify add {display:{Name:'{\"text\":\"$cRed Name\"}'}}",
-			"(将物品名称更改为 \u00a7cRed Name\u00a7r)");
+			"(changes the item's name to \u00a7cRed Name\u00a7r)");
 	}
 	
 	@Override
@@ -41,7 +41,7 @@ public final class ModifyCmd extends Command
 		ClientPlayerEntity player = MC.player;
 		
 		if(!player.getAbilities().creativeMode)
-			throw new CmdError("仅创造模式可用。");
+			throw new CmdError("Creative mode only.");
 		
 		if(args.length < 2)
 			throw new CmdSyntaxError();
@@ -51,7 +51,7 @@ public final class ModifyCmd extends Command
 		ItemStack stack = inventory.getMainHandStack();
 		
 		if(stack == null)
-			throw new CmdError("你必须在主手中持有物品。");
+			throw new CmdError("You must hold an item in your main hand.");
 		
 		switch(args[0].toLowerCase())
 		{
@@ -72,7 +72,7 @@ public final class ModifyCmd extends Command
 		}
 		
 		InventoryUtils.setCreativeStack(slot, stack);
-		ChatUtils.message("物品已修改。");
+		ChatUtils.message("Item modified.");
 	}
 	
 	private void add(ItemStack stack, String[] args) throws CmdError
@@ -89,10 +89,10 @@ public final class ModifyCmd extends Command
 			stack.getNbt().copyFrom(tag);
 			
 		}catch(CommandSyntaxException e)
-			{
-				ChatUtils.message(e.getMessage());
-				throw new CmdError("NBT数据无效。");
-			}
+		{
+			ChatUtils.message(e.getMessage());
+			throw new CmdError("NBT data is invalid.");
+		}
 	}
 	
 	private void set(ItemStack stack, String[] args) throws CmdError
@@ -106,10 +106,10 @@ public final class ModifyCmd extends Command
 			stack.setNbt(tag);
 			
 		}catch(CommandSyntaxException e)
-			{
-				ChatUtils.message(e.getMessage());
-				throw new CmdError("NBT数据无效。");
-			}
+		{
+			ChatUtils.message(e.getMessage());
+			throw new CmdError("NBT data is invalid.");
+		}
 	}
 	
 	private void remove(ItemStack stack, String[] args) throws CmdException
@@ -120,7 +120,7 @@ public final class ModifyCmd extends Command
 		NbtPath path = parseNbtPath(stack.getNbt(), args[1]);
 		
 		if(path == null)
-			throw new CmdError("路径不存在。");
+			throw new CmdError("The path does not exist.");
 		
 		path.base.remove(path.key);
 	}

@@ -28,8 +28,9 @@ public final class GiveCmd extends Command
 	public GiveCmd()
 	{
 		super("give",
-			"给你一个带有自定义NBT数据的物品。\n" + "需要创造模式。",
-			".give <物品> [<数量>] [<nbt>]", ".give <id> [<数量>] [<nbt>]");
+			"Gives you an item with custom NBT data.\n"
+				+ "Requires creative mode.",
+			".give <item> [<amount>] [<nbt>]", ".give <id> [<amount>] [<nbt>]");
 	}
 	
 	@Override
@@ -40,7 +41,7 @@ public final class GiveCmd extends Command
 			throw new CmdSyntaxError();
 		
 		if(!MC.player.getAbilities().creativeMode)
-			throw new CmdError("仅创造模式可用。");
+			throw new CmdError("Creative mode only.");
 		
 		// id/name
 		Item item = CmdUtils.parseItem(args[0]);
@@ -50,15 +51,15 @@ public final class GiveCmd extends Command
 		if(args.length >= 2)
 		{
 			if(!MathUtils.isInteger(args[1]))
-				throw new CmdSyntaxError("不是数字: " + args[1]);
+				throw new CmdSyntaxError("Not a number: " + args[1]);
 			
 			amount = Integer.parseInt(args[1]);
 			
 			if(amount < 1)
-				throw new CmdError("数量不能小于1。");
+				throw new CmdError("Amount cannot be less than 1.");
 			
 			if(amount > 64)
-				throw new CmdError("数量不能超过64。");
+				throw new CmdError("Amount cannot be more than 64.");
 		}
 		
 		// nbt data
@@ -75,13 +76,13 @@ public final class GiveCmd extends Command
 				stack.setNbt(tag);
 				
 			}catch(CommandSyntaxException e)
-				{
-					ChatUtils.message(e.getMessage());
-					throw new CmdSyntaxError("NBT数据无效。");
-				}
+			{
+				ChatUtils.message(e.getMessage());
+				throw new CmdSyntaxError("NBT data is invalid.");
+			}
 		
 		// give item
 		CmdUtils.giveItem(stack);
-		ChatUtils.message("物品" + (amount > 1 ? "已" : "") + "创建成功。");
+		ChatUtils.message("Item" + (amount > 1 ? "s" : "") + " created.");
 	}
 }

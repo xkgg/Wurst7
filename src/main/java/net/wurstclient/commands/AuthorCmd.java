@@ -20,7 +20,8 @@ public final class AuthorCmd extends Command
 {
 	public AuthorCmd()
 	{
-		super("author", "更改已写书籍的作者。\n" + "需要创造模式。", ".author <作者>");
+		super("author", "Changes the author of a written book.\n"
+			+ "Requires creative mode.", ".author <author>");
 	}
 	
 	@Override
@@ -30,7 +31,7 @@ public final class AuthorCmd extends Command
 			throw new CmdSyntaxError();
 		
 		if(!MC.player.getAbilities().creativeMode)
-			throw new CmdError("仅创造模式可用。");
+			throw new CmdError("Creative mode only.");
 		
 		ItemStack heldItem = MC.player.getInventory().getMainHandStack();
 		int heldItemID = Item.getRawId(heldItem.getItem());
@@ -38,7 +39,7 @@ public final class AuthorCmd extends Command
 		
 		if(heldItemID != writtenBookID)
 			throw new CmdError(
-				"你必须在主手中持有一本已写的书。");
+				"You must hold a written book in your main hand.");
 		
 		String author = String.join(" ", args);
 		heldItem.setSubNbt("author", NbtString.of(author));
