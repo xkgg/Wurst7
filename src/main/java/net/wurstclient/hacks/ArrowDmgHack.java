@@ -22,7 +22,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"arrow dmg", "ArrowDamage", "arrow damage"})
+@SearchTags({"强力箭矢", "arrow dmg", "ArrowDamage", "arrow damage"})
 public final class ArrowDmgHack extends Hack implements StopUsingItemListener
 {
 	private final SliderSetting packets = new SliderSetting("Packets",

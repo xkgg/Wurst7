@@ -43,37 +43,35 @@ public final class AutoBuildHack extends Hack
 	private static final Box BLOCK_BOX =
 		new Box(1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0);
 	
-	private final FileSetting templateSetting = new FileSetting("Template",
-		"Determines what to build.\n\n"
-			+ "Templates are just JSON files. Feel free to add your own or to edit / delete the default templates.\n\n"
-			+ "If you mess up, simply press the 'Reset to Defaults' button or delete the folder.",
+private final FileSetting templateSetting = new FileSetting("模板",
+		"决定要建造的结构。\n\n"
+			+ "模板为JSON格式文件。你可自行添加模板，也可编辑/删除默认模板。\n\n"
+			+ "若配置出错，只需点击「恢复默认设置」按钮，或删除该文件夹即可。",
 		"autobuild", DefaultAutoBuildTemplates::createFiles);
 	
-	private final SliderSetting range = new SliderSetting("Range",
-		"How far to reach when placing blocks.\n" + "Recommended values:\n"
-			+ "6.0 for vanilla\n" + "4.25 for NoCheat+",
+private final SliderSetting range = new SliderSetting("建造范围",
+		"放置方块时的最远有效距离。\n" + "推荐数值：\n"
+			+ "原版服务器：6.0\n" + "安装NoCheat+反作弊插件：4.25",
 		6, 1, 10, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"Check line of sight",
-		"Makes sure that you don't reach through walls when placing blocks. Can help with AntiCheat plugins but slows down building.",
+private final CheckboxSetting checkLOS = new CheckboxSetting(
+		"检测视线遮挡",
+		"确保不会穿墙放置方块。可规避部分反作弊插件检测，但会降低建造速度。",
 		false);
 	
-	private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
-		"Use saved blocks",
-		"Tries to place the same blocks that were saved in the template.\n\n"
-			+ "If the template does not specify block types, it will be built"
-			+ " from whatever block you are holding.",
+private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
+		"使用模板预设方块",
+		"尝试放置模板中保存的方块类型。\n\n"
+			+ "若模板未指定方块类型，则会使用你手中当前持有的方块进行建造。",
 		true);
 	
 	private final CheckboxSetting fastPlace =
-		new CheckboxSetting("Always FastPlace",
-			"Builds as if FastPlace was enabled, even if it's not.", true);
+		new CheckboxSetting("始终快速放置",
+			"即使未启用快速放置功能，也会以快速放置的方式建造。", true);
 	
 	private final CheckboxSetting strictBuildOrder = new CheckboxSetting(
-		"Strict build order",
-		"Places blocks in exactly the same order that they appear in the"
-			+ " template. This is slower, but provides more consistent results.",
+		"严格建造顺序",
+		"完全按照模板中定义的顺序放置方块。此模式速度较慢，但建造结果更稳定。",
 		false);
 	
 	private Status status = Status.NO_TEMPLATE;
@@ -83,7 +81,7 @@ public final class AutoBuildHack extends Hack
 	
 	public AutoBuildHack()
 	{
-		super("AutoBuild");
+		super("自动建造");
 		setCategory(Category.BLOCKS);
 		addSetting(templateSetting);
 		addSetting(range);
@@ -104,7 +102,7 @@ public final class AutoBuildHack extends Hack
 			break;
 			
 			case LOADING:
-			name += " [Loading...]";
+			name += " [加载中...]";
 			break;
 			
 			case IDLE:

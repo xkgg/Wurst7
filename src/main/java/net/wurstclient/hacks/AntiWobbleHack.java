@@ -11,13 +11,13 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"anti wobble", "NoWobble", "no wobble", "AntiNausea",
+@SearchTags({"反视觉扭曲", "anti wobble", "NoWobble", "no wobble", "AntiNausea",
 	"anti nausea", "NoNausea", "no nausea"})
 public final class AntiWobbleHack extends Hack
 {
 	public AntiWobbleHack()
 	{
-		super("AntiWobble");
+		super("反视觉扭曲");
 		setCategory(Category.RENDER);
 	}
 	
