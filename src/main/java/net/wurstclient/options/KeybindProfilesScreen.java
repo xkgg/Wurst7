@@ -47,21 +47,21 @@ public final class KeybindProfilesScreen extends Screen
 		addSelectableChild(listGui);
 		
 		addDrawableChild(
-			ButtonWidget.builder(Text.literal("Open Folder"), b -> openFolder())
+			ButtonWidget.builder(Text.literal("打开文件夹"), b -> openFolder())
 				.dimensions(8, 8, 100, 20).build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("New Profile"),
+			.builder(Text.literal("新建配置文件"),
 				b -> client.setScreen(
 					new EnterProfileNameScreen(this, this::newProfile)))
 			.dimensions(width / 2 - 154, height - 48, 100, 20).build());
 		
 		loadButton = addDrawableChild(
-			ButtonWidget.builder(Text.literal("Load"), b -> loadSelected())
+			ButtonWidget.builder(Text.literal("加载"), b -> loadSelected())
 				.dimensions(width / 2 - 50, height - 48, 100, 20).build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("Cancel"), b -> client.setScreen(prevScreen))
+			.builder(Text.literal("取消"), b -> client.setScreen(prevScreen))
 			.dimensions(width / 2 + 54, height - 48, 100, 20).build());
 	}
 	
@@ -133,13 +133,13 @@ public final class KeybindProfilesScreen extends Screen
 		listGui.render(context, mouseX, mouseY, partialTicks);
 		
 		context.drawCenteredTextWithShadow(client.textRenderer,
-			"Keybind Profiles", width / 2, 12, 0xffffff);
+			"按键绑定配置文件", width / 2, 12, 0xffffff);
 		
 		super.render(context, mouseX, mouseY, partialTicks);
 		
 		if(loadButton.isSelected() && !loadButton.active)
 			context.drawTooltip(textRenderer,
-				Arrays.asList(Text.literal("You must first select a file.")),
+				Arrays.asList(Text.literal("您必须先选择一个文件。")),
 				mouseX, mouseY);
 	}
 	

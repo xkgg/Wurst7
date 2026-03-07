@@ -36,27 +36,27 @@ public class ZoomManagerScreen extends Screen implements PressAKeyCallback
 		CheckboxSetting scroll = zoom.getScrollSetting();
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("Back"), b -> client.setScreen(prevScreen))
+			.builder(Text.literal("返回"), b -> client.setScreen(prevScreen))
 			.dimensions(width / 2 - 100, height / 4 + 144 - 16, 200, 20)
 			.build());
 		
 		addDrawableChild(ButtonWidget
 			.builder(
-				Text.literal("Zoom Key: ")
+				Text.literal("缩放键: ")
 					.append(zoom.getTranslatedKeybindName()),
 				b -> client.setScreen(new PressAKeyScreen(this)))
 			.dimensions(width / 2 - 79, height / 4 + 24 - 16, 158, 20).build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("More"), b -> level.increaseValue())
+			.builder(Text.literal("增加"), b -> level.increaseValue())
 			.dimensions(width / 2 - 79, height / 4 + 72 - 16, 50, 20).build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("Less"), b -> level.decreaseValue())
+			.builder(Text.literal("减少"), b -> level.decreaseValue())
 			.dimensions(width / 2 - 25, height / 4 + 72 - 16, 50, 20).build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("Default"),
+			.builder(Text.literal("默认"),
 				b -> level.setValue(level.getDefaultValue()))
 			.dimensions(width / 2 + 29, height / 4 + 72 - 16, 50, 20).build());
 		
@@ -64,7 +64,7 @@ public class ZoomManagerScreen extends Screen implements PressAKeyCallback
 			scrollButton = ButtonWidget
 				.builder(
 					Text.literal(
-						"Use Mouse Wheel: " + onOrOff(scroll.isChecked())),
+						"使用鼠标滚轮: " + onOrOff(scroll.isChecked())),
 					b -> toggleScroll())
 				.dimensions(width / 2 - 79, height / 4 + 96 - 16, 158, 20)
 				.build());
@@ -99,10 +99,10 @@ public class ZoomManagerScreen extends Screen implements PressAKeyCallback
 		SliderSetting level = zoom.getLevelSetting();
 		
 		renderBackground(context);
-		context.drawCenteredTextWithShadow(textRenderer, "Zoom Manager",
+		context.drawCenteredTextWithShadow(textRenderer, "缩放管理器",
 			width / 2, 40, 0xffffff);
 		context.drawTextWithShadow(textRenderer,
-			"Zoom Level: " + level.getValueString(), width / 2 - 75,
+			"缩放级别: " + level.getValueString(), width / 2 - 75,
 			height / 4 + 44, 0xcccccc);
 		
 		super.render(context, mouseX, mouseY, partialTicks);
