@@ -61,7 +61,13 @@ jobs:
 
     - name: Build
       run: ./gradlew build --stacktrace --warning-mode=fail
-
+      
+    - name: Upload Artifact to GitHub Action
+      uses: actions/upload-artifact@v4
+      with:
+        path: build/libs/*.jar
+        name: build
+        
     - name: Upload to VirusTotal for analysis
       id: virustotal
       env:
