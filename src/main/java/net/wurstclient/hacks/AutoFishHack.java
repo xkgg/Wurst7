@@ -29,59 +29,67 @@ import net.wurstclient.settings.EnumSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"AutoFishing", "auto fishing", "AutoFisher", "auto fisher",
+@SearchTags({"自动钓鱼","AutoFishing", "auto fishing", "AutoFisher", "auto fisher",
 	"AFKFishBot", "afk fish bot", "AFKFishingBot", "afk fishing bot",
 	"AFKFisherBot", "afk fisher bot"})
 public final class AutoFishHack extends Hack
 	implements UpdateListener, PacketInputListener, RenderListener
 {
+	// 咬钩检测模式
 	private final EnumSetting<AutoFishHack.BiteMode> biteMode =
-		new EnumSetting<>("Bite mode",
-			"\u00a7lSound\u00a7r mode detects bites by listening for the bite sound."
-				+ " This method is less accurate, but is more resilient against"
-				+ " anti-cheats. See the \"Valid range\" setting.\n\n"
-				+ "\u00a7lEntity\u00a7r mode detects bites by checking for the"
-				+ " fishing hook's entity update packet. It's more accurate than"
-				+ " the sound method, but is less resilient against anti-cheats.",
+		new EnumSetting<>("咬钩检测模式",
+			"\u00a7l声音\u00a7r模式通过监听咬钩音效检测咬钩。该方式准确性较低，但更难被反作弊检测。"
+				+ " 参考「有效范围」设置项。\n\n"
+				+ "\u00a7l实体\u00a7r模式通过检测钓鱼钩的实体更新数据包来识别咬钩。"
+				+ " 比声音模式更准确，但更容易被反作弊检测。",
 			AutoFishHack.BiteMode.values(), AutoFishHack.BiteMode.SOUND);
 	
-	private final SliderSetting validRange = new SliderSetting("Valid range",
-		"Any bites that occur outside of this range will be ignored.\n\n"
-			+ "Increase your range if bites are not being detected, decrease it"
-			+ " if other people's bites are being detected as yours.\n\n"
-			+ "This setting has no effect when \"Bite mode\" is set to \"Entity\".",
+	// 有效范围（仅声音模式生效）
+	private final SliderSetting validRange = new SliderSetting("有效范围",
+		"超出此范围的咬钩音效将被忽略。\n\n"
+			+ "若咬钩未被检测到，可增大此数值；若检测到他人的咬钩，可减小此数值。\n\n"
+			+ "当「咬钩检测模式」设为「实体」时，此设置无效。",
 		1.5, 0.25, 8, 0.25, ValueDisplay.DECIMAL);
 	
-	private final SliderSetting catchDelay = new SliderSetting("Catch delay",
-		"How long AutoFish will wait after a bite before reeling in.", 0, 0, 60,
-		1, ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
+	// 上钩延迟（检测到咬钩后等待多久收杆）
+	private final SliderSetting catchDelay = new SliderSetting("上钩延迟",
+		"检测到咬钩后，自动钓鱼将等待该时长再收杆。", 0, 0, 60,
+		1, ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1刻"));
 	
-	private final SliderSetting retryDelay = new SliderSetting("Retry delay",
-		"If casting or reeling in the fishing rod fails, this is how long"
-			+ " AutoFish will wait before trying again.",
+	// 重试延迟（抛竿/收杆失败后等待多久重试）
+	private final SliderSetting retryDelay = new SliderSetting("重试延迟",
+		"若抛竿或收杆操作失败，自动钓鱼将等待该时长后重试。",
 		15, 0, 100, 1,
-		ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
+		ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1刻"));
 	
-	private final SliderSetting patience = new SliderSetting("Patience",
-		"How long AutoFish will wait if it doesn't get a bite before reeling in.",
-		60, 10, 120, 1, ValueDisplay.INTEGER.withSuffix("s"));
+	// 耐心值（无咬钩时等待多久收杆重新抛竿）
+	private final SliderSetting patience = new SliderSetting("耐心时长",
+		"若长时间未检测到咬钩，自动钓鱼将等待该时长后收杆。",
+		60, 10, 120, 1, ValueDisplay.INTEGER.withSuffix("秒"));
 	
+	// 浅水区警告开关
 	private final ShallowWaterWarningCheckbox shallowWaterWarning =
 		new ShallowWaterWarningCheckbox();
 	
+	// 钓鱼点管理器（记录/管理钓鱼位置）
 	private final FishingSpotManager fishingSpots = new FishingSpotManager();
+	// 调试绘制器（绘制有效范围、咬钩音效位置等调试信息）
 	private final AutoFishDebugDraw debugDraw =
 		new AutoFishDebugDraw(validRange, fishingSpots);
+	// 鱼竿选择器（自动选择可用的钓鱼竿）
 	private final AutoFishRodSelector rodSelector =
 		new AutoFishRodSelector(this);
 	
+	// 抛竿计时器（控制抛竿重试间隔）
 	private int castRodTimer;
+	// 收杆计时器（控制收杆时机）
 	private int reelInTimer;
+	// 咬钩检测标记
 	private boolean biteDetected;
 	
 	public AutoFishHack()
 	{
-		super("AutoFish");
+		super("自动钓鱼");
 		setCategory(Category.OTHER);
 		addSetting(biteMode);
 		addSetting(validRange);
@@ -97,8 +105,9 @@ public final class AutoFishHack extends Hack
 	@Override
 	public String getRenderName()
 	{
+		// 无可用鱼竿时，在功能名称后标注
 		if(rodSelector.isOutOfRods())
-			return getName() + " [out of rods]";
+			return getName() + " [无可用鱼竿]";
 		
 		return getName();
 	}
@@ -106,17 +115,21 @@ public final class AutoFishHack extends Hack
 	@Override
 	protected void onEnable()
 	{
+		// 重置计时器和状态标记
 		castRodTimer = 0;
 		reelInTimer = 0;
 		biteDetected = false;
+		// 重置子模块状态
 		rodSelector.reset();
 		debugDraw.reset();
 		fishingSpots.reset();
 		shallowWaterWarning.reset();
 		
+		// 禁用冲突功能
 		WURST.getHax().antiAfkHack.setEnabled(false);
 		WURST.getHax().aimAssistHack.setEnabled(false);
 		
+		// 注册事件监听器
 		EVENTS.add(UpdateListener.class, this);
 		EVENTS.add(PacketInputListener.class, this);
 		EVENTS.add(RenderListener.class, this);
@@ -125,6 +138,7 @@ public final class AutoFishHack extends Hack
 	@Override
 	protected void onDisable()
 	{
+		// 注销事件监听器
 		EVENTS.remove(UpdateListener.class, this);
 		EVENTS.remove(PacketInputListener.class, this);
 		EVENTS.remove(RenderListener.class, this);
@@ -133,47 +147,55 @@ public final class AutoFishHack extends Hack
 	@Override
 	public void onUpdate()
 	{
-		// update timers
+		// 更新计时器（递减）
 		if(castRodTimer > 0)
 			castRodTimer--;
 		if(reelInTimer > 0)
 			reelInTimer--;
 		
-		// update inventory
+		// 更新鱼竿状态（无可用鱼竿则直接返回）
 		if(!rodSelector.update())
 			return;
 		
-		// if not fishing, cast rod
+		// 未在钓鱼：执行抛竿操作
 		if(!isFishing())
 		{
+			// 抛竿冷却中：跳过
 			if(castRodTimer > 0)
 				return;
 			
+			// 设置收杆计时器（耐心时长，转换为刻：秒×20）
 			reelInTimer = 20 * patience.getValueI();
+			// 钓鱼点管理器记录抛竿操作（失败则跳过）
 			if(!fishingSpots.onCast())
 				return;
 			
+			// 执行抛竿
 			MC.doItemUse();
+			// 设置抛竿重试延迟
 			castRodTimer = retryDelay.getValueI();
 			return;
 		}
 		
-		// if a bite was detected, check water type and reel in
+		// 检测到咬钩：检查水域类型并设置收杆延迟
 		if(biteDetected)
 		{
 			shallowWaterWarning.checkWaterType();
 			reelInTimer = catchDelay.getValueI();
+			// 钓鱼点管理器记录咬钩位置
 			fishingSpots.onBite(MC.player.fishHook);
+			// 重置咬钩标记
 			biteDetected = false;
 			
-			// also reel in if an entity was hooked
+		// 鱼钩勾到实体：直接设置收杆延迟
 		}else if(MC.player.fishHook.getHookedEntity() != null)
 			reelInTimer = catchDelay.getValueI();
 		
-		// otherwise, reel in when the timer runs out
+		// 收杆计时器归零：执行收杆操作
 		if(reelInTimer == 0)
 		{
 			MC.doItemUse();
+			// 设置收杆/抛竿重试延迟
 			reelInTimer = retryDelay.getValueI();
 			castRodTimer = retryDelay.getValueI();
 		}
@@ -182,6 +204,7 @@ public final class AutoFishHack extends Hack
 	@Override
 	public void onReceivedPacket(PacketInputEvent event)
 	{
+		// 根据选中的咬钩检测模式处理数据包
 		switch(biteMode.getSelected())
 		{
 			case SOUND -> processSoundUpdate(event);
@@ -189,62 +212,78 @@ public final class AutoFishHack extends Hack
 		}
 	}
 	
+	/**
+	 * 处理声音模式的数据包（检测咬钩音效）
+	 * @param event 数据包输入事件
+	 */
 	private void processSoundUpdate(PacketInputEvent event)
 	{
-		// check packet type
+		// 过滤非音效数据包
 		if(!(event.getPacket() instanceof PlaySoundS2CPacket sound))
 			return;
 		
-		// check sound type
+		// 过滤非咬钩溅水音效
 		if(!SoundEvents.ENTITY_FISHING_BOBBER_SPLASH
 			.equals(sound.getSound().value()))
 			return;
 		
-		// check if player is fishing
+		// 玩家未在钓鱼：跳过
 		if(!isFishing())
 			return;
 		
-		// register sound position
+		// 更新音效位置（用于调试绘制）
 		debugDraw.updateSoundPos(sound);
 		
-		// check sound position (Chebyshev distance)
+		// 计算音效与鱼钩的切比雪夫距离（仅检测X/Z轴）
 		Vec3d bobber = MC.player.fishHook.getPos();
 		double dx = Math.abs(sound.getX() - bobber.getX());
 		double dz = Math.abs(sound.getZ() - bobber.getZ());
+		// 超出有效范围：跳过
 		if(Math.max(dx, dz) > validRange.getValue())
 			return;
 		
+		// 标记检测到咬钩
 		biteDetected = true;
 	}
 	
+	/**
+	 * 处理实体模式的数据包（检测鱼钩实体更新）
+	 * @param event 数据包输入事件
+	 */
 	private void processEntityUpdate(PacketInputEvent event)
 	{
-		// check packet type
+		// 过滤非实体追踪更新数据包
 		if(!(event.getPacket() instanceof EntityTrackerUpdateS2CPacket update))
 			return;
 		
-		// check if the entity is a bobber
+		// 过滤非钓鱼钩实体
 		if(!(MC.world
 			.getEntityById(update.id()) instanceof FishingBobberEntity bobber))
 			return;
 		
-		// check if it's our bobber
+		// 过滤非玩家自身的鱼钩
 		if(bobber != MC.player.fishHook)
 			return;
 		
-		// check if player is fishing
+		// 玩家未在钓鱼：跳过
 		if(!isFishing())
 			return;
 		
+		// 标记检测到咬钩
 		biteDetected = true;
 	}
 	
 	@Override
 	public void onRender(MatrixStack matrixStack, float partialTicks)
 	{
+		// 绘制调试信息（有效范围、音效位置等）
 		debugDraw.render(matrixStack, partialTicks);
 	}
 	
+	/**
+	 * 判断玩家是否正在钓鱼
+	 * @return 钓鱼状态
+	 */
 	private boolean isFishing()
 	{
 		ClientPlayerEntity player = MC.player;
@@ -253,10 +292,13 @@ public final class AutoFishHack extends Hack
 			&& player.getMainHandStack().isOf(Items.FISHING_ROD);
 	}
 	
+	/**
+	 * 咬钩检测模式枚举
+	 */
 	private enum BiteMode
 	{
-		SOUND("Sound"),
-		ENTITY("Entity");
+		SOUND("声音"),
+		ENTITY("实体");
 		
 		private final String name;
 		

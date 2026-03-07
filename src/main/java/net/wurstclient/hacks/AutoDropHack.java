@@ -18,12 +18,12 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.ItemListSetting;
 
-@SearchTags({"auto drop", "AutoEject", "auto-eject", "auto eject",
+@SearchTags({"自动丢弃", "auto drop", "AutoEject", "auto-eject", "auto eject",
 	"InventoryCleaner", "inventory cleaner", "InvCleaner", "inv cleaner"})
 public final class AutoDropHack extends Hack implements UpdateListener
 {
-	private ItemListSetting items = new ItemListSetting("Items",
-		"Unwanted items that will be dropped.", "minecraft:allium",
+private ItemListSetting items = new ItemListSetting("清理物品列表",
+		"将会被丢弃的不需要的物品。", "minecraft:allium",
 		"minecraft:azure_bluet", "minecraft:blue_orchid",
 		"minecraft:cornflower", "minecraft:dandelion", "minecraft:lilac",
 		"minecraft:lily_of_the_valley", "minecraft:orange_tulip",
@@ -37,7 +37,7 @@ public final class AutoDropHack extends Hack implements UpdateListener
 	
 	public AutoDropHack()
 	{
-		super("AutoDrop");
+		super("自动丢弃");
 		setCategory(Category.ITEMS);
 		addSetting(items);
 	}
