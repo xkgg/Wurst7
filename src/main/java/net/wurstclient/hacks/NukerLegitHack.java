@@ -39,12 +39,12 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.OverlayRenderer;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"LegitNuker", "nuker legit", "legit nuker"})
+@SearchTags({"合法破坏者", "LegitNuker", "nuker legit", "legit nuker"})
 public final class NukerLegitHack extends Hack
 	implements UpdateListener, HandleBlockBreakingListener, RenderListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 4.25, 1, 4.5, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 4.25, 1, 4.5, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CommonNukerSettings commonSettings =
 		new CommonNukerSettings();
@@ -58,7 +58,7 @@ public final class NukerLegitHack extends Hack
 	
 	public NukerLegitHack()
 	{
-		super("NukerLegit");
+		super("合法破坏者");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		commonSettings.getSettings().forEach(this::addSetting);

@@ -10,19 +10,21 @@ package net.wurstclient.hacks;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.events.RightClickListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
+@SearchTags({"投掷", "throw"})
 public final class ThrowHack extends Hack implements RightClickListener
 {
-	private final SliderSetting amount = new SliderSetting("Amount",
-		"Amount of uses per click.", 16, 2, 1000000, 1, ValueDisplay.INTEGER);
+	private final SliderSetting amount = new SliderSetting("数量",
+		"每次点击的使用次数。", 16, 2, 1000000, 1, ValueDisplay.INTEGER);
 	
 	public ThrowHack()
 	{
-		super("Throw");
+		super("投掷");
 		
 		setCategory(Category.OTHER);
 		addSetting(amount);

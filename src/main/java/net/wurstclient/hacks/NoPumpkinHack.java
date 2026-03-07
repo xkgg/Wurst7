@@ -11,12 +11,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"no pumpkin", "AntiPumpkin", "anti pumpkin"})
+@SearchTags({"无南瓜头", "no pumpkin", "AntiPumpkin", "anti pumpkin"})
 public final class NoPumpkinHack extends Hack
 {
 	public NoPumpkinHack()
 	{
-		super("NoPumpkin");
+		super("无南瓜头");
 		setCategory(Category.RENDER);
 	}
 	

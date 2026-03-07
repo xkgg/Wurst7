@@ -25,30 +25,30 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.mixinterface.IKeyBinding;
 import net.wurstclient.settings.CheckboxSetting;
 
-@SearchTags({"inv walk", "inventory walk", "InvMove", "inv move",
+@SearchTags({"背包行走", "inv walk", "inventory walk", "InvMove", "inv move",
 	"inventory move", "MenuWalk", "menu walk"})
 public final class InvWalkHack extends Hack implements UpdateListener
 {
 	private final CheckboxSetting allowClickGUI =
-		new CheckboxSetting("Allow ClickGUI",
+		new CheckboxSetting("允许ClickGUI",
 			"description.wurst.setting.invwalk.allow_clickgui", true);
 	
 	private final CheckboxSetting allowOther =
-		new CheckboxSetting("Allow other screens",
+		new CheckboxSetting("允许其他界面",
 			"description.wurst.setting.invwalk.allow_other", true);
 	
 	private final CheckboxSetting allowSneak =
-		new CheckboxSetting("Allow sneak key", true);
+		new CheckboxSetting("允许潜行键", true);
 	
 	private final CheckboxSetting allowSprint =
-		new CheckboxSetting("Allow sprint key", true);
+		new CheckboxSetting("允许冲刺键", true);
 	
 	private final CheckboxSetting allowJump =
-		new CheckboxSetting("Allow jump key", true);
+		new CheckboxSetting("允许跳跃键", true);
 	
 	public InvWalkHack()
 	{
-		super("InvWalk");
+		super("背包行走");
 		setCategory(Category.MOVEMENT);
 		addSetting(allowClickGUI);
 		addSetting(allowOther);

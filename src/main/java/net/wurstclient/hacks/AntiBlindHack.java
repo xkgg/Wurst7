@@ -11,7 +11,7 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"AntiBlindness", "NoBlindness", "anti blindness", "no blindness",
+@SearchTags({"阻止失明", "AntiBlindness", "NoBlindness", "anti blindness", "no blindness",
 	"AntiDarkness", "NoDarkness", "anti darkness", "no darkness",
 	"AntiWardenEffect", "anti warden effect", "NoWardenEffect",
 	"no warden effect"})

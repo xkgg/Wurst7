@@ -11,11 +11,13 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.events.RenderListener;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.util.OverlayRenderer;
 
+@SearchTags({"覆盖", "overlay"})
 public final class OverlayHack extends Hack
 	implements UpdateListener, RenderListener
 {
@@ -23,7 +25,7 @@ public final class OverlayHack extends Hack
 	
 	public OverlayHack()
 	{
-		super("Overlay");
+		super("覆盖");
 		setCategory(Category.RENDER);
 	}
 	

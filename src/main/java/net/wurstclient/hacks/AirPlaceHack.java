@@ -27,7 +27,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.InteractionSimulator;
 import net.wurstclient.util.RenderUtils;
 
-@SearchTags({"air place"})
+@SearchTags({"空中放置", "air place"})
 public final class AirPlaceHack extends Hack
 	implements RightClickListener, UpdateListener, RenderListener
 {

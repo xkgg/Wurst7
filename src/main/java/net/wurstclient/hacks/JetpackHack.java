@@ -12,12 +12,12 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"jet pack", "AirJump", "air jump"})
+@SearchTags({"喷气背包", "jet pack", "AirJump", "air jump"})
 public final class JetpackHack extends Hack implements UpdateListener
 {
 	public JetpackHack()
 	{
-		super("Jetpack");
+		super("喷气背包");
 		
 		setCategory(Category.MOVEMENT);
 	}

@@ -19,6 +19,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.events.RenderListener;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
@@ -37,6 +38,7 @@ import net.wurstclient.util.RegionPos;
 import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.chunk.ChunkUtils;
 
+@SearchTags({"新区块", "new chunks"})
 public final class NewChunksHack extends Hack
 	implements UpdateListener, RenderListener
 {
@@ -45,31 +47,31 @@ public final class NewChunksHack extends Hack
 	private final NewChunksShowSetting show = new NewChunksShowSetting();
 	
 	private final CheckboxSetting showReasons = new CheckboxSetting(
-		"Show reasons",
-		"Highlights the block that caused each chunk to be marked as new/old.",
+		"显示原因",
+		"高亮显示导致每个区块被标记为新/旧的方块。",
 		false);
 	
 	private final CheckboxSetting showCounter =
-		new CheckboxSetting("Show counter",
-			"Shows the number of new/old chunks found so far.", false);
+		new CheckboxSetting("显示计数器",
+			"显示到目前为止找到的新/旧区块数量。", false);
 	
 	private final SliderSetting altitude =
-		new SliderSetting("Altitude", 0, -64, 320, 1, ValueDisplay.INTEGER);
+		new SliderSetting("高度", 0, -64, 320, 1, ValueDisplay.INTEGER);
 	
 	private final SliderSetting drawDistance =
-		new SliderSetting("Draw distance", 32, 8, 64, 1, ValueDisplay.INTEGER);
+		new SliderSetting("绘制距离", 32, 8, 64, 1, ValueDisplay.INTEGER);
 	
-	private final SliderSetting opacity = new SliderSetting("Opacity", 0.75,
+	private final SliderSetting opacity = new SliderSetting("不透明度", 0.75,
 		0.1, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
 	private final ColorSetting newChunksColor =
-		new ColorSetting("New chunks color", Color.RED);
+		new ColorSetting("新区块颜色", Color.RED);
 	
 	private final ColorSetting oldChunksColor =
-		new ColorSetting("Old chunks color", Color.BLUE);
+		new ColorSetting("旧区块颜色", Color.BLUE);
 	
-	private final CheckboxSetting logChunks = new CheckboxSetting("Log chunks",
-		"Writes to the log file when a new/old chunk is found.", false);
+	private final CheckboxSetting logChunks = new CheckboxSetting("记录区块",
+		"当找到新/旧区块时写入日志文件。", false);
 	
 	private final Set<ChunkPos> newChunks = ConcurrentHashMap.newKeySet();
 	private final Set<ChunkPos> oldChunks = ConcurrentHashMap.newKeySet();
@@ -88,7 +90,7 @@ public final class NewChunksHack extends Hack
 	
 	public NewChunksHack()
 	{
-		super("NewChunks");
+		super("新区块");
 		setCategory(Category.RENDER);
 		addSetting(style);
 		addSetting(show);

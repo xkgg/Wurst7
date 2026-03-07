@@ -32,6 +32,7 @@ private ItemListSetting items = new ItemListSetting("清理物品列表",
 		"minecraft:rose_bush", "minecraft:rotten_flesh", "minecraft:sunflower",
 		"minecraft:wheat_seeds", "minecraft:white_tulip");
 	
+	// 1%的概率将名称显示为"AutoLinus"
 	private final String renderName =
 		Math.random() < 0.01 ? "AutoLinus" : getName();
 	
@@ -51,39 +52,49 @@ private ItemListSetting items = new ItemListSetting("清理物品列表",
 	@Override
 	protected void onEnable()
 	{
+		// 注册更新事件监听器
 		EVENTS.add(UpdateListener.class, this);
 	}
 	
 	@Override
 	protected void onDisable()
 	{
+		// 注销更新事件监听器
 		EVENTS.remove(UpdateListener.class, this);
 	}
 	
 	@Override
 	public void onUpdate()
 	{
-		// check screen
+		// 检查当前界面：仅在物品栏或无界面时工作
 		if(MC.currentScreen instanceof HandledScreen
 			&& !(MC.currentScreen instanceof InventoryScreen))
 			return;
 		
+		// 遍历背包槽位（9-44）
 		for(int slot = 9; slot < 45; slot++)
 		{
+			// 调整槽位索引（将36-44映射到0-8）
 			int adjustedSlot = slot;
 			if(adjustedSlot >= 36)
 				adjustedSlot -= 36;
+			
+			// 获取物品栈
 			ItemStack stack = MC.player.getInventory().getStack(adjustedSlot);
 			
+			// 跳过空物品槽
 			if(stack.isEmpty())
 				continue;
 			
+			// 获取物品ID
 			Item item = stack.getItem();
 			String itemName = Registries.ITEM.getId(item).toString();
 			
+			// 跳过不在清理列表中的物品
 			if(!items.getItemNames().contains(itemName))
 				continue;
 			
+			// 执行丢弃操作
 			IMC.getInteractionManager().windowClick_THROW(slot);
 		}
 	}

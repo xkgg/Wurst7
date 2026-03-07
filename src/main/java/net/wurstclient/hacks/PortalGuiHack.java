@@ -11,12 +11,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"portal gui"})
+@SearchTags({"传送门界面", "portal gui"})
 public final class PortalGuiHack extends Hack
 {
 	public PortalGuiHack()
 	{
-		super("PortalGUI");
+		super("传送门界面");
 		setCategory(Category.OTHER);
 	}
 	

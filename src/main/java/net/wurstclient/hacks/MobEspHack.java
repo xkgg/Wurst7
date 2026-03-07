@@ -33,15 +33,15 @@ import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RenderUtils.ColoredBox;
 import net.wurstclient.util.RenderUtils.ColoredPoint;
 
-@SearchTags({"mob esp", "MobTracers", "mob tracers"})
+@SearchTags({"生物ESP", "mob esp", "MobTracers", "mob tracers"})
 public final class MobEspHack extends Hack implements UpdateListener,
 	CameraTransformViewBobbingListener, RenderListener
 {
 	private final EspStyleSetting style = new EspStyleSetting();
 	
 	private final EspBoxSizeSetting boxSize = new EspBoxSizeSetting(
-		"\u00a7lAccurate\u00a7r mode shows the exact hitbox of each mob.\n"
-			+ "\u00a7lFancy\u00a7r mode shows slightly larger boxes that look better.");
+		"\u00a7l精确\u00a7r 模式显示每个生物的确切碰撞箱。\n"
+			+ "\u00a7l精美\u00a7r 模式显示稍大的方块，看起来更好。");
 	
 	private final EntityFilterList entityFilters =
 		new EntityFilterList(FilterHostileSetting.genericVision(false),
@@ -71,7 +71,7 @@ public final class MobEspHack extends Hack implements UpdateListener,
 	
 	public MobEspHack()
 	{
-		super("MobESP");
+		super("生物ESP");
 		setCategory(Category.RENDER);
 		addSetting(style);
 		addSetting(boxSize);

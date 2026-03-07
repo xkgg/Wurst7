@@ -46,25 +46,25 @@ import net.wurstclient.util.chunk.ChunkSearcher;
 import net.wurstclient.util.chunk.ChunkSearcher.Result;
 import net.wurstclient.util.chunk.ChunkVertexBufferCoordinator;
 
-@SearchTags({"mob spawn esp", "LightLevelESP", "light level esp",
+@SearchTags({"生物生成ESP", "mob spawn esp", "LightLevelESP", "light level esp",
 	"LightLevelOverlay", "light level overlay"})
 public final class MobSpawnEspHack extends Hack
 	implements UpdateListener, RenderListener
 {
 	private final ChunkAreaSetting drawDistance =
-		new ChunkAreaSetting("Draw distance", "", ChunkArea.A9);
+		new ChunkAreaSetting("绘制距离", "", ChunkArea.A9);
 	
-	private final ColorSetting nightColor = new ColorSetting("Night color",
+	private final ColorSetting nightColor = new ColorSetting("夜晚颜色",
 		"description.wurst.setting.mobspawnesp.night_color", Color.YELLOW);
 	
-	private final ColorSetting dayColor = new ColorSetting("Day color",
+	private final ColorSetting dayColor = new ColorSetting("白天颜色",
 		"description.wurst.setting.mobspawnesp.day_color", Color.RED);
 	
 	private final SliderSetting opacity =
-		new SliderSetting("Opacity", 0.5, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
+		new SliderSetting("不透明度", 0.5, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
 	private final CheckboxSetting depthTest =
-		new CheckboxSetting("Depth test", true);
+		new CheckboxSetting("深度测试", true);
 	
 	private final HitboxCheckSetting hitboxCheck = new HitboxCheckSetting();
 	
@@ -77,7 +77,7 @@ public final class MobSpawnEspHack extends Hack
 	
 	public MobSpawnEspHack()
 	{
-		super("MobSpawnESP");
+		super("生物生成ESP");
 		setCategory(Category.RENDER);
 		addSetting(drawDistance);
 		addSetting(nightColor);

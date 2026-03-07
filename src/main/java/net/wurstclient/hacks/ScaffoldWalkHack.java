@@ -26,13 +26,13 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"scaffold walk", "BridgeWalk", "bridge walk", "AutoBridge",
+@SearchTags({"自动搭路", "scaffold walk", "BridgeWalk", "bridge walk", "AutoBridge",
 	"auto bridge", "tower"})
 public final class ScaffoldWalkHack extends Hack implements UpdateListener
 {
 	public ScaffoldWalkHack()
 	{
-		super("ScaffoldWalk");
+		super("自动搭路");
 		setCategory(Category.BLOCKS);
 	}
 	

@@ -42,21 +42,21 @@ import net.wurstclient.util.RotationUtils;
 import net.wurstclient.util.chunk.ChunkSearcher;
 import net.wurstclient.util.chunk.ChunkSearcherCoordinator;
 
-@SearchTags({"BlockESP", "block esp"})
+@SearchTags({"搜索", "BlockESP", "block esp"})
 public final class SearchHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final BlockSetting block = new BlockSetting("Block",
-		"The type of block to search for.", "minecraft:diamond_ore", false);
+	private final BlockSetting block = new BlockSetting("方块",
+		"要搜索的方块类型。", "minecraft:diamond_ore", false);
 	private Block lastBlock;
 	
-	private final ChunkAreaSetting area = new ChunkAreaSetting("Area",
-		"The area around the player to search in.\n"
-			+ "Higher values require a faster computer.");
+	private final ChunkAreaSetting area = new ChunkAreaSetting("区域",
+		"玩家周围要搜索的区域。\n"
+			+ "值越高，需要更快的计算机。");
 	
-	private final SliderSetting limit = new SliderSetting("Limit",
-		"The maximum number of blocks to display.\n"
-			+ "Higher values require a faster computer.",
+	private final SliderSetting limit = new SliderSetting("限制",
+		"要显示的最大方块数量。\n"
+			+ "值越高，需要更快的计算机。",
 		4, 3, 6, 1, ValueDisplay.LOGARITHMIC);
 	private int prevLimit;
 	private boolean notify;
@@ -74,7 +74,7 @@ public final class SearchHack extends Hack
 	
 	public SearchHack()
 	{
-		super("Search");
+		super("搜索");
 		setCategory(Category.RENDER);
 		addSetting(block);
 		addSetting(area);
@@ -226,9 +226,9 @@ public final class SearchHack extends Hack
 			notify = true;
 		else if(notify)
 		{
-			ChatUtils.warning("Search found \u00a7lA LOT\u00a7r of blocks!"
-				+ " To prevent lag, it will only show the closest \u00a76"
-				+ limit.getValueString() + "\u00a7r results.");
+			ChatUtils.warning("搜索找到 \u00a7l大量\u00a7r 方块！"
+				+ " 为防止卡顿，只会显示最近的 \u00a76"
+				+ limit.getValueString() + "\u00a7r 个结果。");
 			notify = false;
 		}
 		

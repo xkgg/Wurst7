@@ -15,14 +15,14 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"SpookySkin", "spooky skin", "SkinBlinker", "skin blinker"})
+@SearchTags({"皮肤闪烁", "SpookySkin", "spooky skin", "SkinBlinker", "skin blinker"})
 public final class SkinDerpHack extends Hack implements UpdateListener
 {
 	private final Random random = new Random();
 	
 	public SkinDerpHack()
 	{
-		super("SkinDerp");
+		super("皮肤闪烁");
 		setCategory(Category.FUN);
 	}
 	

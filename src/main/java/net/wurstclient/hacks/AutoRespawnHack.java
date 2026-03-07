@@ -14,16 +14,15 @@ import net.wurstclient.events.DeathListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 
-@SearchTags({"auto respawn", "AutoRevive", "auto revive"})
+@SearchTags({"自动重生", "auto respawn", "AutoRevive", "auto revive"})
 public final class AutoRespawnHack extends Hack implements DeathListener
 {
 	private final CheckboxSetting button =
-		new CheckboxSetting("Death screen button", "Shows a button on the death"
-			+ " screen that lets you quickly enable AutoRespawn.", true);
+		new CheckboxSetting("死亡界面按钮", "在死亡界面显示一个按钮，让你快速启用自动重生。", true);
 	
 	public AutoRespawnHack()
 	{
-		super("AutoRespawn");
+		super("自动重生");
 		setCategory(Category.COMBAT);
 		addSetting(button);
 	}

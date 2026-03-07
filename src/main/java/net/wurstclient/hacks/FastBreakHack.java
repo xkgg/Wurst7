@@ -23,25 +23,23 @@ import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.BlockUtils;
 
-@SearchTags({"FastMine", "SpeedMine", "SpeedyGonzales", "fast break",
+@SearchTags({"快速挖掘", "FastMine", "SpeedMine", "SpeedyGonzales", "fast break",
 	"fast mine", "speed mine", "speedy gonzales", "NoBreakDelay",
 	"no break delay"})
 public final class FastBreakHack extends Hack
 	implements UpdateListener, BlockBreakingProgressListener
 {
 	private final SliderSetting activationChance = new SliderSetting(
-		"Activation chance",
-		"Only FastBreaks some of the blocks you break with the given chance,"
-			+ " which makes it harder for anti-cheat plugins to detect.\n\n"
-			+ "This setting does nothing if Legit mode is enabled.",
+		"触发概率",
+		"只以给定的概率快速挖掘你打破的部分方块，"
+			+ "这使得反作弊插件更难检测到。\n\n"
+			+ "如果启用了合法模式，此设置无效。",
 		1, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
-	private final CheckboxSetting legitMode = new CheckboxSetting("Legit mode",
-		"Only removes the delay between breaking blocks, without speeding up"
-			+ " the breaking process itself.\n\n"
-			+ "This is much slower, but great at bypassing anti-cheat plugins."
-			+ " Use this if regular FastBreak is not working and the Activation"
-			+ " chance slider doesn't help.",
+	private final CheckboxSetting legitMode = new CheckboxSetting("合法模式",
+		"仅移除破坏方块之间的延迟，而不加快破坏过程本身。\n\n"
+			+ "这要慢得多，但在绕过反作弊插件方面非常有效。"
+			+ "如果常规快速挖掘不起作用且触发概率滑块没有帮助，请使用此选项。",
 		false);
 	
 	private final Random random = new Random();
@@ -50,7 +48,7 @@ public final class FastBreakHack extends Hack
 	
 	public FastBreakHack()
 	{
-		super("FastBreak");
+		super("快速挖掘");
 		setCategory(Category.BLOCKS);
 		addSetting(activationChance);
 		addSetting(legitMode);
@@ -60,7 +58,7 @@ public final class FastBreakHack extends Hack
 	public String getRenderName()
 	{
 		if(legitMode.isChecked())
-			return getName() + "Legit";
+			return getName() + "合法";
 		return getName();
 	}
 	

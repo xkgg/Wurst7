@@ -38,28 +38,28 @@ import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"feed aura", "BreedAura", "breed aura", "AutoBreeder",
+@SearchTags({"自动喂食", "feed aura", "BreedAura", "breed aura", "AutoBreeder",
 	"auto breeder"})
 public final class FeedAuraHack extends Hack
 	implements UpdateListener, HandleInputListener, RenderListener
 {
-	private final SliderSetting range = new SliderSetting("Range",
-		"Determines how far FeedAura will reach to feed animals.\n"
-			+ "Anything that is further away than the specified value will not be fed.",
+	private final SliderSetting range = new SliderSetting("范围",
+		"决定自动喂食可以喂食动物的距离。\n"
+			+ "任何超出指定值的动物都不会被喂食。",
 		5, 1, 10, 0.05, ValueDisplay.DECIMAL);
 	
 	private final FilterBabiesSetting filterBabies =
-		new FilterBabiesSetting("Won't feed baby animals.\n"
-			+ "Saves food, but doesn't speed up baby growth.", true);
+		new FilterBabiesSetting("不会喂食幼年动物。\n"
+			+ "节省食物，但不会加速幼年动物的生长。", true);
 	
 	private final CheckboxSetting filterUntamed =
-		new CheckboxSetting("Filter untamed",
-			"Won't feed tameable animals that haven't been tamed yet.", false);
+		new CheckboxSetting("过滤未驯服",
+			"不会喂食尚未被驯服的可驯服动物。", false);
 	
 	private final CheckboxSetting filterHorses = new CheckboxSetting(
-		"Filter horse-like animals",
-		"Won't feed horses, llamas, donkeys, etc.\n"
-			+ "Recommended due to Minecraft bug MC-233276, which causes these animals to consume items indefinitely.",
+		"过滤马类动物",
+		"不会喂食马、羊驼、驴等。\n"
+			+ "推荐使用，因为Minecraft bug MC-233276会导致这些动物无限消耗物品。",
 		true);
 	
 	private final Random random = new Random();
@@ -68,7 +68,7 @@ public final class FeedAuraHack extends Hack
 	
 	public FeedAuraHack()
 	{
-		super("FeedAura");
+		super("自动喂食");
 		setCategory(Category.OTHER);
 		addSetting(range);
 		addSetting(filterBabies);

@@ -14,19 +14,19 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 
-@SearchTags({"auto sprint"})
+@SearchTags({"自动冲刺", "auto sprint"})
 public final class AutoSprintHack extends Hack implements UpdateListener
 {
 	private final CheckboxSetting allDirections =
-		new CheckboxSetting("Omnidirectional Sprint",
-			"Sprint in all directions, not just forward.", false);
+		new CheckboxSetting("全方位冲刺",
+			"向所有方向冲刺，而不仅仅是向前。", false);
 	
-	private final CheckboxSetting hungry = new CheckboxSetting("Hungry Sprint",
-		"Sprint even on low hunger.", false);
+	private final CheckboxSetting hungry = new CheckboxSetting("饥饿时冲刺",
+		"即使在低饥饿度时也冲刺。", false);
 	
 	public AutoSprintHack()
 	{
-		super("AutoSprint");
+		super("自动冲刺");
 		setCategory(Category.MOVEMENT);
 		addSetting(allDirections);
 		addSetting(hungry);

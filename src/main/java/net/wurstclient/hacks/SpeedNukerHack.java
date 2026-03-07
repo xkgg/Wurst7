@@ -30,12 +30,12 @@ import net.wurstclient.util.BlockBreaker;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"speed nuker", "FastNuker", "fast nuker"})
+@SearchTags({"快速挖掘", "speed nuker", "FastNuker", "fast nuker"})
 @DontSaveState
 public final class SpeedNukerHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CommonNukerSettings commonSettings =
 		new CommonNukerSettings();
@@ -45,7 +45,7 @@ public final class SpeedNukerHack extends Hack implements UpdateListener
 	
 	public SpeedNukerHack()
 	{
-		super("SpeedNuker");
+		super("快速挖掘");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		commonSettings.getSettings().forEach(this::addSetting);

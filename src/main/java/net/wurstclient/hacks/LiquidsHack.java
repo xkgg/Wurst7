@@ -8,14 +8,16 @@
 package net.wurstclient.hacks;
 
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.events.HitResultRayTraceListener;
 import net.wurstclient.hack.Hack;
 
+@SearchTags({"液体", "liquids"})
 public final class LiquidsHack extends Hack implements HitResultRayTraceListener
 {
 	public LiquidsHack()
 	{
-		super("Liquids");
+		super("液体");
 		setCategory(Category.BLOCKS);
 	}
 	

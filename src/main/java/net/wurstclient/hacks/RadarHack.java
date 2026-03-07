@@ -30,16 +30,16 @@ import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.settings.filters.*;
 import net.wurstclient.util.FakePlayerEntity;
 
-@SearchTags({"MiniMap", "mini map"})
+@SearchTags({"雷达", "MiniMap", "mini map"})
 public final class RadarHack extends Hack implements UpdateListener
 {
 	private final Window window;
 	private final ArrayList<Entity> entities = new ArrayList<>();
 	
-	private final SliderSetting radius = new SliderSetting("Radius",
-		"Radius in blocks.", 100, 1, 100, 1, ValueDisplay.INTEGER);
+	private final SliderSetting radius = new SliderSetting("半径",
+		"以方块为单位的半径。", 100, 1, 100, 1, ValueDisplay.INTEGER);
 	private final CheckboxSetting rotate =
-		new CheckboxSetting("Rotate with player", true);
+		new CheckboxSetting("随玩家旋转", true);
 	
 	private final EntityFilterList entityFilters =
 		new EntityFilterList(FilterPlayersSetting.genericVision(false),
@@ -53,14 +53,14 @@ public final class RadarHack extends Hack implements UpdateListener
 	
 	public RadarHack()
 	{
-		super("Radar");
+		super("雷达");
 		
 		setCategory(Category.RENDER);
 		addSetting(radius);
 		addSetting(rotate);
 		entityFilters.forEach(this::addSetting);
 		
-		window = new Window("Radar");
+		window = new Window("雷达");
 		window.setPinned(true);
 		window.setInvisible(true);
 		window.add(new RadarComponent(this));

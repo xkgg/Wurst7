@@ -16,19 +16,19 @@ import net.wurstclient.events.PlayerAttacksEntityListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.EnumSetting;
 
-@SearchTags({"Crits"})
+@SearchTags({"暴击", "Crits"})
 public final class CriticalsHack extends Hack
 	implements PlayerAttacksEntityListener
 {
-	private final EnumSetting<Mode> mode = new EnumSetting<>("Mode",
-		"\u00a7lPacket\u00a7r mode sends packets to server without actually moving you at all.\n\n"
-			+ "\u00a7lMini Jump\u00a7r mode does a tiny jump that is just enough to get a critical hit.\n\n"
-			+ "\u00a7lFull Jump\u00a7r mode makes you jump normally.",
+	private final EnumSetting<Mode> mode = new EnumSetting<>("模式",
+		"\u00a7l数据包\u00a7r 模式发送数据包到服务器，而不会实际移动你。\n\n"
+			+ "\u00a7l小跳\u00a7r 模式进行一个微小的跳跃，刚好足以获得暴击。\n\n"
+			+ "\u00a7l全跳\u00a7r 模式让你正常跳跃。",
 		Mode.values(), Mode.PACKET);
 	
 	public CriticalsHack()
 	{
-		super("Criticals");
+		super("暴击");
 		setCategory(Category.COMBAT);
 		addSetting(mode);
 	}
@@ -108,9 +108,9 @@ public final class CriticalsHack extends Hack
 	
 	private enum Mode
 	{
-		PACKET("Packet"),
-		MINI_JUMP("Mini Jump"),
-		FULL_JUMP("Full Jump");
+		PACKET("数据包"),
+		MINI_JUMP("小跳"),
+		FULL_JUMP("全跳");
 		
 		private final String name;
 		

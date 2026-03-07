@@ -33,38 +33,38 @@ import net.wurstclient.util.InteractionSimulator;
 import net.wurstclient.util.InventoryUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"bonemeal aura", "bone meal aura", "AutoBonemeal", "auto bonemeal",
+@SearchTags({"骨粉光环", "bonemeal aura", "bone meal aura", "AutoBonemeal", "auto bonemeal",
 	"auto bone meal", "fertilizer"})
 public final class BonemealAuraHack extends Hack implements HandleInputListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final EnumSetting<Mode> mode = new EnumSetting<>("Mode",
-		"\u00a7lFast\u00a7r mode can use bone meal on multiple blocks at once.\n"
-			+ "\u00a7lLegit\u00a7r mode can bypass NoCheat+.",
+	private final EnumSetting<Mode> mode = new EnumSetting<>("模式",
+		"§l快速§r模式可以同时在多个方块上使用骨粉。\n"
+			+ "§l合法§r模式可以绕过NoCheat+。",
 		Mode.values(), Mode.FAST);
 	
 	private final EnumSetting<AutomationLevel> automationLevel =
-		new EnumSetting<>("Automation",
-			"How much of the bone-mealing process to automate.\n"
-				+ "\u00a7lRight Click\u00a7r simply right clicks plants with the bone meal in your hand.\n"
-				+ "\u00a7lHotbar\u00a7r selects bone meal in your hotbar and then uses it on plants.\n"
-				+ "\u00a7lInventory\u00a7r finds bone meal in your inventory, moves it to your hotbar and then uses it.",
+		new EnumSetting<>("自动化",
+			"骨粉使用过程的自动化程度。\n"
+				+ "§l右键点击§r只需用手中的骨粉右键点击植物。\n"
+				+ "§l快捷栏§r选择快捷栏中的骨粉，然后在植物上使用。\n"
+				+ "§l背包§r在背包中找到骨粉，将其移至快捷栏，然后使用。",
 			AutomationLevel.values(), AutomationLevel.RIGHT_CLICK);
 	
 	private final CheckboxSetting saplings =
-		new CheckboxSetting("Saplings", true);
-	private final CheckboxSetting crops = new CheckboxSetting("Crops",
-		"Wheat, carrots, potatoes and beetroots.", true);
+		new CheckboxSetting("树苗", true);
+	private final CheckboxSetting crops = new CheckboxSetting("农作物",
+		"小麦、胡萝卜、土豆和甜菜根。", true);
 	private final CheckboxSetting stems =
-		new CheckboxSetting("Stems", "Pumpkins and melons.", true);
-	private final CheckboxSetting cocoa = new CheckboxSetting("Cocoa", true);
-	private final CheckboxSetting other = new CheckboxSetting("Other", false);
+		new CheckboxSetting("茎", "南瓜和西瓜。", true);
+	private final CheckboxSetting cocoa = new CheckboxSetting("可可豆", true);
+	private final CheckboxSetting other = new CheckboxSetting("其他", false);
 	
 	public BonemealAuraHack()
 	{
-		super("BonemealAura");
+		super("骨粉光环");
 		
 		setCategory(Category.BLOCKS);
 		addSetting(range);
@@ -230,9 +230,9 @@ public final class BonemealAuraHack extends Hack implements HandleInputListener
 	
 	private enum Mode
 	{
-		FAST("Fast"),
+		FAST("快速"),
 		
-		LEGIT("Legit");
+		LEGIT("合法");
 		
 		private final String name;
 		
@@ -250,11 +250,11 @@ public final class BonemealAuraHack extends Hack implements HandleInputListener
 	
 	private enum AutomationLevel
 	{
-		RIGHT_CLICK("Right Click", 0),
+		RIGHT_CLICK("右键点击", 0),
 		
-		HOTBAR("Hotbar", 9),
+		HOTBAR("快捷栏", 9),
 		
-		INVENTORY("Inventory", 36);
+		INVENTORY("背包", 36);
 		
 		private final String name;
 		private final int maxInvSlot;

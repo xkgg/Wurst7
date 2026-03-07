@@ -43,25 +43,25 @@ import net.wurstclient.util.RotationUtils;
 import net.wurstclient.util.chunk.ChunkSearcher;
 import net.wurstclient.util.chunk.ChunkSearcherCoordinator;
 
-@SearchTags({"cave finder"})
+@SearchTags({"洞穴查找", "cave finder"})
 public final class CaveFinderHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final ChunkAreaSetting area = new ChunkAreaSetting("Area",
-		"The area around the player to search in.\n"
-			+ "Higher values require a faster computer.");
+	private final ChunkAreaSetting area = new ChunkAreaSetting("区域",
+		"玩家周围要搜索的区域。\n"
+			+ "值越高，需要越快的计算机。");
 	
-	private final SliderSetting limit = new SliderSetting("Limit",
-		"The maximum number of blocks to display.\n"
-			+ "Higher values require a faster computer.",
+	private final SliderSetting limit = new SliderSetting("限制",
+		"要显示的最大方块数量。\n"
+			+ "值越高，需要越快的计算机。",
 		5, 3, 6, 1, ValueDisplay.LOGARITHMIC);
 	
-	private final ColorSetting color = new ColorSetting("Color",
-		"Caves will be highlighted in this color.", Color.RED);
+	private final ColorSetting color = new ColorSetting("颜色",
+		"洞穴将以此颜色突出显示。", Color.RED);
 	
-	private final SliderSetting opacity = new SliderSetting("Opacity",
-		"How opaque the highlights should be.\n" + "0 = breathing animation", 0,
-		0, 1, 0.01, ValueDisplay.PERCENTAGE.withLabel(0, "breathing"));
+	private final SliderSetting opacity = new SliderSetting("不透明度",
+		"突出显示的不透明度。\n" + "0 = 呼吸动画", 0,
+		0, 1, 0.01, ValueDisplay.PERCENTAGE.withLabel(0, "呼吸"));
 	
 	private int prevLimit;
 	private boolean notify;
@@ -80,7 +80,7 @@ public final class CaveFinderHack extends Hack
 	
 	public CaveFinderHack()
 	{
-		super("CaveFinder");
+		super("洞穴查找");
 		setCategory(Category.RENDER);
 		addSetting(area);
 		addSetting(limit);
@@ -216,9 +216,9 @@ public final class CaveFinderHack extends Hack
 			notify = true;
 		else if(notify)
 		{
-			ChatUtils.warning("CaveFinder found \u00a7lA LOT\u00a7r of blocks!"
-				+ " To prevent lag, it will only show the closest \u00a76"
-				+ limit.getValueString() + "\u00a7r results.");
+			ChatUtils.warning("洞穴查找发现了\u00a7l大量\u00a7r方块!"
+				+ " 为防止卡顿，只会显示最近的\u00a76"
+				+ limit.getValueString() + "\u00a7r个结果。");
 			notify = false;
 		}
 		

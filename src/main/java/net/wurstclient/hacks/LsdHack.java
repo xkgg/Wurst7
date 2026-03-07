@@ -10,15 +10,17 @@ package net.wurstclient.hacks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.hack.DontSaveState;
 import net.wurstclient.hack.Hack;
 
+@SearchTags({"迷幻", "LSD"})
 @DontSaveState
 public final class LsdHack extends Hack
 {
 	public LsdHack()
 	{
-		super("LSD");
+		super("迷幻");
 		setCategory(Category.FUN);
 	}
 	

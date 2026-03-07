@@ -9,25 +9,27 @@ package net.wurstclient.hacks;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
+@SearchTags({"无盾牌覆盖", "no shield overlay"})
 public final class NoShieldOverlayHack extends Hack
 {
 	public final SliderSetting blockingOffset =
-		new SliderSetting("Blocking offset",
-			"The amount to lower the shield overlay by when blocking.", 0.5, 0,
+		new SliderSetting("格挡偏移",
+			"格挡时降低盾牌覆盖的量。", 0.5, 0,
 			0.8, 0.01, ValueDisplay.DECIMAL);
 	
 	public final SliderSetting nonBlockingOffset =
-		new SliderSetting("Non-blocking offset",
-			"The amount to lower the shield overlay when not blocking.", 0.2, 0,
+		new SliderSetting("非格挡偏移",
+			"非格挡时降低盾牌覆盖的量。", 0.2, 0,
 			0.5, 0.01, ValueDisplay.DECIMAL);
 	
 	public NoShieldOverlayHack()
 	{
-		super("NoShieldOverlay");
+		super("无盾牌覆盖");
 		setCategory(Category.RENDER);
 		addSetting(blockingOffset);
 		addSetting(nonBlockingOffset);

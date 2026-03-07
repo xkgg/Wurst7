@@ -15,14 +15,14 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.util.Rotation;
 
-@SearchTags({"Retarded"})
+@SearchTags({"摇头晃脑", "Retarded"})
 public final class DerpHack extends Hack implements UpdateListener
 {
 	private final Random random = new Random();
 	
 	public DerpHack()
 	{
-		super("Derp");
+		super("摇头晃脑");
 		setCategory(Category.FUN);
 	}
 	

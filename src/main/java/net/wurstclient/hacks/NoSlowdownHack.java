@@ -11,12 +11,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"no slowdown", "no slow down"})
+@SearchTags({"无减速", "no slowdown", "no slow down"})
 public final class NoSlowdownHack extends Hack
 {
 	public NoSlowdownHack()
 	{
-		super("NoSlowdown");
+		super("无减速");
 		setCategory(Category.MOVEMENT);
 	}
 	

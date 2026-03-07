@@ -27,7 +27,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"anti afk", "AFKBot", "afk bot"})
+@SearchTags({"防止挂机踢出", "anti afk", "AFKBot", "afk bot"})
 @DontSaveState
 public final class AntiAfkHack extends Hack
 	implements UpdateListener, RenderListener

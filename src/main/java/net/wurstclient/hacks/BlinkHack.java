@@ -21,21 +21,21 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.FakePlayerEntity;
 
 @DontSaveState
-@SearchTags({"LagSwitch", "lag switch"})
+@SearchTags({"瞬间移动", "Blink", "LagSwitch", "lag switch"})
 public final class BlinkHack extends Hack
 	implements UpdateListener, PacketOutputListener
 {
-	private final SliderSetting limit = new SliderSetting("Limit",
-		"Automatically restarts Blink once the given number of packets have been suspended.\n\n"
-			+ "0 = no limit",
-		0, 0, 500, 1, ValueDisplay.INTEGER.withLabel(0, "disabled"));
+	private final SliderSetting limit = new SliderSetting("限制",
+		"一旦暂停的数据包达到给定数量，自动重启Blink。\n\n"
+			+ "0 = 无限制",
+		0, 0, 500, 1, ValueDisplay.INTEGER.withLabel(0, "禁用"));
 	
 	private final ArrayDeque<PlayerMoveC2SPacket> packets = new ArrayDeque<>();
 	private FakePlayerEntity fakePlayer;
 	
 	public BlinkHack()
 	{
-		super("Blink");
+		super("瞬间移动");
 		setCategory(Category.MOVEMENT);
 		addSetting(limit);
 	}

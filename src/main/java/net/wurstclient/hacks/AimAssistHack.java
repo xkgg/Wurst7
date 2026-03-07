@@ -27,7 +27,9 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.Rotation;
 import net.wurstclient.util.RotationUtils;
+import net.wurstclient.SearchTags;
 
+@SearchTags({"辅助瞄准", "aim assist", "aimbot"})
 public final class AimAssistHack extends Hack
 	implements UpdateListener, MouseUpdateListener
 {
@@ -35,7 +37,7 @@ public final class AimAssistHack extends Hack
 		new SliderSetting("范围", 4.5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final SliderSetting rotationSpeed =
-		new SliderSetting("Rotation Speed", 600, 10, 3600, 10,
+		new SliderSetting("旋转速度", 600, 10, 3600, 10,
 			ValueDisplay.DEGREES.withSuffix("/s"));
 	
 	private final SliderSetting fov =

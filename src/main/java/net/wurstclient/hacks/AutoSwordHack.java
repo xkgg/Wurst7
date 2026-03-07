@@ -30,30 +30,28 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.ItemUtils;
 
-@SearchTags({"auto sword"})
+@SearchTags({"自动剑", "auto sword"})
 public final class AutoSwordHack extends Hack implements UpdateListener
 {
 	private final EnumSetting<Priority> priority =
-		new EnumSetting<>("Priority", Priority.values(), Priority.SPEED);
+		new EnumSetting<>("优先级", Priority.values(), Priority.SPEED);
 	
 	private final CheckboxSetting switchBack = new CheckboxSetting(
-		"Switch back", "Switches back to the previously selected slot after"
-			+ " \u00a7lRelease time\u00a7r has passed.",
+		"切换回", "在\u00a7l释放时间\u00a7r过后切换回之前选择的物品栏。",
 		true);
 	
-	private final SliderSetting releaseTime = new SliderSetting("Release time",
-		"Time until AutoSword will switch back from the weapon to the"
-			+ " previously selected slot.\n\n"
-			+ "Only works when \u00a7lSwitch back\u00a7r is checked.",
+	private final SliderSetting releaseTime = new SliderSetting("释放时间",
+		"自动剑从武器切换回之前选择的物品栏的时间。\n\n"
+			+ "仅在\u00a7l切换回\u00a7r被选中时生效。",
 		10, 1, 200, 1,
-		ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
+		ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1 刻"));
 	
 	private int oldSlot;
 	private int timer;
 	
 	public AutoSwordHack()
 	{
-		super("AutoSword");
+		super("自动剑");
 		setCategory(Category.COMBAT);
 		
 		addSetting(priority);
@@ -187,21 +185,21 @@ public final class AutoSwordHack extends Hack implements UpdateListener
 	}
 	
 	private enum Priority
+{
+	SPEED("速度 (剑)"),
+	DAMAGE("伤害 (斧)");
+	
+	private final String name;
+	
+	private Priority(String name)
 	{
-		SPEED("Speed (swords)"),
-		DAMAGE("Damage (axes)");
-		
-		private final String name;
-		
-		private Priority(String name)
-		{
-			this.name = name;
-		}
-		
-		@Override
-		public String toString()
-		{
-			return name;
-		}
+		this.name = name;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+}
 }

@@ -14,12 +14,12 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"AutoSwim", "auto swim"})
+@SearchTags({"鱼类游泳", "AutoSwim", "auto swim"})
 public final class FishHack extends Hack implements UpdateListener
 {
 	public FishHack()
 	{
-		super("Fish");
+		super("鱼类游泳");
 		setCategory(Category.MOVEMENT);
 	}
 	

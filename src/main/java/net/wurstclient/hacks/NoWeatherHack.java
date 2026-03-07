@@ -8,31 +8,33 @@
 package net.wurstclient.hacks;
 
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
+@SearchTags({"无天气", "no weather"})
 public final class NoWeatherHack extends Hack
 {
 	private final CheckboxSetting disableRain =
-		new CheckboxSetting("Disable Rain", true);
+		new CheckboxSetting("禁用雨水", true);
 	
 	private final CheckboxSetting changeTime =
-		new CheckboxSetting("Change World Time", false);
+		new CheckboxSetting("更改世界时间", false);
 	
 	private final SliderSetting time =
-		new SliderSetting("Time", 6000, 0, 23900, 100, ValueDisplay.INTEGER);
+		new SliderSetting("时间", 6000, 0, 23900, 100, ValueDisplay.INTEGER);
 	
 	private final CheckboxSetting changeMoonPhase =
-		new CheckboxSetting("Change Moon Phase", false);
+		new CheckboxSetting("更改月相", false);
 	
 	private final SliderSetting moonPhase =
-		new SliderSetting("Moon Phase", 0, 0, 7, 1, ValueDisplay.INTEGER);
+		new SliderSetting("月相", 0, 0, 7, 1, ValueDisplay.INTEGER);
 	
 	public NoWeatherHack()
 	{
-		super("NoWeather");
+		super("无天气");
 		setCategory(Category.RENDER);
 		
 		addSetting(disableRain);

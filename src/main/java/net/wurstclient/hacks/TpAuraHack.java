@@ -31,22 +31,22 @@ import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"TpAura", "tp aura", "EnderAura", "Ender-Aura", "ender aura"})
+@SearchTags({"传送光环", "TpAura", "tp aura", "EnderAura", "Ender-Aura", "ender aura"})
 public final class TpAuraHack extends Hack implements UpdateListener
 {
 	private final Random random = new Random();
 	
 	private final SliderSetting range =
-		new SliderSetting("Range", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
 	
-	private final EnumSetting<Priority> priority = new EnumSetting<>("Priority",
-		"Determines which entity will be attacked first.\n"
-			+ "\u00a7lDistance\u00a7r - Attacks the closest entity.\n"
-			+ "\u00a7lAngle\u00a7r - Attacks the entity that requires the least head movement.\n"
-			+ "\u00a7lHealth\u00a7r - Attacks the weakest entity.",
+	private final EnumSetting<Priority> priority = new EnumSetting<>("优先级",
+		"决定优先攻击哪个实体。\n"
+			+ "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
+			+ "\u00a7l角度\u00a7r - 攻击需要最少头部移动的实体。\n"
+			+ "\u00a7l血量\u00a7r - 攻击最弱的实体。",
 		Priority.values(), Priority.ANGLE);
 	
 	private final SwingHandSetting swingHand = new SwingHandSetting(
@@ -60,7 +60,7 @@ public final class TpAuraHack extends Hack implements UpdateListener
 	
 	public TpAuraHack()
 	{
-		super("TP-Aura");
+		super("传送光环");
 		setCategory(Category.COMBAT);
 		
 		addSetting(range);
@@ -141,13 +141,13 @@ public final class TpAuraHack extends Hack implements UpdateListener
 	
 	private enum Priority
 	{
-		DISTANCE("Distance", e -> MC.player.squaredDistanceTo(e)),
+		DISTANCE("距离", e -> MC.player.squaredDistanceTo(e)),
 		
-		ANGLE("Angle",
+		ANGLE("角度",
 			e -> RotationUtils
 				.getAngleToLookVec(e.getBoundingBox().getCenter())),
 		
-		HEALTH("Health", e -> e instanceof LivingEntity
+		HEALTH("血量", e -> e instanceof LivingEntity
 			? ((LivingEntity)e).getHealth() : Integer.MAX_VALUE);
 		
 		private final String name;

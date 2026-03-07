@@ -36,27 +36,28 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.InteractionSimulator;
 import net.wurstclient.util.InventoryUtils;
+import net.wurstclient.SearchTags;
 import net.wurstclient.util.json.JsonException;
 
+@SearchTags({"瞬间建造", "InstaBuild", "insta build"})
 public final class InstaBuildHack extends Hack
 	implements UpdateListener, RightClickListener
 {
-	private final FileSetting templateSetting = new FileSetting("Template",
-		"Determines what to build.\n\n"
-			+ "Templates are just JSON files. Feel free to add your own or to edit / delete the default templates.\n\n"
-			+ "If you mess up, simply press the 'Reset to Defaults' button or delete the folder.",
+	private final FileSetting templateSetting = new FileSetting("模板",
+		"决定要建造什么。\n\n"
+			+ "模板只是JSON文件。随意添加自己的模板或编辑/删除默认模板。\n\n"
+			+ "如果你搞砸了，只需按'重置为默认值'按钮或删除文件夹。",
 		"autobuild", path -> {});
 	
-	private final SliderSetting range = new SliderSetting("Range",
-		"How far to reach when placing blocks.\n" + "Recommended values:\n"
-			+ "6.0 for vanilla\n" + "4.25 for NoCheat+",
+	private final SliderSetting range = new SliderSetting("范围",
+		"放置方块时的 reach 距离。\n" + "推荐值：\n"
+			+ "原版：6.0\n" + "NoCheat+：4.25",
 		6, 1, 10, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
-		"Use saved blocks",
-		"Tries to place the same blocks that were saved in the template.\n\n"
-			+ "If the template does not specify block types, it will be built"
-			+ " from whatever block you are holding.",
+		"使用保存的方块",
+		"尝试放置模板中保存的相同方块。\n\n"
+			+ "如果模板未指定方块类型，它将使用你手持的任何方块建造。",
 		false);
 	
 	private Status status = Status.NO_TEMPLATE;
@@ -66,7 +67,7 @@ public final class InstaBuildHack extends Hack
 	
 	public InstaBuildHack()
 	{
-		super("InstaBuild");
+		super("瞬间建造");
 		setCategory(Category.BLOCKS);
 		addSetting(templateSetting);
 		addSetting(range);
@@ -84,7 +85,7 @@ public final class InstaBuildHack extends Hack
 			break;
 			
 			case LOADING:
-			name += " [Loading...]";
+			name += " [加载中...]";
 			break;
 			
 			case IDLE:
@@ -218,17 +219,17 @@ public final class InstaBuildHack extends Hack
 			status = Status.IDLE;
 			
 		}catch(IOException | JsonException e)
-		{
-			Path fileName = path.getFileName();
-			ChatUtils.error("Couldn't load template '" + fileName + "'.");
-			
-			String simpleClassName = e.getClass().getSimpleName();
-			String message = e.getMessage();
-			ChatUtils.message(simpleClassName + ": " + message);
-			
-			e.printStackTrace();
-			setEnabled(false);
-		}
+			{
+				Path fileName = path.getFileName();
+				ChatUtils.error("无法加载模板 '" + fileName + "'。");
+				
+				String simpleClassName = e.getClass().getSimpleName();
+				String message = e.getMessage();
+				ChatUtils.message(simpleClassName + ": " + message);
+				
+				e.printStackTrace();
+				setEnabled(false);
+			}
 	}
 	
 	private enum Status

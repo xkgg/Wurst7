@@ -11,12 +11,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"no vignette", "AntiVignette", "anti vignette"})
+@SearchTags({"无暗角", "no vignette", "AntiVignette", "anti vignette"})
 public final class NoVignetteHack extends Hack
 {
 	public NoVignetteHack()
 	{
-		super("NoVignette");
+		super("无暗角");
 		setCategory(Category.RENDER);
 	}
 	

@@ -11,13 +11,13 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"snow shoe", "SnowJesus", "snow jesus", "NoSnowSink",
+@SearchTags({"雪鞋", "snow shoe", "SnowJesus", "snow jesus", "NoSnowSink",
 	"no snow sink", "AntiSnowSink", "anti snow sink"})
 public final class SnowShoeHack extends Hack
 {
 	public SnowShoeHack()
 	{
-		super("SnowShoe");
+		super("雪鞋");
 		setCategory(Category.MOVEMENT);
 	}
 	

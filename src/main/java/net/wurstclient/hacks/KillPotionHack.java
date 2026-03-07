@@ -21,17 +21,17 @@ import net.wurstclient.settings.EnumSetting;
 import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.InventoryUtils;
 
-@SearchTags({"kill potion", "KillerPotion", "killer potion", "KillingPotion",
+@SearchTags({"秒杀药水", "kill potion", "KillerPotion", "killer potion", "KillingPotion",
 	"killing potion", "InstantDeathPotion", "instant death potion"})
 public final class KillPotionHack extends Hack
 {
 	private final EnumSetting<PotionType> potionType =
-		new EnumSetting<>("Potion type", "The type of potion to generate.",
+		new EnumSetting<>("药水类型", "要生成的药水类型。",
 			PotionType.values(), PotionType.SPLASH);
 	
 	public KillPotionHack()
 	{
-		super("KillPotion");
+		super("秒杀药水");
 		
 		setCategory(Category.ITEMS);
 		addSetting(potionType);
@@ -66,54 +66,54 @@ public final class KillPotionHack extends Hack
 	}
 	
 	private enum PotionType
+{
+	NORMAL("普通", "药水", Items.POTION),
+	
+	SPLASH("喷溅", "喷溅药水", Items.SPLASH_POTION),
+	
+	LINGERING("滞留", "滞留药水", Items.LINGERING_POTION);
+	
+	// 不起作用
+	// ARROW("箭", "箭", Items.TIPPED_ARROW);
+	
+	private final String name;
+	private final String itemName;
+	private final Item item;
+	
+	private PotionType(String name, String itemName, Item item)
 	{
-		NORMAL("Normal", "Potion", Items.POTION),
-		
-		SPLASH("Splash", "Splash Potion", Items.SPLASH_POTION),
-		
-		LINGERING("Lingering", "Lingering Potion", Items.LINGERING_POTION);
-		
-		// does not work
-		// ARROW("Arrow", "Arrow", Items.TIPPED_ARROW);
-		
-		private final String name;
-		private final String itemName;
-		private final Item item;
-		
-		private PotionType(String name, String itemName, Item item)
-		{
-			this.name = name;
-			this.itemName = itemName;
-			this.item = item;
-		}
-		
-		@Override
-		public String toString()
-		{
-			return name;
-		}
-		
-		public ItemStack createPotionStack()
-		{
-			ItemStack stack = new ItemStack(item);
-			
-			NbtCompound effect = new NbtCompound();
-			effect.putInt("Amplifier", 125);
-			effect.putInt("Duration", 2000);
-			effect.putInt("Id", 6);
-			
-			NbtList effects = new NbtList();
-			effects.add(effect);
-			
-			NbtCompound nbt = new NbtCompound();
-			nbt.put("CustomPotionEffects", effects);
-			stack.setNbt(nbt);
-			
-			String name =
-				"\u00a7f" + itemName + " of \u00a74\u00a7lINSTANT DEATH";
-			stack.setCustomName(Text.literal(name));
-			
-			return stack;
-		}
+		this.name = name;
+		this.itemName = itemName;
+		this.item = item;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+	
+	public ItemStack createPotionStack()
+	{
+		ItemStack stack = new ItemStack(item);
+		
+		NbtCompound effect = new NbtCompound();
+		effect.putInt("Amplifier", 125);
+		effect.putInt("Duration", 2000);
+		effect.putInt("Id", 6);
+		
+		NbtList effects = new NbtList();
+		effects.add(effect);
+		
+		NbtCompound nbt = new NbtCompound();
+		nbt.put("CustomPotionEffects", effects);
+		stack.setNbt(nbt);
+		
+		String name =
+			"\u00a7f" + itemName + " of \u00a74\u00a7l即死";
+		stack.setCustomName(Text.literal(name));
+		
+		return stack;
+	}
+}
 }

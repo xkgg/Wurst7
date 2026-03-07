@@ -27,7 +27,7 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"instant bunker"})
+@SearchTags({"瞬间掩体", "instant bunker"})
 public final class InstantBunkerHack extends Hack implements UpdateListener
 {
 	private final int[][] template = {{2, 0, 2}, {-2, 0, 2}, {2, 0, -2},
@@ -46,7 +46,7 @@ public final class InstantBunkerHack extends Hack implements UpdateListener
 	
 	public InstantBunkerHack()
 	{
-		super("InstantBunker");
+		super("瞬间掩体");
 		setCategory(Category.BLOCKS);
 	}
 	
@@ -57,7 +57,7 @@ public final class InstantBunkerHack extends Hack implements UpdateListener
 		
 		if(!MC.player.isOnGround())
 		{
-			ChatUtils.error("Can't build this in mid-air.");
+			ChatUtils.error("不能在半空中建造。");
 			setEnabled(false);
 			return;
 		}
@@ -66,13 +66,13 @@ public final class InstantBunkerHack extends Hack implements UpdateListener
 		
 		if(!(stack.getItem() instanceof BlockItem))
 		{
-			ChatUtils.error("You must have blocks in the main hand.");
+			ChatUtils.error("你必须在主手持有方块。");
 			setEnabled(false);
 			return;
 		}
 		
 		if(stack.getCount() < 57 && !MC.player.isCreative())
-			ChatUtils.warning("Not enough blocks. Bunker may be incomplete.");
+			ChatUtils.warning("方块不足。掩体可能不完整。");
 		
 		// get start pos and facings
 		BlockPos startPos = BlockPos.ofFloored(MC.player.getPos());

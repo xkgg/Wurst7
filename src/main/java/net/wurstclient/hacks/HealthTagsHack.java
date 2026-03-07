@@ -15,12 +15,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"health tags"})
+@SearchTags({"生命值标签", "health tags"})
 public final class HealthTagsHack extends Hack
 {
 	public HealthTagsHack()
 	{
-		super("HealthTags");
+		super("生命值标签");
 		setCategory(Category.RENDER);
 	}
 	

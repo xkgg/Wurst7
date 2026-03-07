@@ -27,23 +27,22 @@ import net.wurstclient.settings.SwingHandSetting.SwingHand;
 import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.util.EntityUtils;
 
-@SearchTags({"trigger bot", "AutoAttack", "auto attack", "AutoClicker",
+@SearchTags({"触发机器人", "trigger bot", "AutoAttack", "auto attack", "AutoClicker",
 	"auto clicker"})
 public final class TriggerBotHack extends Hack
 	implements PreMotionListener, HandleInputListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
 	
 	private final SliderSetting speedRandMS =
-		new SliderSetting("Speed randomization",
-			"Helps you bypass anti-cheat plugins by varying the delay between"
-				+ " attacks.\n\n" + "\u00b1100ms is recommended for Vulcan.\n\n"
-				+ "0 (off) is fine for NoCheat+, AAC, Grim, Verus, Spartan, and"
-				+ " vanilla servers.",
+		new SliderSetting("速度随机化",
+			"通过改变攻击之间的延迟来帮助你绕过反作弊插件。\n\n" + "\u00b1100ms 推荐用于Vulcan。\n\n"
+				+ "0 (关闭) 适用于NoCheat+、AAC、Grim、Verus、Spartan和" 
+				+ "原版服务器。",
 			100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
 				.withSuffix("ms").withLabel(0, "off"));
 	
@@ -51,22 +50,16 @@ public final class TriggerBotHack extends Hack
 		new SwingHandSetting(this, SwingHand.CLIENT);
 	
 	private final CheckboxSetting attackWhileBlocking =
-		new CheckboxSetting("Attack while blocking",
-			"Attacks even while you're blocking with a shield or using"
-				+ " items.\n\n"
-				+ "This would not be possible in vanilla and won't work if"
-				+ " \"Simulate mouse click\" is enabled.",
+		new CheckboxSetting("格挡时攻击",
+			"即使在使用盾牌格挡或使用物品时也会攻击。\n\n"
+				+ "这在原版中是不可能的，如果启用了\"模拟鼠标点击\"则不会生效。",
 			false);
 	
 	private final CheckboxSetting simulateMouseClick = new CheckboxSetting(
-		"Simulate mouse click",
-		"Simulates an actual mouse click (or key press) when attacking. Can be"
-			+ " used to trick CPS measuring tools into thinking that you're"
-			+ " attacking manually.\n\n"
-			+ "\u00a7c\u00a7lWARNING:\u00a7r Simulating mouse clicks can lead"
-			+ " to unexpected behavior, like in-game menus clicking themselves."
-			+ " Also, the \"Swing hand\" and \"Attack while blocking\" settings"
-			+ " will not work while this option is enabled.",
+		"模拟鼠标点击",
+		"攻击时模拟实际的鼠标点击（或按键按下）。可以用来欺骗CPS测量工具，让它们认为你是手动攻击。\n\n"
+			+ "\u00a7c\u00a7l警告：\u00a7r 模拟鼠标点击可能会导致意外行为，比如游戏菜单自动点击。"
+			+ "此外，当启用此选项时，\"挥动手臂\"和\"格挡时攻击\"设置将不起作用。",
 		false);
 	
 	private final EntityFilterList entityFilters =
@@ -76,7 +69,7 @@ public final class TriggerBotHack extends Hack
 	
 	public TriggerBotHack()
 	{
-		super("TriggerBot");
+		super("触发机器人");
 		setCategory(Category.COMBAT);
 		
 		addSetting(range);

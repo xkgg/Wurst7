@@ -11,14 +11,14 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"camera noclip", "camera no clip"})
+@SearchTags({"相机穿墙", "camera noclip", "camera no clip"})
 public final class CameraNoClipHack extends Hack
 {
 	public CameraNoClipHack()
 	{
-		super("CameraNoClip");
+		super("相机穿墙");
 		setCategory(Category.RENDER);
 	}
 	
-	// See CameraMixin.onClipToSpace()
+	// 参见 CameraMixin.onClipToSpace()
 }

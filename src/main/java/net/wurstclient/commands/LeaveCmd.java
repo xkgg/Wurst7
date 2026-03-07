@@ -15,7 +15,7 @@ public final class LeaveCmd extends Command
 {
 	public LeaveCmd()
 	{
-		super("leave", "Instantly disconnects from the server.", ".leave");
+		super("leave", "立即断开与服务器的连接。", ".leave");
 	}
 	
 	@Override
@@ -33,7 +33,7 @@ public final class LeaveCmd extends Command
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Leave";
+		return "离开";
 	}
 	
 	@Override

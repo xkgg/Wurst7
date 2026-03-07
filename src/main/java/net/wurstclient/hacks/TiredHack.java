@@ -8,15 +8,17 @@
 package net.wurstclient.hacks;
 
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.util.Rotation;
 
+@SearchTags({"疲劳", "tired"})
 public final class TiredHack extends Hack implements UpdateListener
 {
 	public TiredHack()
 	{
-		super("Tired");
+		super("疲劳");
 		setCategory(Category.FUN);
 	}
 	

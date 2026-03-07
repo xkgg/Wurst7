@@ -8,18 +8,20 @@
 package net.wurstclient.hacks;
 
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
+@SearchTags({"计时器", "timer"})
 public final class TimerHack extends Hack
 {
 	private final SliderSetting speed =
-		new SliderSetting("Speed", 2, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
+		new SliderSetting("速度", 2, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
 	
 	public TimerHack()
 	{
-		super("Timer");
+		super("计时器");
 		setCategory(Category.OTHER);
 		addSetting(speed);
 	}

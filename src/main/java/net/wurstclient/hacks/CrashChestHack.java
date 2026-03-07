@@ -17,12 +17,12 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.util.ChatUtils;
 
-@SearchTags({"crash chest"})
+@SearchTags({"崩溃箱子", "crash chest"})
 public final class CrashChestHack extends Hack
 {
 	public CrashChestHack()
 	{
-		super("CrashChest");
+		super("崩溃箱子");
 		
 		setCategory(Category.ITEMS);
 	}
@@ -32,19 +32,19 @@ public final class CrashChestHack extends Hack
 	{
 		if(!MC.player.getAbilities().creativeMode)
 		{
-			ChatUtils.error("Creative mode only.");
+			ChatUtils.error("仅创意模式可用。");
 			setEnabled(false);
 			return;
 		}
 		
 		if(!MC.player.getInventory().getArmorStack(0).isEmpty())
 		{
-			ChatUtils.error("Please clear your shoes slot.");
+			ChatUtils.error("请清空你的鞋子槽位。");
 			setEnabled(false);
 			return;
 		}
 		
-		// generate item
+		// 生成物品
 		ItemStack stack = new ItemStack(Blocks.CHEST);
 		NbtCompound nbtCompound = new NbtCompound();
 		NbtList nbtList = new NbtList();
@@ -52,11 +52,11 @@ public final class CrashChestHack extends Hack
 			nbtList.add(new NbtList());
 		nbtCompound.put("www.wurstclient.net", nbtList);
 		stack.setNbt(nbtCompound);
-		stack.setCustomName(Text.literal("Copy Me"));
+		stack.setCustomName(Text.literal("复制我"));
 		
-		// give item
+		// 给予物品
 		MC.player.getInventory().armor.set(0, stack);
-		ChatUtils.message("Item has been placed in your shoes slot.");
+		ChatUtils.message("物品已放置在你的鞋子槽位中。");
 		setEnabled(false);
 	}
 }

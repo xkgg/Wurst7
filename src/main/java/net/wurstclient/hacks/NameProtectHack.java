@@ -13,12 +13,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"name protect"})
+@SearchTags({"名字保护", "name protect"})
 public final class NameProtectHack extends Hack
 {
 	public NameProtectHack()
 	{
-		super("NameProtect");
+		super("名字保护");
 		setCategory(Category.RENDER);
 	}
 	

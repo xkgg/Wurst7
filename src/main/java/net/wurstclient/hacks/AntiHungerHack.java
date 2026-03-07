@@ -16,7 +16,7 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.util.PacketUtils;
 
 @DontSaveState
-@SearchTags({"anti hunger"})
+@SearchTags({"减少饥饿", "anti hunger"})
 public final class AntiHungerHack extends Hack implements PacketOutputListener
 {
 	public AntiHungerHack()

@@ -16,15 +16,15 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.EnumSetting;
 
-@SearchTags({"AutoJump", "BHop", "bunny hop", "auto jump"})
+@SearchTags({"自动跳跃", "AutoJump", "BHop", "bunny hop", "auto jump"})
 public final class BunnyHopHack extends Hack implements UpdateListener
 {
 	private final EnumSetting<JumpIf> jumpIf =
-		new EnumSetting<>("Jump if", JumpIf.values(), JumpIf.SPRINTING);
+		new EnumSetting<>("跳跃条件", JumpIf.values(), JumpIf.SPRINTING);
 	
 	public BunnyHopHack()
 	{
-		super("BunnyHop");
+		super("自动跳跃");
 		setCategory(Category.MOVEMENT);
 		addSetting(jumpIf);
 	}
@@ -60,13 +60,13 @@ public final class BunnyHopHack extends Hack implements UpdateListener
 	
 	private enum JumpIf
 	{
-		SPRINTING("Sprinting",
+		SPRINTING("冲刺中",
 			p -> p.isSprinting()
 				&& (p.forwardSpeed != 0 || p.sidewaysSpeed != 0)),
 		
-		WALKING("Walking", p -> p.forwardSpeed != 0 || p.sidewaysSpeed != 0),
+		WALKING("行走中", p -> p.forwardSpeed != 0 || p.sidewaysSpeed != 0),
 		
-		ALWAYS("Always", p -> true);
+		ALWAYS("始终", p -> true);
 		
 		private final String name;
 		private final Predicate<ClientPlayerEntity> condition;

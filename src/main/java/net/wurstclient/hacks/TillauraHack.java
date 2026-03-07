@@ -32,23 +32,23 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.InteractionSimulator;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"till aura", "HoeAura", "hoe aura", "FarmlandAura",
+@SearchTags({"自动耕地", "till aura", "HoeAura", "hoe aura", "FarmlandAura",
 	"farmland aura", "farm land aura", "AutoTill", "auto till", "AutoHoe",
 	"auto hoe"})
 public final class TillauraHack extends Hack implements HandleInputListener
 {
-	private final SliderSetting range = new SliderSetting("Range",
-		"How far Tillaura will reach to till blocks.", 5, 1, 6, 0.05,
+	private final SliderSetting range = new SliderSetting("范围",
+		"自动耕地的工作范围。", 5, 1, 6, 0.05,
 		ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting multiTill =
-		new CheckboxSetting("MultiTill", "Tills multiple blocks at once.\n"
-			+ "Faster, but can't bypass NoCheat+.", false);
+		new CheckboxSetting("多块耕地", "一次耕地多个方块。\n"
+			+ "更快，但无法绕过NoCheat+。", false);
 	
 	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("Check line of sight",
-			"Prevents Tillaura from reaching through blocks.\n"
-				+ "Good for NoCheat+ servers, but unnecessary in vanilla.",
+		new CheckboxSetting("检查视线",
+			"防止自动耕地穿过方块。\n"
+				+ "适合NoCheat+服务器，但在原版中不必要。",
 			true);
 	
 	private final List<Block> tillableBlocks = List.of(Blocks.GRASS_BLOCK,
@@ -56,7 +56,7 @@ public final class TillauraHack extends Hack implements HandleInputListener
 	
 	public TillauraHack()
 	{
-		super("Tillaura");
+		super("自动耕地");
 		
 		setCategory(Category.BLOCKS);
 		addSetting(range);

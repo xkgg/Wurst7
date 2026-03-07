@@ -41,15 +41,17 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.OverlayRenderer;
 import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RotationUtils;
+import net.wurstclient.SearchTags;
 
+@SearchTags({"挖掘机", "Excavator"})
 public final class ExcavatorHack extends Hack
 	implements UpdateListener, RenderListener, GUIRenderListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 2, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 2, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final EnumSetting<Mode> mode =
-		new EnumSetting<>("Mode", Mode.values(), Mode.FAST);
+		new EnumSetting<>("模式", Mode.values(), Mode.FAST);
 	
 	private final OverlayRenderer overlay = new OverlayRenderer();
 	
@@ -62,7 +64,7 @@ public final class ExcavatorHack extends Hack
 	
 	public ExcavatorHack()
 	{
-		super("Excavator");
+		super("挖掘机");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		addSetting(mode);
@@ -217,7 +219,7 @@ public final class ExcavatorHack extends Hack
 	{
 		String message;
 		if(step.selectPos && step.pos != null)
-			message = "Press enter to confirm, or select a different position.";
+			message = "按回车确认，或选择不同的位置。";
 		else
 			message = step.message;
 		
@@ -229,10 +231,10 @@ public final class ExcavatorHack extends Hack
 		int msgY1 = context.getScaledWindowHeight() / 2 + 1;
 		int msgY2 = msgY1 + 10;
 		
-		// background
+		// 背景
 		context.fill(msgX1, msgY1, msgX2, msgY2, 0x80000000);
 		
-		// text
+		// 文本
 		context.drawText(tr, message, msgX1 + 2, msgY1 + 1, 0xFFFFFFFF, false);
 	}
 	
@@ -442,9 +444,9 @@ public final class ExcavatorHack extends Hack
 	
 	private static enum Mode
 	{
-		FAST("Fast"),
+		FAST("快速"),
 		
-		LEGIT("Legit");
+		LEGIT("合法");
 		
 		private final String name;
 		
@@ -462,13 +464,13 @@ public final class ExcavatorHack extends Hack
 	
 	private static enum Step
 	{
-		START_POS("Select start position.", true),
+		START_POS("选择起始位置。", true),
 		
-		END_POS("Select end position.", true),
+		END_POS("选择结束位置。", true),
 		
-		SCAN_AREA("Scanning area...", false),
+		SCAN_AREA("正在扫描区域...", false),
 		
-		EXCAVATE("Excavating...", false);
+		EXCAVATE("正在挖掘...", false);
 		
 		private static final Step[] SELECT_POSITION_STEPS =
 			{START_POS, END_POS};

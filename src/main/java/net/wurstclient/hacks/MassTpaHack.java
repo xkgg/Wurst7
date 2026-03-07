@@ -26,7 +26,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.TextFieldSetting;
 import net.wurstclient.util.ChatUtils;
 
-@SearchTags({"mass tpa"})
+@SearchTags({"批量传送请求", "mass tpa"})
 @DontSaveState
 public final class MassTpaHack extends Hack
 	implements UpdateListener, ChatInputListener
@@ -35,27 +35,24 @@ public final class MassTpaHack extends Hack
 		Pattern.compile("^/+[a-zA-Z0-9_\\-]+$");
 	
 	private final TextFieldSetting commandSetting =
-		new TextFieldSetting("Command",
-			"The command to use for teleporting.\n"
-				+ "Examples: /tp, /tpa, /tpahere, /tpo",
+		new TextFieldSetting("命令",
+			"用于传送的命令。\n"
+				+ "示例: /tp, /tpa, /tpahere, /tpo",
 			"/tpa",
 			s -> s.length() < 64 && ALLOWED_COMMANDS.matcher(s).matches());
 	
-	private final SliderSetting delay = new SliderSetting("Delay",
-		"The delay between each teleportation request.", 20, 1, 200, 1,
-		ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
+	private final SliderSetting delay = new SliderSetting("延迟",
+		"每次传送请求之间的延迟。", 20, 1, 200, 1,
+		ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1 刻"));
 	
 	private final CheckboxSetting ignoreErrors =
-		new CheckboxSetting("Ignore errors",
-			"Whether to ignore messages from the server telling you that the"
-				+ " teleportation command isn't valid or that you don't have"
-				+ " permission to use it.",
+		new CheckboxSetting("忽略错误",
+			"是否忽略服务器发送的消息，这些消息告诉你传送命令无效或你没有使用它的权限。",
 			false);
 	
 	private final CheckboxSetting stopWhenAccepted = new CheckboxSetting(
-		"Stop when accepted", "Whether to stop sending more teleportation"
-			+ " requests when someone accepts one of them.",
-		true);
+		"被接受时停止", "当有人接受其中一个传送请求时，是否停止发送更多的传送请求。",
+			true);
 	
 	private final Random random = new Random();
 	private final ArrayList<String> players = new ArrayList<>();
@@ -66,7 +63,7 @@ public final class MassTpaHack extends Hack
 	
 	public MassTpaHack()
 	{
-		super("MassTPA");
+		super("批量传送请求");
 		setCategory(Category.CHAT);
 		addSetting(commandSetting);
 		addSetting(delay);

@@ -36,13 +36,13 @@ import net.wurstclient.settings.SwingHandSetting.SwingHand;
 import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.util.EntityUtils;
 
-@SearchTags({"fight bot"})
+@SearchTags({"战斗机器人", "fight bot"})
 @DontSaveState
 public final class FightBotHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final SliderSetting range = new SliderSetting("Range",
-		"Attack range (like Killaura)", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	private final SliderSetting range = new SliderSetting("范围",
+		"攻击范围（如杀戮光环）", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
@@ -50,13 +50,13 @@ public final class FightBotHack extends Hack
 	private final SwingHandSetting swingHand = new SwingHandSetting(
 		SwingHandSetting.genericCombatDescription(this), SwingHand.CLIENT);
 	
-	private final SliderSetting distance = new SliderSetting("Distance",
-		"How closely to follow the target.\n"
-			+ "This should be set to a lower value than Range.",
+	private final SliderSetting distance = new SliderSetting("距离",
+		"跟随目标的紧密程度。\n"
+			+ "此值应设置为低于范围的值。",
 		3, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting useAi =
-		new CheckboxSetting("Use AI (experimental)", false);
+		new CheckboxSetting("使用AI（实验性）", false);
 	
 	private final PauseAttackOnContainersSetting pauseOnContainers =
 		new PauseAttackOnContainersSetting(true);
@@ -70,7 +70,7 @@ public final class FightBotHack extends Hack
 	
 	public FightBotHack()
 	{
-		super("FightBot");
+		super("战斗机器人");
 		
 		setCategory(Category.COMBAT);
 		addSetting(range);
@@ -86,7 +86,7 @@ public final class FightBotHack extends Hack
 	@Override
 	protected void onEnable()
 	{
-		// disable other killauras
+		// 禁用其他攻击类hack
 		WURST.getHax().aimAssistHack.setEnabled(false);
 		WURST.getHax().clickAuraHack.setEnabled(false);
 		WURST.getHax().crystalAuraHack.setEnabled(false);
@@ -108,7 +108,7 @@ public final class FightBotHack extends Hack
 	@Override
 	protected void onDisable()
 	{
-		// remove listener
+		// 移除监听器
 		EVENTS.remove(UpdateListener.class, this);
 		EVENTS.remove(RenderListener.class, this);
 		
@@ -126,7 +126,7 @@ public final class FightBotHack extends Hack
 		if(pauseOnContainers.shouldPause())
 			return;
 		
-		// set entity
+		// 设置目标实体
 		Stream<Entity> stream = EntityUtils.getAttackableEntities();
 		stream = entityFilters.applyTo(stream);
 		
@@ -141,7 +141,7 @@ public final class FightBotHack extends Hack
 		
 		if(useAi.isChecked())
 		{
-			// reset pathfinder
+			// 重置路径寻找器
 			if((processor == null || processor.isDone() || ticksProcessing >= 10
 				|| !pathFinder.isPathStillValid(processor.getIndex()))
 				&& (pathFinder.isDone() || pathFinder.isFailed()))
@@ -151,7 +151,7 @@ public final class FightBotHack extends Hack
 				ticksProcessing = 0;
 			}
 			
-			// find path
+			// 寻找路径
 			if(!pathFinder.isDone() && !pathFinder.isFailed())
 			{
 				PathProcessor.lockControls();
@@ -162,7 +162,7 @@ public final class FightBotHack extends Hack
 				processor = pathFinder.getProcessor();
 			}
 			
-			// process path
+			// 处理路径
 			if(!processor.isDone())
 			{
 				processor.process();
@@ -170,15 +170,15 @@ public final class FightBotHack extends Hack
 			}
 		}else
 		{
-			// jump if necessary
+			// 必要时跳跃
 			if(MC.player.horizontalCollision && MC.player.isOnGround())
 				MC.player.jump();
 			
-			// swim up if necessary
+			// 必要时上浮
 			if(MC.player.isTouchingWater() && MC.player.getY() < entity.getY())
 				MC.player.addVelocity(0, 0.04, 0);
 			
-			// control height if flying
+			// 飞行时控制高度
 			if(!MC.player.isOnGround()
 				&& (MC.player.getAbilities().flying
 					|| WURST.getHax().flightHack.isEnabled())
@@ -196,22 +196,22 @@ public final class FightBotHack extends Hack
 				MC.options.jumpKey.setPressed(false);
 			}
 			
-			// follow entity
+			// 跟随实体
 			MC.options.forwardKey.setPressed(
 				MC.player.distanceTo(entity) > distance.getValueF());
 			WURST.getRotationFaker()
 				.faceVectorClient(entity.getBoundingBox().getCenter());
 		}
 		
-		// check cooldown
+		// 检查冷却
 		if(!speed.isTimeToAttack())
 			return;
 		
-		// check range
+		// 检查范围
 		if(MC.player.squaredDistanceTo(entity) > Math.pow(range.getValue(), 2))
 			return;
 		
-		// attack entity
+		// 攻击实体
 		MC.interactionManager.attackEntity(MC.player, entity);
 		swingHand.swing(Hand.MAIN_HAND);
 		speed.resetTimer();

@@ -44,37 +44,36 @@ import net.wurstclient.util.FakePlayerEntity;
 import net.wurstclient.util.InventoryUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"crystal aura"})
+@SearchTags({"末影水晶光环", "crystal aura"})
 public final class CrystalAuraHack extends Hack implements UpdateListener
 {
-	private final SliderSetting range = new SliderSetting("Range",
-		"Determines how far CrystalAura will reach to place and detonate crystals.",
+	private final SliderSetting range = new SliderSetting("范围",
+		"决定末影水晶光环可以放置和引爆水晶的距离。",
 		6, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting autoPlace = new CheckboxSetting(
-		"Auto-place crystals",
-		"When enabled, CrystalAura will automatically place crystals near valid entities.\n"
-			+ "When disabled, CrystalAura will only detonate manually placed crystals.",
+		"自动放置水晶",
+		"启用时，末影水晶光环会在有效实体附近自动放置水晶。\n"
+			+ "禁用时，末影水晶光环只会引爆手动放置的水晶。",
 		true);
 	
 	private final FacingSetting faceBlocks =
-		FacingSetting.withPacketSpam("Face crystals",
-			"Whether or not CrystalAura should face the correct direction when"
-				+ " placing and left-clicking end crystals.\n\n"
-				+ "Slower but can help with anti-cheat plugins.",
+		FacingSetting.withPacketSpam("面向水晶",
+			"末影水晶光环在放置和左键点击末影水晶时是否应该面向正确的方向。\n\n"
+				+ "速度较慢，但可以帮助应对反作弊插件。",
 			Facing.OFF);
 	
 	private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"Check line of sight",
-		"Ensures that you don't reach through blocks when placing or left-clicking end crystals.\n\n"
-			+ "Slower but can help with anti-cheat plugins.",
+		"检查视线",
+		"确保你在放置或左键点击末影水晶时不会穿过方块。\n\n"
+			+ "速度较慢，但可以帮助应对反作弊插件。",
 		false);
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.CLIENT);
 	
 	private final EnumSetting<TakeItemsFrom> takeItemsFrom =
-		new EnumSetting<>("Take items from", "Where to look for end crystals.",
+		new EnumSetting<>("从何处获取物品", "在哪里寻找末影水晶。",
 			TakeItemsFrom.values(), TakeItemsFrom.INVENTORY);
 	
 	private final EntityFilterList entityFilters =
@@ -82,7 +81,7 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	
 	public CrystalAuraHack()
 	{
-		super("CrystalAura");
+		super("末影水晶光环");
 		
 		setCategory(Category.COMBAT);
 		addSetting(range);
@@ -312,9 +311,9 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	
 	private enum TakeItemsFrom
 	{
-		HOTBAR("Hotbar", 9),
+		HOTBAR("快捷栏", 9),
 		
-		INVENTORY("Inventory", 36);
+		INVENTORY("背包", 36);
 		
 		private final String name;
 		private final int maxInvSlot;

@@ -13,12 +13,12 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"speed hack"})
+@SearchTags({"速度hack", "speed hack"})
 public final class SpeedHackHack extends Hack implements UpdateListener
 {
 	public SpeedHackHack()
 	{
-		super("SpeedHack");
+		super("速度hack");
 		setCategory(Category.MOVEMENT);
 	}
 	

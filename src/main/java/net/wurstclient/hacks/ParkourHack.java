@@ -9,35 +9,36 @@ package net.wurstclient.hacks;
 
 import net.minecraft.util.math.Box;
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
+@SearchTags({"跑酷", "parkour"})
 public final class ParkourHack extends Hack implements UpdateListener
 {
-	private final SliderSetting minDepth = new SliderSetting("Min depth",
-		"Won't jump over a pit if it isn't at least this deep.\n"
-			+ "Increase to stop Parkour from jumping down stairs.\n"
-			+ "Decrease to make Parkour jump at the edge of carpets.",
+	private final SliderSetting minDepth = new SliderSetting("最小深度",
+		"如果坑的深度不至少达到此值，不会跳过。\n"
+			+ "增加以阻止跑酷从楼梯上跳下。\n"
+			+ "减少以使跑酷在地毯边缘跳跃。",
 		0.5, 0.05, 10, 0.05, ValueDisplay.DECIMAL.withSuffix("m"));
 	
 	private final SliderSetting edgeDistance =
-		new SliderSetting("Edge distance",
-			"How close Parkour will let you get to the edge before jumping.",
+		new SliderSetting("边缘距离",
+			"跑酷会让你在跳跃前离边缘多近。",
 			0.001, 0.001, 0.25, 0.001, ValueDisplay.DECIMAL.withSuffix("m"));
 	
 	private final CheckboxSetting sneak = new CheckboxSetting(
-		"Jump while sneaking",
-		"Keeps Parkour active even while you are sneaking.\n"
-			+ "You may want to increase the \u00a7lEdge \u00a7ldistance\u00a7r"
-			+ " slider when using this option.",
+		"潜行时跳跃",
+		"即使在潜行时也保持跑酷激活。\n"
+			+ "使用此选项时，你可能需要增加\u00a7l边缘距离\u00a7r滑块。",
 		false);
 	
 	public ParkourHack()
 	{
-		super("Parkour");
+		super("跑酷");
 		setCategory(Category.MOVEMENT);
 		addSetting(minDepth);
 		addSetting(edgeDistance);

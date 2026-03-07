@@ -16,18 +16,18 @@ import net.wurstclient.mixinterface.IKeyBinding;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"miley cyrus", "twerk", "wrecking ball"})
+@SearchTags({"电臀舞", "miley cyrus", "twerk", "wrecking ball"})
 public final class MileyCyrusHack extends Hack implements UpdateListener
 {
-	private final SliderSetting twerkSpeed = new SliderSetting("Twerk speed",
-		"I came in like a wreeecking baaall...", 5, 1, 10, 1,
+	private final SliderSetting twerkSpeed = new SliderSetting("摇摆速度",
+		"我像一个破坏球一样进来...", 5, 1, 10, 1,
 		ValueDisplay.INTEGER);
 	
 	private int timer;
 	
 	public MileyCyrusHack()
 	{
-		super("MileyCyrus");
+		super("电臀舞");
 		setCategory(Category.FUN);
 		addSetting(twerkSpeed);
 	}

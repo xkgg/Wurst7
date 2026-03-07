@@ -35,7 +35,7 @@ import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RenderUtils.ColoredBox;
 import net.wurstclient.util.RenderUtils.ColoredPoint;
 
-@SearchTags({"player esp", "PlayerTracers", "player tracers"})
+@SearchTags({"玩家ESP", "player esp", "PlayerTracers", "player tracers"})
 public final class PlayerEspHack extends Hack implements UpdateListener,
 	CameraTransformViewBobbingListener, RenderListener
 {
@@ -43,18 +43,18 @@ public final class PlayerEspHack extends Hack implements UpdateListener,
 		new EspStyleSetting(EspStyle.LINES_AND_BOXES);
 	
 	private final EspBoxSizeSetting boxSize = new EspBoxSizeSetting(
-		"\u00a7lAccurate\u00a7r mode shows the exact hitbox of each player.\n"
-			+ "\u00a7lFancy\u00a7r mode shows slightly larger boxes that look better.");
+		"\u00a7l精确\u00a7r 模式显示每个玩家的确切碰撞箱。\n"
+			+ "\u00a7l精美\u00a7r 模式显示稍大的方块，看起来更好。");
 	
 	private final EntityFilterList entityFilters = new EntityFilterList(
-		new FilterSleepingSetting("Won't show sleeping players.", false),
-		new FilterInvisibleSetting("Won't show invisible players.", false));
+		new FilterSleepingSetting("不显示睡觉的玩家。", false),
+		new FilterInvisibleSetting("不显示隐形的玩家。", false));
 	
 	private final ArrayList<PlayerEntity> players = new ArrayList<>();
 	
 	public PlayerEspHack()
 	{
-		super("PlayerESP");
+		super("玩家ESP");
 		setCategory(Category.RENDER);
 		addSetting(style);
 		addSetting(boxSize);

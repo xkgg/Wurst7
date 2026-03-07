@@ -25,7 +25,7 @@ import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.ForceOpDialog;
 import net.wurstclient.util.MultiProcessingUtils;
 
-@SearchTags({"Force OP", "AuthMe Cracker", "AuthMeCracker", "auth me cracker",
+@SearchTags({"强制OP", "Force OP", "AuthMe Cracker", "AuthMeCracker", "auth me cracker",
 	"admin hack", "AuthMe password cracker"})
 @DontSaveState
 public final class ForceOpHack extends Hack implements ChatInputListener
@@ -47,7 +47,7 @@ public final class ForceOpHack extends Hack implements ChatInputListener
 	
 	public ForceOpHack()
 	{
-		super("ForceOP");
+		super("强制OP");
 		setCategory(Category.CHAT);
 	}
 	
@@ -216,8 +216,8 @@ public final class ForceOpHack extends Hack implements ChatInputListener
 			sendIndexToDialog();
 		}
 		
-		ChatUtils.message("\u00a7c[\u00a74\u00a7lFAILURE\u00a7c]\u00a7f All "
-			+ (lastPW + 1) + " passwords were wrong.");
+		ChatUtils.message("\u00a7c[\u00a74\u00a7l失败\u00a7c]\u00a7f 所有 "
+			+ (lastPW + 1) + " 个密码都是错误的。");
 	}
 	
 	private void sleep(long millis)
@@ -272,8 +272,8 @@ public final class ForceOpHack extends Hack implements ChatInputListener
 				password = passwords[lastPW - 1];
 			
 			ChatUtils.message(
-				"\u00a7a[\u00a72\u00a7lSUCCESS\u00a7a]\u00a7f The password \""
-					+ password + "\" worked.");
+				"\u00a7a[\u00a72\u00a7l成功\u00a7a]\u00a7f 密码 \""
+					+ password + "\" 有效。");
 			
 			setEnabled(false);
 			return;
@@ -281,7 +281,7 @@ public final class ForceOpHack extends Hack implements ChatInputListener
 		
 		if(containsAny(msgLowerCase, "/help", "permission"))
 		{
-			ChatUtils.warning("It looks like this server doesn't have AuthMe.");
+			ChatUtils.warning("看起来这个服务器没有AuthMe插件。");
 			return;
 		}
 		
@@ -291,7 +291,7 @@ public final class ForceOpHack extends Hack implements ChatInputListener
 		};
 		
 		if(containsAny(msgLowerCase, wordsForLoggedIn))
-			ChatUtils.warning("It looks like you are already logged in.");
+			ChatUtils.warning("看起来你已经登录了。");
 	}
 	
 	private boolean containsAny(String msg, String... words)

@@ -14,16 +14,16 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 
-@SearchTags({"no background", "NoGuiBackground", "no gui background",
+@SearchTags({"无背景", "no background", "NoGuiBackground", "no gui background",
 	"NoGradient", "no gradient"})
 public final class NoBackgroundHack extends Hack
 {
-	public final CheckboxSetting allGuis = new CheckboxSetting("All GUIs",
-		"Removes the background for all GUIs, not just inventories.", false);
+	public final CheckboxSetting allGuis = new CheckboxSetting("所有界面",
+		"移除所有界面的背景，而不仅仅是物品栏。", false);
 	
 	public NoBackgroundHack()
 	{
-		super("NoBackground");
+		super("无背景");
 		setCategory(Category.RENDER);
 		addSetting(allGuis);
 	}

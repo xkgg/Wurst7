@@ -45,7 +45,7 @@ import net.wurstclient.util.FakePlayerEntity;
 import net.wurstclient.util.InventoryUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"anchor aura", "CrystalAura", "crystal aura"})
+@SearchTags({"自动爆炸重生锚", "anchor aura", "CrystalAura", "crystal aura"})
 public final class AnchorAuraHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range =
@@ -53,22 +53,22 @@ public final class AnchorAuraHack extends Hack implements UpdateListener
 			6, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting autoPlace =
-		new CheckboxSetting("Auto-place anchors",
+		new CheckboxSetting("自动放置重生锚",
 			"description.wurst.setting.anchoraura.auto-place_anchors", true);
 	
 	private final FacingSetting faceBlocks =
-		FacingSetting.withPacketSpam("Face anchors",
+		FacingSetting.withPacketSpam("朝向重生锚",
 			"description.wurst.setting.anchoraura.face_anchors", Facing.OFF);
 	
 	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("Check line of sight",
+		new CheckboxSetting("检查视线",
 			"description.wurst.setting.anchoraura.check_line_of_sight", false);
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.CLIENT);
 	
 	private final EnumSetting<TakeItemsFrom> takeItemsFrom =
-		new EnumSetting<>("Take items from",
+		new EnumSetting<>("从哪里拿物品",
 			"description.wurst.setting.anchoraura.take_items_from",
 			TakeItemsFrom.values(), TakeItemsFrom.INVENTORY);
 	
@@ -399,9 +399,9 @@ public final class AnchorAuraHack extends Hack implements UpdateListener
 	
 	private enum TakeItemsFrom
 	{
-		HOTBAR("Hotbar", 9),
+		HOTBAR("快捷栏", 9),
 		
-		INVENTORY("Inventory", 36);
+		INVENTORY("背包", 36);
 		
 		private final String name;
 		private final int maxInvSlot;

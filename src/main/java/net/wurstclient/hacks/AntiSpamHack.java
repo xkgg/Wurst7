@@ -22,12 +22,12 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.MathUtils;
 
-@SearchTags({"NoSpam", "ChatFilter", "anti spam", "no spam", "chat filter"})
+@SearchTags({"防刷屏", "NoSpam", "ChatFilter", "anti spam", "no spam", "chat filter"})
 public final class AntiSpamHack extends Hack implements ChatInputListener
 {
 	public AntiSpamHack()
 	{
-		super("AntiSpam");
+		super("防刷屏");
 		setCategory(Category.CHAT);
 	}
 	

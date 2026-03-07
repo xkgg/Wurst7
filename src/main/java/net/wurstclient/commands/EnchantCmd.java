@@ -22,21 +22,20 @@ public final class EnchantCmd extends Command
 {
 	public EnchantCmd()
 	{
-		super("enchant", "Enchants an item with everything,\n"
-			+ "except for silk touch and curses.", ".enchant");
+		super("enchant", "给物品附魔所有效果，\n" + "除了精准采集和诅咒。", ".enchant");
 	}
 	
 	@Override
 	public void call(String[] args) throws CmdException
 	{
 		if(!MC.player.getAbilities().creativeMode)
-			throw new CmdError("Creative mode only.");
+			throw new CmdError("仅创造模式可用。");
 		
 		if(args.length > 1)
 			throw new CmdSyntaxError();
 		
 		enchant(getHeldItem(), 127);
-		ChatUtils.message("Item enchanted.");
+		ChatUtils.message("物品已附魔。");
 	}
 	
 	private ItemStack getHeldItem() throws CmdError
@@ -47,7 +46,7 @@ public final class EnchantCmd extends Command
 			stack = MC.player.getOffHandStack();
 		
 		if(stack.isEmpty())
-			throw new CmdError("There is no item in your hand.");
+			throw new CmdError("你手中没有物品。");
 		
 		return stack;
 	}
@@ -78,7 +77,7 @@ public final class EnchantCmd extends Command
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Enchant Held Item";
+		return "附魔手持物品";
 	}
 	
 	@Override

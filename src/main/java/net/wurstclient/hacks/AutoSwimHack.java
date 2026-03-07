@@ -13,12 +13,12 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"auto swim"})
+@SearchTags({"自动游泳", "auto swim"})
 public final class AutoSwimHack extends Hack implements UpdateListener
 {
 	public AutoSwimHack()
 	{
-		super("AutoSwim");
+		super("自动游泳");
 		setCategory(Category.MOVEMENT);
 	}
 	

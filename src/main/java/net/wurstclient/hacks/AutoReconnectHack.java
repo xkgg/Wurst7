@@ -14,17 +14,17 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"auto reconnect", "AutoRejoin", "auto rejoin"})
+@SearchTags({"自动重连", "auto reconnect", "AutoRejoin", "auto rejoin"})
 @DontBlock
 public final class AutoReconnectHack extends Hack
 {
 	private final SliderSetting waitTime =
-		new SliderSetting("Wait time", "Time before reconnecting in seconds.",
-			5, 0, 60, 0.5, ValueDisplay.DECIMAL.withSuffix("s"));
+		new SliderSetting("等待时间", "重连前的等待时间（秒）。",
+			5, 0, 60, 0.5, ValueDisplay.DECIMAL.withSuffix("秒"));
 	
 	public AutoReconnectHack()
 	{
-		super("AutoReconnect");
+		super("自动重连");
 		setCategory(Category.OTHER);
 		addSetting(waitTime);
 	}

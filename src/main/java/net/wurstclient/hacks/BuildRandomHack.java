@@ -31,73 +31,65 @@ import net.wurstclient.util.InteractionSimulator;
 import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"build random", "RandomBuild", "random build", "PlaceRandom",
+@SearchTags({"随机建造", "build random", "RandomBuild", "random build", "PlaceRandom",
 	"place random", "RandomPlace", "random place"})
 public final class BuildRandomHack extends Hack
 	implements UpdateListener, RenderListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private SliderSetting maxAttempts = new SliderSetting("Max attempts",
-		"Maximum number of random positions that BuildRandom will try to place"
-			+ " a block at in one tick.\n\n"
-			+ "Higher values speed up the building process at the cost of"
-			+ " increased lag.",
+	private SliderSetting maxAttempts = new SliderSetting("最大尝试次数",
+		"BuildRandom在一个刻内尝试放置方块的最大随机位置数。\n\n"
+			+ "更高的值会加快建造过程，但会增加卡顿。",
 		128, 1, 1024, 1, ValueDisplay.INTEGER);
 	
 	private final CheckboxSetting checkItem =
-		new CheckboxSetting("Check held item",
-			"Only builds when you are actually holding a block.\n"
-				+ "Turn this off to build with fire, water, lava, spawn eggs,"
-				+ " or if you just want to right click with an empty hand"
-				+ " in random places.",
+		new CheckboxSetting("检查手持物品",
+			"仅在你实际手持方块时建造。\n"
+				+ "关闭此选项以使用火焰、水、岩浆、刷怪蛋建造，"
+				+ "或如果你只是想在随机位置用空手右键点击。",
 			true);
 	
 	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("Check line of sight",
-			"Ensure that BuildRandom won't try to place blocks behind walls.",
+		new CheckboxSetting("检查视线",
+			"确保BuildRandom不会尝试在墙后放置方块。",
 			false);
 	
 	private final FacingSetting facing = FacingSetting.withoutPacketSpam(
-		"How BuildRandom should face the randomly placed blocks.\n\n"
-			+ "\u00a7lOff\u00a7r - Don't face the blocks at all. Will be"
-			+ " detected by anti-cheat plugins.\n\n"
-			+ "\u00a7lServer-side\u00a7r - Face the blocks on the"
-			+ " server-side, while still letting you move the camera freely on"
-			+ " the client-side.\n\n"
-			+ "\u00a7lClient-side\u00a7r - Face the blocks by moving your"
-			+ " camera on the client-side. This is the most legit option, but"
-			+ " can be VERY disorienting to look at.");
+		"BuildRandom应该如何面对随机放置的方块。\n\n"
+			+ "\u00a7l关闭\u00a7r - 完全不面对方块。会被反作弊插件检测到。\n\n"
+			+ "\u00a7l服务器端\u00a7r - 在服务器端面对方块，同时仍允许你在客户端自由移动相机。\n\n"
+			+ "\u00a7l客户端\u00a7r - 通过在客户端移动相机来面对方块。这是最合法的选项，但看起来可能非常令人困惑。");
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.SERVER);
 	
 	private final CheckboxSetting fastPlace =
-		new CheckboxSetting("Always FastPlace",
-			"Builds as if FastPlace was enabled, even if it's not.", false);
+		new CheckboxSetting("始终快速放置",
+			"即使FastPlace未启用，也会像启用了一样建造。", false);
 	
 	private final CheckboxSetting placeWhileBreaking = new CheckboxSetting(
-		"Place while breaking",
-		"Builds even while you are breaking a block.\n"
-			+ "Possible with hacks, but wouldn't work in vanilla. May look suspicious.",
+		"破坏时放置",
+		"即使在破坏方块时也会建造。\n"
+			+ "使用 hacks 可能实现，但在原版中不起作用。可能看起来可疑。",
 		false);
 	
 	private final CheckboxSetting placeWhileRiding = new CheckboxSetting(
-		"Place while riding",
-		"Builds even while you are riding a vehicle.\n"
-			+ "Possible with hacks, but wouldn't work in vanilla. May look suspicious.",
+		"骑乘时放置",
+		"即使在骑乘载具时也会建造。\n"
+			+ "使用 hacks 可能实现，但在原版中不起作用。可能看起来可疑。",
 		false);
 	
-	private final CheckboxSetting indicator = new CheckboxSetting("Indicator",
-		"Shows where BuildRandom is placing blocks.", true);
+	private final CheckboxSetting indicator = new CheckboxSetting("指示器",
+		"显示BuildRandom正在放置方块的位置。", true);
 	
 	private final Random random = new Random();
 	private BlockPos lastPos;
 	
 	public BuildRandomHack()
 	{
-		super("BuildRandom");
+		super("随机建造");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		addSetting(maxAttempts);

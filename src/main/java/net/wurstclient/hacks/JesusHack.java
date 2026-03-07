@@ -27,20 +27,20 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.util.BlockUtils;
 
-@SearchTags({"WaterWalking", "water walking"})
+@SearchTags({"水上行走", "WaterWalking", "water walking"})
 public final class JesusHack extends Hack
 	implements UpdateListener, PacketOutputListener
 {
 	private final CheckboxSetting bypass =
-		new CheckboxSetting("NoCheat+ bypass",
-			"Bypasses NoCheat+ but slows down your movement.", false);
+		new CheckboxSetting("NoCheat+ 绕过",
+			"绕过 NoCheat+ 但会减慢你的移动速度。", false);
 	
 	private int tickTimer = 10;
 	private int packetTimer = 0;
 	
 	public JesusHack()
 	{
-		super("Jesus");
+		super("水上行走");
 		setCategory(Category.MOVEMENT);
 		addSetting(bypass);
 	}

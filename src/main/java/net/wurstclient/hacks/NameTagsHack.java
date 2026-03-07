@@ -13,38 +13,34 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 
-@SearchTags({"name tags"})
+@SearchTags({"名字标签", "name tags"})
 public final class NameTagsHack extends Hack
 {
 	private final SliderSetting scale =
-		new SliderSetting("Scale", "How large the nametags should be.", 1, 0.05,
+		new SliderSetting("缩放", "名字标签的大小。", 1, 0.05,
 			5, 0.05, SliderSetting.ValueDisplay.PERCENTAGE);
 	
 	private final CheckboxSetting unlimitedRange =
-		new CheckboxSetting("Unlimited range",
-			"Removes the 64 block distance limit for nametags.", true);
+		new CheckboxSetting("无限距离",
+			"移除名字标签的 64 方块距离限制。", true);
 	
 	private final CheckboxSetting seeThrough = new CheckboxSetting(
-		"See-through mode",
-		"Renders nametags on the see-through text layer. This makes them"
-			+ " easier to read behind walls, but causes some graphical glitches"
-			+ " with water and other transparent things.",
+		"透视模式",
+		"在透视文本层上渲染名字标签。这使它们在墙后更容易阅读，但会导致水和其他透明物体出现一些图形故障。",
 		false);
 	
 	private final CheckboxSetting forceMobNametags = new CheckboxSetting(
-		"Always show named mobs", "Displays the nametags of named mobs even"
-			+ " when you are not looking directly at them.",
+		"始终显示命名生物", "即使你没有直接看着它们，也会显示命名生物的名字标签。",
 		true);
 	
 	private final CheckboxSetting forcePlayerNametags =
-		new CheckboxSetting("Always show player names",
-			"Displays your own nametag as well as any player names that would"
-				+ " normally be disabled by scoreboard team settings.",
+		new CheckboxSetting("始终显示玩家名字",
+			"显示你自己的名字标签以及任何通常会被记分板团队设置禁用的玩家名字。",
 			false);
 	
 	public NameTagsHack()
 	{
-		super("NameTags");
+		super("名字标签");
 		setCategory(Category.RENDER);
 		addSetting(scale);
 		addSetting(unlimitedRange);

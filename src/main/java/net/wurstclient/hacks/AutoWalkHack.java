@@ -13,31 +13,35 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.mixinterface.IKeyBinding;
 
-@SearchTags({"auto walk"})
+@SearchTags({"自动行走", "auto walk", "AutoWalk"})
 public final class AutoWalkHack extends Hack implements UpdateListener
 {
 	public AutoWalkHack()
 	{
-		super("AutoWalk");
+		super("自动行走");
 		setCategory(Category.MOVEMENT);
 	}
 	
 	@Override
 	protected void onEnable()
 	{
+		// 注册事件监听器
 		EVENTS.add(UpdateListener.class, this);
 	}
 	
 	@Override
 	protected void onDisable()
 	{
+		// 注销事件监听器
 		EVENTS.remove(UpdateListener.class, this);
+		// 重置前进键状态
 		IKeyBinding.get(MC.options.forwardKey).resetPressedState();
 	}
 	
 	@Override
 	public void onUpdate()
 	{
+		// 持续按下前进键
 		MC.options.forwardKey.setPressed(true);
 	}
 }

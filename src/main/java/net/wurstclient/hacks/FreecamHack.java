@@ -30,26 +30,26 @@ import net.wurstclient.util.FakePlayerEntity;
 import net.wurstclient.util.RenderUtils;
 
 @DontSaveState
-@SearchTags({"free camera", "spectator"})
+@SearchTags({"自由视角", "free camera", "spectator"})
 public final class FreecamHack extends Hack implements UpdateListener,
 	PacketOutputListener, IsPlayerInWaterListener, AirStrafingSpeedListener,
 	IsPlayerInLavaListener, CameraTransformViewBobbingListener,
 	IsNormalCubeListener, SetOpaqueCubeListener, RenderListener
 {
 	private final SliderSetting speed =
-		new SliderSetting("Speed", 1, 0.05, 10, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("速度", 1, 0.05, 10, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting tracer = new CheckboxSetting("Tracer",
-		"Draws a line to your character's actual position.", false);
+	private final CheckboxSetting tracer = new CheckboxSetting("追踪线",
+		"绘制一条线到你角色的实际位置。", false);
 	
 	private final ColorSetting color =
-		new ColorSetting("Tracer color", Color.WHITE);
+		new ColorSetting("追踪线颜色", Color.WHITE);
 	
 	private FakePlayerEntity fakePlayer;
 	
 	public FreecamHack()
 	{
-		super("Freecam");
+		super("自由视角");
 		setCategory(Category.RENDER);
 		addSetting(speed);
 		addSetting(tracer);

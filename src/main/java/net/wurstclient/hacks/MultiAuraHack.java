@@ -27,17 +27,17 @@ import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"multi aura", "ForceField", "force field"})
+@SearchTags({"多重光环", "multi aura", "ForceField", "force field"})
 public final class MultiAuraHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
 	
 	private final SliderSetting fov =
-		new SliderSetting("FOV", 360, 30, 360, 10, ValueDisplay.DEGREES);
+		new SliderSetting("视角范围", 360, 30, 360, 10, ValueDisplay.DEGREES);
 	
 	private final SwingHandSetting swingHand = new SwingHandSetting(
 		SwingHandSetting.genericCombatDescription(this), SwingHand.CLIENT);
@@ -50,7 +50,7 @@ public final class MultiAuraHack extends Hack implements UpdateListener
 	
 	public MultiAuraHack()
 	{
-		super("MultiAura");
+		super("多重光环");
 		setCategory(Category.COMBAT);
 		
 		addSetting(range);

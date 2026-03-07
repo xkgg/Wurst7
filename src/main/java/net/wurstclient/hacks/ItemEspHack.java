@@ -27,24 +27,24 @@ import net.wurstclient.settings.EspStyleSetting;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RenderUtils;
 
-@SearchTags({"item esp", "ItemTracers", "item tracers"})
+@SearchTags({"物品ESP", "item esp", "ItemTracers", "item tracers"})
 public final class ItemEspHack extends Hack implements UpdateListener,
 	CameraTransformViewBobbingListener, RenderListener
 {
 	private final EspStyleSetting style = new EspStyleSetting();
 	
 	private final EspBoxSizeSetting boxSize = new EspBoxSizeSetting(
-		"\u00a7lAccurate\u00a7r mode shows the exact hitbox of each item.\n"
-			+ "\u00a7lFancy\u00a7r mode shows larger boxes that look better.");
+		"\u00a7l精确\u00a7r 模式显示每个物品的确切碰撞箱。\n"
+			+ "\u00a7l美观\u00a7r 模式显示更大的箱子，看起来更好。");
 	
-	private final ColorSetting color = new ColorSetting("Color",
-		"Items will be highlighted in this color.", Color.YELLOW);
+	private final ColorSetting color = new ColorSetting("颜色",
+		"物品将以此颜色突出显示。", Color.YELLOW);
 	
 	private final ArrayList<ItemEntity> items = new ArrayList<>();
 	
 	public ItemEspHack()
 	{
-		super("ItemESP");
+		super("物品ESP");
 		setCategory(Category.RENDER);
 		addSetting(style);
 		addSetting(boxSize);

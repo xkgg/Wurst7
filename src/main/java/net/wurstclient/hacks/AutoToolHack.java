@@ -31,34 +31,31 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.InventoryUtils;
 
-@SearchTags({"auto tool", "AutoSwitch", "auto switch"})
+@SearchTags({"自动工具", "auto tool", "AutoSwitch", "auto switch"})
 public final class AutoToolHack extends Hack
 	implements BlockBreakingProgressListener, UpdateListener
 {
-	private final CheckboxSetting useSwords = new CheckboxSetting("Use swords",
-		"Uses swords to break leaves, cobwebs, etc.", false);
+	private final CheckboxSetting useSwords = new CheckboxSetting("使用剑",
+		"使用剑来破坏树叶、蜘蛛网等。", false);
 	
-	private final CheckboxSetting useHands = new CheckboxSetting("Use hands",
-		"Uses an empty hand or a non-damageable item when no applicable tool is"
-			+ " found.",
+	private final CheckboxSetting useHands = new CheckboxSetting("使用手",
+		"当没有找到适用的工具时，使用空手或不可损坏的物品。",
 		true);
 	
-	private final SliderSetting repairMode = new SliderSetting("Repair mode",
-		"Prevents tools from being used when their durability reaches the given"
-			+ " threshold, so you can repair them before they break.\n"
-			+ "Can be adjusted from 0 (off) to 100 remaining uses.",
-		0, 0, 100, 1, ValueDisplay.INTEGER.withLabel(0, "off"));
+	private final SliderSetting repairMode = new SliderSetting("修理模式",
+		"当工具的耐久度达到给定阈值时，防止使用工具，以便在它们损坏之前修理它们。\n"
+			+ "可以从 0（关闭）调整到 100 剩余使用次数。",
+		0, 0, 100, 1, ValueDisplay.INTEGER.withLabel(0, "关闭"));
 	
 	private final CheckboxSetting switchBack = new CheckboxSetting(
-		"Switch back", "After using a tool, automatically switches back to the"
-			+ " previously selected slot.",
+		"切换回", "使用工具后，自动切换回之前选择的物品栏。",
 		false);
 	
 	private int prevSelectedSlot;
 	
 	public AutoToolHack()
 	{
-		super("AutoTool");
+		super("自动工具");
 		
 		setCategory(Category.BLOCKS);
 		addSetting(useSwords);

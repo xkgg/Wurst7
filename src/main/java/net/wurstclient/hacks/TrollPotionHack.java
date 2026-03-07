@@ -21,16 +21,16 @@ import net.wurstclient.settings.EnumSetting;
 import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.InventoryUtils;
 
-@SearchTags({"troll potion", "TrollingPotion", "trolling potion"})
+@SearchTags({"恶作剧药水", "troll potion", "TrollingPotion", "trolling potion"})
 public final class TrollPotionHack extends Hack
 {
 	private final EnumSetting<PotionType> potionType =
-		new EnumSetting<>("Potion type", "The type of potion to generate.",
+		new EnumSetting<>("药水类型", "要生成的药水类型。",
 			PotionType.values(), PotionType.SPLASH);
 	
 	public TrollPotionHack()
 	{
-		super("TrollPotion");
+		super("恶作剧药水");
 		setCategory(Category.ITEMS);
 		addSetting(potionType);
 	}
@@ -65,13 +65,13 @@ public final class TrollPotionHack extends Hack
 	
 	private enum PotionType
 	{
-		NORMAL("Normal", "Potion", Items.POTION),
+		NORMAL("普通", "药水", Items.POTION),
 		
-		SPLASH("Splash", "Splash Potion", Items.SPLASH_POTION),
+		SPLASH("喷溅", "喷溅药水", Items.SPLASH_POTION),
 		
-		LINGERING("Lingering", "Lingering Potion", Items.LINGERING_POTION),
+		LINGERING("滞留", "滞留药水", Items.LINGERING_POTION),
 		
-		ARROW("Arrow", "Arrow", Items.TIPPED_ARROW);
+		ARROW("箭", "箭", Items.TIPPED_ARROW);
 		
 		private final String name;
 		private final String itemName;
@@ -108,7 +108,7 @@ public final class TrollPotionHack extends Hack
 			nbt.put("CustomPotionEffects", effects);
 			stack.setNbt(nbt);
 			
-			String name = "\u00a7f" + itemName + " of Trolling";
+			String name = "\u00a7f" + itemName + " (恶作剧)";
 			stack.setCustomName(Text.literal(name));
 			
 			return stack;

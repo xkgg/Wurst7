@@ -14,12 +14,12 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.util.Rotation;
 
-@SearchTags({"head roll", "nodding", "yes"})
+@SearchTags({"点头", "head roll", "nodding", "yes"})
 public final class HeadRollHack extends Hack implements UpdateListener
 {
 	public HeadRollHack()
 	{
-		super("HeadRoll");
+		super("点头");
 		setCategory(Category.FUN);
 	}
 	

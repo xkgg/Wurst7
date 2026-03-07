@@ -19,26 +19,24 @@ import net.wurstclient.mixinterface.IKeyBinding;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.EnumSetting;
 
-@SearchTags({"AutoSneaking"})
+@SearchTags({"自动潜行", "AutoSneaking"})
 public final class SneakHack extends Hack
 	implements PreMotionListener, PostMotionListener
 {
-	private final EnumSetting<SneakMode> mode = new EnumSetting<>("Mode",
-		"\u00a7lPacket\u00a7r mode makes it look like you're sneaking without slowing you down.\n"
-			+ "\u00a7lLegit\u00a7r mode actually makes you sneak.",
+	private final EnumSetting<SneakMode> mode = new EnumSetting<>("模式",
+		"\u00a7l数据包\u00a7r 模式让你看起来在潜行但不会减慢你的速度。\n"
+			+ "\u00a7l合法\u00a7r 模式实际上让你潜行。",
 		SneakMode.values(), SneakMode.LEGIT);
 	
 	private final CheckboxSetting offWhileFlying =
-		new CheckboxSetting("Turn off while flying",
-			"Automatically disables Legit Sneak while you are flying or using"
-				+ " Freecam, so that it doesn't force you to fly down.\n\n"
-				+ "Keep in mind that this also means you won't be hidden from"
-				+ " other players while doing these things.",
+		new CheckboxSetting("飞行时关闭",
+			"当你飞行或使用自由视角时自动禁用合法潜行，这样它就不会强制你向下飞行。\n\n"
+				+ "请记住，这也意味着在做这些事情时你不会对其他玩家隐藏。",
 			false);
 	
 	public SneakHack()
 	{
-		super("Sneak");
+		super("自动潜行");
 		setCategory(Category.MOVEMENT);
 		addSetting(mode);
 		addSetting(offWhileFlying);
@@ -131,8 +129,8 @@ public final class SneakHack extends Hack
 	
 	private enum SneakMode
 	{
-		PACKET("Packet"),
-		LEGIT("Legit");
+		PACKET("数据包"),
+		LEGIT("合法");
 		
 		private final String name;
 		

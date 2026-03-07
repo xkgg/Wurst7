@@ -9,14 +9,16 @@ package net.wurstclient.hacks;
 
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.Category;
+import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
+@SearchTags({"无蜘蛛网", "no web"})
 public final class NoWebHack extends Hack implements UpdateListener
 {
 	public NoWebHack()
 	{
-		super("NoWeb");
+		super("无蜘蛛网");
 		setCategory(Category.MOVEMENT);
 	}
 	

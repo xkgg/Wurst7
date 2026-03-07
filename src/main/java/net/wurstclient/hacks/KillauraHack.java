@@ -52,17 +52,16 @@ public final class KillauraHack extends Hack
 	
 	private final SliderSetting speedRandMS =
 		new SliderSetting("速度随机化",
-			"通过改变攻击之间的延迟来帮助您绕过反作弊插件"
-				+ " attacks.\n\n" + "\u00b1100ms is recommended for Vulcan.\n\n"
-				+ "0 (off) 适用于NoCheat+, AAC, Grim, Verus, Spartan, and"
-				+ " vanilla servers.",
+			"通过改变攻击之间的延迟来帮助您绕过反作弊插件。\n\n" + "\u00b1100ms 推荐用于 Vulcan。\n\n"
+				+ "0 (关闭) 适用于NoCheat+, AAC, Grim, Verus, Spartan, 和"
+				+ "  vanilla 服务器。",
 			100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
-				.withSuffix("ms").withLabel(0, "off"));
+				.withSuffix("ms").withLabel(0, "关闭"));
 	
 	private final EnumSetting<Priority> priority = new EnumSetting<>("优先权",
 		"确定哪个实体将首先受到攻击.\n"
 			+ "\u00a7l距离\u00a7r - 攻击最接近的实体.\n"
-			+ "\u00a7l角度\u00a7r - Attacks the entity that requires the least head movement.\n"
+			+ "\u00a7l角度\u00a7r - 攻击需要最少头部移动的实体.\n"
 			+ "\u00a7l血量\u00a7r - 攻击最弱的实体.",
 		Priority.values(), Priority.ANGLE);
 	
