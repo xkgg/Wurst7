@@ -29,9 +29,9 @@ public enum CopyItemCmdTest
 		// runChatCommand("item replace entity @s armor.head with
 		// golden_helmet");
 		runChatCommand("give @s golden_helmet");
-		runWurstCommand("t AutoArmor on");
+		runWurstCommand("t 自动盔甲 on");
 		waitForWorldTicks(5);
-		runWurstCommand("t AutoArmor off");
+		runWurstCommand("t 自动盔甲 off");
 		takeScreenshot("copyitem_command_setup");
 		assertNoItemInSlot(0);
 		assertOneItemInSlot(39, Items.GOLDEN_HELMET);
@@ -49,3 +49,4 @@ public enum CopyItemCmdTest
 		clearChat();
 	}
 }
+
