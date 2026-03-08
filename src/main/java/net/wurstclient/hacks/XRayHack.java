@@ -36,7 +36,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.ChatUtils;
 
-@SearchTags({"X光", "XRay", "x ray", "OreFinder", "ore finder"})
+@SearchTags({"矿透", "XRay", "x ray", "OreFinder", "ore finder"})
 public final class XRayHack extends Hack implements UpdateListener,
 	SetOpaqueCubeListener, GetAmbientOcclusionLightLevelListener,
 	ShouldDrawSideListener, RenderBlockEntityListener
@@ -97,7 +97,7 @@ public final class XRayHack extends Hack implements UpdateListener,
 	
 	public XRayHack()
 	{
-		super("X光");
+		super("矿透");
 		setCategory(Category.RENDER);
 		addSetting(ores);
 		addSetting(onlyExposed);
@@ -247,3 +247,4 @@ public final class XRayHack extends Hack implements UpdateListener,
 	
 	// See AbstractBlockRenderContextMixin, RenderLayersMixin
 }
+
