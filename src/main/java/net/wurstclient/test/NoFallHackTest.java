@@ -20,14 +20,14 @@ public enum NoFallHackTest
 	
 	public static void testNoFallHack()
 	{
-		System.out.println("Testing NoFall hack");
+		System.out.println("Testing 无掉落伤害 hack");
 		setPerspective(Perspective.THIRD_PERSON_BACK);
 		runChatCommand("gamemode survival");
 		assertOnGround();
 		assertPlayerHealth(health -> health == 20);
 		
 		// Fall 10 blocks with NoFall enabled
-		runWurstCommand("t NoFall on");
+		runWurstCommand("t 无掉落伤害 on");
 		runChatCommand("tp ~ ~10 ~");
 		waitForWorldTicks(5);
 		waitUntil("player is on ground", mc -> mc.player.isOnGround());
@@ -36,7 +36,7 @@ public enum NoFallHackTest
 		assertPlayerHealth(health -> health == 20);
 		
 		// Fall 10 blocks with NoFall disabled
-		runWurstCommand("t NoFall off");
+		runWurstCommand("t 无掉落伤害 off");
 		runChatCommand("tp ~ ~10 ~");
 		waitForWorldTicks(5);
 		waitUntil("player is on ground", mc -> mc.player.isOnGround());
@@ -60,8 +60,9 @@ public enum NoFallHackTest
 	{
 		float health = submitAndGet(mc -> mc.player.getHealth());
 		if(!healthCheck.test(health))
-			throw new RuntimeException("Player's health is wrong: " + health);
+			throw new RuntimeException("玩家的生命值有误: " + health);
 		
-		System.out.println("Player's health is correct: " + health);
+		System.out.println("玩家的生命值是正确的: " + health);
 	}
 }
+
