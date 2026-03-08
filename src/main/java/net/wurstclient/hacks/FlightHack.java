@@ -24,7 +24,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
  * 内置防踢出机制（模拟小幅下落规避服务器检测）、潜行减速（防止卡模型），
  * 强制标记玩家为非水中状态以确保飞行正常生效，兼容多数服务器环境。
  */
-@SearchTags({"创造飞行", "FlyHack", "fly hack", "flying"}) // 补充中文搜索标签
+@SearchTags({"飞行", "FlyHack", "fly hack", "flying"}) // 补充中文搜索标签
 public final class FlightHack extends Hack
 	implements UpdateListener, IsPlayerInWaterListener, AirStrafingSpeedListener
 {
@@ -69,7 +69,7 @@ public final class FlightHack extends Hack
 	
 	public FlightHack()
 	{
-		super("创造飞行"); // 功能显示名称
+		super("飞行"); // 功能显示名称
 		setCategory(Category.MOVEMENT); // 归类到“移动”类别
 		addSetting(horizontalSpeed); // 添加水平速度设置
 		addSetting(verticalSpeed); // 添加垂直速度设置

@@ -21,7 +21,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.FakePlayerEntity;
 
 @DontSaveState
-@SearchTags({"瞬间移动", "Blink", "LagSwitch", "lag switch"})
+@SearchTags({"闪现", "Blink", "LagSwitch", "lag switch"})
 public final class BlinkHack extends Hack
 	implements UpdateListener, PacketOutputListener
 {
@@ -35,7 +35,7 @@ public final class BlinkHack extends Hack
 	
 	public BlinkHack()
 	{
-		super("瞬间移动");
+		super("闪现");
 		setCategory(Category.MOVEMENT);
 		addSetting(limit);
 	}

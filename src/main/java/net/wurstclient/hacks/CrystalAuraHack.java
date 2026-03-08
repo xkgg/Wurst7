@@ -44,7 +44,7 @@ import net.wurstclient.util.FakePlayerEntity;
 import net.wurstclient.util.InventoryUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"末影水晶光环", "crystal aura"})
+@SearchTags({"水晶光环", "crystal aura"})
 public final class CrystalAuraHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range = new SliderSetting("范围",
@@ -81,7 +81,7 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	
 	public CrystalAuraHack()
 	{
-		super("末影水晶光环");
+		super("水晶光环");
 		
 		setCategory(Category.COMBAT);
 		addSetting(range);

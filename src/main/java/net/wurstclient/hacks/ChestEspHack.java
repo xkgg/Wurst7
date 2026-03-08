@@ -36,7 +36,7 @@ import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.chunk.ChunkUtils;
 import net.wurstclient.SearchTags;
 
-@SearchTags({"箱子ESP", "ChestESP", "chest esp"})
+@SearchTags({"箱子透视", "ChestESP", "chest esp"})
 public class ChestEspHack extends Hack implements UpdateListener,
 	CameraTransformViewBobbingListener, RenderListener
 {
@@ -119,7 +119,7 @@ public class ChestEspHack extends Hack implements UpdateListener,
 	
 	public ChestEspHack()
 	{
-		super("箱子ESP");
+		super("箱子透视");
 		setCategory(Category.RENDER);
 		
 		addSetting(style);

@@ -28,7 +28,7 @@ import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"自动点击", "click aura", "ClickAimbot", "click aimbot"})
+@SearchTags({"自动攻击", "click aura", "ClickAimbot", "click aimbot"})
 public final class ClickAuraHack extends Hack
 	implements UpdateListener, LeftClickListener
 {
@@ -53,7 +53,7 @@ public final class ClickAuraHack extends Hack
 	
 	public ClickAuraHack()
 	{
-		super("自动点击");
+		super("自动攻击");
 		
 		setCategory(Category.COMBAT);
 		addSetting(range);

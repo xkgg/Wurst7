@@ -45,7 +45,7 @@ import net.wurstclient.util.FakePlayerEntity;
 import net.wurstclient.util.InventoryUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"自动爆炸重生锚", "anchor aura", "CrystalAura", "crystal aura"})
+@SearchTags({"锚光环", "anchor aura", "CrystalAura", "crystal aura"})
 public final class AnchorAuraHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range =
@@ -77,7 +77,7 @@ public final class AnchorAuraHack extends Hack implements UpdateListener
 	
 	public AnchorAuraHack()
 	{
-		super("自动爆炸重生锚");
+		super("锚光环");
 		
 		setCategory(Category.COMBAT);
 		addSetting(range);

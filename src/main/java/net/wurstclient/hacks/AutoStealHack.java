@@ -21,7 +21,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"自动偷取", "auto steal", "ChestStealer", "chest stealer",
+@SearchTags({"自动拿取", "auto steal", "ChestStealer", "chest stealer",
 	"steal store buttons", "Steal/Store buttons"})
 public final class AutoStealHack extends Hack
 {
@@ -40,7 +40,7 @@ public final class AutoStealHack extends Hack
 	
 	public AutoStealHack()
 	{
-		super("自动偷取");
+		super("自动拿取");
 		setCategory(Category.ITEMS);
 		addSetting(buttons);
 		addSetting(delay);

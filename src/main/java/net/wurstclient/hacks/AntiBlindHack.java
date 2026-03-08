@@ -11,7 +11,7 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"阻止失明", "AntiBlindness", "NoBlindness", "anti blindness", "no blindness",
+@SearchTags({"反失明", "AntiBlindness", "NoBlindness", "anti blindness", "no blindness",
 	"AntiDarkness", "NoDarkness", "anti darkness", "no darkness",
 	"AntiWardenEffect", "anti warden effect", "NoWardenEffect",
 	"no warden effect"})
@@ -19,7 +19,7 @@ public final class AntiBlindHack extends Hack
 {
 	public AntiBlindHack()
 	{
-		super("阻止失明");
+		super("反失明");
 		setCategory(Category.RENDER);
 	}
 	

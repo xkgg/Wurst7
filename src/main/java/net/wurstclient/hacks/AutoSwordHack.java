@@ -30,7 +30,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.ItemUtils;
 
-@SearchTags({"自动剑", "auto sword"})
+@SearchTags({"自动武器", "auto sword"})
 public final class AutoSwordHack extends Hack implements UpdateListener
 {
 	private final EnumSetting<Priority> priority =
@@ -51,7 +51,7 @@ public final class AutoSwordHack extends Hack implements UpdateListener
 	
 	public AutoSwordHack()
 	{
-		super("自动剑");
+		super("自动武器");
 		setCategory(Category.COMBAT);
 		
 		addSetting(priority);

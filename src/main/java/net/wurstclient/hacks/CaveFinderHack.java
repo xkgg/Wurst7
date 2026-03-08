@@ -43,7 +43,7 @@ import net.wurstclient.util.RotationUtils;
 import net.wurstclient.util.chunk.ChunkSearcher;
 import net.wurstclient.util.chunk.ChunkSearcherCoordinator;
 
-@SearchTags({"洞穴查找", "cave finder"})
+@SearchTags({"洞穴高亮", "cave finder"})
 public final class CaveFinderHack extends Hack
 	implements UpdateListener, RenderListener
 {
@@ -80,7 +80,7 @@ public final class CaveFinderHack extends Hack
 	
 	public CaveFinderHack()
 	{
-		super("洞穴查找");
+		super("洞穴高亮");
 		setCategory(Category.RENDER);
 		addSetting(area);
 		addSetting(limit);

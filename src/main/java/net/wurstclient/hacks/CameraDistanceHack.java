@@ -13,7 +13,7 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"视角距离", "camera distance", "CamDistance", "cam distance"})
+@SearchTags({"相机距离", "camera distance", "CamDistance", "cam distance"})
 public final class CameraDistanceHack extends Hack
 {
 	private final SliderSetting distance =
@@ -21,7 +21,7 @@ public final class CameraDistanceHack extends Hack
 	
 	public CameraDistanceHack()
 	{
-		super("视角距离");
+		super("相机距离");
 		setCategory(Category.RENDER);
 		addSetting(distance);
 	}

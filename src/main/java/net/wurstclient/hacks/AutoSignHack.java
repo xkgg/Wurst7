@@ -12,7 +12,7 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.hack.DontSaveState;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"自动签名", "auto sign"})
+@SearchTags({"自动告示牌", "auto sign"})
 @DontSaveState
 public final class AutoSignHack extends Hack
 {
@@ -20,7 +20,7 @@ public final class AutoSignHack extends Hack
 	
 	public AutoSignHack()
 	{
-		super("自动签名");
+		super("自动告示牌");
 		setCategory(Category.BLOCKS);
 	}
 	

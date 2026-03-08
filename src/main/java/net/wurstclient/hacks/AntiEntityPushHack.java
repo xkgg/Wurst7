@@ -12,13 +12,13 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.VelocityFromEntityCollisionListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"反击退", "anti entity push", "NoEntityPush", "no entity push"})
+@SearchTags({"反实体推动", "anti entity push", "NoEntityPush", "no entity push"})
 public final class AntiEntityPushHack extends Hack
 	implements VelocityFromEntityCollisionListener
 {
 	public AntiEntityPushHack()
 	{
-		super("反击退");
+		super("反实体推动");
 		setCategory(Category.MOVEMENT);
 	}
 	

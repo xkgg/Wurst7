@@ -11,12 +11,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"屏障ESP", "barrier esp"})
+@SearchTags({"屏障透视", "barrier esp"})
 public class BarrierEspHack extends Hack
 {
 	public BarrierEspHack()
 	{
-		super("屏障ESP");
+		super("屏障透视");
 		setCategory(Category.RENDER);
 	}
 	
