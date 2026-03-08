@@ -22,32 +22,32 @@ public enum XRayHackTest
 		clearChat();
 		
 		// Enable X-Ray with default settings
-		runWurstCommand("setcheckbox 矿透 only_show_exposed off");
-		runWurstCommand("setslider 矿透 opacity 0");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 off");
+		runWurstCommand("setslider 矿透 透明度 0");
 		runWurstCommand("t 矿透 on");
 		takeScreenshot("xray_default", Duration.ofMillis(300));
 		runWurstCommand("t 矿透 off");
 		clearChat();
 		
 		// Exposed only
-		runWurstCommand("setcheckbox 矿透 only_show_exposed on");
-		runWurstCommand("setslider 矿透 opacity 0");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 on");
+		runWurstCommand("setslider 矿透 透明度 0");
 		runWurstCommand("t 矿透 on");
 		takeScreenshot("xray_exposed_only", Duration.ofMillis(300));
 		runWurstCommand("t 矿透 off");
 		clearChat();
 		
 		// Opacity mode
-		runWurstCommand("setcheckbox 矿透 only_show_exposed off");
-		runWurstCommand("setslider 矿透 opacity 0.5");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 off");
+		runWurstCommand("setslider 矿透 透明度 0.5");
 		runWurstCommand("t 矿透 on");
 		takeScreenshot("xray_opacity", Duration.ofMillis(300));
 		runWurstCommand("t 矿透 off");
 		clearChat();
 		
 		// Exposed only + opacity
-		runWurstCommand("setcheckbox 矿透 only_show_exposed on");
-		runWurstCommand("setslider 矿透 opacity 0.5");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 on");
+		runWurstCommand("setslider 矿透 透明度 0.5");
 		runWurstCommand("t 矿透 on");
 		takeScreenshot("xray_exposed_only_opacity", Duration.ofMillis(300));
 		runWurstCommand("t 矿透 off");
@@ -55,8 +55,8 @@ public enum XRayHackTest
 		
 		// Clean up
 		runChatCommand("fill ~-7 ~ ~-7 ~7 ~30 ~7 air");
-		runWurstCommand("setcheckbox 矿透 only_show_exposed off");
-		runWurstCommand("setslider 矿透 opacity 0");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 off");
+		runWurstCommand("setslider 矿透 透明度 0");
 		runWurstCommand("t 矿透 off");
 		clearChat();
 	}
@@ -83,4 +83,5 @@ public enum XRayHackTest
 		runChatCommand("setblock ~-1 ~0 ~6 minecraft:lava");
 	}
 }
+
 
