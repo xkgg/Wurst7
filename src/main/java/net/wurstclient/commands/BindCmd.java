@@ -14,10 +14,10 @@ public final class BindCmd extends Command
 {
 	public BindCmd()
 	{
-		super("bind", "Shortcut for '.binds add'.", ".bind <key> <hacks>",
-			".bind <key> <commands>",
-			"Multiple hacks/commands must be separated by ';'.",
-			"Use .binds for more options.");
+		super("bind", ".binds add 的快捷方式。", ".bind <按键> <hack>",
+			".bind <按键> <命令>",
+			"多个hack/命令必须用 ';' 分隔。",
+			"使用 .binds 获取更多选项。");
 	}
 	
 	@Override

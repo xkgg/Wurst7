@@ -23,8 +23,8 @@ public final class HelpCmd extends Command
 	
 	public HelpCmd()
 	{
-		super("help", "Shows help for a command or a list of commands.",
-			".help <command>", "List commands: .help [<page>]");
+		super("help", "显示命令的帮助或命令列表。",
+			".help <命令>", "列出命令: .help [<页码>]");
 	}
 	
 	@Override
@@ -48,16 +48,15 @@ public final class HelpCmd extends Command
 		pages = Math.max(pages, 1);
 		
 		if(page > pages || page < 1)
-			throw new CmdSyntaxError("Invalid page: " + page);
+			throw new CmdSyntaxError("无效的页码: " + page);
 		
-		String total = "Total: " + cmds.size() + " command";
-		total += cmds.size() != 1 ? "s" : "";
+		String total = "总数: " + cmds.size() + " 命令";
 		ChatUtils.message(total);
 		
 		int start = (page - 1) * CMDS_PER_PAGE;
 		int end = Math.min(page * CMDS_PER_PAGE, cmds.size());
 		
-		ChatUtils.message("Command list (page " + page + "/" + pages + ")");
+		ChatUtils.message("命令列表 (第 " + page + "/" + pages + " 页)");
 		for(int i = start; i < end; i++)
 			ChatUtils.message("- " + cmds.get(i).getName());
 	}
@@ -69,9 +68,9 @@ public final class HelpCmd extends Command
 		
 		Command cmd = WURST.getCmds().getCmdByName(cmdName);
 		if(cmd == null)
-			throw new CmdSyntaxError("Unknown command: ." + cmdName);
+			throw new CmdSyntaxError("未知命令: ." + cmdName);
 		
-		ChatUtils.message("Available help for ." + cmdName + ":");
+		ChatUtils.message("." + cmdName + " 的可用帮助:");
 		cmd.printHelp();
 	}
 }

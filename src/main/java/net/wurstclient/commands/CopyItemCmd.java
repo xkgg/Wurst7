@@ -22,10 +22,9 @@ public final class CopyItemCmd extends Command
 	public CopyItemCmd()
 	{
 		super("copyitem",
-			"Allows you to copy items that other people are holding\n"
-				+ "or wearing. Requires creative mode.",
-			".copyitem <player> <slot>",
-			"Valid slots: hand, head, chest, legs, feet");
+			"允许你复制其他人手持或穿戴的物品\n" + "需要创造模式。",
+			".copyitem <玩家> <槽位>",
+			"有效的槽位: hand, head, chest, legs, feet");
 	}
 	
 	@Override
@@ -35,13 +34,13 @@ public final class CopyItemCmd extends Command
 			throw new CmdSyntaxError();
 		
 		if(!MC.player.getAbilities().creativeMode)
-			throw new CmdError("Creative mode only.");
+			throw new CmdError("仅创造模式可用。");
 		
 		AbstractClientPlayerEntity player = getPlayer(args[0]);
 		ItemStack item = getItem(player, args[1]);
 		CmdUtils.giveItem(item);
 		
-		ChatUtils.message("Item copied.");
+		ChatUtils.message("物品已复制。");
 	}
 	
 	private AbstractClientPlayerEntity getPlayer(String name) throws CmdError
@@ -54,7 +53,7 @@ public final class CopyItemCmd extends Command
 			return player;
 		}
 		
-		throw new CmdError("Player \"" + name + "\" could not be found.");
+		throw new CmdError("找不到玩家 \"" + name + "\"。");
 	}
 	
 	private ItemStack getItem(AbstractClientPlayerEntity player, String slot)
