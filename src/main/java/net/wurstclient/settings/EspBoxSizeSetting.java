@@ -12,7 +12,7 @@ public final class EspBoxSizeSetting
 {
 	public EspBoxSizeSetting(String description)
 	{
-		super("Box size", description, BoxSize.values(), BoxSize.FANCY);
+		super("方块大小", description, BoxSize.values(), BoxSize.FANCY);
 	}
 	
 	public EspBoxSizeSetting(String name, String description, BoxSize selected)
@@ -27,8 +27,8 @@ public final class EspBoxSizeSetting
 	
 	public enum BoxSize
 	{
-		ACCURATE("Accurate", 0),
-		FANCY("Fancy", 0.1F);
+		ACCURATE("精确", 0),
+		FANCY("美观", 0.1F);
 		
 		private final String name;
 		private final float extraSize;
