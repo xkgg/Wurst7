@@ -25,7 +25,7 @@ public final class NavigatorHack extends Hack
 {
 	public NavigatorHack()
 	{
-		super("功能菜单"); // 功能显示名称
+		super("Navigato"); // 功能显示名称
 	}
 	
 	@Override
