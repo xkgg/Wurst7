@@ -16,7 +16,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"跑酷", "parkour"})
+@SearchTags({"简单跑酷", "parkour"})
 public final class ParkourHack extends Hack implements UpdateListener
 {
 	private final SliderSetting minDepth = new SliderSetting("最小深度",
@@ -38,7 +38,7 @@ public final class ParkourHack extends Hack implements UpdateListener
 	
 	public ParkourHack()
 	{
-		super("跑酷");
+		super("简单跑酷");
 		setCategory(Category.MOVEMENT);
 		addSetting(minDepth);
 		addSetting(edgeDistance);

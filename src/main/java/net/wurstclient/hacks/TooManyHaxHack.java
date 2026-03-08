@@ -25,7 +25,7 @@ import net.wurstclient.TooManyHaxFile;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.util.json.JsonException;
 
-@SearchTags({"太多hack", "too many hax", "TooManyHacks", "too many hacks", "YesCheat+",
+@SearchTags({"屏蔽功能", "too many hax", "TooManyHacks", "too many hacks", "YesCheat+",
 	"YesCheatPlus", "yes cheat plus"})
 @DontBlock
 public final class TooManyHaxHack extends Hack
@@ -36,7 +36,7 @@ public final class TooManyHaxHack extends Hack
 	
 	public TooManyHaxHack()
 	{
-		super("太多hack");
+		super("屏蔽功能");
 		setCategory(Category.OTHER);
 		
 		Path wurstFolder = WURST.getWurstFolder();

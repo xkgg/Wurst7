@@ -23,25 +23,22 @@ import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.BlockUtils;
 
-@SearchTags({"FastMine", "SpeedMine", "SpeedyGonzales", "fast break",
+@SearchTags({"快速破坏", "FastMine", "SpeedMine", "SpeedyGonzales", "fast break",
 	"fast mine", "speed mine", "speedy gonzales", "NoBreakDelay",
 	"no break delay"})
 public final class FastBreakHack extends Hack
 	implements UpdateListener, BlockBreakingProgressListener
 {
 	private final SliderSetting activationChance = new SliderSetting(
-		"Activation chance",
-		"Only FastBreaks some of the blocks you break with the given chance,"
-			+ " which makes it harder for anti-cheat plugins to detect.\n\n"
-			+ "This setting does nothing if Legit mode is enabled.",
+		"触发概率",
+		"仅以设定概率快速破坏你所挖掘的部分方块，以此增加反作弊插件的检测难度。\n\n"
+			+ "启用合规模式时，此设置无效。",
 		1, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
-	private final CheckboxSetting legitMode = new CheckboxSetting("Legit mode",
-		"Only removes the delay between breaking blocks, without speeding up"
-			+ " the breaking process itself.\n\n"
-			+ "This is much slower, but great at bypassing anti-cheat plugins."
-			+ " Use this if regular FastBreak is not working and the Activation"
-			+ " chance slider doesn't help.",
+	private final CheckboxSetting legitMode = new CheckboxSetting("合规模式",
+		"仅移除方块破坏之间的延迟，不会加速破坏过程本身。\n\n"
+		+ "该模式速度较慢，但能有效规避反作弊插件检测。"
+		+ "如果常规快速破坏无效且调整触发概率滑块也无帮助，请使用此模式。",
 		false);
 	
 	private final Random random = new Random();
@@ -50,7 +47,7 @@ public final class FastBreakHack extends Hack
 	
 	public FastBreakHack()
 	{
-		super("FastBreak");
+		super("快速破坏");
 		setCategory(Category.BLOCKS);
 		addSetting(activationChance);
 		addSetting(legitMode);
@@ -101,7 +98,7 @@ public final class FastBreakHack extends Hack
 			fastBreakBlock = random.nextDouble() <= activationChance.getValue();
 		}
 		
-		// Ignore unbreakable blocks to avoid slowdown issue
+		// 忽略不可破坏的方块，避免出现卡顿问题
 		if(BlockUtils.isUnbreakable(blockPos))
 			return;
 		

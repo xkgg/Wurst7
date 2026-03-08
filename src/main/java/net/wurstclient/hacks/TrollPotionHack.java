@@ -21,7 +21,7 @@ import net.wurstclient.settings.EnumSetting;
 import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.InventoryUtils;
 
-@SearchTags({"恶作剧药水", "troll potion", "TrollingPotion", "trolling potion"})
+@SearchTags({"恼人药水", "troll potion", "TrollingPotion", "trolling potion"})
 public final class TrollPotionHack extends Hack
 {
 	private final EnumSetting<PotionType> potionType =
@@ -30,7 +30,7 @@ public final class TrollPotionHack extends Hack
 	
 	public TrollPotionHack()
 	{
-		super("恶作剧药水");
+		super("恼人药水");
 		setCategory(Category.ITEMS);
 		addSetting(potionType);
 	}
@@ -41,7 +41,7 @@ public final class TrollPotionHack extends Hack
 		// check gamemode
 		if(!MC.player.getAbilities().creativeMode)
 		{
-			ChatUtils.error("Creative mode only.");
+			ChatUtils.error("仅限创造模式.");
 			setEnabled(false);
 			return;
 		}
@@ -53,11 +53,11 @@ public final class TrollPotionHack extends Hack
 		PlayerInventory inventory = MC.player.getInventory();
 		int slot = inventory.getEmptySlot();
 		if(slot < 0)
-			ChatUtils.error("Cannot give potion. Your inventory is full.");
+			ChatUtils.error("不能给药水, 您的背包已满！");
 		else
 		{
 			InventoryUtils.setCreativeStack(slot, stack);
-			ChatUtils.message("Potion created.");
+			ChatUtils.message("已创建药水");
 		}
 		
 		setEnabled(false);
@@ -108,7 +108,7 @@ public final class TrollPotionHack extends Hack
 			nbt.put("CustomPotionEffects", effects);
 			stack.setNbt(nbt);
 			
-			String name = "\u00a7f" + itemName + " (恶作剧)";
+			String name = "\u00a7f" + itemName + " 恼人药水";
 			stack.setCustomName(Text.literal(name));
 			
 			return stack;

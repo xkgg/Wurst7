@@ -11,13 +11,13 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"无覆盖", "no overlay", "NoWaterOverlay", "no water overlay",
+@SearchTags({"无视角覆盖", "no overlay", "NoWaterOverlay", "no water overlay",
 	"NoSnowOverlay", "no snow overlay"})
 public final class NoOverlayHack extends Hack
 {
 	public NoOverlayHack()
 	{
-		super("无覆盖");
+		super("无视角覆盖");
 		setCategory(Category.RENDER);
 	}
 	

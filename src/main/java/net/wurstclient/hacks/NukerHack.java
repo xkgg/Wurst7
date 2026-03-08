@@ -33,7 +33,7 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.OverlayRenderer;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"破坏者", "nuker", "destroyer"})
+@SearchTags({"挖掘光环", "nuker", "destroyer"})
 public final class NukerHack extends Hack
 	implements UpdateListener, RenderListener
 {
@@ -52,7 +52,7 @@ public final class NukerHack extends Hack
 	
 	public NukerHack()
 	{
-		super("破坏者");
+		super("挖掘光环");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		commonSettings.getSettings().forEach(this::addSetting);

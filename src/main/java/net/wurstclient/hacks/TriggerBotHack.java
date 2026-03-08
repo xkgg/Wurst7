@@ -27,7 +27,7 @@ import net.wurstclient.settings.SwingHandSetting.SwingHand;
 import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.util.EntityUtils;
 
-@SearchTags({"触发机器人", "trigger bot", "AutoAttack", "auto attack", "AutoClicker",
+@SearchTags({"自动扳机", "trigger bot", "AutoAttack", "auto attack", "AutoClicker",
 	"auto clicker"})
 public final class TriggerBotHack extends Hack
 	implements PreMotionListener, HandleInputListener
@@ -69,7 +69,7 @@ public final class TriggerBotHack extends Hack
 	
 	public TriggerBotHack()
 	{
-		super("触发机器人");
+		super("自动扳机");
 		setCategory(Category.COMBAT);
 		
 		addSetting(range);

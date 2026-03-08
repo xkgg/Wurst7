@@ -25,11 +25,11 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.SearchTags;
 import net.wurstclient.util.BlockUtils;
 
-@SearchTags({"滑翔", "glide"})
+@SearchTags({"缓降", "glide"})
 public final class GlideHack extends Hack
 	implements UpdateListener, AirStrafingSpeedListener
 {
-	private final SliderSetting fallSpeed = new SliderSetting("下落速度",
+	private final SliderSetting fallSpeed = new SliderSetting("缓降速度",
 		0.125, 0.005, 0.25, 0.005, ValueDisplay.DECIMAL);
 	
 	private final SliderSetting moveSpeed =
@@ -37,7 +37,7 @@ public final class GlideHack extends Hack
 			5, 0.05, ValueDisplay.PERCENTAGE);
 	
 	private final SliderSetting minHeight = new SliderSetting("最小高度",
-		"当你离地面太近时不会滑翔。", 0, 0, 2, 0.01,
+		"当你离地面太近时不会缓降。", 0, 0, 2, 0.01,
 		ValueDisplay.DECIMAL.withLabel(0, "禁用"));
 	
 	private final CheckboxSetting pauseOnSneak =
@@ -45,7 +45,7 @@ public final class GlideHack extends Hack
 	
 	public GlideHack()
 	{
-		super("滑翔");
+		super("缓降");
 		setCategory(Category.MOVEMENT);
 		addSetting(fallSpeed);
 		addSetting(moveSpeed);

@@ -20,7 +20,7 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 
-@SearchTags({"强化鞘翅", "EasyElytra", "extra elytra", "easy elytra"})
+@SearchTags({"鞘翅飞行", "EasyElytra", "extra elytra", "easy elytra"})
 public final class ExtraElytraHack extends Hack implements UpdateListener
 {
 	private final CheckboxSetting instantFly = new CheckboxSetting(
@@ -44,7 +44,7 @@ public final class ExtraElytraHack extends Hack implements UpdateListener
 	
 	public ExtraElytraHack()
 	{
-		super("强化鞘翅");
+		super("鞘翅飞行");
 		setCategory(Category.MOVEMENT);
 		addSetting(instantFly);
 		addSetting(speedCtrl);

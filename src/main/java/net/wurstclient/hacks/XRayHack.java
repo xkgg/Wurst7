@@ -36,15 +36,15 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.ChatUtils;
 
-@SearchTags({"X光", "XRay", "x ray", "OreFinder", "ore finder"})
+@SearchTags({"矿透", "XRay", "x ray", "OreFinder", "ore finder"})
 public final class XRayHack extends Hack implements UpdateListener,
 	SetOpaqueCubeListener, GetAmbientOcclusionLightLevelListener,
 	ShouldDrawSideListener, RenderBlockEntityListener
 {
 	private final BlockListSetting ores = new BlockListSetting("方块",
-		"X光将显示的方块列表。它们不一定只是矿石" 
+		"矿透将显示的方块列表。它们不一定只是矿石" 
 			+ " - 你可以添加任何你想要的方块。\n\n"
-			+ "更改此设置后请记得重启X光。",
+			+ "更改此设置后请记得重启矿透。",
 		"minecraft:amethyst_cluster", "minecraft:ancient_debris",
 		"minecraft:anvil", "minecraft:beacon", "minecraft:bone_block",
 		"minecraft:bookshelf", "minecraft:brewing_stand",
@@ -82,9 +82,9 @@ public final class XRayHack extends Hack implements UpdateListener,
 		false);
 	
 	private final SliderSetting opacity = new SliderSetting("透明度",
-		"X光启用时非矿石方块的透明度。\n\n"
+		"矿透启用时非矿石方块的透明度。\n\n"
 			+ "安装Sodium时不起作用。\n\n"
-			+ "更改此设置后请记得重启X光。",
+			+ "更改此设置后请记得重启矿透。",
 		0, 0, 0.99, 0.01, ValueDisplay.PERCENTAGE.withLabel(0, "off"));
 	
 	private final String optiFineWarning;
@@ -97,7 +97,7 @@ public final class XRayHack extends Hack implements UpdateListener,
 	
 	public XRayHack()
 	{
-		super("X光");
+		super("矿透");
 		setCategory(Category.RENDER);
 		addSetting(ores);
 		addSetting(onlyExposed);
@@ -235,7 +235,7 @@ public final class XRayHack extends Hack implements UpdateListener,
 		Pattern optifine = Pattern.compile("opti(?:fine|fabric).*");
 		
 		if(mods.anyMatch(optifine.asPredicate()))
-			return "已安装OptiFine。X光将无法正常工作！";
+			return "已安装OptiFine。矿透将无法正常工作！";
 		
 		return null;
 	}

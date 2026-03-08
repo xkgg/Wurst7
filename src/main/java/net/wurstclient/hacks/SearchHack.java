@@ -42,7 +42,7 @@ import net.wurstclient.util.RotationUtils;
 import net.wurstclient.util.chunk.ChunkSearcher;
 import net.wurstclient.util.chunk.ChunkSearcherCoordinator;
 
-@SearchTags({"搜索", "BlockESP", "block esp"})
+@SearchTags({"方块高亮", "BlockESP", "block esp"})
 public final class SearchHack extends Hack
 	implements UpdateListener, RenderListener
 {
@@ -74,7 +74,7 @@ public final class SearchHack extends Hack
 	
 	public SearchHack()
 	{
-		super("搜索");
+		super("方块高亮");
 		setCategory(Category.RENDER);
 		addSetting(block);
 		addSetting(area);

@@ -46,7 +46,7 @@ import net.wurstclient.util.chunk.ChunkSearcher;
 import net.wurstclient.util.chunk.ChunkSearcher.Result;
 import net.wurstclient.util.chunk.ChunkVertexBufferCoordinator;
 
-@SearchTags({"生物生成ESP", "mob spawn esp", "LightLevelESP", "light level esp",
+@SearchTags({"生物刷新区", "mob spawn esp", "LightLevelESP", "light level esp",
 	"LightLevelOverlay", "light level overlay"})
 public final class MobSpawnEspHack extends Hack
 	implements UpdateListener, RenderListener
@@ -77,7 +77,7 @@ public final class MobSpawnEspHack extends Hack
 	
 	public MobSpawnEspHack()
 	{
-		super("生物生成ESP");
+		super("生物刷新区");
 		setCategory(Category.RENDER);
 		addSetting(drawDistance);
 		addSetting(nightColor);

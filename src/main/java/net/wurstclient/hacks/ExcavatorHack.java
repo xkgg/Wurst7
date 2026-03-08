@@ -43,7 +43,7 @@ import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RotationUtils;
 import net.wurstclient.SearchTags;
 
-@SearchTags({"挖掘机", "Excavator"})
+@SearchTags({"范围破坏", "Excavator"})
 public final class ExcavatorHack extends Hack
 	implements UpdateListener, RenderListener, GUIRenderListener
 {
@@ -64,7 +64,7 @@ public final class ExcavatorHack extends Hack
 	
 	public ExcavatorHack()
 	{
-		super("挖掘机");
+		super("范围破坏");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		addSetting(mode);

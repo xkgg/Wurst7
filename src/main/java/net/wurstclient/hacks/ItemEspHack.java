@@ -27,7 +27,7 @@ import net.wurstclient.settings.EspStyleSetting;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RenderUtils;
 
-@SearchTags({"物品ESP", "item esp", "ItemTracers", "item tracers"})
+@SearchTags({"掉落物透视", "item esp", "ItemTracers", "item tracers"})
 public final class ItemEspHack extends Hack implements UpdateListener,
 	CameraTransformViewBobbingListener, RenderListener
 {
@@ -44,7 +44,7 @@ public final class ItemEspHack extends Hack implements UpdateListener,
 	
 	public ItemEspHack()
 	{
-		super("物品ESP");
+		super("掉落物透视");
 		setCategory(Category.RENDER);
 		addSetting(style);
 		addSetting(boxSize);

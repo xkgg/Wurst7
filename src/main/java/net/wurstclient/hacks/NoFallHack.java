@@ -15,7 +15,7 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 
-@SearchTags({"无掉落伤害", "no fall"})
+@SearchTags({"无跌落伤害", "no fall"})
 public final class NoFallHack extends Hack implements UpdateListener
 {
 	private final CheckboxSetting allowElytra = new CheckboxSetting(
@@ -23,7 +23,7 @@ public final class NoFallHack extends Hack implements UpdateListener
 	
 	public NoFallHack()
 	{
-		super("无掉落伤害");
+		super("无跌落伤害");
 		setCategory(Category.MOVEMENT);
 		addSetting(allowElytra);
 	}

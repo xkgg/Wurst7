@@ -17,7 +17,7 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.util.OverlayRenderer;
 
-@SearchTags({"覆盖", "overlay"})
+@SearchTags({"破坏动画", "overlay"})
 public final class OverlayHack extends Hack
 	implements UpdateListener, RenderListener
 {
@@ -25,7 +25,7 @@ public final class OverlayHack extends Hack
 	
 	public OverlayHack()
 	{
-		super("覆盖");
+		super("破坏动画");
 		setCategory(Category.RENDER);
 	}
 	

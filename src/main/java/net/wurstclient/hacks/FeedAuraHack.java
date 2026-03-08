@@ -38,13 +38,13 @@ import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"自动喂食", "feed aura", "BreedAura", "breed aura", "AutoBreeder",
+@SearchTags({"喂养光环", "feed aura", "BreedAura", "breed aura", "AutoBreeder",
 	"auto breeder"})
 public final class FeedAuraHack extends Hack
 	implements UpdateListener, HandleInputListener, RenderListener
 {
 	private final SliderSetting range = new SliderSetting("范围",
-		"决定自动喂食可以喂食动物的距离。\n"
+		"决定喂养光环可以喂食动物的距离。\n"
 			+ "任何超出指定值的动物都不会被喂食。",
 		5, 1, 10, 0.05, ValueDisplay.DECIMAL);
 	
@@ -68,7 +68,7 @@ public final class FeedAuraHack extends Hack
 	
 	public FeedAuraHack()
 	{
-		super("自动喂食");
+		super("喂养光环");
 		setCategory(Category.OTHER);
 		addSetting(range);
 		addSetting(filterBabies);

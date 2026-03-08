@@ -11,12 +11,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"彩虹界面", "RainbowGUI", "rainbow ui", "rainbow gui", "rgb"})
+@SearchTags({"彩虹用户界面", "RainbowGUI", "rainbow ui", "rainbow gui", "rgb"})
 public final class RainbowUiHack extends Hack
 {
 	public RainbowUiHack()
 	{
-		super("彩虹界面");
+		super("彩虹用户界面");
 		setCategory(Category.FUN);
 	}
 	

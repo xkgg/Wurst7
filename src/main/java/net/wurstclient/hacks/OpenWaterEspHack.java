@@ -16,12 +16,12 @@ import net.wurstclient.events.RenderListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.util.RenderUtils;
 
-@SearchTags({"开阔水域ESP", "open water esp", "AutoFishESP", "auto fish esp"})
+@SearchTags({"开放水域高亮", "open water esp", "AutoFishESP", "auto fish esp"})
 public final class OpenWaterEspHack extends Hack implements RenderListener
 {
 	public OpenWaterEspHack()
 	{
-		super("开阔水域ESP");
+		super("开放水域高亮");
 		setCategory(Category.RENDER);
 	}
 	

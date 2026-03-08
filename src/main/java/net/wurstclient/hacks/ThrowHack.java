@@ -16,7 +16,7 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"投掷", "throw"})
+@SearchTags({"急速放置", "throw"})
 public final class ThrowHack extends Hack implements RightClickListener
 {
 	private final SliderSetting amount = new SliderSetting("数量",
@@ -24,7 +24,7 @@ public final class ThrowHack extends Hack implements RightClickListener
 	
 	public ThrowHack()
 	{
-		super("投掷");
+		super("急速放置");
 		
 		setCategory(Category.OTHER);
 		addSetting(amount);

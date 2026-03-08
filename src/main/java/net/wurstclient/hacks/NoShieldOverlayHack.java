@@ -14,7 +14,7 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"无盾牌覆盖", "no shield overlay"})
+@SearchTags({"无盾遮盖", "no shield overlay"})
 public final class NoShieldOverlayHack extends Hack
 {
 	public final SliderSetting blockingOffset =
@@ -29,7 +29,7 @@ public final class NoShieldOverlayHack extends Hack
 	
 	public NoShieldOverlayHack()
 	{
-		super("无盾牌覆盖");
+		super("无盾遮盖");
 		setCategory(Category.RENDER);
 		addSetting(blockingOffset);
 		addSetting(nonBlockingOffset);

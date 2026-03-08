@@ -35,7 +35,7 @@ import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RenderUtils.ColoredBox;
 import net.wurstclient.util.RenderUtils.ColoredPoint;
 
-@SearchTags({"玩家ESP", "player esp", "PlayerTracers", "player tracers"})
+@SearchTags({"玩家透视", "player esp", "PlayerTracers", "player tracers"})
 public final class PlayerEspHack extends Hack implements UpdateListener,
 	CameraTransformViewBobbingListener, RenderListener
 {
@@ -54,7 +54,7 @@ public final class PlayerEspHack extends Hack implements UpdateListener,
 	
 	public PlayerEspHack()
 	{
-		super("玩家ESP");
+		super("玩家透视");
 		setCategory(Category.RENDER);
 		addSetting(style);
 		addSetting(boxSize);

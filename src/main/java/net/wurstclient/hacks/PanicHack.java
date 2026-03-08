@@ -13,13 +13,13 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"紧急禁用", "legit", "disable"})
+@SearchTags({"一键绿玩", "legit", "disable"})
 @DontBlock
 public final class PanicHack extends Hack implements UpdateListener
 {
 	public PanicHack()
 	{
-		super("紧急禁用");
+		super("一键绿玩");
 		setCategory(Category.OTHER);
 	}
 	

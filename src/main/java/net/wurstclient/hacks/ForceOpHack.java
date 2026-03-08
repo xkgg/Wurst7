@@ -25,7 +25,7 @@ import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.ForceOpDialog;
 import net.wurstclient.util.MultiProcessingUtils;
 
-@SearchTags({"强制OP", "Force OP", "AuthMe Cracker", "AuthMeCracker", "auth me cracker",
+@SearchTags({"破解账号", "Force OP", "AuthMe Cracker", "AuthMeCracker", "auth me cracker",
 	"admin hack", "AuthMe password cracker"})
 @DontSaveState
 public final class ForceOpHack extends Hack implements ChatInputListener
@@ -47,7 +47,7 @@ public final class ForceOpHack extends Hack implements ChatInputListener
 	
 	public ForceOpHack()
 	{
-		super("强制OP");
+		super("破解账号");
 		setCategory(Category.CHAT);
 	}
 	

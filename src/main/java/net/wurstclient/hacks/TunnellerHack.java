@@ -55,7 +55,7 @@ import net.wurstclient.util.RegionPos;
 import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"自动挖矿", "tunneller"})
+@SearchTags({"自动隧道", "tunneller"})
 @DontSaveState
 public final class TunnellerHack extends Hack
 	implements UpdateListener, RenderListener
@@ -88,7 +88,7 @@ public final class TunnellerHack extends Hack
 	
 	public TunnellerHack()
 	{
-		super("自动挖矿");
+		super("自动隧道");
 		setCategory(Category.BLOCKS);
 		addSetting(size);
 		addSetting(limit);

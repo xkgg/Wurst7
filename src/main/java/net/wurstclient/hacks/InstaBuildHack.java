@@ -39,7 +39,7 @@ import net.wurstclient.util.InventoryUtils;
 import net.wurstclient.SearchTags;
 import net.wurstclient.util.json.JsonException;
 
-@SearchTags({"瞬间建造", "InstaBuild", "insta build"})
+@SearchTags({"模板建造", "InstaBuild", "insta build"})
 public final class InstaBuildHack extends Hack
 	implements UpdateListener, RightClickListener
 {
@@ -67,7 +67,7 @@ public final class InstaBuildHack extends Hack
 	
 	public InstaBuildHack()
 	{
-		super("瞬间建造");
+		super("模板建造");
 		setCategory(Category.BLOCKS);
 		addSetting(templateSetting);
 		addSetting(range);

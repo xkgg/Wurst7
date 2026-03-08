@@ -14,7 +14,7 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.BlockListSetting;
 import net.wurstclient.util.BlockUtils;
 
-@SearchTags({"手穿墙", "hand noclip", "hand no clip"})
+@SearchTags({"幽灵鬼手", "hand noclip", "hand no clip"})
 public final class HandNoClipHack extends Hack
 {
 	private final BlockListSetting blocks = new BlockListSetting("方块",
@@ -34,7 +34,7 @@ public final class HandNoClipHack extends Hack
 	
 	public HandNoClipHack()
 	{
-		super("手穿墙");
+		super("幽灵鬼手");
 		
 		setCategory(Category.BLOCKS);
 		addSetting(blocks);

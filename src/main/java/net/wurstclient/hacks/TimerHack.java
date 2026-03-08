@@ -13,7 +13,7 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"计时器", "timer"})
+@SearchTags({"变速齿轮", "timer"})
 public final class TimerHack extends Hack
 {
 	private final SliderSetting speed =
@@ -21,7 +21,7 @@ public final class TimerHack extends Hack
 	
 	public TimerHack()
 	{
-		super("计时器");
+		super("变速齿轮");
 		setCategory(Category.OTHER);
 		addSetting(speed);
 	}

@@ -14,7 +14,7 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.settings.filters.*;
 
-@SearchTags({"真实视野", "true sight"})
+@SearchTags({"隐形显示", "true sight"})
 public final class TrueSightHack extends Hack
 {
 	private final EntityFilterList entityFilters =
@@ -42,7 +42,7 @@ public final class TrueSightHack extends Hack
 	
 	public TrueSightHack()
 	{
-		super("真实视野");
+		super("隐形显示");
 		setCategory(Category.RENDER);
 		entityFilters.forEach(this::addSetting);
 	}

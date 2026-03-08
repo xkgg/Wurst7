@@ -14,7 +14,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"无天气", "no weather"})
+@SearchTags({"天气覆盖", "no weather"})
 public final class NoWeatherHack extends Hack
 {
 	private final CheckboxSetting disableRain =
@@ -34,7 +34,7 @@ public final class NoWeatherHack extends Hack
 	
 	public NoWeatherHack()
 	{
-		super("无天气");
+		super("天气覆盖");
 		setCategory(Category.RENDER);
 		
 		addSetting(disableRain);

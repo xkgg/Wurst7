@@ -13,12 +13,12 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"无蜘蛛网", "no web"})
+@SearchTags({"无蛛网减速", "no web"})
 public final class NoWebHack extends Hack implements UpdateListener
 {
 	public NoWebHack()
 	{
-		super("无蜘蛛网");
+		super("无蛛网减速");
 		setCategory(Category.MOVEMENT);
 	}
 	

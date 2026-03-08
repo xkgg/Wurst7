@@ -11,12 +11,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"无限聊天", "infini chat", "InfiniteChat", "infinite chat"})
+@SearchTags({"移除聊天限制", "infini chat", "InfiniteChat", "infinite chat"})
 public final class InfiniChatHack extends Hack
 {
 	public InfiniChatHack()
 	{
-		super("无限聊天");
+		super("移除聊天限制");
 		setCategory(Category.CHAT);
 	}
 }

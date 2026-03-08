@@ -30,7 +30,7 @@ import net.wurstclient.util.FakePlayerEntity;
 import net.wurstclient.util.RenderUtils;
 
 @DontSaveState
-@SearchTags({"自由视角", "free camera", "spectator"})
+@SearchTags({"灵魂出窍", "free camera", "spectator"})
 public final class FreecamHack extends Hack implements UpdateListener,
 	PacketOutputListener, IsPlayerInWaterListener, AirStrafingSpeedListener,
 	IsPlayerInLavaListener, CameraTransformViewBobbingListener,
@@ -49,7 +49,7 @@ public final class FreecamHack extends Hack implements UpdateListener,
 	
 	public FreecamHack()
 	{
-		super("自由视角");
+		super("灵魂出窍");
 		setCategory(Category.RENDER);
 		addSetting(speed);
 		addSetting(tracer);

@@ -26,7 +26,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.TextFieldSetting;
 import net.wurstclient.util.ChatUtils;
 
-@SearchTags({"批量传送请求", "mass tpa"})
+@SearchTags({"批量TP", "mass tpa"})
 @DontSaveState
 public final class MassTpaHack extends Hack
 	implements UpdateListener, ChatInputListener
@@ -63,7 +63,7 @@ public final class MassTpaHack extends Hack
 	
 	public MassTpaHack()
 	{
-		super("批量传送请求");
+		super("批量TP");
 		setCategory(Category.CHAT);
 		addSetting(commandSetting);
 		addSetting(delay);

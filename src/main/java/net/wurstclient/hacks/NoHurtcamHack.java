@@ -11,12 +11,12 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"无受伤镜头", "no hurtcam", "no hurt cam"})
+@SearchTags({"无视角摇晃", "no hurtcam", "no hurt cam"})
 public final class NoHurtcamHack extends Hack
 {
 	public NoHurtcamHack()
 	{
-		super("无受伤镜头");
+		super("无视角摇晃");
 		setCategory(Category.RENDER);
 	}
 	

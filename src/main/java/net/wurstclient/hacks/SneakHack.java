@@ -19,7 +19,7 @@ import net.wurstclient.mixinterface.IKeyBinding;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.EnumSetting;
 
-@SearchTags({"自动潜行", "AutoSneaking"})
+@SearchTags({"保持潜行", "AutoSneaking"})
 public final class SneakHack extends Hack
 	implements PreMotionListener, PostMotionListener
 {
@@ -36,7 +36,7 @@ public final class SneakHack extends Hack
 	
 	public SneakHack()
 	{
-		super("自动潜行");
+		super("保持潜行");
 		setCategory(Category.MOVEMENT);
 		addSetting(mode);
 		addSetting(offWhileFlying);

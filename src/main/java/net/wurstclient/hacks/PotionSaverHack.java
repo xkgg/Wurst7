@@ -13,12 +13,12 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.PacketOutputListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"药水保存", "potion saver"})
+@SearchTags({"冻结药水", "potion saver"})
 public final class PotionSaverHack extends Hack implements PacketOutputListener
 {
 	public PotionSaverHack()
 	{
-		super("药水保存");
+		super("冻结药水");
 		setCategory(Category.OTHER);
 	}
 	

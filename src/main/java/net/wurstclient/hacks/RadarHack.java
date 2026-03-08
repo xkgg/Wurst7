@@ -30,7 +30,7 @@ import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.settings.filters.*;
 import net.wurstclient.util.FakePlayerEntity;
 
-@SearchTags({"雷达", "MiniMap", "mini map"})
+@SearchTags({"实体雷达", "MiniMap", "mini map"})
 public final class RadarHack extends Hack implements UpdateListener
 {
 	private final Window window;
@@ -53,7 +53,7 @@ public final class RadarHack extends Hack implements UpdateListener
 	
 	public RadarHack()
 	{
-		super("雷达");
+		super("实体雷达");
 		
 		setCategory(Category.RENDER);
 		addSetting(radius);
