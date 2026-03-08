@@ -22,7 +22,7 @@ public enum FreecamHackTest
 		System.out.println("Testing 自由视角 hack");
 		
 		// Enable Freecam with default settings
-		runWurstCommand("setcheckbox 自由视角 tracer off");
+		runWurstCommand("setcheckbox 自由视角 追踪线 off");
 		runWurstCommand("t 自由视角 on");
 		takeScreenshot("freecam_default", Duration.ofMillis(100));
 		clearChat();
@@ -37,15 +37,16 @@ public enum FreecamHackTest
 		clearChat();
 		
 		// Tracer
-		runWurstCommand("setcheckbox 自由视角 tracer on");
+		runWurstCommand("setcheckbox 自由视角 追踪线 on");
 		takeScreenshot("freecam_tracer", Duration.ofMillis(100));
 		clearChat();
 		
 		// Clean up
-		runWurstCommand("setcheckbox 自由视角 tracer off");
+		runWurstCommand("setcheckbox 自由视角 追踪线 off");
 		runWurstCommand("t 自由视角 off");
 		waitForWorldTicks(5);
 		clearChat();
 	}
 }
+
 
