@@ -17,47 +17,47 @@ public enum XRayHackTest
 	
 	public static void testXRayHack()
 	{
-		System.out.println("Testing X-Ray hack");
+		System.out.println("Testing 矿透 hack");
 		buildTestRig();
 		clearChat();
 		
 		// Enable X-Ray with default settings
-		runWurstCommand("setcheckbox X-Ray only_show_exposed off");
-		runWurstCommand("setslider X-Ray opacity 0");
-		runWurstCommand("t X-Ray on");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 off");
+		runWurstCommand("setslider 矿透 透明度 0");
+		runWurstCommand("t 矿透 on");
 		takeScreenshot("xray_default", Duration.ofMillis(300));
-		runWurstCommand("t X-Ray off");
+		runWurstCommand("t 矿透 off");
 		clearChat();
 		
 		// Exposed only
-		runWurstCommand("setcheckbox X-Ray only_show_exposed on");
-		runWurstCommand("setslider X-Ray opacity 0");
-		runWurstCommand("t X-Ray on");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 on");
+		runWurstCommand("setslider 矿透 透明度 0");
+		runWurstCommand("t 矿透 on");
 		takeScreenshot("xray_exposed_only", Duration.ofMillis(300));
-		runWurstCommand("t X-Ray off");
+		runWurstCommand("t 矿透 off");
 		clearChat();
 		
 		// Opacity mode
-		runWurstCommand("setcheckbox X-Ray only_show_exposed off");
-		runWurstCommand("setslider X-Ray opacity 0.5");
-		runWurstCommand("t X-Ray on");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 off");
+		runWurstCommand("setslider 矿透 透明度 0.5");
+		runWurstCommand("t 矿透 on");
 		takeScreenshot("xray_opacity", Duration.ofMillis(300));
-		runWurstCommand("t X-Ray off");
+		runWurstCommand("t 矿透 off");
 		clearChat();
 		
 		// Exposed only + opacity
-		runWurstCommand("setcheckbox X-Ray only_show_exposed on");
-		runWurstCommand("setslider X-Ray opacity 0.5");
-		runWurstCommand("t X-Ray on");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 on");
+		runWurstCommand("setslider 矿透 透明度 0.5");
+		runWurstCommand("t 矿透 on");
 		takeScreenshot("xray_exposed_only_opacity", Duration.ofMillis(300));
-		runWurstCommand("t X-Ray off");
+		runWurstCommand("t 矿透 off");
 		clearChat();
 		
 		// Clean up
 		runChatCommand("fill ~-7 ~ ~-7 ~7 ~30 ~7 air");
-		runWurstCommand("setcheckbox X-Ray only_show_exposed off");
-		runWurstCommand("setslider X-Ray opacity 0");
-		runWurstCommand("t X-Ray off");
+		runWurstCommand("setcheckbox 矿透 只显示暴露的 off");
+		runWurstCommand("setslider 矿透 透明度 0");
+		runWurstCommand("t 矿透 off");
 		clearChat();
 	}
 	
@@ -83,3 +83,5 @@ public enum XRayHackTest
 		runChatCommand("setblock ~-1 ~0 ~6 minecraft:lava");
 	}
 }
+
+

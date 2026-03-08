@@ -247,3 +247,4 @@ public final class XRayHack extends Hack implements UpdateListener,
 	
 	// See AbstractBlockRenderContextMixin, RenderLayersMixin
 }
+
