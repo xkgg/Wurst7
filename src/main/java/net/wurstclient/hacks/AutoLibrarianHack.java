@@ -66,13 +66,10 @@ public final class AutoLibrarianHack extends Hack
 	implements UpdateListener, RenderListener
 {
 	private final BookOffersSetting wantedBooks = new BookOffersSetting(
-		"Wanted books",
-		"A list of enchanted books that you want your villagers to sell.\n\n"
-			+ "AutoLibrarian will stop training the current villager"
-			+ " once it has learned to sell one of these books.\n\n"
-			+ "You can also set a maximum price for each book, in case you"
-			+ " already have a villager selling it but you want it for a"
-			+ " cheaper price.",
+		"需要的书",
+		"你希望村民出售的附魔书列表。\n\n"
+			+ "一旦村民学会出售其中一本书，AutoLibrarian将停止训练该村民。\n\n"
+			+ "你也可以为每本书设置最高价格，以防你已经有村民在卖但想要更便宜的价格。",
 		"minecraft:depth_strider;3", "minecraft:efficiency;5",
 		"minecraft:feather_falling;4", "minecraft:fortune;3",
 		"minecraft:looting;3", "minecraft:mending;1", "minecraft:protection;4",
@@ -80,19 +77,15 @@ public final class AutoLibrarianHack extends Hack
 		"minecraft:silk_touch;1", "minecraft:unbreaking;3");
 	
 	private final CheckboxSetting lockInTrade = new CheckboxSetting(
-		"Lock in trade",
-		"Automatically buys something from the villager once it has learned to"
-			+ " sell the book you want. This prevents the villager from"
-			+ " changing its trade offers later.\n\n"
-			+ "Make sure you have at least 24 paper and 9 emeralds in your"
-			+ " inventory when using this feature. Alternatively, 1 book and"
-			+ " 64 emeralds will also work.",
+		"锁定交易",
+		"一旦村民学会出售你想要的书，自动从村民那里购买东西。这可以防止村民以后改变交易报价。\n\n"
+			+ "使用此功能时，请确保你的物品栏中至少有24张纸和9个绿宝石。或者，1本书和64个绿宝石也可以。",
 		false);
 	
 	private final UpdateBooksSetting updateBooks = new UpdateBooksSetting();
 	
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final FaceTargetSetting faceTarget =
 		FaceTargetSetting.withoutPacketSpam(this, FaceTarget.SERVER);
@@ -117,7 +110,7 @@ public final class AutoLibrarianHack extends Hack
 	
 	public AutoLibrarianHack()
 	{
-		super("AutoLibrarian");
+		super("自动图书管理员");
 		setCategory(Category.OTHER);
 		addSetting(wantedBooks);
 		addSetting(lockInTrade);

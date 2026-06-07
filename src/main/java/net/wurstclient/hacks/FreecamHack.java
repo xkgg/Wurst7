@@ -51,41 +51,41 @@ public final class FreecamHack extends Hack
 		new FreecamInteractionSetting();
 	
 	private final SliderSetting horizontalSpeed =
-		new SliderSetting("Horizontal speed",
+		new SliderSetting("水平速度",
 			"description.wurst.setting.freecam.horizontal_speed", 1, 0.05, 10,
 			0.05, ValueDisplay.DECIMAL);
 	
 	private final SliderSetting verticalSpeed = new SliderSetting(
-		"Vertical speed", "description.wurst.setting.freecam.vertical_speed", 1,
+		"垂直速度", "description.wurst.setting.freecam.vertical_speed", 1,
 		0.05, 5, 0.05,
 		v -> ValueDisplay.DECIMAL.getValueString(getActualVerticalSpeed()));
 	
 	private final CheckboxSetting scrollToChangeSpeed =
-		new CheckboxSetting("Scroll to change speed",
+		new CheckboxSetting("滚轮改变速度",
 			"description.wurst.setting.freecam.scroll_to_change_speed", true);
 	
 	private final CheckboxSetting renderSpeed =
-		new CheckboxSetting("Show speed in HackList",
+		new CheckboxSetting("在HackList中显示速度",
 			"description.wurst.setting.freecam.show_speed_in_hacklist", true);
 	
 	private final FreecamInitialPosSetting initialPos =
 		new FreecamInitialPosSetting();
 	
-	private final CheckboxSetting tracer = new CheckboxSetting("Tracer",
+	private final CheckboxSetting tracer = new CheckboxSetting("追踪线",
 		"description.wurst.setting.freecam.tracer", false);
 	
 	private final ColorSetting color =
-		new ColorSetting("Tracer color", Color.WHITE);
+		new ColorSetting("追踪线颜色", Color.WHITE);
 	
-	private final CheckboxSetting hideHand = new CheckboxSetting("Hide hand",
+	private final CheckboxSetting hideHand = new CheckboxSetting("隐藏手",
 		"description.wurst.setting.freecam.hide_hand", true);
 	
 	private final CheckboxSetting disableOnDamage =
-		new CheckboxSetting("Disable on damage",
+		new CheckboxSetting("受到伤害时禁用",
 			"description.wurst.setting.freecam.disable_on_damage", true);
 	
 	private final CheckboxSetting reloadChunks =
-		new CheckboxSetting("Reload chunks",
+		new CheckboxSetting("重载区块",
 			"description.wurst.setting.freecam.reload_chunks", true);
 	
 	private Vec3 camPos;

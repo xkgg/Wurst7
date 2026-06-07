@@ -27,37 +27,37 @@ public final class FlightHack extends Hack implements UpdateListener,
 	IsPlayerInWaterListener, AirStrafingSpeedListener, MouseScrollListener
 {
 	private final SliderSetting horizontalSpeed = new SliderSetting(
-		"Horizontal speed", "description.wurst.setting.flight.horizontal_speed",
+		"水平速度", "description.wurst.setting.flight.horizontal_speed",
 		1, 0.05, 10, 0.05, ValueDisplay.DECIMAL);
 	
 	private final SliderSetting verticalSpeed =
-		new SliderSetting("Vertical speed",
+		new SliderSetting("垂直速度",
 			"description.wurst.setting.flight.vertical_speed", 1, 0.05, 5, 0.05,
 			v -> ValueDisplay.DECIMAL.getValueString(getActualVerticalSpeed()));
 	
 	private final CheckboxSetting allowUnsafeVerticalSpeed =
-		new CheckboxSetting("Allow unsafe vertical speed",
+		new CheckboxSetting("允许不安全的垂直速度",
 			"description.wurst.setting.flight.allow_unsafe_vertical_speed",
 			false);
 	
 	private final CheckboxSetting scrollToChangeSpeed =
-		new CheckboxSetting("Scroll to change speed",
+		new CheckboxSetting("滚轮改变速度",
 			"description.wurst.setting.flight.scroll_to_change_speed", true);
 	
 	private final CheckboxSetting renderSpeed =
-		new CheckboxSetting("Show speed in HackList",
+		new CheckboxSetting("在HackList中显示速度",
 			"description.wurst.setting.flight.show_speed_in_hacklist", true);
 	
-	private final CheckboxSetting antiKick = new CheckboxSetting("Anti-Kick",
+	private final CheckboxSetting antiKick = new CheckboxSetting("防踢",
 		"description.wurst.setting.flight.anti-kick", false);
 	
 	private final SliderSetting antiKickInterval =
-		new SliderSetting("Anti-Kick Interval",
+		new SliderSetting("防踢间隔",
 			"description.wurst.setting.flight.anti-kick_interval", 70, 5, 80, 1,
 			ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
 	
 	private final SliderSetting antiKickDistance =
-		new SliderSetting("Anti-Kick Distance",
+		new SliderSetting("防踢距离",
 			"description.wurst.setting.flight.anti-kick_distance", 0.035, 0.01,
 			0.2, 0.001, ValueDisplay.DECIMAL.withSuffix("m"));
 	

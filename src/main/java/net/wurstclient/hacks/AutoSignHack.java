@@ -20,7 +20,7 @@ public final class AutoSignHack extends Hack
 	
 	public AutoSignHack()
 	{
-		super("AutoSign");
+		super("自动签名");
 		setCategory(Category.BLOCKS);
 	}
 	

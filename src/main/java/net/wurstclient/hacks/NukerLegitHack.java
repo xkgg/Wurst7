@@ -45,7 +45,7 @@ public final class NukerLegitHack extends Hack
 	implements UpdateListener, HandleBlockBreakingListener, RenderListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 4.25, 1, 4.5, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 4.25, 1, 4.5, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CommonNukerSettings commonSettings =
 		new CommonNukerSettings();

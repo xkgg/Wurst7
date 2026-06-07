@@ -39,26 +39,22 @@ public final class BuildRandomHack extends Hack
 	implements UpdateListener, RenderListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private SliderSetting maxAttempts = new SliderSetting("Max attempts",
-		"Maximum number of random positions that BuildRandom will try to place"
-			+ " a block at in one tick.\n\n"
-			+ "Higher values speed up the building process at the cost of"
-			+ " increased lag.",
+	private SliderSetting maxAttempts = new SliderSetting("最大尝试次数",
+		"BuildRandom在一个tick中尝试放置方块的最大随机位置数。\n\n"
+			+ "更高的值以增加延迟为代价加快建筑速度。",
 		128, 1, 1024, 1, ValueDisplay.INTEGER);
 	
 	private final CheckboxSetting checkItem =
-		new CheckboxSetting("Check held item",
-			"Only builds when you are actually holding a block.\n"
-				+ "Turn this off to build with fire, water, lava, spawn eggs,"
-				+ " or if you just want to right click with an empty hand"
-				+ " in random places.",
+		new CheckboxSetting("检查手持物品",
+			"只有当你实际拿着方块时才建筑。\n"
+				+ "关闭此选项可以使用火把、水、熔岩、生成蛋进行建筑，或者如果你只是想用空手在随机位置右键点击。",
 			true);
 	
 	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("Check line of sight",
-			"Ensure that BuildRandom won't try to place blocks behind walls.",
+		new CheckboxSetting("检查视线",
+			"确保BuildRandom不会尝试在墙壁后面放置方块。",
 			false);
 	
 	private final FaceTargetSetting faceTarget =
@@ -83,8 +79,8 @@ public final class BuildRandomHack extends Hack
 			+ "Possible with hacks, but wouldn't work in vanilla. May look suspicious.",
 		false);
 	
-	private final CheckboxSetting indicator = new CheckboxSetting("Indicator",
-		"Shows where BuildRandom is placing blocks.", true);
+	private final CheckboxSetting indicator = new CheckboxSetting("指示器",
+		"显示BuildRandom正在放置方块的位置。", true);
 	
 	private final Random random = new Random();
 	private BlockPos lastPos;

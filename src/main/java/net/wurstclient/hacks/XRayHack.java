@@ -39,10 +39,10 @@ import net.wurstclient.util.ChatUtils;
 public final class XRayHack extends Hack
 	implements UpdateListener, VisGraphListener
 {
-	private final BlockListSetting ores = new BlockListSetting("Ores",
-		"A list of blocks that X-Ray will show. They don't have to be just ores"
-			+ " - you can add any block you want.\n\n"
-			+ "Remember to restart X-Ray when changing this setting.",
+	private final BlockListSetting ores = new BlockListSetting("矿石",
+		"X-Ray将显示的方块列表。它们不必只是矿石"
+			+ " - 你可以添加任何你想要的方块。\n\n"
+			+ "更改此设置后记得重启X-Ray。",
 		"minecraft:amethyst_cluster", "minecraft:ancient_debris",
 		"minecraft:anvil", "minecraft:beacon", "minecraft:bone_block",
 		"minecraft:bookshelf", "minecraft:brewing_stand",
@@ -76,16 +76,16 @@ public final class XRayHack extends Hack
 		"minecraft:water");
 	
 	private final CheckboxSetting onlyExposed = new CheckboxSetting(
-		"Only show exposed",
-		"Only shows ores that would be visible in caves. This can help against"
-			+ " anti-X-Ray plugins.\n\n"
-			+ "Remember to restart X-Ray when changing this setting.",
+		"仅显示暴露的",
+		"仅显示在洞穴中可见的矿石。这可以帮助对抗"
+			+ "反X-Ray插件。\n\n"
+			+ "更改此设置后记得重启X-Ray。",
 		false);
 	
-	private final SliderSetting opacity = new SliderSetting("Opacity",
-		"Opacity of non-ore blocks when X-Ray is enabled.\n\n"
-			+ "Remember to restart X-Ray when changing this setting.",
-		0, 0, 0.99, 0.01, ValueDisplay.PERCENTAGE.withLabel(0, "off"));
+	private final SliderSetting opacity = new SliderSetting("不透明度",
+		"X-Ray启用时非矿石方块的不透明度。\n\n"
+			+ "更改此设置后记得重启X-Ray。",
+		0, 0, 0.99, 0.01, ValueDisplay.PERCENTAGE.withLabel(0, "关闭"));
 	
 	private final String optiFineWarning;
 	private final String renderName =

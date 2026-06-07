@@ -37,16 +37,14 @@ public final class BaseFinderHack extends Hack
 	implements UpdateListener, RenderListener
 {
 	private final BlockListSetting naturalBlocks = new BlockListSetting(
-		"Natural Blocks",
-		"These blocks will be considered part of natural generation.\n\n"
-			+ "They will NOT be highlighted as player bases.",
+		"自然方块",
+		"这些方块将被视为自然生成的一部分。\n\n"
+			+ "它们不会被高亮显示为玩家基地。",
 		"minecraft:acacia_leaves", "minecraft:acacia_log", "minecraft:air",
-		"minecraft:allium", "minecraft:amethyst_block",
-		"minecraft:amethyst_cluster", "minecraft:andesite",
-		"minecraft:azure_bluet", "minecraft:bedrock", "minecraft:birch_leaves",
-		"minecraft:birch_log", "minecraft:blue_orchid",
-		"minecraft:brown_mushroom", "minecraft:brown_mushroom_block",
-		"minecraft:bubble_column", "minecraft:budding_amethyst",
+		"minecraft:allium", "minecraft:azure_bluet", "minecraft:bedrock",
+		"minecraft:birch_leaves", "minecraft:birch_log",
+		"minecraft:blue_orchid", "minecraft:brown_mushroom",
+		"minecraft:brown_mushroom_block", "minecraft:bubble_column",
 		"minecraft:calcite", "minecraft:cave_air", "minecraft:clay",
 		"minecraft:coal_ore", "minecraft:cobweb", "minecraft:copper_ore",
 		"minecraft:cornflower", "minecraft:dandelion",
@@ -81,8 +79,8 @@ public final class BaseFinderHack extends Hack
 		"minecraft:tall_grass", "minecraft:tall_seagrass", "minecraft:tuff",
 		"minecraft:vine", "minecraft:water", "minecraft:white_tulip");
 	
-	private final ColorSetting color = new ColorSetting("Color",
-		"Man-made blocks will be highlighted in this color.", Color.RED);
+	private final ColorSetting color = new ColorSetting("颜色",
+		"人造方块将以这个颜色高亮显示。", Color.RED);
 	
 	private ArrayList<String> blockNames;
 	

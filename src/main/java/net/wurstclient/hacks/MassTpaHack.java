@@ -35,26 +35,25 @@ public final class MassTpaHack extends Hack
 		Pattern.compile("^/+[a-zA-Z0-9_\\-]+$");
 	
 	private final TextFieldSetting commandSetting =
-		new TextFieldSetting("Command",
-			"The command to use for teleporting.\n"
-				+ "Examples: /tp, /tpa, /tpahere, /tpo",
+		new TextFieldSetting("命令",
+			"用于传送的命令。\n"
+				+ "例子: /tp, /tpa, /tpahere, /tpo",
 			"/tpa",
 			s -> s.length() < 64 && ALLOWED_COMMANDS.matcher(s).matches());
 	
-	private final SliderSetting delay = new SliderSetting("Delay",
-		"The delay between each teleportation request.", 20, 1, 200, 1,
+	private final SliderSetting delay = new SliderSetting("延迟",
+		"每次传送请求之间的延迟。", 20, 1, 200, 1,
 		ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
 	
 	private final CheckboxSetting ignoreErrors =
-		new CheckboxSetting("Ignore errors",
-			"Whether to ignore messages from the server telling you that the"
-				+ " teleportation command isn't valid or that you don't have"
-				+ " permission to use it.",
+		new CheckboxSetting("忽略错误",
+			"是否忽略服务器告诉你传送命令无效或你没有"
+				+ "权限使用它时的消息。",
 			false);
 	
 	private final CheckboxSetting stopWhenAccepted = new CheckboxSetting(
-		"Stop when accepted", "Whether to stop sending more teleportation"
-			+ " requests when someone accepts one of them.",
+		"接受时停止", "当有人接受传送请求时是否停止发送更多传送"
+			+ "请求。",
 		true);
 	
 	private final Random random = new Random();
@@ -66,7 +65,7 @@ public final class MassTpaHack extends Hack
 	
 	public MassTpaHack()
 	{
-		super("MassTPA");
+		super("批量传送");
 		setCategory(Category.CHAT);
 		addSetting(commandSetting);
 		addSetting(delay);

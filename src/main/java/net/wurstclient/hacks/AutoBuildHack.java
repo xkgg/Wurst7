@@ -48,43 +48,35 @@ public final class AutoBuildHack extends Hack
 	private static final AABB BLOCK_BOX =
 		new AABB(1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0);
 	
-	private final FileSetting templateSetting = new FileSetting("Template",
-		"Determines what to build.\n\n"
-			+ "Templates are just JSON files. Feel free to add your own or to edit / delete the default templates.\n\n"
-			+ "If you mess up, simply press the 'Reset to Defaults' button or delete the folder.",
+	private final FileSetting templateSetting = new FileSetting("模板",
+		"决定要建造什么。\n\n"
+			+ "模板就是JSON文件。可以随意添加自己的模板或编辑/删除默认模板。\n\n"
+			+ "如果搞乱了，只需按下'重置为默认'按钮或删除文件夹即可。",
 		"autobuild", DefaultAutoBuildTemplates::createFiles);
 	
-	private final SliderSetting range = new SliderSetting("Range",
-		"How far to reach when placing blocks.\n" + "Recommended values:\n"
-			+ "6.0 for vanilla\n" + "4.25 for NoCheat+",
+	private final SliderSetting range = new SliderSetting("范围",
+		"放置方块时的触及距离。\n" + "推荐值：\n"
+			+ "6.0 原版\n" + "4.25 NoCheat+",
 		6, 1, 10, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"Check line of sight",
-		"Makes sure that you don't reach through walls when placing blocks. Can help with AntiCheat plugins but slows down building.",
+		"检查视线",
+		"确保放置方块时不会穿墙。可以帮助对抗反作弊插件，但会降低建筑速度。",
 		false);
 	
 	private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
-		"Use saved blocks",
-		"Tries to place the same blocks that were saved in the template.\n\n"
-			+ "If the template does not specify block types, it will be built"
-			+ " from whatever block you are holding.",
+		"使用保存的方块",
+		"尝试放置模板中保存的相同方块。\n\n"
+			+ "如果模板没有指定方块类型，将使用你手中的方块来建造。",
 		true);
 	
-	private final FaceTargetSetting faceTarget =
-		FaceTargetSetting.withoutPacketSpam(this, FaceTarget.SERVER);
-	
-	private final SwingHandSetting swingHand =
-		new SwingHandSetting(this, SwingHand.SERVER);
-	
 	private final CheckboxSetting fastPlace =
-		new CheckboxSetting("Always FastPlace",
-			"Builds as if FastPlace was enabled, even if it's not.", true);
+		new CheckboxSetting("始终快速放置",
+			"即使FastPlace未启用，也以启用状态进行建造。", true);
 	
 	private final CheckboxSetting strictBuildOrder = new CheckboxSetting(
-		"Strict build order",
-		"Places blocks in exactly the same order that they appear in the"
-			+ " template. This is slower, but provides more consistent results.",
+		"严格建造顺序",
+		"严格按照模板中的顺序放置方块。这更慢，但结果更一致。",
 		false);
 	
 	private Status status = Status.NO_TEMPLATE;
@@ -94,7 +86,7 @@ public final class AutoBuildHack extends Hack
 	
 	public AutoBuildHack()
 	{
-		super("AutoBuild");
+		super("自动建造");
 		setCategory(Category.BLOCKS);
 		addSetting(templateSetting);
 		addSetting(range);
@@ -117,7 +109,7 @@ public final class AutoBuildHack extends Hack
 			break;
 			
 			case LOADING:
-			name += " [Loading...]";
+			name += " [加载中...]";
 			break;
 			
 			case IDLE:
@@ -305,7 +297,7 @@ public final class AutoBuildHack extends Hack
 		}catch(IOException | JsonException e)
 		{
 			Path fileName = path.getFileName();
-			ChatUtils.error("Couldn't load template '" + fileName + "'.");
+			ChatUtils.error("无法加载模板 '" + fileName + "'。");
 			
 			String simpleClassName = e.getClass().getSimpleName();
 			String message = e.getMessage();

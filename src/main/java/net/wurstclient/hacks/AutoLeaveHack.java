@@ -24,37 +24,32 @@ import net.wurstclient.util.InventoryUtils;
 	"auto quit"})
 public final class AutoLeaveHack extends Hack implements UpdateListener
 {
-	private final SliderSetting health = new SliderSetting("Health",
-		"Leaves the server when your health reaches this value or falls below it.",
-		4, 0.5, 9.5, 0.5, ValueDisplay.DECIMAL.withSuffix(" hearts"));
+	private final SliderSetting health = new SliderSetting("生命值",
+		"当你的生命值达到或低于此值时离开服务器。",
+		4, 0.5, 9.5, 0.5, ValueDisplay.DECIMAL.withSuffix(" 颗心"));
 	
-	public final EnumSetting<Mode> mode = new EnumSetting<>("Mode",
-		"\u00a7lQuit\u00a7r mode just quits the game normally.\n"
-			+ "Bypasses NoCheat+ but not CombatLog.\n\n"
-			+ "\u00a7lChars\u00a7r mode sends a special chat message that"
-			+ " causes the server to kick you.\n"
-			+ "Bypasses NoCheat+ and some versions of CombatLog.\n\n"
-			+ "\u00a7lSelfHurt\u00a7r mode sends the packet for attacking"
-			+ " another player, but with yourself as both the attacker and the"
-			+ " target, causing the server to kick you.\n"
-			+ "Bypasses both CombatLog and NoCheat+.",
+	public final EnumSetting<Mode> mode = new EnumSetting<>("模式",
+		"\u00a7l退出\u00a7r模式只是正常退出游戏。\n"
+			+ "可以绕过NoCheat+但不能绕过CombatLog。\n\n"
+			+ "\u00a7l字符\u00a7r模式发送一条特殊的聊天消息，导致服务器踢出你。\n"
+			+ "可以绕过NoCheat+和一些版本的CombatLog。\n\n"
+			+ "\u00a7l自伤\u00a7r模式发送攻击另一个玩家的数据包，但以自己作为攻击者和目标，导致服务器踢出你。\n"
+			+ "可以绕过CombatLog和NoCheat+。",
 		Mode.values(), Mode.QUIT);
 	
 	private final CheckboxSetting disableAutoReconnect = new CheckboxSetting(
-		"Disable AutoReconnect", "Automatically turns off AutoReconnect when"
-			+ " AutoLeave makes you leave the server.",
+		"禁用自动重连", "当AutoLeave让你离开服务器时自动关闭AutoReconnect。",
 		true);
 	
-	private final SliderSetting totems = new SliderSetting("Totems",
-		"Won't leave the server until the number of totems you have reaches"
-			+ " this value or falls below it.\n\n"
-			+ "11 = always able to leave",
-		11, 0, 11, 1, ValueDisplay.INTEGER.withSuffix(" totems")
-			.withLabel(1, "1 totem").withLabel(11, "ignore"));
+	private final SliderSetting totems = new SliderSetting("图腾",
+		"直到你拥有的图腾数量达到或低于此值才会离开服务器。\n\n"
+			+ "11 = 始终可以离开",
+		11, 0, 11, 1, ValueDisplay.INTEGER.withSuffix(" 图腾")
+			.withLabel(1, "1 个图腾").withLabel(11, "忽略"));
 	
 	public AutoLeaveHack()
 	{
-		super("AutoLeave");
+		super("自动离开");
 		setCategory(Category.COMBAT);
 		addSetting(health);
 		addSetting(mode);

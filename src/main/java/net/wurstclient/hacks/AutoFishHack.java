@@ -37,34 +37,28 @@ public final class AutoFishHack extends Hack
 	implements UpdateListener, PacketInputListener, RenderListener
 {
 	private final EnumSetting<AutoFishHack.BiteMode> biteMode =
-		new EnumSetting<>("Bite mode",
-			"\u00a7lSound\u00a7r mode detects bites by listening for the bite sound."
-				+ " This method is less accurate, but is more resilient against"
-				+ " anti-cheats. See the \"Valid range\" setting.\n\n"
-				+ "\u00a7lEntity\u00a7r mode detects bites by checking for the"
-				+ " fishing hook's entity update packet. It's more accurate than"
-				+ " the sound method, but is less resilient against anti-cheats.",
+		new EnumSetting<>("咬钩模式",
+			"\u00a7l声音\u00a7r模式通过监听咬钩声音来检测。这方法不太准确，但更能抵抗反作弊。见\"有效范围\"设置。\n\n"
+				+ "\u00a7l实体\u00a7r模式通过检查渔钩的实体更新数据包来检测咬钩。它比声音方法更准确，但更不能抵抗反作弊。",
 			AutoFishHack.BiteMode.values(), AutoFishHack.BiteMode.SOUND);
 	
-	private final SliderSetting validRange = new SliderSetting("Valid range",
-		"Any bites that occur outside of this range will be ignored.\n\n"
-			+ "Increase your range if bites are not being detected, decrease it"
-			+ " if other people's bites are being detected as yours.\n\n"
-			+ "This setting has no effect when \"Bite mode\" is set to \"Entity\".",
+	private final SliderSetting validRange = new SliderSetting("有效范围",
+		"此范围外的咬钩将被忽略。\n\n"
+			+ "如果咬钩未被检测到，请增加范围；如果其他人的咬钩被误认为是你自己的，请减少范围。\n\n"
+			+ "当\"咬钩模式\"设置为\"实体\"时，此设置无效。",
 		1.5, 0.25, 8, 0.25, ValueDisplay.DECIMAL);
 	
-	private final SliderSetting catchDelay = new SliderSetting("Catch delay",
-		"How long AutoFish will wait after a bite before reeling in.", 0, 0, 60,
+	private final SliderSetting catchDelay = new SliderSetting("捕获延迟",
+		"咬钩后收竿前的等待时间。", 0, 0, 60,
 		1, ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
 	
-	private final SliderSetting retryDelay = new SliderSetting("Retry delay",
-		"If casting or reeling in the fishing rod fails, this is how long"
-			+ " AutoFish will wait before trying again.",
+	private final SliderSetting retryDelay = new SliderSetting("重试延迟",
+		"如果抛竿或收竿失败，AutoFish等待重试的时间。",
 		15, 0, 100, 1,
 		ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
 	
-	private final SliderSetting patience = new SliderSetting("Patience",
-		"How long AutoFish will wait if it doesn't get a bite before reeling in.",
+	private final SliderSetting patience = new SliderSetting("耐心",
+		"如果没有咬钩，AutoFish等待收竿的时间。",
 		60, 10, 120, 1, ValueDisplay.INTEGER.withSuffix("s"));
 	
 	private final ShallowWaterWarningCheckbox shallowWaterWarning =
@@ -82,7 +76,7 @@ public final class AutoFishHack extends Hack
 	
 	public AutoFishHack()
 	{
-		super("AutoFish");
+		super("自动钓鱼");
 		setCategory(Category.OTHER);
 		addSetting(biteMode);
 		addSetting(validRange);

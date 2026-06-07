@@ -41,7 +41,7 @@ public final class AutoCompleteHack extends Hack
 	
 	public AutoCompleteHack()
 	{
-		super("AutoComplete");
+		super("自动补全");
 		setCategory(Category.CHAT);
 		
 		modelSettings.forEach(this::addSetting);

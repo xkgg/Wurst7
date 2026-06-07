@@ -20,7 +20,7 @@ import net.wurstclient.settings.EnumSetting;
 public final class BunnyHopHack extends Hack implements UpdateListener
 {
 	private final EnumSetting<JumpIf> jumpIf =
-		new EnumSetting<>("Jump if", JumpIf.values(), JumpIf.SPRINTING);
+		new EnumSetting<>("跳跃条件", JumpIf.values(), JumpIf.SPRINTING);
 	
 	public BunnyHopHack()
 	{
@@ -60,12 +60,11 @@ public final class BunnyHopHack extends Hack implements UpdateListener
 	
 	private enum JumpIf
 	{
-		SPRINTING("Sprinting",
-			p -> p.isSprinting() && (p.zza != 0 || p.xxa != 0)),
+		SPRINTING("冲刺", p -> p.isSprinting() && (p.zza != 0 || p.xxa != 0)),
 		
-		WALKING("Walking", p -> p.zza != 0 || p.xxa != 0),
+		WALKING("行走", p -> p.zza != 0 || p.xxa != 0),
 		
-		ALWAYS("Always", p -> true);
+		ALWAYS("始终", p -> true);
 		
 		private final String name;
 		private final Predicate<LocalPlayer> condition;

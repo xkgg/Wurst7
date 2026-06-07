@@ -42,13 +42,13 @@ import net.wurstclient.util.RotationUtils;
 public final class BonemealAuraHack extends Hack implements HandleInputListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting multiMeal = new CheckboxSetting("MultiMeal",
+	private final CheckboxSetting multiMeal = new CheckboxSetting("多重骨粉",
 		"description.wurst.setting.bonemealaura.multimeal", false);
 	
 	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("Check line of sight",
+		new CheckboxSetting("检查视线",
 			"description.wurst.setting.bonemealaura.check_los", true);
 	
 	private final FaceTargetSetting faceTarget =
@@ -73,20 +73,20 @@ public final class BonemealAuraHack extends Hack implements HandleInputListener
 		TakeItemsFromSetting.withHands(this, TakeItemsFrom.HANDS);
 	
 	private final CheckboxSetting saplings =
-		new CheckboxSetting("Saplings", true);
+		new CheckboxSetting("树苗", true);
 	
-	private final CheckboxSetting crops = new CheckboxSetting("Crops",
-		"Wheat, carrots, potatoes and beetroots.", true);
+	private final CheckboxSetting crops = new CheckboxSetting("作物",
+		"小麦、胡萝卜、土豆和甜菜根。", true);
 	
 	private final CheckboxSetting stems =
-		new CheckboxSetting("Stems", "Pumpkins and melons.", true);
+		new CheckboxSetting("茎", "南瓜和西瓜。", true);
 	
-	private final CheckboxSetting cocoa = new CheckboxSetting("Cocoa", true);
+	private final CheckboxSetting cocoa = new CheckboxSetting("可可", true);
 	
 	private final CheckboxSetting seaPickles =
-		new CheckboxSetting("Sea pickles", true);
+		new CheckboxSetting("海黄瓜", true);
 	
-	private final CheckboxSetting other = new CheckboxSetting("Other", false);
+	private final CheckboxSetting other = new CheckboxSetting("其他", false);
 	
 	public BonemealAuraHack()
 	{

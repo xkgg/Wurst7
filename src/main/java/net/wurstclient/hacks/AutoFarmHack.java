@@ -45,10 +45,10 @@ public final class AutoFarmHack extends Hack
 	implements UpdateListener, RenderListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("Check line of sight",
+		new CheckboxSetting("检查视线",
 			"description.wurst.setting.autofarm.check_line_of_sight", false);
 	
 	private final FaceTargetSetting faceTarget =
@@ -72,7 +72,7 @@ public final class AutoFarmHack extends Hack
 	
 	public AutoFarmHack()
 	{
-		super("AutoFarm");
+		super("自动农场");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		addSetting(checkLOS);

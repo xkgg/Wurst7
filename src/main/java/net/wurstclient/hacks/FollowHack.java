@@ -46,17 +46,17 @@ public final class FollowHack extends Hack
 	private int ticksProcessing;
 	
 	private final SliderSetting distance =
-		new SliderSetting("Distance", "How closely to follow the target.", 1, 1,
+		new SliderSetting("距离", "跟随目标的紧密程度。", 1, 1,
 			12, 0.5, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting useAi =
-		new CheckboxSetting("Use AI (experimental)", false);
+		new CheckboxSetting("使用AI（实验性）", false);
 	
 	private final EntityFilterList entityFilters = FollowFilterList.create();
 	
 	public FollowHack()
 	{
-		super("Follow");
+		super("跟随");
 		
 		setCategory(Category.MOVEMENT);
 		addSetting(distance);
@@ -69,8 +69,8 @@ public final class FollowHack extends Hack
 	public String getRenderName()
 	{
 		if(entity != null)
-			return "Following " + entity.getName().getString();
-		return "Follow";
+			return "跟随 " + entity.getName().getString();
+		return "跟随";
 	}
 	
 	@Override

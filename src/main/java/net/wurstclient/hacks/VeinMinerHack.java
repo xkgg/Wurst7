@@ -50,13 +50,13 @@ public final class VeinMinerHack extends Hack
 		new AABB(1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0);
 	
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting flat = new CheckboxSetting("Flat mode",
-		"Won't break any blocks below your feet.", false);
+	private final CheckboxSetting flat = new CheckboxSetting("平坦模式",
+		"不会破坏你脚下的任何方块。", false);
 	
 	private final NukerMultiIdListSetting multiIdList =
-		new NukerMultiIdListSetting("The types of blocks to mine as veins.");
+		new NukerMultiIdListSetting("以矿脉形式挖掘的方块类型。");
 	
 	private final SwingHandSetting swingHand = new SwingHandSetting(
 		SwingHandSetting.genericMiningDescription(this), SwingHand.SERVER);
@@ -66,18 +66,18 @@ public final class VeinMinerHack extends Hack
 	private final HashSet<BlockPos> currentVein = new HashSet<>();
 	private BlockPos currentBlock;
 	
-	private final SliderSetting maxVeinSize = new SliderSetting("Max vein size",
-		"Maximum number of blocks to mine in a single vein.", 64, 1, 1000, 1,
+	private final SliderSetting maxVeinSize = new SliderSetting("最大矿脉大小",
+		"单个矿脉中最多挖掘的方块数量。", 64, 1, 1000, 1,
 		ValueDisplay.INTEGER);
 	
 	private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"Check line of sight",
-		"Makes sure that you don't reach through walls when breaking blocks.",
+		"检查视线",
+		"确保在破坏方块时不会穿墙。",
 		false);
 	
 	public VeinMinerHack()
 	{
-		super("VeinMiner");
+		super("矿脉挖掘");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		addSetting(flat);

@@ -48,20 +48,20 @@ import net.wurstclient.util.RotationUtils;
 @SearchTags({"crystal aura"})
 public final class CrystalAuraHack extends Hack implements UpdateListener
 {
-	private final SliderSetting range = new SliderSetting("Range",
-		"Determines how far CrystalAura will reach to place and detonate crystals.",
+	private final SliderSetting range = new SliderSetting("范围",
+		"决定CrystalAura放置和引爆水晶的距离。",
 		6, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting autoPlace = new CheckboxSetting(
-		"Auto-place crystals",
-		"When enabled, CrystalAura will automatically place crystals near valid entities.\n"
-			+ "When disabled, CrystalAura will only detonate manually placed crystals.",
+		"自动放置水晶",
+		"启用时，CrystalAura将在有效实体附近自动放置水晶。\n"
+			+ "禁用时，CrystalAura只会引爆手动放置的水晶。",
 		true);
 	
 	private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"Check line of sight",
-		"Ensures that you don't reach through blocks when placing or left-clicking end crystals.\n\n"
-			+ "Slower but can help with anti-cheat plugins.",
+		"检查视线",
+		"确保放置或左键点击末影水晶时不会穿墙。\n\n"
+			+ "更慢但可以帮助对抗反作弊插件。",
 		false);
 	
 	private final FaceTargetSetting faceTarget =

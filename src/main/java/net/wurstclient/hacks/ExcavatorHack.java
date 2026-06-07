@@ -48,10 +48,10 @@ public final class ExcavatorHack extends Hack
 	implements UpdateListener, RenderListener, GUIRenderListener
 {
 	private final SliderSetting range =
-		new SliderSetting("Range", 5, 2, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", 5, 2, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final EnumSetting<Mode> mode =
-		new EnumSetting<>("Mode", Mode.values(), Mode.FAST);
+		new EnumSetting<>("模式", Mode.values(), Mode.FAST);
 	
 	private final OverlayRenderer overlay = new OverlayRenderer();
 	

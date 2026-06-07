@@ -22,21 +22,21 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 public final class NoFallHack extends Hack implements UpdateListener
 {
 	private final CheckboxSetting allowElytra = new CheckboxSetting(
-		"Allow elytra", "description.wurst.setting.nofall.allow_elytra", false);
+		"允许鞘翅", "description.wurst.setting.nofall.allow_elytra", false);
 	
 	private final CheckboxSetting pauseForMace =
-		new CheckboxSetting("Pause for mace",
+		new CheckboxSetting("流星锤暂停",
 			"description.wurst.setting.nofall.pause_for_mace", false);
 	
 	private final SliderSetting minFallDistance =
-		new SliderSetting("Min fall distance",
+		new SliderSetting("最小掉落距离",
 			"description.wurst.setting.nofall.min_fall_distance", 1, 0, 10, 0.1,
-			ValueDisplay.DECIMAL.withSuffix("m").withLabel(0, "off"));
+			ValueDisplay.DECIMAL.withSuffix("m").withLabel(0, "关闭"));
 	
 	private final SliderSetting minFallDistanceElytra =
-		new SliderSetting("Min elytra fall distance",
+		new SliderSetting("最小鞘翅掉落距离",
 			"description.wurst.setting.nofall.min_elytra_fall_distance", 2, 0,
-			10, 0.1, ValueDisplay.DECIMAL.withSuffix("m").withLabel(0, "off"));
+			10, 0.1, ValueDisplay.DECIMAL.withSuffix("m").withLabel(0, "关闭"));
 	
 	public NoFallHack()
 	{

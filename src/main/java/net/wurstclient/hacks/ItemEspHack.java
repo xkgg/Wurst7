@@ -35,11 +35,11 @@ public final class ItemEspHack extends Hack implements UpdateListener,
 	private final EspStyleSetting style = new EspStyleSetting();
 	
 	private final EspBoxSizeSetting boxSize = new EspBoxSizeSetting(
-		"\u00a7lAccurate\u00a7r mode shows the exact hitbox of each item.\n"
-			+ "\u00a7lFancy\u00a7r mode shows larger boxes that look better.");
+		"\u00a7l精确\u00a7r模式显示每个物品的精确碰撞箱。\n"
+			+ "\u00a7l美观\u00a7r模式显示更大的方框，看起来更好。");
 	
-	private final ColorSetting color = new ColorSetting("Color",
-		"Items will be highlighted in this color.", Color.YELLOW);
+	private final ColorSetting color = new ColorSetting("颜色",
+		"物品将以这个颜色高亮显示。", Color.YELLOW);
 	
 	private final ArrayList<ItemEntity> items = new ArrayList<>();
 	
