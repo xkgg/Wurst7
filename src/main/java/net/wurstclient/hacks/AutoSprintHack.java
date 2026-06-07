@@ -18,11 +18,10 @@ import net.wurstclient.settings.CheckboxSetting;
 public final class AutoSprintHack extends Hack implements UpdateListener
 {
 	private final CheckboxSetting allDirections =
-		new CheckboxSetting("全方向冲刺",
-			"向所有方向冲刺，而不仅仅是前方。", false);
+		new CheckboxSetting("全方向冲刺", "向所有方向冲刺，而不仅仅是前方。", false);
 	
-	private final CheckboxSetting hungry = new CheckboxSetting("饥饿冲刺",
-		"即使在饥饿值低时也冲刺。", false);
+	private final CheckboxSetting hungry =
+		new CheckboxSetting("饥饿冲刺", "即使在饥饿值低时也冲刺。", false);
 	
 	public AutoSprintHack()
 	{

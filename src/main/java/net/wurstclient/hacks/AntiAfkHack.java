@@ -36,26 +36,24 @@ public final class AntiAfkHack extends Hack
 	private final CheckboxSetting useAi = new CheckboxSetting("使用AI",
 		"description.wurst.setting.antiafk.use_ai", true);
 	
-	private final SliderSetting aiRange = new SliderSetting("AI范围",
-		"description.wurst.setting.antiafk.ai_range", 16, 1, 64, 1,
-		ValueDisplay.AREA_FROM_RADIUS);
+	private final SliderSetting aiRange =
+		new SliderSetting("AI范围", "description.wurst.setting.antiafk.ai_range",
+			16, 1, 64, 1, ValueDisplay.AREA_FROM_RADIUS);
 	
 	private final SliderSetting nonAiRange = new SliderSetting("非AI范围",
 		"description.wurst.setting.antiafk.non-ai_range", 1, 1, 64, 1,
 		ValueDisplay.AREA_FROM_RADIUS);
 	
-	private final SliderSetting waitTime = new SliderSetting("等待时间",
-		"description.wurst.setting.antiafk.wait_time", 2.5, 0, 60, 0.05,
-		ValueDisplay.DECIMAL.withSuffix("s"));
+	private final SliderSetting waitTime =
+		new SliderSetting("等待时间", "description.wurst.setting.antiafk.wait_time",
+			2.5, 0, 60, 0.05, ValueDisplay.DECIMAL.withSuffix("s"));
 	
-	private final SliderSetting waitTimeRand = new SliderSetting(
-		"等待时间随机化",
+	private final SliderSetting waitTimeRand = new SliderSetting("等待时间随机化",
 		"description.wurst.setting.antiafk.wait_time_randomization", 0.5, 0, 60,
 		0.05, ValueDisplay.DECIMAL.withPrefix("\u00b1").withSuffix("s"));
 	
-	private final CheckboxSetting showWaitTime =
-		new CheckboxSetting("显示等待时间",
-			"description.wurst.setting.antiafk.show_wait_time", true);
+	private final CheckboxSetting showWaitTime = new CheckboxSetting("显示等待时间",
+		"description.wurst.setting.antiafk.show_wait_time", true);
 	
 	private int timer;
 	private RandomSource random = RandomSource.createNewThreadLocalInstance();

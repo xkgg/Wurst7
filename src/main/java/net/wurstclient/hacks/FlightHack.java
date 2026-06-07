@@ -26,14 +26,13 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 public final class FlightHack extends Hack implements UpdateListener,
 	IsPlayerInWaterListener, AirStrafingSpeedListener, MouseScrollListener
 {
-	private final SliderSetting horizontalSpeed = new SliderSetting(
-		"水平速度", "description.wurst.setting.flight.horizontal_speed",
-		1, 0.05, 10, 0.05, ValueDisplay.DECIMAL);
+	private final SliderSetting horizontalSpeed = new SliderSetting("水平速度",
+		"description.wurst.setting.flight.horizontal_speed", 1, 0.05, 10, 0.05,
+		ValueDisplay.DECIMAL);
 	
-	private final SliderSetting verticalSpeed =
-		new SliderSetting("垂直速度",
-			"description.wurst.setting.flight.vertical_speed", 1, 0.05, 5, 0.05,
-			v -> ValueDisplay.DECIMAL.getValueString(getActualVerticalSpeed()));
+	private final SliderSetting verticalSpeed = new SliderSetting("垂直速度",
+		"description.wurst.setting.flight.vertical_speed", 1, 0.05, 5, 0.05,
+		v -> ValueDisplay.DECIMAL.getValueString(getActualVerticalSpeed()));
 	
 	private final CheckboxSetting allowUnsafeVerticalSpeed =
 		new CheckboxSetting("允许不安全的垂直速度",
@@ -51,15 +50,13 @@ public final class FlightHack extends Hack implements UpdateListener,
 	private final CheckboxSetting antiKick = new CheckboxSetting("防踢",
 		"description.wurst.setting.flight.anti-kick", false);
 	
-	private final SliderSetting antiKickInterval =
-		new SliderSetting("防踢间隔",
-			"description.wurst.setting.flight.anti-kick_interval", 70, 5, 80, 1,
-			ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
+	private final SliderSetting antiKickInterval = new SliderSetting("防踢间隔",
+		"description.wurst.setting.flight.anti-kick_interval", 70, 5, 80, 1,
+		ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
 	
-	private final SliderSetting antiKickDistance =
-		new SliderSetting("防踢距离",
-			"description.wurst.setting.flight.anti-kick_distance", 0.035, 0.01,
-			0.2, 0.001, ValueDisplay.DECIMAL.withSuffix("m"));
+	private final SliderSetting antiKickDistance = new SliderSetting("防踢距离",
+		"description.wurst.setting.flight.anti-kick_distance", 0.035, 0.01, 0.2,
+		0.001, ValueDisplay.DECIMAL.withSuffix("m"));
 	
 	private int tickCounter = 0;
 	

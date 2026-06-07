@@ -43,13 +43,13 @@ public final class PlayerEspHack extends Hack implements UpdateListener,
 	private final EspStyleSetting style =
 		new EspStyleSetting(EspStyle.LINES_AND_BOXES);
 	
-	private final EspBoxSizeSetting boxSize = new EspBoxSizeSetting(
-		"\u00a7l精确\u00a7r模式显示每个玩家的精确碰撞箱。\n"
+	private final EspBoxSizeSetting boxSize =
+		new EspBoxSizeSetting("\u00a7l精确\u00a7r模式显示每个玩家的精确碰撞箱。\n"
 			+ "\u00a7l美观\u00a7r模式显示稍大的方框，看起来更好。");
 	
-	private final EntityFilterList entityFilters = new EntityFilterList(
-		new FilterSleepingSetting("不会显示正在睡觉的玩家。", false),
-		new FilterInvisibleSetting("不会显示隐身的玩家。", false));
+	private final EntityFilterList entityFilters =
+		new EntityFilterList(new FilterSleepingSetting("不会显示正在睡觉的玩家。", false),
+			new FilterInvisibleSetting("不会显示隐身的玩家。", false));
 	
 	private final ArrayList<Player> players = new ArrayList<>();
 	

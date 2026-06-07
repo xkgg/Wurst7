@@ -38,22 +38,18 @@ public final class TriggerBotHack extends Hack
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
 	
-	private final SliderSetting speedRandMS =
-		new SliderSetting("速度随机化",
-			"通过改变攻击之间的延迟来帮助你绕过反作弊插件。\n\n"
-				+ "推荐Vulcan使用\u00b1100ms。\n\n"
-				+ "0（关闭）适用于NoCheat+、AAC、Grim、Verus、Spartan和原版服务器。",
-			100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
-				.withSuffix("ms").withLabel(0, "关闭"));
+	private final SliderSetting speedRandMS = new SliderSetting("速度随机化",
+		"通过改变攻击之间的延迟来帮助你绕过反作弊插件。\n\n" + "推荐Vulcan使用\u00b1100ms。\n\n"
+			+ "0（关闭）适用于NoCheat+、AAC、Grim、Verus、Spartan和原版服务器。",
+		100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
+			.withSuffix("ms").withLabel(0, "关闭"));
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.CLIENT);
 	
-	private final CheckboxSetting attackWhileBlocking =
-		new CheckboxSetting("阻挡时攻击",
-			"即使你用盾牌阻挡或使用物品时也会攻击。\n\n"
-				+ "这在原版中是不可能的，如果启用了\"模拟鼠标点击\"也不会生效。",
-			false);
+	private final CheckboxSetting attackWhileBlocking = new CheckboxSetting(
+		"阻挡时攻击", "即使你用盾牌阻挡或使用物品时也会攻击。\n\n" + "这在原版中是不可能的，如果启用了\"模拟鼠标点击\"也不会生效。",
+		false);
 	
 	private final CheckboxSetting simulateMouseClick = new CheckboxSetting(
 		"模拟鼠标点击",

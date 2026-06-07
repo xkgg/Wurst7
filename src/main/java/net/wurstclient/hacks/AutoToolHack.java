@@ -42,21 +42,18 @@ import net.wurstclient.util.InventoryUtils;
 public final class AutoToolHack extends Hack
 	implements BlockBreakingProgressListener, UpdateListener
 {
-	private final CheckboxSetting useSwords = new CheckboxSetting("使用剑",
-		"用剑来破坏树叶、蜘蛛网等。", false);
+	private final CheckboxSetting useSwords =
+		new CheckboxSetting("使用剑", "用剑来破坏树叶、蜘蛛网等。", false);
 	
-	private final CheckboxSetting useHands = new CheckboxSetting("使用手",
-		"当没有找到合适的工具时，使用空手或不可损坏的物品。",
-		true);
+	private final CheckboxSetting useHands =
+		new CheckboxSetting("使用手", "当没有找到合适的工具时，使用空手或不可损坏的物品。", true);
 	
 	private final SliderSetting repairMode = new SliderSetting("修复模式",
-		"当工具的耐久度达到给定阈值时，阻止工具被使用，这样你可以在它们损坏之前修复它们。\n"
-			+ "可以从0（关闭）调整到100剩余使用次数。",
+		"当工具的耐久度达到给定阈值时，阻止工具被使用，这样你可以在它们损坏之前修复它们。\n" + "可以从0（关闭）调整到100剩余使用次数。",
 		0, 0, 100, 1, ValueDisplay.INTEGER.withLabel(0, "关闭"));
 	
-	private final CheckboxSetting switchBack = new CheckboxSetting(
-		"切换回来", "使用工具后，自动切换回之前选择的槽位。",
-		false);
+	private final CheckboxSetting switchBack =
+		new CheckboxSetting("切换回来", "使用工具后，自动切换回之前选择的槽位。", false);
 	
 	private int prevSelectedSlot;
 	

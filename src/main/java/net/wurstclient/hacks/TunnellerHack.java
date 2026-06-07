@@ -59,18 +59,15 @@ import net.wurstclient.util.RotationUtils;
 public final class TunnellerHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final EnumSetting<TunnelSize> size = new EnumSetting<>(
-		"隧道大小", TunnelSize.values(), TunnelSize.SIZE_3X3);
+	private final EnumSetting<TunnelSize> size =
+		new EnumSetting<>("隧道大小", TunnelSize.values(), TunnelSize.SIZE_3X3);
 	
 	private final SliderSetting limit = new SliderSetting("限制",
-		"一旦隧道达到给定长度就会自动停止。\n\n"
-			+ "0 = 无限制",
-		0, 0, 1000, 1, ValueDisplay.INTEGER.withSuffix(" 方块")
-			.withLabel(1, "1 方块").withLabel(0, "禁用"));
+		"一旦隧道达到给定长度就会自动停止。\n\n" + "0 = 无限制", 0, 0, 1000, 1, ValueDisplay.INTEGER
+			.withSuffix(" 方块").withLabel(1, "1 方块").withLabel(0, "禁用"));
 	
-	private final CheckboxSetting torches = new CheckboxSetting("放置火把",
-		"放置足够多的火把以防止怪物在隧道内生成。",
-		false);
+	private final CheckboxSetting torches =
+		new CheckboxSetting("放置火把", "放置足够多的火把以防止怪物在隧道内生成。", false);
 	
 	private final OverlayRenderer overlay = new OverlayRenderer();
 	

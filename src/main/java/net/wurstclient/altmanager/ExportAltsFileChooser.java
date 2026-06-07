@@ -25,11 +25,9 @@ public final class ExportAltsFileChooser extends JFileChooser
 		SwingUtils.setLookAndFeel();
 		
 		int response = JOptionPane.showConfirmDialog(null,
-			"这将创建一个未加密（纯文本）的账号列表副本。\n"
-				+ "将密码以纯文本形式存储是有风险的，因为它们很容易被病毒窃取。\n"
+			"这将创建一个未加密（纯文本）的账号列表副本。\n" + "将密码以纯文本形式存储是有风险的，因为它们很容易被病毒窃取。\n"
 				+ "请将此副本存放在安全的地方，并将其放在 Minecraft 文件夹之外！",
-			"警告", JOptionPane.OK_CANCEL_OPTION,
-			JOptionPane.WARNING_MESSAGE);
+			"警告", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 		
 		if(response != JOptionPane.OK_OPTION)
 			return;

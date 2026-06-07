@@ -34,25 +34,21 @@ public final class AimAssistHack extends Hack
 	private final SliderSetting range =
 		new SliderSetting("范围", 4.5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final SliderSetting rotationSpeed =
-		new SliderSetting("旋转速度", 600, 10, 3600, 10,
-			ValueDisplay.DEGREES.withSuffix("/s"));
+	private final SliderSetting rotationSpeed = new SliderSetting("旋转速度", 600,
+		10, 3600, 10, ValueDisplay.DEGREES.withSuffix("/s"));
 	
 	private final SliderSetting fov =
 		new SliderSetting("视野", "description.wurst.setting.aimassist.fov", 120,
 			30, 360, 10, ValueDisplay.DEGREES);
 	
-	private final AimAtSetting aimAt = new AimAtSetting(
-		"设置瞄准辅助应瞄准目标受击框的哪个位置。");
+	private final AimAtSetting aimAt = new AimAtSetting("设置瞄准辅助应瞄准目标受击框的哪个位置。");
 	
-	private final SliderSetting ignoreMouseInput =
-		new SliderSetting("忽略鼠标输入",
-			"description.wurst.setting.aimassist.ignore_mouse_input", 0, 0, 1,
-			0.01, ValueDisplay.PERCENTAGE);
+	private final SliderSetting ignoreMouseInput = new SliderSetting("忽略鼠标输入",
+		"description.wurst.setting.aimassist.ignore_mouse_input", 0, 0, 1, 0.01,
+		ValueDisplay.PERCENTAGE);
 	
-	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("检查视线",
-			"description.wurst.setting.aimassist.check_line_of_sight", true);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检查视线",
+		"description.wurst.setting.aimassist.check_line_of_sight", true);
 	
 	private final CheckboxSetting aimWhileBlocking =
 		new CheckboxSetting("阻挡时瞄准",

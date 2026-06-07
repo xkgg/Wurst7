@@ -252,12 +252,11 @@ public final class AltManagerScreen extends Screen
 		if(alt == null)
 			return;
 		
-		Component text =
-			Component.literal("你确定要删除这个账号吗？");
+		Component text = Component.literal("你确定要删除这个账号吗？");
 		
 		String altName = alt.getDisplayName();
-		Component message = Component.literal(
-			"\"" + altName + "\" 将永远丢失！（很长时间！）");
+		Component message =
+			Component.literal("\"" + altName + "\" 将永远丢失！（很长时间！）");
 		
 		ConfirmScreen screen = new ConfirmScreen(this::confirmRemove, text,
 			message, Component.literal("删除"), Component.literal("取消"));
@@ -597,8 +596,8 @@ public final class AltManagerScreen extends Screen
 			Font tr = minecraft.font;
 			
 			// name / email
-			context.drawString(tr, "名称: " + alt.getDisplayName(), x + 31,
-				y + 3, CommonColors.LIGHT_GRAY, false);
+			context.drawString(tr, "名称: " + alt.getDisplayName(), x + 31, y + 3,
+				CommonColors.LIGHT_GRAY, false);
 			
 			// status
 			context.drawString(tr, getBottomText(), x + 31, y + 15,

@@ -47,9 +47,8 @@ public final class BonemealAuraHack extends Hack implements HandleInputListener
 	private final CheckboxSetting multiMeal = new CheckboxSetting("多重骨粉",
 		"description.wurst.setting.bonemealaura.multimeal", false);
 	
-	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("检查视线",
-			"description.wurst.setting.bonemealaura.check_los", true);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检查视线",
+		"description.wurst.setting.bonemealaura.check_los", true);
 	
 	private final FaceTargetSetting faceTarget =
 		FaceTargetSetting.withPacketSpam(this, FaceTarget.SERVER);
@@ -72,19 +71,17 @@ public final class BonemealAuraHack extends Hack implements HandleInputListener
 	private final TakeItemsFromSetting takeItemsFrom =
 		TakeItemsFromSetting.withHands(this, TakeItemsFrom.HANDS);
 	
-	private final CheckboxSetting saplings =
-		new CheckboxSetting("树苗", true);
+	private final CheckboxSetting saplings = new CheckboxSetting("树苗", true);
 	
-	private final CheckboxSetting crops = new CheckboxSetting("作物",
-		"小麦、胡萝卜、土豆和甜菜根。", true);
+	private final CheckboxSetting crops =
+		new CheckboxSetting("作物", "小麦、胡萝卜、土豆和甜菜根。", true);
 	
 	private final CheckboxSetting stems =
 		new CheckboxSetting("茎", "南瓜和西瓜。", true);
 	
 	private final CheckboxSetting cocoa = new CheckboxSetting("可可", true);
 	
-	private final CheckboxSetting seaPickles =
-		new CheckboxSetting("海黄瓜", true);
+	private final CheckboxSetting seaPickles = new CheckboxSetting("海黄瓜", true);
 	
 	private final CheckboxSetting other = new CheckboxSetting("其他", false);
 	

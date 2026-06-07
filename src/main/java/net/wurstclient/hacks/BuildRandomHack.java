@@ -42,20 +42,15 @@ public final class BuildRandomHack extends Hack
 		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private SliderSetting maxAttempts = new SliderSetting("最大尝试次数",
-		"BuildRandom在一个tick中尝试放置方块的最大随机位置数。\n\n"
-			+ "更高的值以增加延迟为代价加快建筑速度。",
-		128, 1, 1024, 1, ValueDisplay.INTEGER);
+		"BuildRandom在一个tick中尝试放置方块的最大随机位置数。\n\n" + "更高的值以增加延迟为代价加快建筑速度。", 128,
+		1, 1024, 1, ValueDisplay.INTEGER);
 	
-	private final CheckboxSetting checkItem =
-		new CheckboxSetting("检查手持物品",
-			"只有当你实际拿着方块时才建筑。\n"
-				+ "关闭此选项可以使用火把、水、熔岩、生成蛋进行建筑，或者如果你只是想用空手在随机位置右键点击。",
-			true);
+	private final CheckboxSetting checkItem = new CheckboxSetting("检查手持物品",
+		"只有当你实际拿着方块时才建筑。\n" + "关闭此选项可以使用火把、水、熔岩、生成蛋进行建筑，或者如果你只是想用空手在随机位置右键点击。",
+		true);
 	
 	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("检查视线",
-			"确保BuildRandom不会尝试在墙壁后面放置方块。",
-			false);
+		new CheckboxSetting("检查视线", "确保BuildRandom不会尝试在墙壁后面放置方块。", false);
 	
 	private final FaceTargetSetting faceTarget =
 		FaceTargetSetting.withoutPacketSpam(this, FaceTarget.SERVER);
@@ -79,8 +74,8 @@ public final class BuildRandomHack extends Hack
 			+ "Possible with hacks, but wouldn't work in vanilla. May look suspicious.",
 		false);
 	
-	private final CheckboxSetting indicator = new CheckboxSetting("指示器",
-		"显示BuildRandom正在放置方块的位置。", true);
+	private final CheckboxSetting indicator =
+		new CheckboxSetting("指示器", "显示BuildRandom正在放置方块的位置。", true);
 	
 	private final Random random = new Random();
 	private BlockPos lastPos;

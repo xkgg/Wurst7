@@ -21,16 +21,14 @@ import net.wurstclient.settings.SliderSetting;
 	"entity speed"})
 public final class BoatFlyHack extends Hack implements UpdateListener
 {
-	private final CheckboxSetting changeForwardSpeed = new CheckboxSetting(
-		"更改前进速度",
-		"允许\u00a7e前进速度\u00a7r被更改，禁用平滑加速。",
-		false);
+	private final CheckboxSetting changeForwardSpeed =
+		new CheckboxSetting("更改前进速度", "允许\u00a7e前进速度\u00a7r被更改，禁用平滑加速。", false);
 	
-	private final SliderSetting forwardSpeed = new SliderSetting(
-		"前进速度", 1, 0.05, 5, 0.05, SliderSetting.ValueDisplay.DECIMAL);
+	private final SliderSetting forwardSpeed = new SliderSetting("前进速度", 1,
+		0.05, 5, 0.05, SliderSetting.ValueDisplay.DECIMAL);
 	
-	private final SliderSetting upwardSpeed = new SliderSetting("向上速度",
-		0.3, 0, 5, 0.05, SliderSetting.ValueDisplay.DECIMAL);
+	private final SliderSetting upwardSpeed = new SliderSetting("向上速度", 0.3, 0,
+		5, 0.05, SliderSetting.ValueDisplay.DECIMAL);
 	
 	public BoatFlyHack()
 	{

@@ -30,9 +30,8 @@ import net.wurstclient.util.InventoryUtils;
 	"killing potion", "InstantDeathPotion", "instant death potion"})
 public final class KillPotionHack extends Hack
 {
-	private final EnumSetting<PotionType> potionType =
-		new EnumSetting<>("药水类型", "要生成的药水类型。",
-			PotionType.values(), PotionType.SPLASH);
+	private final EnumSetting<PotionType> potionType = new EnumSetting<>("药水类型",
+		"要生成的药水类型。", PotionType.values(), PotionType.SPLASH);
 	
 	public KillPotionHack()
 	{

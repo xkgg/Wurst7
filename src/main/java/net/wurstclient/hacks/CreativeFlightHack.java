@@ -23,22 +23,17 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 @SearchTags({"creative flight", "CreativeFly", "creative fly"})
 public final class CreativeFlightHack extends Hack implements UpdateListener
 {
-	private final CheckboxSetting antiKick = new CheckboxSetting("防踢",
-		"让你时不时下降一点，以防止被踢出。",
-		false);
+	private final CheckboxSetting antiKick =
+		new CheckboxSetting("防踢", "让你时不时下降一点，以防止被踢出。", false);
 	
 	private final SliderSetting antiKickInterval =
-		new SliderSetting("防踢间隔",
-			"防踢应该多久防止你一次被踢。\n"
-				+ "大多数服务器会在80tick后将你踢出。",
+		new SliderSetting("防踢间隔", "防踢应该多久防止你一次被踢。\n" + "大多数服务器会在80tick后将你踢出。",
 			30, 5, 80, 1, SliderSetting.ValueDisplay.INTEGER
 				.withSuffix(" ticks").withLabel(1, "1 tick"));
 	
-	private final SliderSetting antiKickDistance = new SliderSetting(
-		"防踢距离",
-		"防踢应该让你下降多少距离。\n"
-			+ "大多数服务器至少需要0.032m才能防止你被踢出。",
-		0.07, 0.01, 0.2, 0.001, ValueDisplay.DECIMAL.withSuffix("m"));
+	private final SliderSetting antiKickDistance = new SliderSetting("防踢距离",
+		"防踢应该让你下降多少距离。\n" + "大多数服务器至少需要0.032m才能防止你被踢出。", 0.07, 0.01, 0.2, 0.001,
+		ValueDisplay.DECIMAL.withSuffix("m"));
 	
 	private int tickCounter = 0;
 	

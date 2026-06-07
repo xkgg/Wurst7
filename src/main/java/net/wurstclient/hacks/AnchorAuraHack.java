@@ -50,16 +50,14 @@ import net.wurstclient.util.RotationUtils;
 public final class AnchorAuraHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range =
-		new SliderSetting("范围", "description.wurst.setting.anchoraura.range",
-			6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", "description.wurst.setting.anchoraura.range", 6,
+			1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting autoPlace =
-		new CheckboxSetting("自动放置锚",
-			"description.wurst.setting.anchoraura.auto-place_anchors", true);
+	private final CheckboxSetting autoPlace = new CheckboxSetting("自动放置锚",
+		"description.wurst.setting.anchoraura.auto-place_anchors", true);
 	
-	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("检查视线",
-			"description.wurst.setting.anchoraura.check_line_of_sight", false);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检查视线",
+		"description.wurst.setting.anchoraura.check_line_of_sight", false);
 	
 	private final FaceTargetSetting faceTarget =
 		FaceTargetSetting.withPacketSpam(this, FaceTarget.OFF);

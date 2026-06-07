@@ -60,8 +60,7 @@ public final class MobSpawnEspHack extends Hack
 	private final SliderSetting opacity =
 		new SliderSetting("不透明度", 0.5, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
-	private final CheckboxSetting depthTest =
-		new CheckboxSetting("深度测试", true);
+	private final CheckboxSetting depthTest = new CheckboxSetting("深度测试", true);
 	
 	private final HitboxCheckSetting hitboxCheck = new HitboxCheckSetting();
 	

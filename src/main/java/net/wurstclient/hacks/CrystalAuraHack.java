@@ -49,20 +49,14 @@ import net.wurstclient.util.RotationUtils;
 public final class CrystalAuraHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range = new SliderSetting("范围",
-		"决定CrystalAura放置和引爆水晶的距离。",
-		6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		"决定CrystalAura放置和引爆水晶的距离。", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting autoPlace = new CheckboxSetting(
-		"自动放置水晶",
-		"启用时，CrystalAura将在有效实体附近自动放置水晶。\n"
-			+ "禁用时，CrystalAura只会引爆手动放置的水晶。",
+	private final CheckboxSetting autoPlace = new CheckboxSetting("自动放置水晶",
+		"启用时，CrystalAura将在有效实体附近自动放置水晶。\n" + "禁用时，CrystalAura只会引爆手动放置的水晶。",
 		true);
 	
-	private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"检查视线",
-		"确保放置或左键点击末影水晶时不会穿墙。\n\n"
-			+ "更慢但可以帮助对抗反作弊插件。",
-		false);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检查视线",
+		"确保放置或左键点击末影水晶时不会穿墙。\n\n" + "更慢但可以帮助对抗反作弊插件。", false);
 	
 	private final FaceTargetSetting faceTarget =
 		FaceTargetSetting.withPacketSpam(this, FaceTarget.OFF);

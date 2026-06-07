@@ -43,23 +43,21 @@ public final class AutoFishHack extends Hack
 			AutoFishHack.BiteMode.values(), AutoFishHack.BiteMode.SOUND);
 	
 	private final SliderSetting validRange = new SliderSetting("有效范围",
-		"此范围外的咬钩将被忽略。\n\n"
-			+ "如果咬钩未被检测到，请增加范围；如果其他人的咬钩被误认为是你自己的，请减少范围。\n\n"
+		"此范围外的咬钩将被忽略。\n\n" + "如果咬钩未被检测到，请增加范围；如果其他人的咬钩被误认为是你自己的，请减少范围。\n\n"
 			+ "当\"咬钩模式\"设置为\"实体\"时，此设置无效。",
 		1.5, 0.25, 8, 0.25, ValueDisplay.DECIMAL);
 	
-	private final SliderSetting catchDelay = new SliderSetting("捕获延迟",
-		"咬钩后收竿前的等待时间。", 0, 0, 60,
-		1, ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
+	private final SliderSetting catchDelay =
+		new SliderSetting("捕获延迟", "咬钩后收竿前的等待时间。", 0, 0, 60, 1,
+			ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
 	
-	private final SliderSetting retryDelay = new SliderSetting("重试延迟",
-		"如果抛竿或收竿失败，AutoFish等待重试的时间。",
-		15, 0, 100, 1,
-		ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
+	private final SliderSetting retryDelay =
+		new SliderSetting("重试延迟", "如果抛竿或收竿失败，AutoFish等待重试的时间。", 15, 0, 100, 1,
+			ValueDisplay.INTEGER.withSuffix(" ticks").withLabel(1, "1 tick"));
 	
-	private final SliderSetting patience = new SliderSetting("耐心",
-		"如果没有咬钩，AutoFish等待收竿的时间。",
-		60, 10, 120, 1, ValueDisplay.INTEGER.withSuffix("s"));
+	private final SliderSetting patience =
+		new SliderSetting("耐心", "如果没有咬钩，AutoFish等待收竿的时间。", 60, 10, 120, 1,
+			ValueDisplay.INTEGER.withSuffix("s"));
 	
 	private final ShallowWaterWarningCheckbox shallowWaterWarning =
 		new ShallowWaterWarningCheckbox();

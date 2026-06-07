@@ -23,9 +23,9 @@ import net.wurstclient.util.Rotation;
 	"auto splash potion"})
 public final class AutoPotionHack extends Hack implements UpdateListener
 {
-	private final SliderSetting health = new SliderSetting("生命值",
-		"当你的生命值达到或低于此值时投掷药水。",
-		6, 0.5, 9.5, 0.5, ValueDisplay.DECIMAL.withSuffix(" 颗心"));
+	private final SliderSetting health =
+		new SliderSetting("生命值", "当你的生命值达到或低于此值时投掷药水。", 6, 0.5, 9.5, 0.5,
+			ValueDisplay.DECIMAL.withSuffix(" 颗心"));
 	
 	private int timer;
 	

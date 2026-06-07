@@ -65,10 +65,8 @@ import net.wurstclient.util.BlockPlacer.BlockPlacingParams;
 public final class AutoLibrarianHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final BookOffersSetting wantedBooks = new BookOffersSetting(
-		"需要的书",
-		"你希望村民出售的附魔书列表。\n\n"
-			+ "一旦村民学会出售其中一本书，AutoLibrarian将停止训练该村民。\n\n"
+	private final BookOffersSetting wantedBooks = new BookOffersSetting("需要的书",
+		"你希望村民出售的附魔书列表。\n\n" + "一旦村民学会出售其中一本书，AutoLibrarian将停止训练该村民。\n\n"
 			+ "你也可以为每本书设置最高价格，以防你已经有村民在卖但想要更便宜的价格。",
 		"minecraft:depth_strider;3", "minecraft:efficiency;5",
 		"minecraft:feather_falling;4", "minecraft:fortune;3",
@@ -76,8 +74,7 @@ public final class AutoLibrarianHack extends Hack
 		"minecraft:respiration;3", "minecraft:sharpness;5",
 		"minecraft:silk_touch;1", "minecraft:unbreaking;3");
 	
-	private final CheckboxSetting lockInTrade = new CheckboxSetting(
-		"锁定交易",
+	private final CheckboxSetting lockInTrade = new CheckboxSetting("锁定交易",
 		"一旦村民学会出售你想要的书，自动从村民那里购买东西。这可以防止村民以后改变交易报价。\n\n"
 			+ "使用此功能时，请确保你的物品栏中至少有24张纸和9个绿宝石。或者，1本书和64个绿宝石也可以。",
 		false);

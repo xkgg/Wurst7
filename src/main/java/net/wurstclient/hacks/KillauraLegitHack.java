@@ -49,38 +49,31 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
 	
-	private final SliderSetting speedRandMS =
-		new SliderSetting("速度随机化",
-			"通过改变攻击之间的延迟来帮助你绕过反作弊插件。\n\n"
-				+ "推荐Vulcan使用\u00b1100ms。\n\n"
-				+ "0（关闭）适用于NoCheat+、AAC、Grim、Verus、Spartan和原版服务器。",
-			100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
-				.withSuffix("ms").withLabel(0, "关闭"));
+	private final SliderSetting speedRandMS = new SliderSetting("速度随机化",
+		"通过改变攻击之间的延迟来帮助你绕过反作弊插件。\n\n" + "推荐Vulcan使用\u00b1100ms。\n\n"
+			+ "0（关闭）适用于NoCheat+、AAC、Grim、Verus、Spartan和原版服务器。",
+		100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
+			.withSuffix("ms").withLabel(0, "关闭"));
 	
-	private final SliderSetting rotationSpeed =
-		new SliderSetting("旋转速度", 600, 10, 3600, 10,
-			ValueDisplay.DEGREES.withSuffix("/s"));
+	private final SliderSetting rotationSpeed = new SliderSetting("旋转速度", 600,
+		10, 3600, 10, ValueDisplay.DEGREES.withSuffix("/s"));
 	
 	private final EnumSetting<Priority> priority = new EnumSetting<>("优先级",
-		"决定哪个实体将被优先攻击。\n"
-			+ "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
+		"决定哪个实体将被优先攻击。\n" + "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
 			+ "\u00a7l角度\u00a7r - 攻击需要最少头部移动的实体。\n"
 			+ "\u00a7l生命值\u00a7r - 攻击最弱的实体。",
 		Priority.values(), Priority.ANGLE);
 	
 	private final SliderSetting fov = new SliderSetting("视野",
-		"视野 - 实体在离开你的十字线之前可以偏离多远才会被忽略。\n"
-			+ "360\u00b0 = 实体可以在你周围任何地方被攻击。",
-		360, 30, 360, 10, ValueDisplay.DEGREES);
+		"视野 - 实体在离开你的十字线之前可以偏离多远才会被忽略。\n" + "360\u00b0 = 实体可以在你周围任何地方被攻击。", 360,
+		30, 360, 10, ValueDisplay.DEGREES);
 	
 	private final SwingHandSetting swingHand =
 		SwingHandSetting.withoutOffOption(
 			SwingHandSetting.genericCombatDescription(this), SwingHand.CLIENT);
 	
-	private final CheckboxSetting damageIndicator = new CheckboxSetting(
-		"伤害指示器",
-		"在目标内渲染一个彩色方框，与其剩余生命值成反比。",
-		true);
+	private final CheckboxSetting damageIndicator =
+		new CheckboxSetting("伤害指示器", "在目标内渲染一个彩色方框，与其剩余生命值成反比。", true);
 	
 	// same filters as in Killaura, but with stricter defaults
 	private final EntityFilterList entityFilters =

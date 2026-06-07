@@ -43,25 +43,21 @@ import net.wurstclient.util.RotationUtils;
 public final class KillauraHack extends Hack
 	implements UpdateListener, HandleInputListener, RenderListener
 {
-	private final SliderSetting range = new SliderSetting("范围",
-		"决定Killaura能够攻击实体的距离。\n"
-			+ "比指定值更远的任何东西都不会被攻击。",
-		5, 1, 10, 0.05, ValueDisplay.DECIMAL);
+	private final SliderSetting range =
+		new SliderSetting("范围", "决定Killaura能够攻击实体的距离。\n" + "比指定值更远的任何东西都不会被攻击。",
+			5, 1, 10, 0.05, ValueDisplay.DECIMAL);
 	
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
 	
-	private final SliderSetting speedRandMS =
-		new SliderSetting("速度随机化",
-			"通过改变攻击之间的延迟来帮助你绕过反作弊插件。\n\n"
-				+ "推荐Vulcan使用\u00b1100ms。\n\n"
-				+ "0（关闭）适用于NoCheat+、AAC、Grim、Verus、Spartan和原版服务器。",
-			100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
-				.withSuffix("ms").withLabel(0, "关闭"));
+	private final SliderSetting speedRandMS = new SliderSetting("速度随机化",
+		"通过改变攻击之间的延迟来帮助你绕过反作弊插件。\n\n" + "推荐Vulcan使用\u00b1100ms。\n\n"
+			+ "0（关闭）适用于NoCheat+、AAC、Grim、Verus、Spartan和原版服务器。",
+		100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
+			.withSuffix("ms").withLabel(0, "关闭"));
 	
 	private final EnumSetting<Priority> priority = new EnumSetting<>("优先级",
-		"决定哪个实体将被优先攻击。\n"
-			+ "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
+		"决定哪个实体将被优先攻击。\n" + "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
 			+ "\u00a7l角度\u00a7r - 攻击需要最少头部移动的实体。\n"
 			+ "\u00a7l生命值\u00a7r - 攻击最弱的实体。",
 		Priority.values(), Priority.ANGLE);
@@ -72,19 +68,14 @@ public final class KillauraHack extends Hack
 	private final SwingHandSetting swingHand = new SwingHandSetting(
 		SwingHandSetting.genericCombatDescription(this), SwingHand.CLIENT);
 	
-	private final CheckboxSetting damageIndicator = new CheckboxSetting(
-		"伤害指示器",
-		"在目标内渲染一个彩色方框，与其剩余生命值成反比。",
-		true);
+	private final CheckboxSetting damageIndicator =
+		new CheckboxSetting("伤害指示器", "在目标内渲染一个彩色方框，与其剩余生命值成反比。", true);
 	
 	private final PauseAttackOnContainersSetting pauseOnContainers =
 		new PauseAttackOnContainersSetting(true);
 	
-	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("检查视线",
-			"确保攻击时不会穿墙。\n\n"
-				+ "更慢但可以帮助对抗反作弊插件。",
-			false);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检查视线",
+		"确保攻击时不会穿墙。\n\n" + "更慢但可以帮助对抗反作弊插件。", false);
 	
 	private final EntityFilterList entityFilters =
 		EntityFilterList.genericCombat();

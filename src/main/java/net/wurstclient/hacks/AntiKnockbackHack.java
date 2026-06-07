@@ -18,19 +18,15 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	"no knockback", "AntiKB", "anti kb"})
 public final class AntiKnockbackHack extends Hack implements KnockbackListener
 {
-	private final SliderSetting hStrength =
-		new SliderSetting("水平强度",
-			"水平击退减少的程度。\n"
-				+ "-100% = 双倍击退\n" + "0% = 正常击退\n"
-				+ "100% = 无击退\n" + ">100% = 反向击退",
-			1, -1, 2, 0.01, ValueDisplay.PERCENTAGE);
+	private final SliderSetting hStrength = new SliderSetting(
+		"水平强度", "水平击退减少的程度。\n" + "-100% = 双倍击退\n" + "0% = 正常击退\n"
+			+ "100% = 无击退\n" + ">100% = 反向击退",
+		1, -1, 2, 0.01, ValueDisplay.PERCENTAGE);
 	
-	private final SliderSetting vStrength =
-		new SliderSetting("垂直强度",
-			"垂直击退减少的程度。\n"
-				+ "-100% = 双倍击退\n" + "0% = 正常击退\n"
-				+ "100% = 无击退\n" + ">100% = 反向击退",
-			1, -1, 2, 0.01, ValueDisplay.PERCENTAGE);
+	private final SliderSetting vStrength = new SliderSetting(
+		"垂直强度", "垂直击退减少的程度。\n" + "-100% = 双倍击退\n" + "0% = 正常击退\n"
+			+ "100% = 无击退\n" + ">100% = 反向击退",
+		1, -1, 2, 0.01, ValueDisplay.PERCENTAGE);
 	
 	public AntiKnockbackHack()
 	{

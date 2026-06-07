@@ -49,35 +49,25 @@ public final class AutoBuildHack extends Hack
 		new AABB(1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0);
 	
 	private final FileSetting templateSetting = new FileSetting("模板",
-		"决定要建造什么。\n\n"
-			+ "模板就是JSON文件。可以随意添加自己的模板或编辑/删除默认模板。\n\n"
+		"决定要建造什么。\n\n" + "模板就是JSON文件。可以随意添加自己的模板或编辑/删除默认模板。\n\n"
 			+ "如果搞乱了，只需按下'重置为默认'按钮或删除文件夹即可。",
 		"autobuild", DefaultAutoBuildTemplates::createFiles);
 	
 	private final SliderSetting range = new SliderSetting("范围",
-		"放置方块时的触及距离。\n" + "推荐值：\n"
-			+ "6.0 原版\n" + "4.25 NoCheat+",
-		6, 1, 10, 0.05, ValueDisplay.DECIMAL);
+		"放置方块时的触及距离。\n" + "推荐值：\n" + "6.0 原版\n" + "4.25 NoCheat+", 6, 1, 10,
+		0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"检查视线",
-		"确保放置方块时不会穿墙。可以帮助对抗反作弊插件，但会降低建筑速度。",
-		false);
+	private final CheckboxSetting checkLOS =
+		new CheckboxSetting("检查视线", "确保放置方块时不会穿墙。可以帮助对抗反作弊插件，但会降低建筑速度。", false);
 	
 	private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
-		"使用保存的方块",
-		"尝试放置模板中保存的相同方块。\n\n"
-			+ "如果模板没有指定方块类型，将使用你手中的方块来建造。",
-		true);
+		"使用保存的方块", "尝试放置模板中保存的相同方块。\n\n" + "如果模板没有指定方块类型，将使用你手中的方块来建造。", true);
 	
 	private final CheckboxSetting fastPlace =
-		new CheckboxSetting("始终快速放置",
-			"即使FastPlace未启用，也以启用状态进行建造。", true);
+		new CheckboxSetting("始终快速放置", "即使FastPlace未启用，也以启用状态进行建造。", true);
 	
-	private final CheckboxSetting strictBuildOrder = new CheckboxSetting(
-		"严格建造顺序",
-		"严格按照模板中的顺序放置方块。这更慢，但结果更一致。",
-		false);
+	private final CheckboxSetting strictBuildOrder =
+		new CheckboxSetting("严格建造顺序", "严格按照模板中的顺序放置方块。这更慢，但结果更一致。", false);
 	
 	private final FaceTargetSetting faceTarget =
 		FaceTargetSetting.withoutPacketSpam(this, FaceTarget.SERVER);

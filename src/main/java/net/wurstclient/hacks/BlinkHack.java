@@ -25,10 +25,9 @@ import net.wurstclient.util.FakePlayerEntity;
 public final class BlinkHack extends Hack
 	implements UpdateListener, PacketOutputListener
 {
-	private final SliderSetting limit = new SliderSetting("限制",
-		"一旦挂起的数据包达到指定数量，自动重启闪烁。\n\n"
-			+ "0 = 无限制",
-		0, 0, 500, 1, ValueDisplay.INTEGER.withLabel(0, "禁用"));
+	private final SliderSetting limit =
+		new SliderSetting("限制", "一旦挂起的数据包达到指定数量，自动重启闪烁。\n\n" + "0 = 无限制", 0, 0,
+			500, 1, ValueDisplay.INTEGER.withLabel(0, "禁用"));
 	
 	private final ArrayDeque<ServerboundMovePlayerPacket> packets =
 		new ArrayDeque<>();

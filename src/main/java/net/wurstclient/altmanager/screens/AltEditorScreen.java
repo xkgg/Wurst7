@@ -96,8 +96,7 @@ public abstract class AltEditorScreen extends Screen
 			.build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("打开皮肤文件夹"),
-				b -> openSkinFolder())
+			.builder(Component.literal("打开皮肤文件夹"), b -> openSkinFolder())
 			.bounds((width / 2 - 100) / 2 - 64, height - 32, 128, 20).build());
 		
 		setFocused(nameOrEmailBox);
@@ -239,14 +238,14 @@ public abstract class AltEditorScreen extends Screen
 		String accountType = getPassword().isEmpty() ? "离线" : "正版";
 		
 		// text
-		context.drawString(font, "名称（离线账号）或", width / 2 - 100,
-			37, CommonColors.LIGHT_GRAY);
-		context.drawString(font, "邮箱（正版账号）", width / 2 - 100,
-			47, CommonColors.LIGHT_GRAY);
-		context.drawString(font, "密码（正版账号）", width / 2 - 100,
-			87, CommonColors.LIGHT_GRAY);
-		context.drawString(font, "账号类型: " + accountType,
-			width / 2 - 100, 127, CommonColors.LIGHT_GRAY);
+		context.drawString(font, "名称（离线账号）或", width / 2 - 100, 37,
+			CommonColors.LIGHT_GRAY);
+		context.drawString(font, "邮箱（正版账号）", width / 2 - 100, 47,
+			CommonColors.LIGHT_GRAY);
+		context.drawString(font, "密码（正版账号）", width / 2 - 100, 87,
+			CommonColors.LIGHT_GRAY);
+		context.drawString(font, "账号类型: " + accountType, width / 2 - 100, 127,
+			CommonColors.LIGHT_GRAY);
 		
 		String[] lines = message.split("\n");
 		for(int i = 0; i < lines.length; i++)

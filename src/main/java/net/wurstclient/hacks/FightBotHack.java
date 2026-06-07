@@ -52,9 +52,7 @@ public final class FightBotHack extends Hack
 		SwingHandSetting.genericCombatDescription(this), SwingHand.CLIENT);
 	
 	private final SliderSetting distance = new SliderSetting("距离",
-		"跟随目标的紧密程度。\n"
-			+ "这应该设置为比范围更低的值。",
-		3, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		"跟随目标的紧密程度。\n" + "这应该设置为比范围更低的值。", 3, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting useAi =
 		new CheckboxSetting("使用AI（实验性）", false);

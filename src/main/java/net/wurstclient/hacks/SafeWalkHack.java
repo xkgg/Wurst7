@@ -24,11 +24,9 @@ public final class SafeWalkHack extends Hack
 	private final CheckboxSetting sneak =
 		new CheckboxSetting("边缘潜行", "在边缘时可见地潜行。", false);
 	
-	private final SliderSetting edgeDistance = new SliderSetting(
-		"潜行边缘距离",
-		"SafeWalk在潜行之前允许你离边缘多近。\n\n"
-			+ "此设置仅在启用\"边缘潜行\"时使用。",
-		0.05, 0.05, 0.25, 0.001, ValueDisplay.DECIMAL.withSuffix("m"));
+	private final SliderSetting edgeDistance = new SliderSetting("潜行边缘距离",
+		"SafeWalk在潜行之前允许你离边缘多近。\n\n" + "此设置仅在启用\"边缘潜行\"时使用。", 0.05, 0.05, 0.25,
+		0.001, ValueDisplay.DECIMAL.withSuffix("m"));
 	
 	private boolean sneaking;
 	

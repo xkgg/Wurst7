@@ -47,9 +47,8 @@ public final class AutoFarmHack extends Hack
 	private final SliderSetting range =
 		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("检查视线",
-			"description.wurst.setting.autofarm.check_line_of_sight", false);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检查视线",
+		"description.wurst.setting.autofarm.check_line_of_sight", false);
 	
 	private final FaceTargetSetting faceTarget =
 		FaceTargetSetting.withoutPacketSpam(this, FaceTarget.SERVER);

@@ -29,16 +29,12 @@ import net.wurstclient.util.BlockUtils;
 public final class FastBreakHack extends Hack
 	implements UpdateListener, BlockBreakingProgressListener
 {
-	private final SliderSetting activationChance = new SliderSetting(
-		"触发几率",
-		"只以给定的几率FastBreak你破坏的一些方块，"
-			+ "这使反作弊插件更难检测。\n\n"
-			+ "如果启用了合法模式，此设置无效。",
+	private final SliderSetting activationChance = new SliderSetting("触发几率",
+		"只以给定的几率FastBreak你破坏的一些方块，" + "这使反作弊插件更难检测。\n\n" + "如果启用了合法模式，此设置无效。",
 		1, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
-	private final CheckboxSetting legitMode = new CheckboxSetting("合法模式", "只移除破坏方块之间的延迟，"
-			+ "不会加快破坏过程本身。\n\n"
-			+ "这会慢很多，但非常容易绕过反作弊插件。"
+	private final CheckboxSetting legitMode = new CheckboxSetting("合法模式",
+		"只移除破坏方块之间的延迟，" + "不会加快破坏过程本身。\n\n" + "这会慢很多，但非常容易绕过反作弊插件。"
 			+ " 如果常规FastBreak不起作用且触发几率滑块没有帮助，请使用此选项。",
 		false);
 	

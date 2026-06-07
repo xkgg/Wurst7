@@ -29,13 +29,11 @@ public final class FullbrightHack extends Hack implements UpdateListener
 			+ "\u00a7l夜视\u00a7r 通过应用夜视效果来工作。这\u00a7l通常\u00a7r 可以与光影包一起使用。",
 		Method.values(), Method.GAMMA);
 	
-	private final CheckboxSetting fade = new CheckboxSetting("渐变",
-		"在明暗之间缓慢渐变。", true);
+	private final CheckboxSetting fade =
+		new CheckboxSetting("渐变", "在明暗之间缓慢渐变。", true);
 	
-	private final SliderSetting defaultGamma = new SliderSetting(
-		"默认亮度",
-		"Fullbright关闭时会将亮度滑块设置回此值。",
-		0.5, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
+	private final SliderSetting defaultGamma = new SliderSetting("默认亮度",
+		"Fullbright关闭时会将亮度滑块设置回此值。", 0.5, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
 	private boolean wasGammaChanged;
 	private float nightVisionStrength;
