@@ -79,6 +79,12 @@ public final class AutoBuildHack extends Hack
 		"严格按照模板中的顺序放置方块。这更慢，但结果更一致。",
 		false);
 	
+	private final FaceTargetSetting faceTarget =
+		FaceTargetSetting.withoutPacketSpam(this, FaceTarget.SERVER);
+	
+	private final SwingHandSetting swingHand =
+		new SwingHandSetting(this, SwingHand.SERVER);
+	
 	private Status status = Status.NO_TEMPLATE;
 	private AutoBuildTemplate template;
 	private LinkedHashMap<BlockPos, Item> remainingBlocks =

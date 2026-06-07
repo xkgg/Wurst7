@@ -21,9 +21,15 @@ public final class EditAltScreen extends AltEditorScreen
 	public EditAltScreen(Screen prevScreen, AltManager altManager,
 		Alt editedAlt)
 	{
-		super(prevScreen, Component.literal("Edit Alt"));
+		super(prevScreen, Component.literal("编辑账号"));
 		this.altManager = altManager;
 		this.editedAlt = editedAlt;
+	}
+	
+	@Override
+	protected String getDoneButtonText()
+	{
+		return "保存";
 	}
 	
 	@Override
@@ -38,12 +44,6 @@ public final class EditAltScreen extends AltEditorScreen
 	{
 		return editedAlt instanceof MojangAlt
 			? ((MojangAlt)editedAlt).getPassword() : "";
-	}
-	
-	@Override
-	protected String getDoneButtonText()
-	{
-		return "Save";
 	}
 	
 	@Override

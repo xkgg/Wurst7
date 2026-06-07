@@ -77,7 +77,7 @@ public final class AltManagerScreen extends Screen
 	
 	public AltManagerScreen(Screen prevScreen, AltManager altManager)
 	{
-		super(Component.literal("Alt Manager"));
+		super(Component.literal("账号管理器"));
 		this.prevScreen = prevScreen;
 		this.altManager = altManager;
 	}
@@ -119,48 +119,48 @@ public final class AltManagerScreen extends Screen
 		}
 		
 		addRenderableWidget(useButton =
-			Button.builder(Component.literal("Login"), b -> pressLogin())
+			Button.builder(Component.literal("登录"), b -> pressLogin())
 				.bounds(width / 2 - 154, height - 52, 100, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Direct Login"),
+			.builder(Component.literal("直接登录"),
 				b -> minecraft.setScreen(new DirectLoginScreen(this)))
 			.bounds(width / 2 - 50, height - 52, 100, 20).build());
 		
 		addRenderableWidget(
 			Button
-				.builder(Component.literal("Add"),
+				.builder(Component.literal("添加"),
 					b -> minecraft
 						.setScreen(new AddAltScreen(this, altManager)))
 				.bounds(width / 2 + 54, height - 52, 100, 20).build());
 		
 		addRenderableWidget(starButton =
-			Button.builder(Component.literal("Favorite"), b -> pressFavorite())
+			Button.builder(Component.literal("收藏"), b -> pressFavorite())
 				.bounds(width / 2 - 154, height - 28, 75, 20).build());
 		
 		addRenderableWidget(editButton =
-			Button.builder(Component.literal("Edit"), b -> pressEdit())
+			Button.builder(Component.literal("编辑"), b -> pressEdit())
 				.bounds(width / 2 - 76, height - 28, 74, 20).build());
 		
 		addRenderableWidget(deleteButton =
-			Button.builder(Component.literal("Delete"), b -> pressDelete())
+			Button.builder(Component.literal("删除"), b -> pressDelete())
 				.bounds(width / 2 + 2, height - 28, 74, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Cancel"),
+			.builder(Component.literal("取消"),
 				b -> minecraft.setScreen(prevScreen))
 			.bounds(width / 2 + 80, height - 28, 75, 20).build());
 		
 		addRenderableWidget(importButton =
-			Button.builder(Component.literal("Import"), b -> pressImportAlts())
+			Button.builder(Component.literal("导入"), b -> pressImportAlts())
 				.bounds(8, 8, 50, 20).build());
 		
 		addRenderableWidget(exportButton =
-			Button.builder(Component.literal("Export"), b -> pressExportAlts())
+			Button.builder(Component.literal("导出"), b -> pressExportAlts())
 				.bounds(58, 8, 50, 20).build());
 		
 		addRenderableWidget(logoutButton =
-			Button.builder(Component.literal("Logout"), b -> pressLogout())
+			Button.builder(Component.literal("登出"), b -> pressLogout())
 				.bounds(width - 50 - 8, 8, 50, 20).build());
 		
 		updateAltButtons();
@@ -253,14 +253,14 @@ public final class AltManagerScreen extends Screen
 			return;
 		
 		Component text =
-			Component.literal("Are you sure you want to remove this alt?");
+			Component.literal("你确定要删除这个账号吗？");
 		
 		String altName = alt.getDisplayName();
 		Component message = Component.literal(
-			"\"" + altName + "\" will be lost forever! (A long time!)");
+			"\"" + altName + "\" 将永远丢失！（很长时间！）");
 		
 		ConfirmScreen screen = new ConfirmScreen(this::confirmRemove, text,
-			message, Component.literal("Delete"), Component.literal("Cancel"));
+			message, Component.literal("删除"), Component.literal("取消"));
 		minecraft.setScreen(screen);
 	}
 	
@@ -424,12 +424,12 @@ public final class AltManagerScreen extends Screen
 		}
 		
 		// title text
-		context.drawCenteredString(font, "Alt Manager", width / 2, 4,
+		context.drawCenteredString(font, "账号管理器", width / 2, 4,
 			CommonColors.WHITE);
-		context.drawCenteredString(font, "Alts: " + altManager.getList().size(),
+		context.drawCenteredString(font, "账号: " + altManager.getList().size(),
 			width / 2, 14, CommonColors.LIGHT_GRAY);
 		context.drawCenteredString(font,
-			"premium: " + altManager.getNumPremium() + ", cracked: "
+			"正版: " + altManager.getNumPremium() + ", 离线: "
 				+ altManager.getNumCracked(),
 			width / 2, 24, CommonColors.LIGHT_GRAY);
 		
@@ -597,7 +597,7 @@ public final class AltManagerScreen extends Screen
 			Font tr = minecraft.font;
 			
 			// name / email
-			context.drawString(tr, "Name: " + alt.getDisplayName(), x + 31,
+			context.drawString(tr, "名称: " + alt.getDisplayName(), x + 31,
 				y + 3, CommonColors.LIGHT_GRAY, false);
 			
 			// status
@@ -607,15 +607,15 @@ public final class AltManagerScreen extends Screen
 		
 		private String getBottomText()
 		{
-			String text = alt.isCracked() ? "\u00a78cracked" : "\u00a72premium";
+			String text = alt.isCracked() ? "\u00a78离线" : "\u00a72正版";
 			
 			if(alt.isFavorite())
-				text += "\u00a7r, \u00a7efavorite";
+				text += "\u00a7r, \u00a7e收藏";
 			
 			if(failedLogins.contains(alt))
-				text += "\u00a7r, \u00a7cwrong password?";
+				text += "\u00a7r, \u00a7c密码错误？";
 			else if(alt.isUncheckedPremium())
-				text += "\u00a7r, \u00a7cunchecked";
+				text += "\u00a7r, \u00a7c未检查";
 			
 			return text;
 		}

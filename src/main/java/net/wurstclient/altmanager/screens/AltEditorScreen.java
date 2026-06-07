@@ -81,22 +81,22 @@ public abstract class AltEditorScreen extends Screen
 			.bounds(width / 2 - 100, height / 4 + 72 + 12, 200, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Cancel"), b -> onClose())
+			.builder(Component.literal("取消"), b -> onClose())
 			.bounds(width / 2 - 100, height / 4 + 120 + 12, 200, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Random Name"),
+			.builder(Component.literal("随机名称"),
 				b -> nameOrEmailBox.setValue(NameGenerator.generateName()))
 			.bounds(width / 2 - 100, height / 4 + 96 + 12, 200, 20).build());
 		
 		addRenderableWidget(stealSkinButton = Button
-			.builder(Component.literal("Steal Skin"),
+			.builder(Component.literal("窃取皮肤"),
 				b -> message = stealSkin(getNameOrEmail()))
 			.bounds(width - (width / 2 - 100) / 2 - 64, height - 32, 128, 20)
 			.build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Open Skin Folder"),
+			.builder(Component.literal("打开皮肤文件夹"),
 				b -> openSkinFolder())
 			.bounds((width / 2 - 100) / 2 - 64, height - 32, 128, 20).build());
 		
@@ -118,7 +118,7 @@ public abstract class AltEditorScreen extends Screen
 		}catch(IOException e)
 		{
 			e.printStackTrace();
-			message = "\u00a74\u00a7lSkin folder could not be created.";
+			message = "\u00a74\u00a7l皮肤文件夹无法创建。";
 		}
 	}
 	
@@ -185,17 +185,17 @@ public abstract class AltEditorScreen extends Screen
 				Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
 			}
 			
-			return "\u00a7a\u00a7lSaved skin as " + name + ".png";
+			return "\u00a7a\u00a7l已保存皮肤为 " + name + ".png";
 			
 		}catch(IOException e)
 		{
 			e.printStackTrace();
-			return "\u00a74\u00a7lSkin could not be saved.";
+			return "\u00a74\u00a7l皮肤无法保存。";
 			
 		}catch(NullPointerException e)
 		{
 			e.printStackTrace();
-			return "\u00a74\u00a7lPlayer does not exist.";
+			return "\u00a74\u00a7l玩家不存在。";
 		}
 	}
 	
@@ -236,16 +236,16 @@ public abstract class AltEditorScreen extends Screen
 		AltRenderer.drawAltBody(context, nameOrEmailBox.getValue(),
 			width - (width / 2 - 100) / 2 - 64, height / 2 - 128, 128, 256);
 		
-		String accountType = getPassword().isEmpty() ? "cracked" : "premium";
+		String accountType = getPassword().isEmpty() ? "离线" : "正版";
 		
 		// text
-		context.drawString(font, "Name (for cracked alts), or", width / 2 - 100,
+		context.drawString(font, "名称（离线账号）或", width / 2 - 100,
 			37, CommonColors.LIGHT_GRAY);
-		context.drawString(font, "E-Mail (for premium alts)", width / 2 - 100,
+		context.drawString(font, "邮箱（正版账号）", width / 2 - 100,
 			47, CommonColors.LIGHT_GRAY);
-		context.drawString(font, "Password (for premium alts)", width / 2 - 100,
+		context.drawString(font, "密码（正版账号）", width / 2 - 100,
 			87, CommonColors.LIGHT_GRAY);
-		context.drawString(font, "Account type: " + accountType,
+		context.drawString(font, "账号类型: " + accountType,
 			width / 2 - 100, 127, CommonColors.LIGHT_GRAY);
 		
 		String[] lines = message.split("\n");

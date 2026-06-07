@@ -31,7 +31,7 @@ public enum AltManagerTest
 			
 			Button multiplayerButton = findButton(mc, "menu.multiplayer");
 			Button realmsButton = findButton(mc, "menu.online");
-			Button altManagerButton = findButton(mc, "Alt Manager");
+			Button altManagerButton = findButton(mc, "账号管理器");
 			
 			checkButtonPosition(altManagerButton, realmsButton.getRight() + 4,
 				multiplayerButton.getBottom() + 4);
