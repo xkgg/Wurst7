@@ -14,7 +14,7 @@ public final class FilterShulkerBulletSetting extends EntityFilterCheckbox
 {
 	public FilterShulkerBulletSetting(String description, boolean checked)
 	{
-		super("Filter shulker bullets", description, checked);
+		super("过滤潜影贝子弹", description, checked);
 	}
 	
 	@Override

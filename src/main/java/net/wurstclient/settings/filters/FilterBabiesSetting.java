@@ -14,12 +14,11 @@ import net.minecraft.world.entity.monster.Enemy;
 
 public final class FilterBabiesSetting extends EntityFilterCheckbox
 {
-	private static final String EXCEPTIONS_TEXT = "\n\nThis filter does not"
-		+ " affect baby zombies and other hostile baby mobs.";
+	private static final String EXCEPTIONS_TEXT = "\n\n此过滤器不影响僵尸幼崽和其他敌对幼崽生物。";
 	
 	public FilterBabiesSetting(String description, boolean checked)
 	{
-		super("Filter babies", description + EXCEPTIONS_TEXT, checked);
+		super("过滤幼崽", description + EXCEPTIONS_TEXT, checked);
 	}
 	
 	@Override
@@ -43,6 +42,6 @@ public final class FilterBabiesSetting extends EntityFilterCheckbox
 	public static FilterBabiesSetting genericCombat(boolean checked)
 	{
 		return new FilterBabiesSetting(
-			"Won't attack baby pigs, baby villagers, etc.", checked);
+			"不会攻击小猪、小村民等幼崽。", checked);
 	}
 }

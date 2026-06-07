@@ -28,7 +28,7 @@ public final class SwingHandSetting
 	private SwingHandSetting(WText description, SwingHand[] values,
 		SwingHand selected)
 	{
-		super("Swing hand", description, values, selected);
+		super("挥动手臂", description, values, selected);
 	}
 	
 	public SwingHandSetting(WText description, SwingHand selected)
@@ -96,13 +96,13 @@ public final class SwingHandSetting
 	
 	public enum SwingHand
 	{
-		OFF("Off", hand -> {}),
+		OFF("关闭", hand -> {}),
 		
-		SERVER("Server-side",
+		SERVER("服务端",
 			hand -> MC.player.connection
 				.send(new ServerboundSwingPacket(hand))),
 		
-		CLIENT("Client-side", hand -> MC.player.swing(hand));
+		CLIENT("客户端", hand -> MC.player.swing(hand));
 		
 		private static final String TRANSLATION_KEY_PREFIX =
 			"description.wurst.setting.generic.swing_hand.";

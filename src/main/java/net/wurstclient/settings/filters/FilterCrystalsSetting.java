@@ -14,7 +14,7 @@ public final class FilterCrystalsSetting extends EntityFilterCheckbox
 {
 	public FilterCrystalsSetting(String description, boolean checked)
 	{
-		super("Filter end crystals", description, checked);
+		super("过滤末影水晶", description, checked);
 	}
 	
 	@Override

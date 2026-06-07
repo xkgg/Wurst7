@@ -16,11 +16,11 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 public final class FilterPassiveWaterSetting extends EntityFilterCheckbox
 {
 	private static final String EXCEPTIONS_TEXT =
-		"\n\nThis filter does not affect guardians, drowned, and pufferfish.";
+			"\n\n此过滤器不影响守卫者、溺尸和河豚。";
 	
 	public FilterPassiveWaterSetting(String description, boolean checked)
 	{
-		super("Filter passive water mobs", description + EXCEPTIONS_TEXT,
+		super("过滤被动水生生物", description + EXCEPTIONS_TEXT,
 			checked);
 	}
 	
@@ -37,13 +37,13 @@ public final class FilterPassiveWaterSetting extends EntityFilterCheckbox
 	
 	public static FilterPassiveWaterSetting genericCombat(boolean checked)
 	{
-		return new FilterPassiveWaterSetting("Won't attack passive water mobs"
-			+ " like fish, squid, dolphins and axolotls.", checked);
+		return new FilterPassiveWaterSetting("不会攻击鱼、鱿鱼、海豚和美西螈等被动水生生物。",
+			checked);
 	}
 	
 	public static FilterPassiveWaterSetting genericVision(boolean checked)
 	{
-		return new FilterPassiveWaterSetting("Won't show passive water mobs"
-			+ " like fish, squid, dolphins and axolotls.", checked);
+		return new FilterPassiveWaterSetting("不会显示鱼、鱿鱼、海豚和美西螈等被动水生生物。",
+			checked);
 	}
 }

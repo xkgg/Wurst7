@@ -17,7 +17,7 @@ public final class CleanUpOtf extends OtherFeature
 {
 	public CleanUpOtf()
 	{
-		super("CleanUp", "Cleans up your server list.\n"
-			+ "To use it, press the 'Clean Up' button on the server selection screen.");
+		super("清理服务器列表", "清理您的服务器列表。\n"
+			+ "使用方法：在服务器选择界面按\"清理\"按钮。");
 	}
 }

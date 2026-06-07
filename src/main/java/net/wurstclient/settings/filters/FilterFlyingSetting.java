@@ -20,8 +20,8 @@ public final class FilterFlyingSetting extends SliderSetting
 {
 	public FilterFlyingSetting(String description, double value)
 	{
-		super("Filter flying", description, value, 0, 2, 0.05,
-			ValueDisplay.DECIMAL.withLabel(0, "off"));
+		super("过滤飞行玩家", description, value, 0, 2, 0.05,
+			ValueDisplay.DECIMAL.withLabel(0, "关闭"));
 	}
 	
 	@Override

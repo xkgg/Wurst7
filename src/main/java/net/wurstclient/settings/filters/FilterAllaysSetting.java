@@ -14,7 +14,7 @@ public final class FilterAllaysSetting extends EntityFilterCheckbox
 {
 	public FilterAllaysSetting(String description, boolean checked)
 	{
-		super("Filter allays", description, checked);
+		super("过滤悦灵", description, checked);
 	}
 	
 	@Override

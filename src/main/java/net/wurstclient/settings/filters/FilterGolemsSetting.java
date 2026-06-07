@@ -15,7 +15,7 @@ public final class FilterGolemsSetting extends EntityFilterCheckbox
 {
 	public FilterGolemsSetting(String description, boolean checked)
 	{
-		super("Filter golems", description, checked);
+		super("过滤傀儡", description, checked);
 	}
 	
 	@Override

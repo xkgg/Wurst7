@@ -13,12 +13,12 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 public final class FilterPiglinsSetting extends AttackDetectingEntityFilter
 {
 	private static final String EXCEPTIONS_TEXT =
-		"\n\nThis filter does not affect piglin brutes.";
+		"\n\n此过滤器不影响蛮力猪灵。";
 	
 	private FilterPiglinsSetting(String description, Mode selected,
 		boolean checked)
 	{
-		super("Filter piglins", description + EXCEPTIONS_TEXT, selected,
+		super("过滤猪灵", description + EXCEPTIONS_TEXT, selected,
 			checked);
 	}
 	
@@ -41,23 +41,16 @@ public final class FilterPiglinsSetting extends AttackDetectingEntityFilter
 	
 	public static FilterPiglinsSetting genericCombat(Mode selected)
 	{
-		return new FilterPiglinsSetting("When set to \u00a7lOn\u00a7r,"
-			+ " piglins won't be attacked at all.\n\n"
-			+ "When set to \u00a7lIf calm\u00a7r, piglins won't be attacked"
-			+ " until they attack first. Be warned that this filter cannot"
-			+ " detect if the piglins are attacking you or someone else.\n\n"
-			+ "When set to \u00a7lOff\u00a7r, this filter does nothing and"
-			+ " piglins can be attacked.", selected);
+		return new FilterPiglinsSetting("设置为\u00a7l开启\u00a7r时，猪灵完全不会被攻击。\n\n"
+			+ "设置为\u00a7l仅平静时\u00a7r时，猪灵在攻击前不会被攻击。请注意，此过滤器无法检测猪灵是在攻击您还是其他人。\n\n"
+			+ "设置为\u00a7l关闭\u00a7r时，此过滤器不生效，猪灵可以被攻击。", selected);
 	}
 	
 	public static FilterPiglinsSetting genericVision(Mode selected)
 	{
-		return new FilterPiglinsSetting("When set to \u00a7lOn\u00a7r,"
-			+ " piglins won't be shown at all.\n\n"
-			+ "When set to \u00a7lIf calm\u00a7r, piglins won't be shown until"
-			+ " they attack something.\n\n"
-			+ "When set to \u00a7lOff\u00a7r, this filter does nothing and"
-			+ " piglins can be shown.", selected);
+		return new FilterPiglinsSetting("设置为\u00a7l开启\u00a7r时，猪灵完全不会被显示。\n\n"
+			+ "设置为\u00a7l仅平静时\u00a7r时，猪灵在攻击前不会被显示。\n\n"
+			+ "设置为\u00a7l关闭\u00a7r时，此过滤器不生效，猪灵可以被显示。", selected);
 	}
 	
 	public static FilterPiglinsSetting onOffOnly(String description,

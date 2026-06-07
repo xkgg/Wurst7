@@ -14,11 +14,11 @@ import net.minecraft.world.entity.monster.Slime;
 public final class FilterSlimesSetting extends EntityFilterCheckbox
 {
 	private static final String EXCEPTIONS_TEXT =
-		"\n\nThis filter does not affect magma cubes.";
+		"\n\n此过滤器不影响岩浆怪。";
 	
 	public FilterSlimesSetting(String description, boolean checked)
 	{
-		super("Filter slimes", description + EXCEPTIONS_TEXT, checked);
+		super("过滤史莱姆", description + EXCEPTIONS_TEXT, checked);
 	}
 	
 	@Override
@@ -29,11 +29,11 @@ public final class FilterSlimesSetting extends EntityFilterCheckbox
 	
 	public static FilterSlimesSetting genericCombat(boolean checked)
 	{
-		return new FilterSlimesSetting("Won't attack slimes.", checked);
+		return new FilterSlimesSetting("不会攻击史莱姆。", checked);
 	}
 	
 	public static FilterSlimesSetting genericVision(boolean checked)
 	{
-		return new FilterSlimesSetting("Won't show slimes.", checked);
+		return new FilterSlimesSetting("不会显示史莱姆。", checked);
 	}
 }

@@ -14,7 +14,7 @@ public final class FilterArmorStandsSetting extends EntityFilterCheckbox
 {
 	public FilterArmorStandsSetting(String description, boolean checked)
 	{
-		super("Filter armor stands", description, checked);
+		super("过滤盔甲架", description, checked);
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ public final class FilterPlayersSetting extends EntityFilterCheckbox
 {
 	public FilterPlayersSetting(String description, boolean checked)
 	{
-		super("Filter players", description, checked);
+		super("过滤玩家", description, checked);
 	}
 	
 	@Override

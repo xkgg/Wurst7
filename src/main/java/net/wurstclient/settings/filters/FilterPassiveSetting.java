@@ -18,12 +18,11 @@ import net.minecraft.world.entity.monster.Enemy;
 
 public final class FilterPassiveSetting extends EntityFilterCheckbox
 {
-	private static final String EXCEPTIONS_TEXT = "\n\nThis filter does not"
-		+ " affect wolves, bees, polar bears, pufferfish, and villagers.";
+	private static final String EXCEPTIONS_TEXT = "\n\n此过滤器不影响狼、蜜蜂、北极熊、河豚和村民。";
 	
 	public FilterPassiveSetting(String description, boolean checked)
 	{
-		super("Filter passive mobs", description + EXCEPTIONS_TEXT, checked);
+		super("过滤被动生物", description + EXCEPTIONS_TEXT, checked);
 	}
 	
 	@Override
@@ -43,15 +42,13 @@ public final class FilterPassiveSetting extends EntityFilterCheckbox
 	
 	public static FilterPassiveSetting genericCombat(boolean checked)
 	{
-		return new FilterPassiveSetting("Won't attack animals like pigs and"
-			+ " cows, ambient mobs like bats, and water mobs like fish, squid"
-			+ " and dolphins.", checked);
+		return new FilterPassiveSetting("不会攻击猪和牛等动物、蝙蝠等环境生物，以及鱼、鱿鱼和海豚等水生生物。",
+			checked);
 	}
 	
 	public static FilterPassiveSetting genericVision(boolean checked)
 	{
-		return new FilterPassiveSetting("Won't show animals like pigs and"
-			+ " cows, ambient mobs like bats, and water mobs like fish, squid"
-			+ " and dolphins.", checked);
+		return new FilterPassiveSetting("不会显示猪和牛等动物、蝙蝠等环境生物，以及鱼、鱿鱼和海豚等水生生物。",
+			checked);
 	}
 }
