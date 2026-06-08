@@ -77,7 +77,7 @@ public final class AltManagerScreen extends Screen
 	
 	public AltManagerScreen(Screen prevScreen, AltManager altManager)
 	{
-		super(Component.literal("账号管理器"));
+		super(Component.literal("Alt Manager"));
 		this.prevScreen = prevScreen;
 		this.altManager = altManager;
 	}
@@ -423,7 +423,7 @@ public final class AltManagerScreen extends Screen
 		}
 		
 		// title text
-		context.drawCenteredString(font, "账号管理器", width / 2, 4,
+		context.drawCenteredString(font, "Alt Manager", width / 2, 4,
 			CommonColors.WHITE);
 		context.drawCenteredString(font, "账号: " + altManager.getList().size(),
 			width / 2, 14, CommonColors.LIGHT_GRAY);
