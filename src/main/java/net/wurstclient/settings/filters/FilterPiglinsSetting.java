@@ -12,14 +12,12 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 
 public final class FilterPiglinsSetting extends AttackDetectingEntityFilter
 {
-	private static final String EXCEPTIONS_TEXT =
-		"\n\n此过滤器不影响蛮力猪灵。";
+	private static final String EXCEPTIONS_TEXT = "\n\n此过滤器不影响蛮力猪灵。";
 	
 	private FilterPiglinsSetting(String description, Mode selected,
 		boolean checked)
 	{
-		super("过滤猪灵", description + EXCEPTIONS_TEXT, selected,
-			checked);
+		super("过滤猪灵", description + EXCEPTIONS_TEXT, selected, checked);
 	}
 	
 	public FilterPiglinsSetting(String description, Mode selected)

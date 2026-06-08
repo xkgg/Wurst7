@@ -27,8 +27,7 @@ public final class WikiDataExportOtf extends OtherFeature
 	public WikiDataExportOtf()
 	{
 		super("Wiki数据导出",
-			"创建一个包含此版本Wurst中所有不同功能和设置技术细节的JSON文件。"
-				+ "主要用于更新Wurst Wiki。");
+			"创建一个包含此版本Wurst中所有不同功能和设置技术细节的JSON文件。" + "主要用于更新Wurst Wiki。");
 	}
 	
 	@Override

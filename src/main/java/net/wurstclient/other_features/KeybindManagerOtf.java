@@ -19,8 +19,7 @@ public final class KeybindManagerOtf extends OtherFeature
 {
 	public KeybindManagerOtf()
 	{
-		super("按键绑定",
-			"这只是一个快捷方式，让您可以从GUI中打开按键绑定管理器。通常您需要前往Wurst选项 > 按键绑定。");
+		super("按键绑定", "这只是一个快捷方式，让您可以从GUI中打开按键绑定管理器。通常您需要前往Wurst选项 > 按键绑定。");
 	}
 	
 	@Override

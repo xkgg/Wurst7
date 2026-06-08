@@ -15,13 +15,11 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 
 public final class FilterPassiveWaterSetting extends EntityFilterCheckbox
 {
-	private static final String EXCEPTIONS_TEXT =
-			"\n\n此过滤器不影响守卫者、溺尸和河豚。";
+	private static final String EXCEPTIONS_TEXT = "\n\n此过滤器不影响守卫者、溺尸和河豚。";
 	
 	public FilterPassiveWaterSetting(String description, boolean checked)
 	{
-		super("过滤被动水生生物", description + EXCEPTIONS_TEXT,
-			checked);
+		super("过滤被动水生生物", description + EXCEPTIONS_TEXT, checked);
 	}
 	
 	@Override

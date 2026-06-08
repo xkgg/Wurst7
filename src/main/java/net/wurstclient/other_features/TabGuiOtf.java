@@ -22,8 +22,7 @@ public final class TabGuiOtf extends OtherFeature
 	
 	public TabGuiOtf()
 	{
-		super("TabGUI", "允许您在游戏中快速切换hack。\n"
-			+ "使用方向键导航。\n\n"
+		super("TabGUI", "允许您在游戏中快速切换hack。\n" + "使用方向键导航。\n\n"
 			+ "将\u00a76Hack列表 位置\u00a7r设置改为\u00a76右侧\u00a7r以防止TabGUI与HackList重叠。");
 		
 		addSetting(status);

@@ -25,29 +25,25 @@ import net.wurstclient.util.MathUtils;
 @DontBlock
 public final class ZoomOtf extends OtherFeature implements MouseScrollListener
 {
-	private final SliderSetting level = new SliderSetting("缩放级别", 3, 1,
-		50, 0.1, ValueDisplay.DECIMAL.withSuffix("x"));
+	private final SliderSetting level = new SliderSetting("缩放级别", 3, 1, 50, 0.1,
+		ValueDisplay.DECIMAL.withSuffix("x"));
 	
-	private final CheckboxSetting scroll = new CheckboxSetting(
-		"使用鼠标滚轮", "如果启用，您可以在缩放时使用鼠标滚轮进一步放大。",
-		true);
+	private final CheckboxSetting scroll =
+		new CheckboxSetting("使用鼠标滚轮", "如果启用，您可以在缩放时使用鼠标滚轮进一步放大。", true);
 	
-	private final CheckboxSetting zoomInScreens = new CheckboxSetting(
-		"在界面中缩放", "如果启用，您也可以在打开界面（聊天、物品栏等）时缩放。",
-		false);
+	private final CheckboxSetting zoomInScreens =
+		new CheckboxSetting("在界面中缩放", "如果启用，您也可以在打开界面（聊天、物品栏等）时缩放。", false);
 	
 	private final TextFieldSetting keybind = new TextFieldSetting("按键绑定",
-		"确定缩放按键。\n\n"
-			+ "您应该前往Wurst选项 -> 缩放设置，而不是手动编辑此值。",
-		"key.keyboard.v", this::isValidKeybind);
+		"确定缩放按键。\n\n" + "您应该前往Wurst选项 -> 缩放设置，而不是手动编辑此值。", "key.keyboard.v",
+		this::isValidKeybind);
 	
 	private Double currentLevel;
 	private Double defaultMouseSensitivity;
 	
 	public ZoomOtf()
 	{
-		super("缩放", "允许您放大视野。\n"
-			+ "默认情况下，按\u00a7lV\u00a7r键激活缩放。\n"
+		super("缩放", "允许您放大视野。\n" + "默认情况下，按\u00a7lV\u00a7r键激活缩放。\n"
 			+ "前往Wurst选项 -> 缩放以更改此按键绑定。");
 		addSetting(level);
 		addSetting(scroll);
