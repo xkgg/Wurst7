@@ -32,7 +32,7 @@ public final class NoWeatherHack extends Hack
 	
 	public NoWeatherHack()
 	{
-		super("NoWeather");
+		super("无天气");
 		setCategory(Category.RENDER);
 		
 		addSetting(disableRain);

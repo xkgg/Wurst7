@@ -72,7 +72,7 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	
 	public CrystalAuraHack()
 	{
-		super("CrystalAura");
+		super("水晶光环");
 		
 		setCategory(Category.COMBAT);
 		addSetting(range);

@@ -32,7 +32,7 @@ public final class SafeWalkHack extends Hack
 	
 	public SafeWalkHack()
 	{
-		super("SafeWalk");
+		super("安全行走");
 		setCategory(Category.MOVEMENT);
 		addSetting(sneak);
 		addSetting(edgeDistance);

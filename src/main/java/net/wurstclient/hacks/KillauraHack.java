@@ -85,7 +85,7 @@ public final class KillauraHack extends Hack
 	
 	public KillauraHack()
 	{
-		super("Killaura");
+		super("杀敌光环");
 		setCategory(Category.COMBAT);
 		
 		addSetting(range);

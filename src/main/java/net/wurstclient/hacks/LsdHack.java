@@ -18,7 +18,7 @@ public final class LsdHack extends Hack
 {
 	public LsdHack()
 	{
-		super("LSD");
+		super("迷幻世界");
 		setCategory(Category.FUN);
 	}
 	

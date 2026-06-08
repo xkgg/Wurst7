@@ -62,7 +62,7 @@ public final class FlightHack extends Hack implements UpdateListener,
 	
 	public FlightHack()
 	{
-		super("Flight");
+		super("飞行");
 		setCategory(Category.MOVEMENT);
 		addSetting(horizontalSpeed);
 		addSetting(verticalSpeed);

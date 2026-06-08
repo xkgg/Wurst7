@@ -34,7 +34,7 @@ public final class HandNoClipHack extends Hack
 	
 	public HandNoClipHack()
 	{
-		super("HandNoClip");
+		super("手部穿墙");
 		
 		setCategory(Category.BLOCKS);
 		addSetting(blocks);

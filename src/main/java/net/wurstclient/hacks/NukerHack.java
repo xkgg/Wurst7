@@ -51,7 +51,7 @@ public final class NukerHack extends Hack
 	
 	public NukerHack()
 	{
-		super("Nuker");
+		super("方块破坏者");
 		setCategory(Category.BLOCKS);
 		addSetting(range);
 		commonSettings.getSettings().forEach(this::addSetting);

@@ -64,7 +64,7 @@ public final class TriggerBotHack extends Hack
 	
 	public TriggerBotHack()
 	{
-		super("TriggerBot");
+		super("触发机器人");
 		setCategory(Category.COMBAT);
 		
 		addSetting(range);

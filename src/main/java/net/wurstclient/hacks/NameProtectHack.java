@@ -18,7 +18,7 @@ public final class NameProtectHack extends Hack
 {
 	public NameProtectHack()
 	{
-		super("NameProtect");
+		super("名字保护");
 		setCategory(Category.RENDER);
 	}
 	

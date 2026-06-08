@@ -91,7 +91,7 @@ public final class FreecamHack extends Hack
 	
 	public FreecamHack()
 	{
-		super("Freecam");
+		super("自由视角");
 		setCategory(Category.RENDER);
 		addSetting(applyInputTo);
 		addSetting(interactFrom);

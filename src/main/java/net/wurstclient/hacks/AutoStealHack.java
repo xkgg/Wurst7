@@ -38,7 +38,7 @@ public final class AutoStealHack extends Hack
 	
 	public AutoStealHack()
 	{
-		super("AutoSteal");
+		super("自动偷取");
 		setCategory(Category.ITEMS);
 		addSetting(buttons);
 		addSetting(delay);

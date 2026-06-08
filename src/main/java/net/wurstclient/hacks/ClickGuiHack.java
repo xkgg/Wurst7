@@ -46,7 +46,7 @@ public final class ClickGuiHack extends Hack
 	
 	public ClickGuiHack()
 	{
-		super("ClickGUI");
+		super("点击界面");
 		addSetting(bgColor);
 		addSetting(acColor);
 		addSetting(txtColor);

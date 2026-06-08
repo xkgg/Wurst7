@@ -28,7 +28,7 @@ public final class NoShieldOverlayHack extends Hack
 	
 	public NoShieldOverlayHack()
 	{
-		super("NoShieldOverlay");
+		super("无盾牌overlay");
 		setCategory(Category.RENDER);
 		addSetting(blockingOffset);
 		addSetting(nonBlockingOffset);

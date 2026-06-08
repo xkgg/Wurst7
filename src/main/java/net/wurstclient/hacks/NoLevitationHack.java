@@ -16,7 +16,7 @@ public final class NoLevitationHack extends Hack
 {
 	public NoLevitationHack()
 	{
-		super("NoLevitation");
+		super("反漂浮");
 		setCategory(Category.MOVEMENT);
 	}
 	

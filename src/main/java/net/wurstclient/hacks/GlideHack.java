@@ -42,7 +42,7 @@ public final class GlideHack extends Hack
 	
 	public GlideHack()
 	{
-		super("Glide");
+		super("滑翔");
 		setCategory(Category.MOVEMENT);
 		addSetting(fallSpeed);
 		addSetting(moveSpeed);

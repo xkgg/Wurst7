@@ -16,7 +16,7 @@ public final class TiredHack extends Hack implements UpdateListener
 {
 	public TiredHack()
 	{
-		super("Tired");
+		super("疲劳");
 		setCategory(Category.FUN);
 	}
 	

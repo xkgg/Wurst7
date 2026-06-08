@@ -42,7 +42,7 @@ public final class TrueSightHack extends Hack
 	
 	public TrueSightHack()
 	{
-		super("TrueSight");
+		super("真实视觉");
 		setCategory(Category.RENDER);
 		entityFilters.forEach(this::addSetting);
 	}

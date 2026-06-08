@@ -16,7 +16,7 @@ public final class NoHurtcamHack extends Hack
 {
 	public NoHurtcamHack()
 	{
-		super("NoHurtcam");
+		super("无受伤视角");
 		setCategory(Category.RENDER);
 	}
 	

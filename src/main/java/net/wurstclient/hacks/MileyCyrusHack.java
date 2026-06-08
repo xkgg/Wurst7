@@ -26,7 +26,7 @@ public final class MileyCyrusHack extends Hack implements UpdateListener
 	
 	public MileyCyrusHack()
 	{
-		super("MileyCyrus");
+		super("麦莉·赛勒斯");
 		setCategory(Category.FUN);
 		addSetting(twerkSpeed);
 	}

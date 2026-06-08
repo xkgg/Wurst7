@@ -14,7 +14,7 @@ public final class LiquidsHack extends Hack
 {
 	public LiquidsHack()
 	{
-		super("Liquids");
+		super("液体交互");
 		setCategory(Category.BLOCKS);
 	}
 	

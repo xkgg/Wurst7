@@ -70,7 +70,7 @@ public final class FeedAuraHack extends Hack
 	
 	public FeedAuraHack()
 	{
-		super("FeedAura");
+		super("喂养光环");
 		setCategory(Category.OTHER);
 		addSetting(range);
 		addSetting(filterBabies);

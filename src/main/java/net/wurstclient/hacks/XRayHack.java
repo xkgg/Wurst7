@@ -90,7 +90,7 @@ public final class XRayHack extends Hack
 	
 	public XRayHack()
 	{
-		super("X-Ray");
+		super("X光透视");
 		setCategory(Category.RENDER);
 		addSetting(ores);
 		addSetting(onlyExposed);
