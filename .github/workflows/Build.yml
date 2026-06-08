@@ -75,10 +75,15 @@ jobs:
           echo "- [$filename]($url)" >> $GITHUB_STEP_SUMMARY
         done
         echo "</details>" >> $GITHUB_STEP_SUMMARY
+    
+    - name: Install Xvfb and dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libosmesa6-dev
 
     - name: Run the mod and take screenshots
       # TODO: Migrate to Fabric Client Gametest API so this can run with configuration cache enabled
-      run: xvfb-run --auto-servernum ./gradlew runClientWithMods --stacktrace --warning-mode=fail --no-configuration-cache
+      run:  ./gradlew runClientGameTest --stacktrace --warning-mode=fail --no-configuration-cache
 
     - name: Upload screenshots.zip artifact
       uses: actions/upload-artifact@v4
