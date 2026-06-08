@@ -23,21 +23,15 @@ public final class SuggestionHandler
 {
 	private final ArrayList<String> suggestions = new ArrayList<>();
 	
-	private final SliderSetting maxSuggestionsPerDraft =
-		new SliderSetting("每条草稿最多建议数",
-			"AI允许为同一条草稿消息生成的建议数量。",
-			3, 1, 10, 1, ValueDisplay.INTEGER);
+	private final SliderSetting maxSuggestionsPerDraft = new SliderSetting(
+		"每条草稿最多建议数", "AI允许为同一条草稿消息生成的建议数量。", 3, 1, 10, 1, ValueDisplay.INTEGER);
 	
 	private final SliderSetting maxSuggestionsKept = new SliderSetting(
-		"最大保留建议数", "保留在内存中的最大建议数量。",
-		100, 10, 1000, 10, ValueDisplay.INTEGER);
+		"最大保留建议数", "保留在内存中的最大建议数量。", 100, 10, 1000, 10, ValueDisplay.INTEGER);
 	
 	private final SliderSetting maxSuggestionsShown = new SliderSetting(
-		"最大显示建议数",
-		"聊天框上方可以显示的建议数量。\n\n"
-			+ "如果设置得太高，建议会遮挡一些"
-			+ "现有的聊天消息。此值可以设置多高取决于"
-			+ "您的屏幕分辨率和GUI缩放比例。",
+		"最大显示建议数", "聊天框上方可以显示的建议数量。\n\n" + "如果设置得太高，建议会遮挡一些"
+			+ "现有的聊天消息。此值可以设置多高取决于" + "您的屏幕分辨率和GUI缩放比例。",
 		5, 1, 10, 1, ValueDisplay.INTEGER);
 	
 	private final List<Setting> settings = Arrays.asList(maxSuggestionsPerDraft,
