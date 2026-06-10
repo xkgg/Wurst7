@@ -41,23 +41,18 @@ import net.wurstclient.util.json.JsonException;
 public final class InstaBuildHack extends Hack
 	implements UpdateListener, RightClickListener
 {
-	private final FileSetting templateSetting = new FileSetting("Template",
-		"Determines what to build.\n\n"
-			+ "Templates are just JSON files. Feel free to add your own or to edit / delete the default templates.\n\n"
-			+ "If you mess up, simply press the 'Reset to Defaults' button or delete the folder.",
+	private final FileSetting templateSetting = new FileSetting("模板",
+		"确定要建造的内容。\n\n" + "模板只是JSON文件。您可以自由添加自己的模板或编辑/删除默认模板。\n\n"
+			+ "如果搞砸了，只需按\"恢复默认值\"按钮或删除文件夹。",
 		"autobuild", path -> {});
 	
-	private final SliderSetting range = new SliderSetting("Range",
-		"How far to reach when placing blocks.\n" + "Recommended values:\n"
-			+ "6.0 for vanilla\n" + "4.25 for NoCheat+",
-		6, 1, 10, 0.05, ValueDisplay.DECIMAL);
+	private final SliderSetting range = new SliderSetting("范围",
+		"放置方块时的最大距离。\n" + "推荐值：\n" + "原版为6.0\n" + "NoCheat+为4.25", 6, 1, 10,
+		0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
-		"Use saved blocks",
-		"Tries to place the same blocks that were saved in the template.\n\n"
-			+ "If the template does not specify block types, it will be built"
-			+ " from whatever block you are holding.",
-		false);
+	private final CheckboxSetting useSavedBlocks =
+		new CheckboxSetting("使用保存的方块",
+			"尝试放置模板中保存的相同方块。\n\n" + "如果模板未指定方块类型，将使用您手中持有的任何方块进行建造。", false);
 	
 	private Status status = Status.NO_TEMPLATE;
 	private AutoBuildTemplate template;
@@ -222,7 +217,7 @@ public final class InstaBuildHack extends Hack
 		}catch(IOException | JsonException e)
 		{
 			Path fileName = path.getFileName();
-			ChatUtils.error("Couldn't load template '" + fileName + "'.");
+			ChatUtils.error("无法加载模板'" + fileName + "'。");
 			
 			String simpleClassName = e.getClass().getSimpleName();
 			String message = e.getMessage();

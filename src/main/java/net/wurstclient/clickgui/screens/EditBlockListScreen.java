@@ -63,30 +63,28 @@ public final class EditBlockListScreen extends Screen
 		blockNameField.setMaxLength(256);
 		
 		addRenderableWidget(
-			addButton = Button.builder(Component.literal("Add"), b -> {
+			addButton = Button.builder(Component.literal("添加"), b -> {
 				blockList.add(blockToAdd);
 				minecraft.setScreen(EditBlockListScreen.this);
 			}).bounds(width / 2 - 2, height - 56, 30, 20).build());
 		
-		addRenderableWidget(removeButton =
-			Button.builder(Component.literal("Remove Selected"), b -> {
+		addRenderableWidget(
+			removeButton = Button.builder(Component.literal("删除选中"), b -> {
 				blockList
 					.remove(blockList.indexOf(listGui.getSelectedBlockName()));
 				minecraft.setScreen(EditBlockListScreen.this);
 			}).bounds(width / 2 + 52, height - 56, 100, 20).build());
 		
-		addRenderableWidget(
-			Button.builder(Component.literal("Reset to Defaults"),
-				b -> minecraft.setScreen(new ConfirmScreen(b2 -> {
-					if(b2)
-						blockList.resetToDefaults();
-					minecraft.setScreen(EditBlockListScreen.this);
-				}, Component.literal("Reset to Defaults"),
-					Component.literal("Are you sure?"))))
-				.bounds(width - 108, 8, 100, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("恢复默认值"),
+			b -> minecraft.setScreen(new ConfirmScreen(b2 -> {
+				if(b2)
+					blockList.resetToDefaults();
+				minecraft.setScreen(EditBlockListScreen.this);
+			}, Component.literal("恢复默认值"), Component.literal("确定要恢复默认值吗？"))))
+			.bounds(width - 108, 8, 100, 20).build());
 		
 		addRenderableWidget(doneButton = Button
-			.builder(Component.literal("Done"),
+			.builder(Component.literal("完成"),
 				b -> minecraft.setScreen(prevScreen))
 			.bounds(width / 2 - 100, height - 28, 200, 20).build());
 	}
@@ -158,8 +156,8 @@ public final class EditBlockListScreen extends Screen
 		matrixStack.translate(-64 + width / 2 - 152, 0);
 		
 		if(blockNameField.getValue().isEmpty() && !blockNameField.isFocused())
-			context.drawString(minecraft.font, "block name or ID", 68,
-				height - 50, CommonColors.GRAY);
+			context.drawString(minecraft.font, "方块名称或ID", 68, height - 50,
+				CommonColors.GRAY);
 		
 		int border = blockNameField.isFocused() ? CommonColors.WHITE
 			: CommonColors.LIGHT_GRAY;
@@ -238,7 +236,7 @@ public final class EditBlockListScreen extends Screen
 		
 		private String getDisplayName(ItemStack stack)
 		{
-			return stack.isEmpty() ? "\u00a7ounknown block\u00a7r"
+			return stack.isEmpty() ? "\u00a7o未知方块\u00a7r"
 				: stack.getHoverName().getString();
 		}
 		

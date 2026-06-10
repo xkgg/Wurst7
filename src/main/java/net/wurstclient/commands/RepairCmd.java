@@ -20,8 +20,7 @@ public final class RepairCmd extends Command
 {
 	public RepairCmd()
 	{
-		super("repair", "Repairs the held item. Requires creative mode.",
-			".repair");
+		super("repair", "修复手持物品。需要创造模式。", ".repair");
 	}
 	
 	@Override
@@ -33,14 +32,14 @@ public final class RepairCmd extends Command
 		LocalPlayer player = MC.player;
 		
 		if(!player.getAbilities().instabuild)
-			throw new CmdError("Creative mode only.");
+			throw new CmdError("仅限创造模式。");
 		
 		int slot = player.getInventory().getSelectedSlot();
 		ItemStack stack = getHeldStack(player);
 		stack.setDamageValue(0);
 		InventoryUtils.setCreativeStack(slot, stack);
 		
-		ChatUtils.message("Item repaired.");
+		ChatUtils.message("物品已修复。");
 	}
 	
 	private ItemStack getHeldStack(LocalPlayer player) throws CmdError
@@ -48,13 +47,13 @@ public final class RepairCmd extends Command
 		ItemStack stack = player.getInventory().getSelectedItem();
 		
 		if(stack.isEmpty())
-			throw new CmdError("You need an item in your hand.");
+			throw new CmdError("你需要手持物品。");
 		
 		if(!stack.isDamageableItem())
-			throw new CmdError("This item can't take damage.");
+			throw new CmdError("此物品不会受损。");
 		
 		if(!stack.isDamaged())
-			throw new CmdError("This item is not damaged.");
+			throw new CmdError("此物品没有损坏。");
 		
 		return stack;
 	}
@@ -62,7 +61,7 @@ public final class RepairCmd extends Command
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Repair Current Item";
+		return "修复当前物品";
 	}
 	
 	@Override

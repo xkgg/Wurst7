@@ -43,7 +43,7 @@ public class WurstTranslator implements ResourceManagerReloadListener
 	public void onResourceManagerReload(ResourceManager manager)
 	{
 		mcEnglish = ClientLanguage.loadFrom(manager,
-			Lists.newArrayList("en_us"), false);
+			Lists.newArrayList("zh_cn"), false);
 		
 		HashMap<String, String> currentLangStrings = new HashMap<>();
 		loadTranslations(manager, getCurrentLangCodes(),
@@ -174,7 +174,7 @@ public class WurstTranslator implements ResourceManagerReloadListener
 			.getSelected().toLowerCase();
 		
 		ArrayList<String> langCodes = new ArrayList<>();
-		langCodes.add("en_us");
+		langCodes.add("zh_cn");
 		if(!"en_us".equals(mainLangCode))
 			langCodes.add(mainLangCode);
 		
