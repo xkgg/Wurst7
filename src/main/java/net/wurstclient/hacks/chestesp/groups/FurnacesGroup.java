@@ -20,15 +20,13 @@ public final class FurnacesGroup extends ChestEspBlockGroup
 	@Override
 	protected CheckboxSetting createIncludeSetting()
 	{
-		return new CheckboxSetting("Include furnaces", false);
+		return new CheckboxSetting("包含熔炉", false);
 	}
 	
 	@Override
 	protected ColorSetting createColorSetting()
 	{
-		return new ColorSetting("Furnace color",
-			"Furnaces, smokers, and blast furnaces will be highlighted in this color.",
-			Color.RED);
+		return new ColorSetting("熔炉颜色", "熔炉、烟熏炉和高炉将以此颜色高亮显示。", Color.RED);
 	}
 	
 	@Override

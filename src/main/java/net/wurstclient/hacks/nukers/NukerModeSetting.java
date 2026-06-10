@@ -14,23 +14,20 @@ public final class NukerModeSetting
 {
 	public NukerModeSetting()
 	{
-		super("Mode",
-			"\u00a7lNormal\u00a7r mode simply breaks everything around you.\n\n"
-				+ "\u00a7lID\u00a7r mode only breaks the selected block type."
-				+ " Left-click on a block to select it.\n\n"
-				+ "\u00a7lMultiID\u00a7r mode only breaks the block types in"
-				+ " your MultiID List.\n\n"
-				+ "\u00a7lSmash\u00a7r mode only breaks blocks that can be"
-				+ " destroyed instantly (e.g. tall grass).",
+		super("模式",
+			"\u00a7l普通\u00a7r模式会破坏你周围的所有方块。\n\n"
+				+ "\u00a7lID\u00a7r模式只破坏选定的方块类型。" + " 左键点击方块以选择它。\n\n"
+				+ "\u00a7lMultiID\u00a7r模式只破坏你的MultiID列表中的方块类型。\n\n"
+				+ "\u00a7l粉碎\u00a7r模式只破坏可以立即摧毁的方块（例如高草丛）。",
 			NukerMode.values(), NukerMode.NORMAL);
 	}
 	
 	public enum NukerMode
 	{
-		NORMAL("Normal"),
+		NORMAL("普通"),
 		ID("ID"),
 		MULTI_ID("MultiID"),
-		SMASH("Smash");
+		SMASH("粉碎");
 		
 		private final String name;
 		

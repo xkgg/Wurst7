@@ -14,7 +14,7 @@ public final class WhatToTranslateSetting
 {
 	public WhatToTranslateSetting()
 	{
-		super("Translate", "", WhatToTranslate.values(),
+		super("翻译", "", WhatToTranslate.values(),
 			WhatToTranslate.RECEIVED_MESSAGES);
 	}
 	

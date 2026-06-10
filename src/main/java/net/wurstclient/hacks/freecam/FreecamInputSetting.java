@@ -17,8 +17,7 @@ public final class FreecamInputSetting
 	
 	public FreecamInputSetting()
 	{
-		super("Apply input to", DESCRIPTION, ApplyInputTo.values(),
-			ApplyInputTo.CAMERA);
+		super("应用输入到", DESCRIPTION, ApplyInputTo.values(), ApplyInputTo.CAMERA);
 	}
 	
 	private static WText buildDescription()

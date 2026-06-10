@@ -66,7 +66,7 @@ public final class InstaBuildHack extends Hack
 	
 	public InstaBuildHack()
 	{
-		super("InstaBuild");
+		super("即时建造");
 		setCategory(Category.BLOCKS);
 		addSetting(templateSetting);
 		addSetting(range);

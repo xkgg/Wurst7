@@ -14,17 +14,16 @@ public final class NukerShapeSetting
 {
 	public NukerShapeSetting()
 	{
-		super("Shape",
-			"\u00a7lNote:\u00a7r If your range is set too high, the cube shape"
-				+ " will start to look like a sphere because you can't reach"
-				+ " the corners. Ranges 1-3 work best for the cube shape.",
+		super("形状",
+			"\u00a7l注意:\u00a7r 如果你的范围设置太高，立方体形状"
+				+ "会开始看起来像球体，因为你无法到达角落。立方体形状的最佳范围是1-3。",
 			NukerShape.values(), NukerShape.SPHERE);
 	}
 	
 	public enum NukerShape
 	{
-		SPHERE("Sphere"),
-		CUBE("Cube");
+		SPHERE("球体"),
+		CUBE("立方体");
 		
 		private final String name;
 		

@@ -20,14 +20,13 @@ public final class PotsGroup extends ChestEspBlockGroup
 	@Override
 	protected CheckboxSetting createIncludeSetting()
 	{
-		return new CheckboxSetting("Include pots", false);
+		return new CheckboxSetting("包含陶罐", false);
 	}
 	
 	@Override
 	protected ColorSetting createColorSetting()
 	{
-		return new ColorSetting("Pots color",
-			"Decorated pots will be highlighted in this color.", Color.GREEN);
+		return new ColorSetting("陶罐颜色", "装饰陶罐将以此颜色高亮显示。", Color.GREEN);
 	}
 	
 	@Override

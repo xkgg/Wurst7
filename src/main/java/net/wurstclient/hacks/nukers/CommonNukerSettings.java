@@ -29,18 +29,16 @@ public final class CommonNukerSettings implements LeftClickListener
 	
 	private final NukerShapeSetting shape = new NukerShapeSetting();
 	
-	private final CheckboxSetting flat = new CheckboxSetting("Flat mode",
-		"Won't break any blocks below your feet.", false);
+	private final CheckboxSetting flat =
+		new CheckboxSetting("平坦模式", "不会破坏你脚下的方块。", false);
 	
 	private final NukerModeSetting mode = new NukerModeSetting();
 	
-	private final BlockSetting id =
-		new BlockSetting("ID", "The type of block to break in ID mode.\n"
-			+ "air = won't break anything", "minecraft:air", true);
+	private final BlockSetting id = new BlockSetting("ID",
+		"ID模式下要破坏的方块类型。\n" + "air = 不破坏任何方块", "minecraft:air", true);
 	
-	private final CheckboxSetting lockId = new CheckboxSetting("Lock ID",
-		"Prevents changing the ID by clicking on blocks or restarting the hack.",
-		false);
+	private final CheckboxSetting lockId =
+		new CheckboxSetting("锁定ID", "防止通过点击方块或重启hack来更改ID。", false);
 	
 	private final NukerMultiIdListSetting multiIdList =
 		new NukerMultiIdListSetting();

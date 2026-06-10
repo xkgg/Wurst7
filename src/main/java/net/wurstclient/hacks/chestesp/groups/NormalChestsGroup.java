@@ -22,14 +22,13 @@ public final class NormalChestsGroup extends ChestEspBlockGroup
 	@Override
 	protected CheckboxSetting createIncludeSetting()
 	{
-		return new CheckboxSetting("Include normal chests", true);
+		return new CheckboxSetting("包含普通箱子", true);
 	}
 	
 	@Override
 	protected ColorSetting createColorSetting()
 	{
-		return new ColorSetting("Chest color",
-			"Normal chests will be highlighted in this color.", Color.GREEN);
+		return new ColorSetting("箱子颜色", "普通箱子将以此颜色高亮显示。", Color.GREEN);
 	}
 	
 	@Override

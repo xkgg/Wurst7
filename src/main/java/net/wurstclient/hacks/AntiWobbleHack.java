@@ -17,7 +17,7 @@ public final class AntiWobbleHack extends Hack
 {
 	public AntiWobbleHack()
 	{
-		super("AntiWobble");
+		super("防摇晃");
 		setCategory(Category.RENDER);
 	}
 	

@@ -21,14 +21,13 @@ public final class ShulkerBoxesGroup extends ChestEspBlockGroup
 	@Override
 	protected CheckboxSetting createIncludeSetting()
 	{
-		return new CheckboxSetting("Include shulkers", true);
+		return new CheckboxSetting("包含潜影盒", true);
 	}
 	
 	@Override
 	protected ColorSetting createColorSetting()
 	{
-		return new ColorSetting("Shulker color",
-			"Shulker boxes will be highlighted in this color.", Color.MAGENTA);
+		return new ColorSetting("潜影盒颜色", "潜影盒将以此颜色高亮显示。", Color.MAGENTA);
 	}
 	
 	@Override

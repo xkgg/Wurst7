@@ -18,7 +18,7 @@ public class ShallowWaterWarningCheckbox extends CheckboxSetting
 	
 	public ShallowWaterWarningCheckbox()
 	{
-		super("Shallow water warning",
+		super("浅水警告",
 			"Displays a warning message in chat when you are fishing in shallow"
 				+ " water.",
 			true);

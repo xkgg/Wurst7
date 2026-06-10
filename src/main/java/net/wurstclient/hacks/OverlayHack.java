@@ -24,7 +24,7 @@ public final class OverlayHack extends Hack
 	
 	public OverlayHack()
 	{
-		super("Overlay");
+		super("覆盖层");
 		setCategory(Category.RENDER);
 	}
 	

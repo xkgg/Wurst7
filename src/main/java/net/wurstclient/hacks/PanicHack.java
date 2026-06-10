@@ -19,7 +19,7 @@ public final class PanicHack extends Hack implements UpdateListener
 {
 	public PanicHack()
 	{
-		super("Panic");
+		super("恐慌");
 		setCategory(Category.OTHER);
 	}
 	

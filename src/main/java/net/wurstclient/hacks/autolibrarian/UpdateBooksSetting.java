@@ -15,7 +15,7 @@ public final class UpdateBooksSetting
 {
 	public UpdateBooksSetting()
 	{
-		super("Update books",
+		super("更新书籍",
 			"Automatically updates the list of wanted books when a villager"
 				+ " has learned to sell one of them.\n\n"
 				+ "\u00a7lOff\u00a7r - Don't update the list.\n\n"

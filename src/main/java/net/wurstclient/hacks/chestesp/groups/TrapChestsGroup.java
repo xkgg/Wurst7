@@ -21,15 +21,13 @@ public final class TrapChestsGroup extends ChestEspBlockGroup
 	@Override
 	protected CheckboxSetting createIncludeSetting()
 	{
-		return new CheckboxSetting("Include trap chests", true);
+		return new CheckboxSetting("包含陷阱箱", true);
 	}
 	
 	@Override
 	protected ColorSetting createColorSetting()
 	{
-		return new ColorSetting("Trap chest color",
-			"Trapped chests will be highlighted in this color.",
-			new Color(0xFF8000));
+		return new ColorSetting("陷阱箱颜色", "陷阱箱将以此颜色高亮显示。", new Color(0xFF8000));
 	}
 	
 	@Override

@@ -32,7 +32,7 @@ public class ChestEspHack extends Hack implements UpdateListener,
 	
 	public ChestEspHack()
 	{
-		super("ChestESP");
+		super("箱子透视");
 		setCategory(Category.RENDER);
 		addSetting(style);
 		groups.allGroups.stream().flatMap(ChestEspGroup::getSettings)

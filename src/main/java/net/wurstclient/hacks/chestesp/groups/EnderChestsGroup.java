@@ -20,14 +20,13 @@ public final class EnderChestsGroup extends ChestEspBlockGroup
 	@Override
 	protected CheckboxSetting createIncludeSetting()
 	{
-		return new CheckboxSetting("Include ender chests", true);
+		return new CheckboxSetting("包含末影箱", true);
 	}
 	
 	@Override
 	protected ColorSetting createColorSetting()
 	{
-		return new ColorSetting("Ender color",
-			"Ender chests will be highlighted in this color.", Color.CYAN);
+		return new ColorSetting("末影箱颜色", "末影箱将以此颜色高亮显示。", Color.CYAN);
 	}
 	
 	@Override

@@ -32,7 +32,7 @@ public final class ScaffoldWalkHack extends Hack implements UpdateListener
 {
 	public ScaffoldWalkHack()
 	{
-		super("ScaffoldWalk");
+		super("自动搭路");
 		setCategory(Category.BLOCKS);
 	}
 	

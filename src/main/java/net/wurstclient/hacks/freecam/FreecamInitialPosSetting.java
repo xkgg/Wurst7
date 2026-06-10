@@ -21,7 +21,7 @@ public final class FreecamInitialPosSetting
 	
 	public FreecamInitialPosSetting()
 	{
-		super("Initial position", DESCRIPTION, InitialPosition.values(),
+		super("初始位置", DESCRIPTION, InitialPosition.values(),
 			InitialPosition.INSIDE);
 	}
 	
