@@ -53,9 +53,10 @@ public final class SelectFileScreen extends Screen
 			Button.builder(Component.literal("打开文件夹"), b -> openFolder())
 				.bounds(8, 8, 100, 20).build());
 		
-		addRenderableWidget(
-			Button.builder(Component.literal("恢复默认值"), b -> askToConfirmReset())
-				.bounds(width - 108, 8, 100, 20).build());
+		addRenderableWidget(Button
+			.builder(Component.literal("恢复默认值"),
+				b -> askToConfirmReset())
+			.bounds(width - 108, 8, 100, 20).build());
 		
 		doneButton = addRenderableWidget(
 			Button.builder(Component.literal("完成"), b -> done())
@@ -92,9 +93,10 @@ public final class SelectFileScreen extends Screen
 	{
 		Component title = Component.literal("重置文件夹");
 		
-		Component message =
-			Component.literal("这将清空'" + setting.getFolder().getFileName()
-				+ "'文件夹并重新生成默认文件。\n" + "确定要这样做吗？");
+		Component message = Component
+			.literal("这将清空'" + setting.getFolder().getFileName()
+				+ "'文件夹并重新生成默认文件。\n"
+				+ "确定要这样做吗？");
 		
 		minecraft
 			.setScreen(new ConfirmScreen(this::confirmReset, title, message));
@@ -139,8 +141,9 @@ public final class SelectFileScreen extends Screen
 		
 		if(doneButton.isHoveredOrFocused() && !doneButton.active)
 			context.setComponentTooltipForNextFrame(font,
-				Arrays.asList(Component.literal("您必须先选择一个文件。")), mouseX,
-				mouseY);
+				Arrays
+					.asList(Component.literal("您必须先选择一个文件。")),
+				mouseX, mouseY);
 	}
 	
 	@Override

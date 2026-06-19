@@ -187,7 +187,8 @@ public final class AutoLibrarianHack extends Hack
 		int experience = tradeScreen.getMenu().getTraderXp();
 		if(experience > 0)
 		{
-			ChatUtils.warning("位于 " + villager.blockPosition().toShortString()
+			ChatUtils.warning("位于 "
+				+ villager.blockPosition().toShortString()
 				+ " 的村民已经有经验，意味着它不能再被训练了。");
 			ChatUtils.message("正在寻找另一个村民...");
 			experiencedVillagers.add(villager);
@@ -210,8 +211,9 @@ public final class AutoLibrarianHack extends Hack
 			return;
 		}
 		
-		ChatUtils.message("村民正在出售 " + bookOffer.getEnchantmentNameWithLevel()
-			+ " 售价 " + bookOffer.getFormattedPrice() + "。");
+		ChatUtils.message(
+			"村民正在出售 " + bookOffer.getEnchantmentNameWithLevel()
+				+ " 售价 " + bookOffer.getFormattedPrice() + "。");
 		
 		// if wrong enchantment, break job site and start over
 		if(!wantedBooks.isWanted(bookOffer))
@@ -291,7 +293,8 @@ public final class AutoLibrarianHack extends Hack
 				
 			}else
 			{
-				System.out.println("在工作站点位置发现错误方块。正在破坏...");
+				System.out
+					.println("在工作站点位置发现错误方块。正在破坏...");
 				breakingJobSite = true;
 				placingJobSite = false;
 			}
@@ -411,8 +414,8 @@ public final class AutoLibrarianHack extends Hack
 			
 			if(!bookOffer.isFullyValid())
 			{
-				System.out
-					.println("发现无效的附魔书交易。\n" + "组件数据: " + enchantmentLevelMap);
+				System.out.println("发现无效的附魔书交易。\n"
+					+ "组件数据: " + enchantmentLevelMap);
 				continue;
 			}
 			
@@ -447,7 +450,8 @@ public final class AutoLibrarianHack extends Hack
 			int numExperienced = experiencedVillagers.size();
 			if(numExperienced > 0)
 				errorMsg += " （除了 " + numExperienced + " 个"
-					+ (numExperienced == 1 ? "已经" : "都已经") + "有经验的村民。）";
+					+ (numExperienced == 1 ? "已经" : "都已经")
+					+ "有经验的村民。）";
 			
 			ChatUtils.error(errorMsg);
 			ChatUtils.message("确保图书管理员和讲台都能从你站立的地方到达。");
