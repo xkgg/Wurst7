@@ -116,10 +116,8 @@ public abstract class SingleplayerTest
 	
 	protected final void assertOneItemInSlot(int slot, Item item)
 	{
-		ItemStack stack = context
-			.computeOnClient(mc -> mc.player != null
-				? mc.player.getInventory().getItem(slot)
-				: ItemStack.EMPTY);
+		ItemStack stack = context.computeOnClient(mc -> mc.player != null
+			? mc.player.getInventory().getItem(slot) : ItemStack.EMPTY);
 		if(!stack.is(item) || stack.getCount() != 1)
 			throw new RuntimeException(
 				"Expected 1 " + item.getName().getString() + " at slot " + slot
@@ -153,10 +151,8 @@ public abstract class SingleplayerTest
 	
 	protected final void assertNoItemInSlot(int slot)
 	{
-		ItemStack stack = context
-			.computeOnClient(mc -> mc.player != null
-				? mc.player.getInventory().getItem(slot)
-				: ItemStack.EMPTY);
+		ItemStack stack = context.computeOnClient(mc -> mc.player != null
+			? mc.player.getInventory().getItem(slot) : ItemStack.EMPTY);
 		if(!stack.isEmpty())
 			throw new RuntimeException("Expected no item in slot " + slot
 				+ ", found " + stack.getCount() + " "

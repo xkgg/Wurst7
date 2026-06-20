@@ -30,7 +30,8 @@ public final class NoFallHackTest extends SingleplayerTest
 		
 		input.pressKey(GLFW.GLFW_KEY_F5);
 		runCommand("gamemode survival");
-		if(!context.computeOnClient(mc -> mc.player != null && mc.player.onGround()))
+		if(!context
+			.computeOnClient(mc -> mc.player != null && mc.player.onGround()))
 			throw new RuntimeException("Player is not on ground");
 		assertPlayerHealth(health -> health == 20);
 		
@@ -70,9 +71,8 @@ public final class NoFallHackTest extends SingleplayerTest
 	
 	private void assertPlayerHealth(Predicate<Integer> healthCheck)
 	{
-		int health = context.computeOnClient(mc -> mc.player != null
-			? (int)mc.player.getHealth()
-			: 0);
+		int health = context.computeOnClient(
+			mc -> mc.player != null ? (int)mc.player.getHealth() : 0);
 		if(!healthCheck.test(health))
 			throw new RuntimeException("Player's health is wrong: " + health);
 		
