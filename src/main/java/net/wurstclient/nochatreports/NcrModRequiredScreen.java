@@ -58,7 +58,7 @@ public final class NcrModRequiredScreen extends Screen
 			+ blockedOrAllowed(otfs.noChatReportsOtf.isEnabled());
 		
 		vsButtonMsg =
-			() -> "VanillaSpoof: " + onOrOff(otfs.vanillaSpoofOtf.isEnabled());
+			() -> "原版伪装: " + onOrOff(otfs.vanillaSpoofOtf.isEnabled());
 	}
 	
 	private String onOrOff(boolean on)
@@ -97,12 +97,12 @@ public final class NcrModRequiredScreen extends Screen
 			.bounds(buttonX + 102, signaturesY, 148, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Reconnect"),
+			.builder(Component.literal("重新连接"),
 				b -> LastServerRememberer.reconnect(prevScreen))
 			.bounds(buttonX, reconnectY, 200, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.translatable("gui.toMenu"),
+			.builder(Component.translatable("返回菜单"),
 				b -> minecraft.setScreen(prevScreen))
 			.bounds(buttonX, backButtonY, 200, 20).build());
 	}
