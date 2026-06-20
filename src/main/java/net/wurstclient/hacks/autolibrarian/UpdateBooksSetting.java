@@ -16,8 +16,7 @@ public final class UpdateBooksSetting
 	public UpdateBooksSetting()
 	{
 		super("更新书籍",
-			"当村民学会出售某本书时，自动更新想要的书籍列表。\n\n"
-				+ "\u00a7l关闭\u00a7r - 不更新列表。\n\n"
+			"当村民学会出售某本书时，自动更新想要的书籍列表。\n\n" + "\u00a7l关闭\u00a7r - 不更新列表。\n\n"
 				+ "\u00a7l移除\u00a7r - 从列表中移除该书，以便下一个村民学会不同的书。\n\n"
 				+ "\u00a7l降价\u00a7r - 更新书籍的最高价格，以便下一个村民必须以更便宜的价格出售。",
 			UpdateBooks.values(), UpdateBooks.REMOVE);

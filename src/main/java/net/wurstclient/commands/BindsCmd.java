@@ -32,13 +32,11 @@ public final class BindsCmd extends Command
 {
 	public BindsCmd()
 	{
-		super("binds", "允许您通过聊天管理按键绑定。",
-			".binds add <按键> < hacks>", ".binds add <按键> <命令>",
-			".binds remove <按键>", ".binds list [<页码>]",
+		super("binds", "允许您通过聊天管理按键绑定。", ".binds add <按键> < hacks>",
+			".binds add <按键> <命令>", ".binds remove <按键>", ".binds list [<页码>]",
 			".binds load-profile <文件>", ".binds save-profile <文件>",
-			".binds list-profiles [<页码>]", ".binds remove-all",
-			".binds reset", "多个hacks/命令必须用';'分隔。",
-			"配置文件保存在'.minecraft/wurst/keybinds'中。");
+			".binds list-profiles [<页码>]", ".binds remove-all", ".binds reset",
+			"多个hacks/命令必须用';'分隔。", "配置文件保存在'.minecraft/wurst/keybinds'中。");
 	}
 	
 	@Override
@@ -205,8 +203,7 @@ public final class BindsCmd extends Command
 		}catch(JsonException e)
 		{
 			e.printStackTrace();
-			throw new CmdError(
-				"配置文件'" + name + "'已损坏: " + e.getMessage());
+			throw new CmdError("配置文件'" + name + "'已损坏: " + e.getMessage());
 			
 		}catch(IOException e)
 		{
@@ -263,8 +260,7 @@ public final class BindsCmd extends Command
 		int start = (page - 1) * 8;
 		int end = Math.min(page * 8, files.size());
 		
-		ChatUtils
-			.message("按键绑定配置文件列表 (第 " + page + "/" + pages + " 页)");
+		ChatUtils.message("按键绑定配置文件列表 (第 " + page + "/" + pages + " 页)");
 		for(int i = start; i < end; i++)
 			ChatUtils.message(files.get(i).getFileName().toString());
 	}

@@ -80,9 +80,9 @@ public class DisconnectedScreenMixin extends Screen
 				b -> LastServerRememberer.reconnect(parent))
 			.width(200).build());
 		
-		autoReconnectButton =
-			layout.addChild(Button.builder(Component.literal("自动重连"),
-				b -> pressAutoReconnect()).width(200).build());
+		autoReconnectButton = layout.addChild(
+			Button.builder(Component.literal("自动重连"), b -> pressAutoReconnect())
+				.width(200).build());
 		
 		layout.arrangeElements();
 		Stream.of(reconnectButton, autoReconnectButton)
@@ -121,8 +121,8 @@ public class DisconnectedScreenMixin extends Screen
 			return;
 		}
 		
-		autoReconnectButton.setMessage(Component.literal("自动重连 ("
-			+ (int)Math.ceil(autoReconnectTimer / 20.0) + ")"));
+		autoReconnectButton.setMessage(Component.literal(
+			"自动重连 (" + (int)Math.ceil(autoReconnectTimer / 20.0) + ")"));
 		
 		if(autoReconnectTimer > 0)
 		{
