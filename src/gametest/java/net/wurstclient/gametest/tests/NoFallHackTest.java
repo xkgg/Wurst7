@@ -30,7 +30,7 @@ public final class NoFallHackTest extends SingleplayerTest
 		
 		input.pressKey(GLFW.GLFW_KEY_F5);
 		runCommand("gamemode survival");
-		if(!context.computeOnClient(mc -> mc.player.onGround()))
+		if(!context.computeOnClient(mc -> mc.player != null && mc.player.onGround()))
 			throw new RuntimeException("Player is not on ground");
 		assertPlayerHealth(health -> health == 20);
 		
@@ -49,7 +49,10 @@ public final class NoFallHackTest extends SingleplayerTest
 		assertPlayerHealth(health -> health < 20);
 		
 		// Clean up
-		context.runOnClient(mc -> mc.player.heal(999));
+		context.runOnClient(mc -> {
+			if(mc.player != null)
+				mc.player.heal(999);
+		});
 		runCommand("gamemode creative");
 		input.pressKey(GLFW.GLFW_KEY_F5);
 		input.pressKey(GLFW.GLFW_KEY_F5);
@@ -60,14 +63,16 @@ public final class NoFallHackTest extends SingleplayerTest
 	private void fall5Blocks()
 	{
 		runCommand("tp ~ ~5 ~");
-		context.waitFor(mc -> !mc.player.onGround());
-		context.waitFor(mc -> mc.player.onGround());
+		context.waitFor(mc -> mc.player != null && !mc.player.onGround());
+		context.waitFor(mc -> mc.player != null && mc.player.onGround());
 		context.waitTick();
 	}
 	
 	private void assertPlayerHealth(Predicate<Integer> healthCheck)
 	{
-		int health = context.computeOnClient(mc -> (int)mc.player.getHealth());
+		int health = context.computeOnClient(mc -> mc.player != null
+			? (int)mc.player.getHealth()
+			: 0);
 		if(!healthCheck.test(health))
 			throw new RuntimeException("Player's health is wrong: " + health);
 		

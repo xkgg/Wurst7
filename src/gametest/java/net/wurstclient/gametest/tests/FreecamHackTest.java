@@ -48,7 +48,8 @@ public final class FreecamHackTest extends SingleplayerTest
 			"https://i.imgur.com/DysLqZw.png");
 		runWurstCommand("setslider Freecam horizontal_speed 1");
 		if(context.computeOnClient(
-			mc -> mc.player.getInventory().getSelectedSlot()) != 0)
+			mc -> mc.player != null
+				&& mc.player.getInventory().getSelectedSlot() != 0))
 			throw new RuntimeException(
 				"Scrolling while using Freecam with \"Scroll to change speed\" enabled changed the selected slot.");
 		
@@ -59,10 +60,14 @@ public final class FreecamHackTest extends SingleplayerTest
 		assertScreenshotEquals("freecam_hotbar_scrolled",
 			"https://i.imgur.com/edjDUxr.png");
 		if(context.computeOnClient(
-			mc -> mc.player.getInventory().getSelectedSlot()) != 8)
+			mc -> mc.player != null
+				&& mc.player.getInventory().getSelectedSlot() != 8))
 			throw new RuntimeException(
 				"Scrolling while using Freecam with \"Scroll to change speed\" disabled didn't change the selected slot.");
-		context.runOnClient(mc -> mc.player.getInventory().setSelectedSlot(0));
+		context.runOnClient(mc -> {
+			if(mc.player != null)
+				mc.player.getInventory().setSelectedSlot(0);
+		});
 		runWurstCommand("setcheckbox Freecam scroll_to_change_speed on");
 		input.pressKey(GLFW.GLFW_KEY_U);
 		context.waitTick();
@@ -135,7 +140,10 @@ public final class FreecamHackTest extends SingleplayerTest
 		runCommand("fill 0 -58 1 0 -58 2 air");
 		runCommand("tp @s 0 -57 0 0 0");
 		// Restore body rotation - /tp only rotates the head as of 1.21.11
-		context.runOnClient(mc -> mc.player.setYBodyRot(0));
+		context.runOnClient(mc -> {
+			if(mc.player != null)
+				mc.player.setYBodyRot(0);
+		});
 		
 		// Test "Interact from" setting
 		runCommand("setblock 0 -56 2 smooth_stone");

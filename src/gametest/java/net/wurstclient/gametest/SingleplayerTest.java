@@ -70,7 +70,7 @@ public abstract class SingleplayerTest
 	
 	protected final void waitForBlock(int relX, int relY, int relZ, Block block)
 	{
-		context.waitFor(mc -> mc.level
+		context.waitFor(mc -> mc.player != null && mc.level
 			.getBlockState(mc.player.blockPosition().offset(relX, relY, relZ))
 			.getBlock() == block);
 	}
@@ -83,6 +83,8 @@ public abstract class SingleplayerTest
 	protected final void waitForHandSwing()
 	{
 		context.waitFor(mc -> {
+			if(mc.player == null)
+				return false;
 			var renderer =
 				mc.getEntityRenderDispatcher().getItemInHandRenderer();
 			return !mc.player.swinging && renderer.mainHandHeight == 1
@@ -115,7 +117,9 @@ public abstract class SingleplayerTest
 	protected final void assertOneItemInSlot(int slot, Item item)
 	{
 		ItemStack stack = context
-			.computeOnClient(mc -> mc.player.getInventory().getItem(slot));
+			.computeOnClient(mc -> mc.player != null
+				? mc.player.getInventory().getItem(slot)
+				: ItemStack.EMPTY);
 		if(!stack.is(item) || stack.getCount() != 1)
 			throw new RuntimeException(
 				"Expected 1 " + item.getName().getString() + " at slot " + slot
@@ -150,7 +154,9 @@ public abstract class SingleplayerTest
 	protected final void assertNoItemInSlot(int slot)
 	{
 		ItemStack stack = context
-			.computeOnClient(mc -> mc.player.getInventory().getItem(slot));
+			.computeOnClient(mc -> mc.player != null
+				? mc.player.getInventory().getItem(slot)
+				: ItemStack.EMPTY);
 		if(!stack.isEmpty())
 			throw new RuntimeException("Expected no item in slot " + slot
 				+ ", found " + stack.getCount() + " "

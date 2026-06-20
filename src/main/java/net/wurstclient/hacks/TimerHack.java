@@ -19,7 +19,7 @@ public final class TimerHack extends Hack
 	
 	public TimerHack()
 	{
-		super("计时器");
+		super("变速");
 		setCategory(Category.OTHER);
 		addSetting(speed);
 	}

@@ -37,7 +37,9 @@ public final class ModifyCmdTest extends SingleplayerTest
 		runWurstCommand("modify set custom_name {\"text\":\"$cRed Name\"}");
 		assertOneItemInSlot(0, Items.DIAMOND);
 		ItemStack stack = context
-			.computeOnClient(mc -> mc.player.getInventory().getSelectedItem());
+			.computeOnClient(mc -> mc.player != null
+				? mc.player.getInventory().getSelectedItem()
+				: ItemStack.EMPTY);
 		String name = stack.getComponents()
 			.getOrDefault(DataComponents.CUSTOM_NAME, Component.empty())
 			.getString();
