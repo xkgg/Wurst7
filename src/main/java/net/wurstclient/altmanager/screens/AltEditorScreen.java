@@ -79,27 +79,29 @@ public abstract class AltEditorScreen extends Screen
 			.dimensions(width / 2 - 100, height / 4 + 72 + 12, 200, 20)
 			.build());
 		
-		addDrawableChild(ButtonWidget.builder(Text.literal("取消"), b -> close())
+		addDrawableChild(ButtonWidget
+			.builder(Text.literal(tr("button.cancel")), b -> close())
 			.dimensions(width / 2 - 100, height / 4 + 120 + 12, 200, 20)
 			.build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("随机名称"),
+			.builder(Text.literal(tr("button.random_name")),
 				b -> nameOrEmailBox.setText(NameGenerator.generateName()))
 			.dimensions(width / 2 - 100, height / 4 + 96 + 12, 200, 20)
 			.build());
 		
 		addDrawableChild(stealSkinButton = ButtonWidget
-			.builder(Text.literal("窃取皮肤"),
+			.builder(Text.literal(tr("button.steal_skin")),
 				b -> message = stealSkin(getNameOrEmail()))
 			.dimensions(width - (width / 2 - 100) / 2 - 64, height - 32, 128,
 				20)
 			.build());
 		
-		addDrawableChild(
-			ButtonWidget.builder(Text.literal("打开皮肤文件夹"), b -> openSkinFolder())
-				.dimensions((width / 2 - 100) / 2 - 64, height - 32, 128, 20)
-				.build());
+		addDrawableChild(ButtonWidget
+			.builder(Text.literal(tr("button.open_skin_folder")),
+				b -> openSkinFolder())
+			.dimensions((width / 2 - 100) / 2 - 64, height - 32, 128, 20)
+			.build());
 		
 		setFocused(nameOrEmailBox);
 	}
@@ -119,7 +121,7 @@ public abstract class AltEditorScreen extends Screen
 		}catch(IOException e)
 		{
 			e.printStackTrace();
-			message = "\u00a74\u00a7l无法创建皮肤文件夹。";
+			message = tr("skin.folder_error");
 		}
 	}
 	
@@ -189,17 +191,17 @@ public abstract class AltEditorScreen extends Screen
 				Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
 			}
 			
-			return "\u00a7a\u00a7l皮肤已保存为 " + name + ".png";
+			return tr("skin.saved", name);
 			
 		}catch(IOException e)
 		{
 			e.printStackTrace();
-			return "\u00a74\u00a7l皮肤无法保存。";
+			return tr("skin.save_error");
 			
 		}catch(NullPointerException e)
 		{
 			e.printStackTrace();
-			return "\u00a74\u00a7l玩家不存在。";
+			return tr("skin.player_not_found");
 		}
 	}
 	
@@ -242,17 +244,19 @@ public abstract class AltEditorScreen extends Screen
 		AltRenderer.drawAltBody(context, nameOrEmailBox.getText(),
 			width - (width / 2 - 100) / 2 - 64, height / 2 - 128, 128, 256);
 		
-		String accountType = getPassword().isEmpty() ? "破解版" : "付费版";
+		String accountType = getPassword().isEmpty()
+			? tr("account_type.cracked") : tr("account_type.premium");
 		
 		// text
-		context.drawTextWithShadow(textRenderer, "名称（用于破解版alt），或",
+		context.drawTextWithShadow(textRenderer, tr("field.cracked_name"),
 			width / 2 - 100, 37, 10526880);
-		context.drawTextWithShadow(textRenderer, "电子邮箱（用于付费版alt）",
+		context.drawTextWithShadow(textRenderer, tr("field.premium_email"),
 			width / 2 - 100, 47, 10526880);
-		context.drawTextWithShadow(textRenderer, "密码（用于付费版alt）",
+		context.drawTextWithShadow(textRenderer, tr("field.premium_password"),
 			width / 2 - 100, 87, 10526880);
-		context.drawTextWithShadow(textRenderer, "账号类型: " + accountType,
-			width / 2 - 100, 127, 10526880);
+		context.drawTextWithShadow(textRenderer,
+			tr("field.account_type", accountType), width / 2 - 100, 127,
+			10526880);
 		
 		String[] lines = message.split("\n");
 		for(int i = 0; i < lines.length; i++)
@@ -280,5 +284,11 @@ public abstract class AltEditorScreen extends Screen
 	public final void close()
 	{
 		client.setScreen(prevScreen);
+	}
+	
+	protected final String tr(String key, Object... args)
+	{
+		return WurstClient.INSTANCE.translate("gui.wurst.altmanager." + key,
+			args);
 	}
 }

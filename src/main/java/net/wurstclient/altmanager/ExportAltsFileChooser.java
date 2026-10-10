@@ -24,10 +24,8 @@ public final class ExportAltsFileChooser extends JFileChooser
 	{
 		SwingUtils.setLookAndFeel();
 		
-		int response = JOptionPane.showConfirmDialog(null,
-			"这将创建一个未加密（纯文本）的alt列表副本。\n" + "以纯文本形式存储密码是有风险的，因为它们很容易被病毒窃取。\n"
-				+ "将此副本存储在安全的地方，并将其保存在Minecraft文件夹之外！",
-			"警告", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+		int response = JOptionPane.showConfirmDialog(null, args[0], args[1],
+			JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 		
 		if(response != JOptionPane.OK_OPTION)
 			return;
@@ -38,11 +36,11 @@ public final class ExportAltsFileChooser extends JFileChooser
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		
 		FileNameExtensionFilter txtFilter =
-			new FileNameExtensionFilter("TXT文件 (用户名:密码)", "txt");
+			new FileNameExtensionFilter(args[2], "txt");
 		fileChooser.addChoosableFileFilter(txtFilter);
 		
 		FileNameExtensionFilter jsonFilter =
-			new FileNameExtensionFilter("JSON文件", "json");
+			new FileNameExtensionFilter(args[3], "json");
 		fileChooser.addChoosableFileFilter(jsonFilter);
 		
 		if(fileChooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION)

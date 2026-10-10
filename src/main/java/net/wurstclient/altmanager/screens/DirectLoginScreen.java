@@ -10,6 +10,7 @@ package net.wurstclient.altmanager.screens;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.text.Text;
+import net.wurstclient.WurstClient;
 import net.wurstclient.altmanager.LoginException;
 import net.wurstclient.altmanager.LoginManager;
 import net.wurstclient.altmanager.MicrosoftLoginManager;
@@ -18,13 +19,15 @@ public final class DirectLoginScreen extends AltEditorScreen
 {
 	public DirectLoginScreen(Screen prevScreen)
 	{
-		super(prevScreen, Text.literal("直接登录"));
+		super(prevScreen, Text.literal(WurstClient.INSTANCE
+			.translate("gui.wurst.altmanager.direct_login.title")));
 	}
 	
 	@Override
 	protected String getDoneButtonText()
 	{
-		return getPassword().isEmpty() ? "更改破解版名称" : "使用密码登录";
+		return getPassword().isEmpty() ? tr("button.change_cracked_name")
+			: tr("button.login_with_password");
 	}
 	
 	@Override
@@ -48,9 +51,8 @@ public final class DirectLoginScreen extends AltEditorScreen
 					
 				}catch(LoginException e2)
 				{
-					message = "\u00a7c\u00a7lMicrosoft:\u00a7c "
-						+ e.getMessage() + "\n\u00a7c\u00a7lMojang:\u00a7c "
-						+ e2.getMessage();
+					message =
+						tr("login_error", e.getMessage(), e2.getMessage());
 					
 					doErrorEffect();
 				}

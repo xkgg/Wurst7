@@ -76,7 +76,8 @@ public final class AltManagerScreen extends Screen
 	
 	public AltManagerScreen(Screen prevScreen, AltManager altManager)
 	{
-		super(Text.literal("Alt账号管理器"));
+		super(Text.literal(
+			WurstClient.INSTANCE.translate("gui.wurst.altmanager.title")));
 		this.prevScreen = prevScreen;
 		this.altManager = altManager;
 	}
@@ -117,47 +118,88 @@ public final class AltManagerScreen extends Screen
 			client.setScreen(screen);
 		}
 		
-		addDrawableChild(useButton =
-			ButtonWidget.builder(Text.literal("登录"), b -> pressLogin())
-				.dimensions(width / 2 - 154, height - 52, 100, 20).build());
+		addDrawableChild(
+			useButton =
+				ButtonWidget
+					.builder(
+						Text.literal(wurst
+							.translate("gui.wurst.altmanager.button.login")),
+						b -> pressLogin())
+					.dimensions(width / 2 - 154, height - 52, 100, 20).build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("直接登录"),
+			.builder(
+				Text.literal(wurst
+					.translate("gui.wurst.altmanager.button.direct_login")),
 				b -> client.setScreen(new DirectLoginScreen(this)))
 			.dimensions(width / 2 - 50, height - 52, 100, 20).build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("添加"),
+			.builder(
+				Text.literal(
+					wurst.translate("gui.wurst.altmanager.button.add")),
 				b -> client.setScreen(new AddAltScreen(this, altManager)))
 			.dimensions(width / 2 + 54, height - 52, 100, 20).build());
 		
-		addDrawableChild(starButton =
-			ButtonWidget.builder(Text.literal("收藏"), b -> pressFavorite())
+		addDrawableChild(
+			starButton = ButtonWidget
+				.builder(
+					Text.literal(wurst
+						.translate("gui.wurst.altmanager.button.favorite")),
+					b -> pressFavorite())
 				.dimensions(width / 2 - 154, height - 28, 75, 20).build());
 		
-		addDrawableChild(editButton =
-			ButtonWidget.builder(Text.literal("编辑"), b -> pressEdit())
-				.dimensions(width / 2 - 76, height - 28, 74, 20).build());
+		addDrawableChild(
+			editButton =
+				ButtonWidget
+					.builder(
+						Text.literal(wurst
+							.translate("gui.wurst.altmanager.button.edit")),
+						b -> pressEdit())
+					.dimensions(width / 2 - 76, height - 28, 74, 20).build());
 		
-		addDrawableChild(deleteButton =
-			ButtonWidget.builder(Text.literal("删除"), b -> pressDelete())
-				.dimensions(width / 2 + 2, height - 28, 74, 20).build());
+		addDrawableChild(
+			deleteButton =
+				ButtonWidget
+					.builder(
+						Text.literal(wurst
+							.translate("gui.wurst.altmanager.button.delete")),
+						b -> pressDelete())
+					.dimensions(width / 2 + 2, height - 28, 74, 20).build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("取消"), b -> client.setScreen(prevScreen))
+			.builder(
+				Text.literal(
+					wurst.translate("gui.wurst.altmanager.button.cancel")),
+				b -> client.setScreen(prevScreen))
 			.dimensions(width / 2 + 80, height - 28, 75, 20).build());
 		
-		addDrawableChild(importButton =
-			ButtonWidget.builder(Text.literal("导入"), b -> pressImportAlts())
-				.dimensions(8, 8, 50, 20).build());
+		addDrawableChild(
+			importButton =
+				ButtonWidget
+					.builder(
+						Text.literal(wurst
+							.translate("gui.wurst.altmanager.button.import")),
+						b -> pressImportAlts())
+					.dimensions(8, 8, 50, 20).build());
 		
-		addDrawableChild(exportButton =
-			ButtonWidget.builder(Text.literal("导出"), b -> pressExportAlts())
-				.dimensions(58, 8, 50, 20).build());
+		addDrawableChild(
+			exportButton =
+				ButtonWidget
+					.builder(
+						Text.literal(wurst
+							.translate("gui.wurst.altmanager.button.export")),
+						b -> pressExportAlts())
+					.dimensions(58, 8, 50, 20).build());
 		
-		addDrawableChild(logoutButton =
-			ButtonWidget.builder(Text.literal("登出"), b -> pressLogout())
-				.dimensions(width - 50 - 8, 8, 50, 20).build());
+		addDrawableChild(
+			logoutButton =
+				ButtonWidget
+					.builder(
+						Text.literal(wurst
+							.translate("gui.wurst.altmanager.button.logout")),
+						b -> pressLogout())
+					.dimensions(width - 50 - 8, 8, 50, 20).build());
 		
 		updateAltButtons();
 		boolean windowMode = !client.options.getFullscreen().getValue();
@@ -248,13 +290,20 @@ public final class AltManagerScreen extends Screen
 		if(alt == null)
 			return;
 		
-		Text text = Text.literal("确定要移除这个alt账号吗？");
+		WurstClient wurst = WurstClient.INSTANCE;
+		Text text = Text.literal(
+			wurst.translate("gui.wurst.altmanager.delete_confirm.title"));
 		
 		String altName = alt.getDisplayName();
-		Text message = Text.literal("\"" + altName + "\" 将永远丢失！（很长时间！）");
+		Text message = Text.literal(wurst
+			.translate("gui.wurst.altmanager.delete_confirm.message", altName));
 		
-		ConfirmScreen screen = new ConfirmScreen(this::confirmRemove, text,
-			message, Text.literal("删除"), Text.literal("取消"));
+		ConfirmScreen screen =
+			new ConfirmScreen(this::confirmRemove, text, message,
+				Text.literal(
+					wurst.translate("gui.wurst.altmanager.button.delete")),
+				Text.literal(
+					wurst.translate("gui.wurst.altmanager.button.cancel")));
 		client.setScreen(screen);
 	}
 	
@@ -262,9 +311,11 @@ public final class AltManagerScreen extends Screen
 	{
 		try
 		{
+			WurstClient wurst = WurstClient.INSTANCE;
 			Process process = MultiProcessingUtils.startProcessWithIO(
-				ImportAltsFileChooser.class,
-				WurstClient.INSTANCE.getWurstFolder().toString());
+				ImportAltsFileChooser.class, wurst.getWurstFolder().toString(),
+				wurst.translate("gui.wurst.altmanager.file_filter.txt"),
+				wurst.translate("gui.wurst.altmanager.file_filter.json"));
 			
 			Path path = getFileChooserPath(process);
 			process.waitFor();
@@ -315,9 +366,13 @@ public final class AltManagerScreen extends Screen
 	{
 		try
 		{
+			WurstClient wurst = WurstClient.INSTANCE;
 			Process process = MultiProcessingUtils.startProcessWithIO(
 				ExportAltsFileChooser.class,
-				WurstClient.INSTANCE.getWurstFolder().toString());
+				wurst.translate("gui.wurst.altmanager.export_warning"),
+				wurst.translate("gui.wurst.altmanager.export_warning.title"),
+				wurst.translate("gui.wurst.altmanager.file_filter.txt"),
+				wurst.translate("gui.wurst.altmanager.file_filter.json"));
 			
 			Path path = getFileChooserPath(process);
 			
@@ -419,13 +474,17 @@ public final class AltManagerScreen extends Screen
 		}
 		
 		// title text
-		context.drawCenteredTextWithShadow(textRenderer, "Alt账号管理器", width / 2,
-			4, 16777215);
+		WurstClient wurst = WurstClient.INSTANCE;
 		context.drawCenteredTextWithShadow(textRenderer,
-			"账号数量: " + altManager.getList().size(), width / 2, 14, 10526880);
+			wurst.translate("gui.wurst.altmanager.title"), width / 2, 4,
+			16777215);
 		context.drawCenteredTextWithShadow(textRenderer,
-			"付费版: " + altManager.getNumPremium() + ", 破解版: "
-				+ altManager.getNumCracked(),
+			wurst.translate("gui.wurst.altmanager.count",
+				altManager.getList().size()),
+			width / 2, 14, 10526880);
+		context.drawCenteredTextWithShadow(textRenderer,
+			wurst.translate("gui.wurst.altmanager.count_by_type",
+				altManager.getNumPremium(), altManager.getNumCracked()),
 			width / 2, 24, 10526880);
 		
 		// red flash for errors
@@ -549,8 +608,10 @@ public final class AltManagerScreen extends Screen
 		@Override
 		public Text getNarration()
 		{
-			return Text.translatable("narrator.select", "Alt " + alt + ", "
-				+ StringHelper.stripTextFormat(getBottomText()));
+			String text =
+				WurstClient.INSTANCE.translate("gui.wurst.altmanager.narration",
+					alt, StringHelper.stripTextFormat(getBottomText()));
+			return Text.translatable("narrator.select", text);
 		}
 		
 		@Override
@@ -592,8 +653,9 @@ public final class AltManagerScreen extends Screen
 			TextRenderer tr = client.textRenderer;
 			
 			// name / email
-			context.drawText(tr, "名称: " + alt.getDisplayName(), x + 31, y + 3,
-				0xA0A0A0, false);
+			String name = WurstClient.INSTANCE.translate(
+				"gui.wurst.altmanager.entry_name", alt.getDisplayName());
+			context.drawText(tr, name, x + 31, y + 3, 0xA0A0A0, false);
 			
 			// status
 			context.drawText(tr, getBottomText(), x + 31, y + 15, 10526880,
@@ -602,15 +664,20 @@ public final class AltManagerScreen extends Screen
 		
 		private String getBottomText()
 		{
-			String text = alt.isCracked() ? "\u00a78破解版" : "\u00a72付费版";
+			WurstClient wurst = WurstClient.INSTANCE;
+			String text = alt.isCracked()
+				? wurst.translate("gui.wurst.altmanager.status.cracked")
+				: wurst.translate("gui.wurst.altmanager.status.premium");
 			
 			if(alt.isFavorite())
-				text += "\u00a7r, \u00a7e收藏";
+				text += wurst.translate("gui.wurst.altmanager.status.favorite");
 			
 			if(failedLogins.contains(alt))
-				text += "\u00a7r, \u00a7c密码错误?";
+				text += wurst
+					.translate("gui.wurst.altmanager.status.password_error");
 			else if(alt.isUncheckedPremium())
-				text += "\u00a7r, \u00a7c未检查";
+				text +=
+					wurst.translate("gui.wurst.altmanager.status.unchecked");
 			
 			return text;
 		}

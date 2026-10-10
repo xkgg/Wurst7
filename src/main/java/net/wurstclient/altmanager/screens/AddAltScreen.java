@@ -9,6 +9,7 @@ package net.wurstclient.altmanager.screens;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+import net.wurstclient.WurstClient;
 import net.wurstclient.altmanager.AltManager;
 import net.wurstclient.altmanager.CrackedAlt;
 import net.wurstclient.altmanager.MojangAlt;
@@ -19,14 +20,16 @@ public final class AddAltScreen extends AltEditorScreen
 	
 	public AddAltScreen(Screen prevScreen, AltManager altManager)
 	{
-		super(prevScreen, Text.literal("新Alt账号"));
+		super(prevScreen, Text.literal(
+			WurstClient.INSTANCE.translate("gui.wurst.altmanager.add.title")));
 		this.altManager = altManager;
 	}
 	
 	@Override
 	protected String getDoneButtonText()
 	{
-		return getPassword().isEmpty() ? "添加破解版Alt" : "添加付费版Alt";
+		return getPassword().isEmpty() ? tr("button.add_cracked")
+			: tr("button.add_premium");
 	}
 	
 	@Override
