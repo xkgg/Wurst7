@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -14,9 +14,8 @@ public final class NukerShapeSetting
 {
 	public NukerShapeSetting()
 	{
-		super("形状",
-			"§l注意:§r 如果你的范围设置过高，立方体形状" + "会开始看起来像一个球体，因为你无法到达" + "角落。范围1-3最适合立方体形状。",
-			NukerShape.values(), NukerShape.SPHERE);
+		super("形状", "§l注意:§r 如果你的范围设置过高，立方体形状" + "会开始看起来像一个球体，因为你无法到达"
+			+ "角落。范围1-3最适合立方体形状。", NukerShape.values(), NukerShape.SPHERE);
 	}
 	
 	public enum NukerShape

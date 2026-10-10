@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -16,27 +16,20 @@ import net.wurstclient.settings.SliderSetting;
 @SearchTags({"名字标签", "name tags"})
 public final class NameTagsHack extends Hack
 {
-	private final SliderSetting scale =
-		new SliderSetting("缩放", "名字标签的大小。", 1, 0.05,
-			5, 0.05, SliderSetting.ValueDisplay.PERCENTAGE);
+	private final SliderSetting scale = new SliderSetting("缩放", "名字标签的大小。", 1,
+		0.05, 5, 0.05, SliderSetting.ValueDisplay.PERCENTAGE);
 	
 	private final CheckboxSetting unlimitedRange =
-		new CheckboxSetting("无限距离",
-			"移除名字标签的 64 方块距离限制。", true);
+		new CheckboxSetting("无限距离", "移除名字标签的 64 方块距离限制。", true);
 	
-	private final CheckboxSetting seeThrough = new CheckboxSetting(
-		"透视模式",
-		"在透视文本层上渲染名字标签。这使它们在墙后更容易阅读，但会导致水和其他透明物体出现一些图形故障。",
-		false);
+	private final CheckboxSetting seeThrough = new CheckboxSetting("透视模式",
+		"在透视文本层上渲染名字标签。这使它们在墙后更容易阅读，但会导致水和其他透明物体出现一些图形故障。", false);
 	
-	private final CheckboxSetting forceMobNametags = new CheckboxSetting(
-		"始终显示命名生物", "即使你没有直接看着它们，也会显示命名生物的名字标签。",
-		true);
+	private final CheckboxSetting forceMobNametags =
+		new CheckboxSetting("始终显示命名生物", "即使你没有直接看着它们，也会显示命名生物的名字标签。", true);
 	
-	private final CheckboxSetting forcePlayerNametags =
-		new CheckboxSetting("始终显示玩家名字",
-			"显示你自己的名字标签以及任何通常会被记分板团队设置禁用的玩家名字。",
-			false);
+	private final CheckboxSetting forcePlayerNametags = new CheckboxSetting(
+		"始终显示玩家名字", "显示你自己的名字标签以及任何通常会被记分板团队设置禁用的玩家名字。", false);
 	
 	public NameTagsHack()
 	{

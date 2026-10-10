@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -50,8 +50,7 @@ public enum LoginManager
 			
 		}catch(AuthenticationUnavailableException e)
 		{
-			throw new LoginException("无法联系认证服务器！",
-				e);
+			throw new LoginException("无法联系认证服务器！", e);
 			
 		}catch(AuthenticationException e)
 		{
@@ -59,19 +58,15 @@ public enum LoginManager
 			String msg = e.getMessage().toLowerCase();
 			
 			if(msg.contains("invalid username or password."))
-				throw new LoginException("密码错误！（或被 shadowban）",
-					e);
+				throw new LoginException("密码错误！（或被 shadowban）", e);
 			
 			if(msg.contains("account migrated"))
-				throw new LoginException("账户已迁移到 Mojang 账户。",
-					e);
+				throw new LoginException("账户已迁移到 Mojang 账户。", e);
 			
 			if(msg.contains("migrated"))
-				throw new LoginException(
-					"账户已迁移到 Microsoft 账户。", e);
+				throw new LoginException("账户已迁移到 Microsoft 账户。", e);
 			
-			throw new LoginException("无法联系认证服务器！",
-				e);
+			throw new LoginException("无法联系认证服务器！", e);
 			
 		}catch(NullPointerException e)
 		{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -19,10 +19,8 @@ import net.wurstclient.settings.CheckboxSetting;
 public final class AntiWaterPushHack extends Hack implements UpdateListener,
 	VelocityFromFluidListener, IsPlayerInWaterListener
 {
-	private final CheckboxSetting preventSlowdown = new CheckboxSetting(
-		"防止减速", "允许你在水下以全速行走。\n"
-			+ "一些服务器会认为这是速度hack。",
-		false);
+	private final CheckboxSetting preventSlowdown = new CheckboxSetting("防止减速",
+		"允许你在水下以全速行走。\n" + "一些服务器会认为这是速度hack。", false);
 	
 	public AntiWaterPushHack()
 	{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -15,9 +15,7 @@ public final class BindCmd extends Command
 	public BindCmd()
 	{
 		super("bind", ".binds add 的快捷方式。", ".bind <按键> <hack>",
-			".bind <按键> <命令>",
-			"多个hack/命令必须用 ';' 分隔。",
-			"使用 .binds 获取更多选项。");
+			".bind <按键> <命令>", "多个hack/命令必须用 ';' 分隔。", "使用 .binds 获取更多选项。");
 	}
 	
 	@Override

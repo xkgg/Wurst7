@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -42,14 +42,14 @@ import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.InventoryUtils;
 
-@SearchTags({"自动进食", "auto eat", "AutoFood", "auto food", "AutoFeeder", "auto feeder",
-	"AutoFeeding", "auto feeding", "AutoSoup", "auto soup"})
+@SearchTags({"自动进食", "auto eat", "AutoFood", "auto food", "AutoFeeder",
+	"auto feeder", "AutoFeeding", "auto feeding", "AutoSoup", "auto soup"})
 public final class AutoEatHack extends Hack implements UpdateListener
 {
 	// 目标饥饿值（达到该值后停止进食）
-	private final SliderSetting targetHunger = new SliderSetting(
-		"目标饥饿值", "description.wurst.setting.autoeat.target_hunger", 10,
-		0, 10, 0.5, ValueDisplay.DECIMAL);
+	private final SliderSetting targetHunger = new SliderSetting("目标饥饿值",
+		"description.wurst.setting.autoeat.target_hunger", 10, 0, 10, 0.5,
+		ValueDisplay.DECIMAL);
 	
 	// 最小饥饿值（低于该值时强制进食）
 	private final SliderSetting minHunger = new SliderSetting("最小饥饿值",
@@ -57,15 +57,14 @@ public final class AutoEatHack extends Hack implements UpdateListener
 		ValueDisplay.DECIMAL);
 	
 	// 受伤时饥饿阈值（受伤状态下触发进食的饥饿值）
-	private final SliderSetting injuredHunger = new SliderSetting(
-		"受伤触发饥饿值", "description.wurst.setting.autoeat.injured_hunger",
-		10, 0, 10, 0.5, ValueDisplay.DECIMAL);
+	private final SliderSetting injuredHunger = new SliderSetting("受伤触发饥饿值",
+		"description.wurst.setting.autoeat.injured_hunger", 10, 0, 10, 0.5,
+		ValueDisplay.DECIMAL);
 	
 	// 受伤阈值（判定为"受伤"的生命值差值）
-	private final SliderSetting injuryThreshold =
-		new SliderSetting("受伤判定阈值",
-			"description.wurst.setting.autoeat.injury_threshold", 1.5, 0.5, 10,
-			0.5, ValueDisplay.DECIMAL);
+	private final SliderSetting injuryThreshold = new SliderSetting("受伤判定阈值",
+		"description.wurst.setting.autoeat.injury_threshold", 1.5, 0.5, 10, 0.5,
+		ValueDisplay.DECIMAL);
 	
 	// 物品拿取来源（仅手部/快捷栏/全背包）
 	private final EnumSetting<TakeItemsFrom> takeItemsFrom = new EnumSetting<>(
@@ -77,24 +76,20 @@ public final class AutoEatHack extends Hack implements UpdateListener
 		new CheckboxSetting("允许副手进食", true);
 	
 	// 行走时是否允许进食
-	private final CheckboxSetting eatWhileWalking =
-		new CheckboxSetting("边走边吃",
-			"description.wurst.setting.autoeat.eat_while_walking", false);
+	private final CheckboxSetting eatWhileWalking = new CheckboxSetting("边走边吃",
+		"description.wurst.setting.autoeat.eat_while_walking", false);
 	
 	// 允许食用带有饥饿效果的食物
-	private final CheckboxSetting allowHunger =
-		new CheckboxSetting("允许饥饿效果食物",
-			"description.wurst.setting.autoeat.allow_hunger", true);
+	private final CheckboxSetting allowHunger = new CheckboxSetting("允许饥饿效果食物",
+		"description.wurst.setting.autoeat.allow_hunger", true);
 	
 	// 允许食用带有中毒效果的食物
-	private final CheckboxSetting allowPoison =
-		new CheckboxSetting("允许中毒效果食物",
-			"description.wurst.setting.autoeat.allow_poison", false);
+	private final CheckboxSetting allowPoison = new CheckboxSetting("允许中毒效果食物",
+		"description.wurst.setting.autoeat.allow_poison", false);
 	
 	// 允许食用紫颂果
-	private final CheckboxSetting allowChorus =
-		new CheckboxSetting("允许食用紫颂果",
-			"description.wurst.setting.autoeat.allow_chorus", false);
+	private final CheckboxSetting allowChorus = new CheckboxSetting("允许食用紫颂果",
+		"description.wurst.setting.autoeat.allow_chorus", false);
 	
 	// 记录切换进食前的原快捷栏槽位
 	private int oldSlot = -1;
@@ -183,7 +178,9 @@ public final class AutoEatHack extends Hack implements UpdateListener
 	
 	/**
 	 * 执行进食操作
-	 * @param maxPoints 最大补充饥饿值（-1表示无限制）
+	 *
+	 * @param maxPoints
+	 *            最大补充饥饿值（-1表示无限制）
 	 */
 	private void eat(int maxPoints)
 	{
@@ -227,7 +224,9 @@ public final class AutoEatHack extends Hack implements UpdateListener
 	
 	/**
 	 * 查找最优食物槽位（按饱和度排序，优先选高饱和度食物）
-	 * @param maxPoints 最大补充饥饿值（-1表示无限制）
+	 *
+	 * @param maxPoints
+	 *            最大补充饥饿值（-1表示无限制）
 	 * @return 最优食物槽位（-1表示无可用食物）
 	 */
 	private int findBestFoodSlot(int maxPoints)
@@ -285,6 +284,7 @@ public final class AutoEatHack extends Hack implements UpdateListener
 	
 	/**
 	 * 判断是否满足进食条件
+	 *
 	 * @return 是否需要进食
 	 */
 	private boolean shouldEat()
@@ -324,7 +324,9 @@ public final class AutoEatHack extends Hack implements UpdateListener
 	
 	/**
 	 * 判断食物是否被允许食用（过滤禁用的效果/物品）
-	 * @param food 食物组件
+	 *
+	 * @param food
+	 *            食物组件
 	 * @return 是否允许食用
 	 */
 	private boolean isAllowedFood(FoodComponent food)
@@ -352,6 +354,7 @@ public final class AutoEatHack extends Hack implements UpdateListener
 	
 	/**
 	 * 判断是否正在进食
+	 *
 	 * @return 进食状态
 	 */
 	public boolean isEating()
@@ -361,7 +364,9 @@ public final class AutoEatHack extends Hack implements UpdateListener
 	
 	/**
 	 * 判断准星指向的目标是否可交互（避免进食时误操作）
-	 * @param hitResult 准星命中结果
+	 *
+	 * @param hitResult
+	 *            准星命中结果
 	 * @return 是否为可交互目标
 	 */
 	private boolean isClickable(HitResult hitResult)
@@ -394,7 +399,9 @@ public final class AutoEatHack extends Hack implements UpdateListener
 	
 	/**
 	 * 判断玩家是否处于受伤状态
-	 * @param player 客户端玩家实体
+	 *
+	 * @param player
+	 *            客户端玩家实体
 	 * @return 是否受伤
 	 */
 	private boolean isInjured(ClientPlayerEntity player)
@@ -410,12 +417,12 @@ public final class AutoEatHack extends Hack implements UpdateListener
 	 */
 	private enum TakeItemsFrom
 	{
-		HANDS("仅手部", 0),			// 仅当前手持物品
-		HOTBAR("快捷栏", 9),			// 快捷栏（0-8槽位）
-		INVENTORY("全背包", 36);		// 全背包（0-35槽位）
+		HANDS("仅手部", 0), // 仅当前手持物品
+		HOTBAR("快捷栏", 9), // 快捷栏（0-8槽位）
+		INVENTORY("全背包", 36); // 全背包（0-35槽位）
 		
-		private final String name;			// 显示名称
-		private final int maxInvSlot;		// 最大检查槽位
+		private final String name; // 显示名称
+		private final int maxInvSlot; // 最大检查槽位
 		
 		private TakeItemsFrom(String name, int maxInvSlot)
 		{

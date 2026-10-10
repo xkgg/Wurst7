@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -50,6 +50,7 @@ import net.wurstclient.settings.SwingHandSetting.SwingHand;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.EasyVertexBuffer;
+import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.OverlayRenderer;
 import net.wurstclient.util.RegionPos;
 import net.wurstclient.util.RenderUtils;
@@ -60,18 +61,15 @@ import net.wurstclient.util.RotationUtils;
 public final class TunnellerHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final EnumSetting<TunnelSize> size = new EnumSetting<>
-		("隧道大小", TunnelSize.values(), TunnelSize.SIZE_3X3);
+	private final EnumSetting<TunnelSize> size =
+		new EnumSetting<>("隧道大小", TunnelSize.values(), TunnelSize.SIZE_3X3);
 	
 	private final SliderSetting limit = new SliderSetting("限制",
-		"当隧道达到给定长度时自动停止。\n\n"
-			+ "0 = 无限制",
-		0, 0, 1000, 1, ValueDisplay.INTEGER.withSuffix(" 方块")
-			.withLabel(1, "1 方块").withLabel(0, "禁用"));
+		"当隧道达到给定长度时自动停止。\n\n" + "0 = 无限制", 0, 0, 1000, 1, ValueDisplay.INTEGER
+			.withSuffix(" 方块").withLabel(1, "1 方块").withLabel(0, "禁用"));
 	
-	private final CheckboxSetting torches = new CheckboxSetting("放置火把",
-		"放置足够的火把以防止怪物在隧道内生成。",
-		false);
+	private final CheckboxSetting torches =
+		new CheckboxSetting("放置火把", "放置足够的火把以防止怪物在隧道内生成。", false);
 	
 	private final OverlayRenderer overlay = new OverlayRenderer();
 	
@@ -170,7 +168,7 @@ public final class TunnellerHack extends Hack
 		for(Hack hack : incompatibleHax)
 			hack.setEnabled(false);
 		
-		if(hax.freecamHack.isEnabled() || hax.remoteViewHack.isEnabled())
+		if(hax.freecamHack.isEnabled())
 			return;
 		
 		GameOptions gs = MC.options;
@@ -733,7 +731,7 @@ public final class TunnellerHack extends Hack
 			return StreamSupport
 				.stream(MC.world.getEntities().spliterator(), false)
 				.filter(FallingBlockEntity.class::isInstance)
-				.anyMatch(e -> MC.player.squaredDistanceTo(e) < 36);
+				.anyMatch(e -> EntityUtils.distanceToHitboxSq(e) < 36);
 		}
 		
 		@Override

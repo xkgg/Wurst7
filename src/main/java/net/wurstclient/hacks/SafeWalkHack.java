@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -30,11 +30,9 @@ public final class SafeWalkHack extends Hack
 		new CheckboxSetting("边缘自动潜行", "靠近边缘时自动触发潜行动作。", false);
 	
 	// 边缘触发距离：控制距离边缘多近时触发潜行（仅边缘自动潜行开启时生效）
-	private final SliderSetting edgeDistance = new SliderSetting(
-		"边缘触发距离",
-		"安全行走功能会在你距离边缘该距离时触发潜行。\n\n"
-			+ "此设置仅在「边缘自动潜行」启用时生效。",
-		0.05, 0.05, 0.25, 0.001, ValueDisplay.DECIMAL.withSuffix("米"));
+	private final SliderSetting edgeDistance = new SliderSetting("边缘触发距离",
+		"安全行走功能会在你距离边缘该距离时触发潜行。\n\n" + "此设置仅在「边缘自动潜行」启用时生效。", 0.05, 0.05, 0.25,
+		0.001, ValueDisplay.DECIMAL.withSuffix("米"));
 	
 	// 标记当前是否处于自动潜行状态
 	private boolean sneaking;
@@ -66,7 +64,9 @@ public final class SafeWalkHack extends Hack
 	
 	/**
 	 * 边缘碰撞检测回调：判断玩家是否处于边缘，触发自动潜行
-	 * @param clipping 是否触发边缘碰撞（是否需要潜行）
+	 *
+	 * @param clipping
+	 *            是否触发边缘碰撞（是否需要潜行）
 	 */
 	public void onClipAtLedge(boolean clipping)
 	{
@@ -96,7 +96,9 @@ public final class SafeWalkHack extends Hack
 	
 	/**
 	 * 控制玩家潜行状态（模拟按下/松开潜行键）
-	 * @param sneaking 是否开启潜行
+	 *
+	 * @param sneaking
+	 *            是否开启潜行
 	 */
 	private void setSneaking(boolean sneaking)
 	{

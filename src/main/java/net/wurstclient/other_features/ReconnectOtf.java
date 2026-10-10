@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -15,7 +15,6 @@ public final class ReconnectOtf extends OtherFeature
 {
 	public ReconnectOtf()
 	{
-		super("重新连接",
-			"每当你从服务器被踢出时，Wurst会给你一个\"重新连接\"按钮，让你立即重新加入。");
+		super("重新连接", "每当你从服务器被踢出时，Wurst会给你一个\"重新连接\"按钮，让你立即重新加入。");
 	}
 }

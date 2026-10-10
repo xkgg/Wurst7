@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,6 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.WurstRenderLayers;
+import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.settings.Setting;
 import net.wurstclient.util.EasyVertexBuffer;
 import net.wurstclient.util.RegionPos;
 import net.wurstclient.util.RenderUtils;
@@ -28,8 +30,21 @@ public final class AutoFarmRenderer
 		new Box(BlockPos.ORIGIN).contract(1 / 16.0);
 	private static final Box NODE_BOX = new Box(BlockPos.ORIGIN).contract(0.25);
 	
+	public final CheckboxSetting drawPlants =
+		new CheckboxSetting("显示已识别作物", true);
+	public final CheckboxSetting drawBlocksToHarvest =
+		new CheckboxSetting("显示待收获方块", true);
+	public final CheckboxSetting drawBlocksToReplant =
+		new CheckboxSetting("显示待补种位置", true);
+	
 	private EasyVertexBuffer vertexBuffer;
 	private RegionPos region;
+	
+	public java.util.stream.Stream<Setting> getSettings()
+	{
+		return java.util.stream.Stream.of(drawPlants, drawBlocksToHarvest,
+			drawBlocksToReplant);
+	}
 	
 	public void reset()
 	{
@@ -74,22 +89,31 @@ public final class AutoFarmRenderer
 		region = RenderUtils.getCameraRegion();
 		Vec3d regionOffset = region.negate().toVec3d();
 		
-		for(BlockPos pos : blocksToHarvest)
+		if(drawBlocksToHarvest.isChecked())
 		{
-			Box box = BLOCK_BOX.offset(pos).offset(regionOffset);
-			RenderUtils.drawOutlinedBox(buffer, box, 0x8000FF00);
+			for(BlockPos pos : blocksToHarvest)
+			{
+				Box box = BLOCK_BOX.offset(pos).offset(regionOffset);
+				RenderUtils.drawOutlinedBox(buffer, box, 0x8000FF00);
+			}
 		}
 		
-		for(BlockPos pos : plants)
+		if(drawPlants.isChecked())
 		{
-			Box renderNode = NODE_BOX.offset(pos).offset(regionOffset);
-			RenderUtils.drawNode(buffer, renderNode, 0x8000FFFF);
+			for(BlockPos pos : plants)
+			{
+				Box renderNode = NODE_BOX.offset(pos).offset(regionOffset);
+				RenderUtils.drawNode(buffer, renderNode, 0x8000FFFF);
+			}
 		}
 		
-		for(BlockPos pos : blocksToReplant)
+		if(drawBlocksToReplant.isChecked())
 		{
-			Box renderBox = BLOCK_BOX.offset(pos).offset(regionOffset);
-			RenderUtils.drawOutlinedBox(buffer, renderBox, 0x80FF0000);
+			for(BlockPos pos : blocksToReplant)
+			{
+				Box renderBox = BLOCK_BOX.offset(pos).offset(regionOffset);
+				RenderUtils.drawOutlinedBox(buffer, renderBox, 0x80FF0000);
+			}
 		}
 	}
 }

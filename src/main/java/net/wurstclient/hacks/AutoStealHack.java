@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -25,10 +25,9 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 	"steal store buttons", "Steal/Store buttons"})
 public final class AutoStealHack extends Hack
 {
-	private final SliderSetting delay = new SliderSetting("延迟",
-		"移动物品堆之间的延迟。\n"
-			+ "对于 NoCheat+ 服务器，至少应为 70ms。",
-		100, 0, 500, 10, ValueDisplay.INTEGER.withSuffix("ms"));
+	private final SliderSetting delay =
+		new SliderSetting("延迟", "移动物品堆之间的延迟。\n" + "对于 NoCheat+ 服务器，至少应为 70ms。",
+			100, 0, 500, 10, ValueDisplay.INTEGER.withSuffix("ms"));
 	
 	private final CheckboxSetting buttons =
 		new CheckboxSetting("偷取/存储按钮", true);

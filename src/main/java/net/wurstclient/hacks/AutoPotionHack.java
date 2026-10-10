@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -25,9 +25,9 @@ import net.wurstclient.util.Rotation;
 	"auto splash potion"})
 public final class AutoPotionHack extends Hack implements UpdateListener
 {
-	private final SliderSetting health = new SliderSetting("生命值",
-		"当你的生命值达到或低于此值时，投掷药水。",
-		6, 0.5, 9.5, 0.5, ValueDisplay.DECIMAL.withSuffix(" 心"));
+	private final SliderSetting health =
+		new SliderSetting("生命值", "当你的生命值达到或低于此值时，投掷药水。", 6, 0.5, 9.5, 0.5,
+			ValueDisplay.DECIMAL.withSuffix(" 心"));
 	
 	private int timer;
 	

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -17,15 +17,11 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 @SearchTags({"无盾遮盖", "no shield overlay"})
 public final class NoShieldOverlayHack extends Hack
 {
-	public final SliderSetting blockingOffset =
-		new SliderSetting("格挡偏移",
-			"格挡时降低盾牌覆盖的量。", 0.5, 0,
-			0.8, 0.01, ValueDisplay.DECIMAL);
+	public final SliderSetting blockingOffset = new SliderSetting("格挡偏移",
+		"格挡时降低盾牌覆盖的量。", 0.5, 0, 0.8, 0.01, ValueDisplay.DECIMAL);
 	
-	public final SliderSetting nonBlockingOffset =
-		new SliderSetting("非格挡偏移",
-			"非格挡时降低盾牌覆盖的量。", 0.2, 0,
-			0.5, 0.01, ValueDisplay.DECIMAL);
+	public final SliderSetting nonBlockingOffset = new SliderSetting("非格挡偏移",
+		"非格挡时降低盾牌覆盖的量。", 0.2, 0, 0.5, 0.01, ValueDisplay.DECIMAL);
 	
 	public NoShieldOverlayHack()
 	{

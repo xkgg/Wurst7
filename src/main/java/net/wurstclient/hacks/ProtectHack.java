@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -64,6 +64,7 @@ public final class ProtectHack extends Hack
 	// 实体过滤列表：筛选需攻击/忽略的实体（战斗通用过滤规则）
 	private final EntityFilterList entityFilters =
 		new EntityFilterList(FilterPlayersSetting.genericCombat(false), // 玩家过滤
+			FilterCreativeSetting.genericCombat(false), // 创造模式玩家过滤
 			FilterSleepingSetting.genericCombat(false), // 睡眠玩家过滤
 			FilterFlyingSetting.genericCombat(0), // 飞行实体过滤
 			FilterHostileSetting.genericCombat(false), // 敌对生物过滤
@@ -89,6 +90,8 @@ public final class ProtectHack extends Hack
 			FilterInvisibleSetting.genericCombat(false), // 隐身实体过滤
 			FilterNamedSetting.genericCombat(false), // 命名实体过滤
 			FilterShulkerBulletSetting.genericCombat(false), // 潜影贝子弹过滤
+			FilterProjectilesSetting.genericCombat(false), // 可反弹火球过滤
+			FilterInteractionsSetting.genericCombat(true), // 交互实体过滤
 			FilterArmorStandsSetting.genericCombat(false), // 盔甲架过滤
 			FilterCrystalsSetting.genericCombat(true)); // 水晶过滤（默认攻击）
 	
@@ -152,7 +155,8 @@ public final class ProtectHack extends Hack
 				// 仅保留有生命的实体
 				.filter(LivingEntity.class::isInstance)
 				// 过滤：未被移除 + 生命值>0（存活）
-				.filter(e -> !e.isRemoved() && ((LivingEntity)e).getHealth() > 0)
+				.filter(
+					e -> !e.isRemoved() && ((LivingEntity)e).getHealth() > 0)
 				// 排除自身玩家
 				.filter(e -> e != MC.player)
 				// 排除假人实体
@@ -160,7 +164,8 @@ public final class ProtectHack extends Hack
 			
 			// 选择距离最近的实体作为友方
 			friend = stream
-				.min(Comparator.comparingDouble(e -> MC.player.squaredDistanceTo(e)))
+				.min(
+					Comparator.comparingDouble(EntityUtils::distanceToHitboxSq))
 				.orElse(null);
 		}
 		
@@ -210,6 +215,7 @@ public final class ProtectHack extends Hack
 		
 		// 验证有效性：友方/自身死亡/友方消失 → 禁用功能
 		if(friend == null || friend.isRemoved()
+			|| MC.world.getEntityById(friend.getId()) != friend
 			|| !(friend instanceof LivingEntity)
 			|| ((LivingEntity)friend).getHealth() <= 0
 			|| MC.player.getHealth() <= 0)
@@ -221,8 +227,8 @@ public final class ProtectHack extends Hack
 		}
 		
 		// 筛选敌方实体：6格范围内可攻击的实体（排除友方）
-		Stream<Entity> stream = EntityUtils.getAttackableEntities()
-			.filter(e -> MC.player.squaredDistanceTo(e) <= 36)
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities()
+			.filter(e -> EntityUtils.distanceToHitboxSq(e) <= 36)
 			.filter(e -> e != friend);
 		
 		// 应用实体过滤规则
@@ -230,12 +236,12 @@ public final class ProtectHack extends Hack
 		
 		// 选择距离最近的敌方实体
 		enemy = stream
-			.min(Comparator.comparingDouble(e -> MC.player.squaredDistanceTo(e)))
+			.min(Comparator.comparingDouble(EntityUtils::distanceToHitboxSq))
 			.orElse(null);
 		
 		// 确定当前目标：有敌方则攻击敌方，无敌方则跟随友方
 		Entity target =
-			enemy == null || MC.player.squaredDistanceTo(friend) >= 24 * 24
+			enemy == null || EntityUtils.distanceToHitboxSq(friend) >= 24 * 24
 				? friend : enemy;
 		
 		// 目标距离阈值：敌方3格，友方2格
@@ -259,7 +265,8 @@ public final class ProtectHack extends Hack
 			{
 				PathProcessor.lockControls(); // 锁定移动控制
 				// 客户端侧朝向目标中心
-				WURST.getRotationFaker().faceVectorClient(target.getBoundingBox().getCenter());
+				WURST.getRotationFaker()
+					.faceVectorClient(target.getBoundingBox().getCenter());
 				pathFinder.think(); // 寻路思考
 				pathFinder.formatPath(); // 格式化路径
 				processor = pathFinder.getProcessor(); // 获取路径处理器
@@ -271,7 +278,7 @@ public final class ProtectHack extends Hack
 				processor.process(); // 处理路径移动
 				ticksProcessing++; // 累计寻路计时
 			}
-		// 基础跟随模式逻辑（无AI）
+			// 基础跟随模式逻辑（无AI）
 		}else
 		{
 			// 撞到方块且在地面 → 自动跳跃
@@ -304,8 +311,10 @@ public final class ProtectHack extends Hack
 			}
 			
 			// 朝向目标并跟随（距离超过阈值时按住前进键）
-			WURST.getRotationFaker().faceVectorClient(target.getBoundingBox().getCenter());
-			MC.options.forwardKey.setPressed(MC.player.distanceTo(target) > (target == friend ? distanceF : distanceE));
+			WURST.getRotationFaker()
+				.faceVectorClient(target.getBoundingBox().getCenter());
+			MC.options.forwardKey.setPressed(MC.player.distanceTo(
+				target) > (target == friend ? distanceF : distanceE));
 		}
 		
 		// 攻击敌方实体逻辑
@@ -339,7 +348,9 @@ public final class ProtectHack extends Hack
 	
 	/**
 	 * 设置保护目标（友方实体）
-	 * @param friend 要保护的实体
+	 *
+	 * @param friend
+	 *            要保护的实体
 	 */
 	public void setFriend(Entity friend)
 	{
@@ -366,7 +377,8 @@ public final class ProtectHack extends Hack
 		protected boolean checkDone()
 		{
 			// 寻路完成判定：与目标实体距离≤设定阈值
-			return done = entity.squaredDistanceTo(Vec3d.ofCenter(current)) <= distanceSq;
+			return done =
+				entity.squaredDistanceTo(Vec3d.ofCenter(current)) <= distanceSq;
 		}
 		
 		@Override

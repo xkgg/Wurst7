@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -31,13 +31,11 @@ public final class BindsCmd extends Command
 {
 	public BindsCmd()
 	{
-		super("binds", "允许你通过聊天管理按键绑定。",
-			".binds add <按键> <hack>", ".binds add <按键> <命令>",
-			".binds remove <按键>", ".binds list [<页码>]",
+		super("binds", "允许你通过聊天管理按键绑定。", ".binds add <按键> <hack>",
+			".binds add <按键> <命令>", ".binds remove <按键>", ".binds list [<页码>]",
 			".binds load-profile <文件>", ".binds save-profile <文件>",
-			".binds list-profiles [<页码>]", ".binds remove-all",
-			".binds reset", "多个hack/命令必须用 ';' 分隔。",
-			"配置文件保存在 '.minecraft/wurst/keybinds' 中。");
+			".binds list-profiles [<页码>]", ".binds remove-all", ".binds reset",
+			"多个hack/命令必须用 ';' 分隔。", "配置文件保存在 '.minecraft/wurst/keybinds' 中。");
 	}
 	
 	@Override
@@ -119,10 +117,12 @@ public final class BindsCmd extends Command
 	{
 		String key = displayKey.toLowerCase();
 		
-		String prefix = "key.keyboard.";
-		if(!key.startsWith(prefix))
-			key = prefix + key;
-		
+		if(!key.startsWith("key.mouse.") && !key.startsWith("key.keyboard."))
+			if(key.startsWith("mouse."))
+				key = "key." + key;
+			else
+				key = "key.keyboard." + key;
+			
 		try
 		{
 			InputUtil.fromTranslationKey(key);
@@ -200,8 +200,7 @@ public final class BindsCmd extends Command
 		}catch(JsonException e)
 		{
 			e.printStackTrace();
-			throw new CmdError(
-				"配置文件 '" + name + "' 已损坏: " + e.getMessage());
+			throw new CmdError("配置文件 '" + name + "' 已损坏: " + e.getMessage());
 			
 		}catch(IOException e)
 		{
@@ -257,8 +256,7 @@ public final class BindsCmd extends Command
 		int start = (page - 1) * 8;
 		int end = Math.min(page * 8, files.size());
 		
-		ChatUtils
-			.message("按键绑定配置文件列表 (第 " + page + "/" + pages + " 页)");
+		ChatUtils.message("按键绑定配置文件列表 (第 " + page + "/" + pages + " 页)");
 		for(int i = start; i < end; i++)
 			ChatUtils.message(files.get(i).getFileName().toString());
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -34,25 +34,19 @@ public final class MassTpaHack extends Hack
 	private static final Pattern ALLOWED_COMMANDS =
 		Pattern.compile("^/+[a-zA-Z0-9_\\-]+$");
 	
-	private final TextFieldSetting commandSetting =
-		new TextFieldSetting("命令",
-			"用于传送的命令。\n"
-				+ "示例: /tp, /tpa, /tpahere, /tpo",
-			"/tpa",
-			s -> s.length() < 64 && ALLOWED_COMMANDS.matcher(s).matches());
+	private final TextFieldSetting commandSetting = new TextFieldSetting("命令",
+		"用于传送的命令。\n" + "示例: /tp, /tpa, /tpahere, /tpo", "/tpa",
+		s -> s.length() < 64 && ALLOWED_COMMANDS.matcher(s).matches());
 	
-	private final SliderSetting delay = new SliderSetting("延迟",
-		"每次传送请求之间的延迟。", 20, 1, 200, 1,
-		ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1 刻"));
+	private final SliderSetting delay =
+		new SliderSetting("延迟", "每次传送请求之间的延迟。", 20, 1, 200, 1,
+			ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1 刻"));
 	
-	private final CheckboxSetting ignoreErrors =
-		new CheckboxSetting("忽略错误",
-			"是否忽略服务器发送的消息，这些消息告诉你传送命令无效或你没有使用它的权限。",
-			false);
+	private final CheckboxSetting ignoreErrors = new CheckboxSetting("忽略错误",
+		"是否忽略服务器发送的消息，这些消息告诉你传送命令无效或你没有使用它的权限。", false);
 	
-	private final CheckboxSetting stopWhenAccepted = new CheckboxSetting(
-		"被接受时停止", "当有人接受其中一个传送请求时，是否停止发送更多的传送请求。",
-			true);
+	private final CheckboxSetting stopWhenAccepted =
+		new CheckboxSetting("被接受时停止", "当有人接受其中一个传送请求时，是否停止发送更多的传送请求。", true);
 	
 	private final Random random = new Random();
 	private final ArrayList<String> players = new ArrayList<>();

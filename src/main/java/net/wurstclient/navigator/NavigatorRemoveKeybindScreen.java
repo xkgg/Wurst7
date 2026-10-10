@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -22,6 +22,7 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;
 import net.wurstclient.WurstClient;
 import net.wurstclient.clickgui.ClickGui;
+import net.wurstclient.keybinds.Keybind;
 import net.wurstclient.keybinds.PossibleKeybind;
 
 public class NavigatorRemoveKeybindScreen extends NavigatorScreen
@@ -175,8 +176,9 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 			drawBox(context, x1, y1, x2, y2, buttonColor);
 			
 			// text
-			context.drawTextWithShadow(tr, key.replace("key.keyboard.", "")
-				+ ": " + keybind.getDescription(), x1 + 1, y1 + 1, txtColor);
+			context.drawTextWithShadow(tr,
+				Keybind.getDisplayKey(key) + ": " + keybind.getDescription(),
+				x1 + 1, y1 + 1, txtColor);
 			context.drawTextWithShadow(tr, keybind.getCommand(), x1 + 1,
 				y1 + 1 + tr.fontHeight, txtColor);
 		}

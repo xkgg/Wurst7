@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -31,7 +31,7 @@ public enum BlockPlacer
 	public static boolean placeOneBlock(BlockPos pos)
 	{
 		BlockPlacingParams params = getBlockPlacingParams(pos);
-		if(params == null)
+		if(params == null || params.requiresSneaking)
 			return false;
 		
 		// face block
@@ -62,6 +62,8 @@ public enum BlockPlacer
 			// the block, so we can just use BlockBreaker to get them
 			BlockBreakingParams breakParams =
 				BlockBreaker.getBlockBreakingParams(pos);
+			boolean requiresSneaking =
+				BlockUtils.isInteractive(BlockUtils.getState(pos));
 			
 			// should never happen, but just in case
 			if(breakParams == null)
@@ -69,7 +71,7 @@ public enum BlockPlacer
 			
 			return new BlockPlacingParams(pos, breakParams.side(),
 				breakParams.hitVec(), breakParams.distanceSq(),
-				breakParams.lineOfSight());
+				breakParams.lineOfSight(), requiresSneaking);
 		}
 		
 		Direction[] sides = Direction.values();
@@ -103,8 +105,9 @@ public enum BlockPlacer
 		double distanceSqToPosVec = eyesPos.squaredDistanceTo(posVec);
 		double[] distancesSq = new double[sides.length];
 		boolean[] linesOfSight = new boolean[sides.length];
+		boolean[] interactive = new boolean[sides.length];
 		
-		// calculate distances and line of sight
+		// calculate distances, interactivity, and line of sight
 		for(int i = 0; i < sides.length; i++)
 		{
 			// skip unusable sides
@@ -116,6 +119,10 @@ public enum BlockPlacer
 			
 			distancesSq[i] = eyesPos.squaredDistanceTo(hitVecs[i]);
 			
+			BlockPos neighbor = pos.offset(sides[i]);
+			interactive[i] =
+				BlockUtils.isInteractive(BlockUtils.getState(neighbor));
+			
 			// to place against a neighbor in front of the block, we would
 			// have to place against that neighbor's rear face, which can't
 			// possibly have line of sight
@@ -126,13 +133,28 @@ public enum BlockPlacer
 		}
 		
 		// decide which side to use
-		Direction side = sides[0];
+		Direction side = hitVecs[0] != null ? sides[0] : null;
 		for(int i = 1; i < sides.length; i++)
 		{
-			int bestSide = side.ordinal();
-			
 			// skip unusable sides
 			if(hitVecs[i] == null)
+				continue;
+			
+			if(side == null)
+			{
+				side = sides[i];
+				continue;
+			}
+			
+			int bestSide = side.ordinal();
+			
+			if(interactive[bestSide] && !interactive[i])
+			{
+				side = sides[i];
+				continue;
+			}
+			
+			if(!interactive[bestSide] && interactive[i])
 				continue;
 			
 			// prefer sides with LOS
@@ -151,17 +173,24 @@ public enum BlockPlacer
 		}
 		
 		// if no usable side was found, return null
-		if(hitVecs[side.ordinal()] == null)
+		if(side == null || hitVecs[side.ordinal()] == null)
 			return null;
 		
 		return new BlockPlacingParams(pos.offset(side), side.getOpposite(),
 			hitVecs[side.ordinal()], distancesSq[side.ordinal()],
-			linesOfSight[side.ordinal()]);
+			linesOfSight[side.ordinal()], interactive[side.ordinal()]);
 	}
 	
 	public static record BlockPlacingParams(BlockPos neighbor, Direction side,
-		Vec3d hitVec, double distanceSq, boolean lineOfSight)
+		Vec3d hitVec, double distanceSq, boolean lineOfSight,
+		boolean requiresSneaking)
 	{
+		public BlockPlacingParams(BlockPos neighbor, Direction side,
+			Vec3d hitVec, double distanceSq, boolean lineOfSight)
+		{
+			this(neighbor, side, hitVec, distanceSq, lineOfSight, false);
+		}
+		
 		public BlockHitResult toHitResult()
 		{
 			return new BlockHitResult(hitVec, side, neighbor, false);

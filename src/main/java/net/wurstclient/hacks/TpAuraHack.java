@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -31,7 +31,8 @@ import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"传送光环", "TpAura", "tp aura", "EnderAura", "Ender-Aura", "ender aura"})
+@SearchTags({"传送光环", "TpAura", "tp aura", "EnderAura", "Ender-Aura",
+	"ender aura"})
 public final class TpAuraHack extends Hack implements UpdateListener
 {
 	private final Random random = new Random();
@@ -43,8 +44,7 @@ public final class TpAuraHack extends Hack implements UpdateListener
 		new AttackSpeedSliderSetting();
 	
 	private final EnumSetting<Priority> priority = new EnumSetting<>("优先级",
-		"决定优先攻击哪个实体。\n"
-			+ "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
+		"决定优先攻击哪个实体。\n" + "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
 			+ "\u00a7l角度\u00a7r - 攻击需要最少头部移动的实体。\n"
 			+ "\u00a7l血量\u00a7r - 攻击最弱的实体。",
 		Priority.values(), Priority.ANGLE);
@@ -56,7 +56,7 @@ public final class TpAuraHack extends Hack implements UpdateListener
 		new PauseAttackOnContainersSetting(true);
 	
 	private final EntityFilterList entityFilters =
-		EntityFilterList.genericCombat();
+		EntityFilterList.genericMeleeCombat();
 	
 	public TpAuraHack()
 	{
@@ -109,9 +109,10 @@ public final class TpAuraHack extends Hack implements UpdateListener
 		ClientPlayerEntity player = MC.player;
 		
 		// set entity
-		Stream<Entity> stream = EntityUtils.getAttackableEntities();
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities();
 		double rangeSq = Math.pow(range.getValue(), 2);
-		stream = stream.filter(e -> MC.player.squaredDistanceTo(e) <= rangeSq);
+		stream =
+			stream.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
 		
 		stream = entityFilters.applyTo(stream);
 		
@@ -141,7 +142,7 @@ public final class TpAuraHack extends Hack implements UpdateListener
 	
 	private enum Priority
 	{
-		DISTANCE("距离", e -> MC.player.squaredDistanceTo(e)),
+		DISTANCE("距离", EntityUtils::distanceToHitboxSq),
 		
 		ANGLE("角度",
 			e -> RotationUtils

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,9 +18,8 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 @DontBlock
 public final class AutoReconnectHack extends Hack
 {
-	private final SliderSetting waitTime =
-		new SliderSetting("等待时间", "重连前的等待时间（秒）。",
-			5, 0, 60, 0.5, ValueDisplay.DECIMAL.withSuffix("秒"));
+	private final SliderSetting waitTime = new SliderSetting("等待时间",
+		"重连前的等待时间（秒）。", 5, 0, 60, 0.5, ValueDisplay.DECIMAL.withSuffix("秒"));
 	
 	public AutoReconnectHack()
 	{

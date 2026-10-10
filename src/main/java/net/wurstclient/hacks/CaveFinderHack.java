@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -47,21 +47,19 @@ import net.wurstclient.util.chunk.ChunkSearcherCoordinator;
 public final class CaveFinderHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final ChunkAreaSetting area = new ChunkAreaSetting("区域",
-		"玩家周围要搜索的区域。\n"
-			+ "值越高，需要越快的计算机。");
+	private final ChunkAreaSetting area =
+		new ChunkAreaSetting("区域", "玩家周围要搜索的区域。\n" + "值越高，需要越快的计算机。");
 	
-	private final SliderSetting limit = new SliderSetting("限制",
-		"要显示的最大方块数量。\n"
-			+ "值越高，需要越快的计算机。",
-		5, 3, 6, 1, ValueDisplay.LOGARITHMIC);
+	private final SliderSetting limit =
+		new SliderSetting("限制", "要显示的最大方块数量。\n" + "值越高，需要越快的计算机。", 5, 3, 6, 1,
+			ValueDisplay.LOGARITHMIC);
 	
-	private final ColorSetting color = new ColorSetting("颜色",
-		"洞穴将以此颜色突出显示。", Color.RED);
+	private final ColorSetting color =
+		new ColorSetting("颜色", "洞穴将以此颜色突出显示。", Color.RED);
 	
-	private final SliderSetting opacity = new SliderSetting("不透明度",
-		"突出显示的不透明度。\n" + "0 = 呼吸动画", 0,
-		0, 1, 0.01, ValueDisplay.PERCENTAGE.withLabel(0, "呼吸"));
+	private final SliderSetting opacity =
+		new SliderSetting("不透明度", "突出显示的不透明度。\n" + "0 = 呼吸动画", 0, 0, 1, 0.01,
+			ValueDisplay.PERCENTAGE.withLabel(0, "呼吸"));
 	
 	private int prevLimit;
 	private boolean notify;
@@ -216,9 +214,9 @@ public final class CaveFinderHack extends Hack
 			notify = true;
 		else if(notify)
 		{
-			ChatUtils.warning("洞穴查找发现了\u00a7l大量\u00a7r方块!"
-				+ " 为防止卡顿，只会显示最近的\u00a76"
-				+ limit.getValueString() + "\u00a7r个结果。");
+			ChatUtils
+				.warning("洞穴查找发现了\u00a7l大量\u00a7r方块!" + " 为防止卡顿，只会显示最近的\u00a76"
+					+ limit.getValueString() + "\u00a7r个结果。");
 			notify = false;
 		}
 		

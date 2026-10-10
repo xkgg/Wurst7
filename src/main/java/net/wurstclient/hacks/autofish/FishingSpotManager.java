@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -30,24 +30,18 @@ public final class FishingSpotManager
 {
 	private static final MinecraftClient MC = WurstClient.MC;
 	
-	private final CheckboxSetting mcmmoMode = new CheckboxSetting("mcMMO模式",
-		"如果启用，自动钓鱼将在两个不同的钓鱼点之间循环"
-			+ " 以绕过mcMMO的过度钓鱼机制。\n\n"
-			+ "如果禁用此选项，所有其他mcMMO设置将无效。",
-		false);
+	private final CheckboxSetting mcmmoMode =
+		new CheckboxSetting("mcMMO模式", "如果启用，自动钓鱼将在两个不同的钓鱼点之间循环"
+			+ " 以绕过mcMMO的过度钓鱼机制。\n\n" + "如果禁用此选项，所有其他mcMMO设置将无效。", false);
 	
 	private final SliderSetting mcmmoRange = new SliderSetting("mcMMO范围",
-		"mcMMO的MoveRange配置选项的值。这是两个钓鱼点之间需要的最小"
-			+ " 距离，以避免过度钓鱼。\n\n"
+		"mcMMO的MoveRange配置选项的值。这是两个钓鱼点之间需要的最小" + " 距离，以避免过度钓鱼。\n\n"
 			+ "mcMMO只关心浮标的位置，所以你不需要移动你的角色，除非存在其他防挂机插件。",
 		3, 1, 50, 1, ValueDisplay.INTEGER.withSuffix(" 方块"));
 	
-	private final CheckboxSetting mcmmoRangeBug = 
-		new CheckboxSetting("mcMMO范围bug",
-			"在撰写本文时，mcMMO的范围计算中存在一个bug，" 
-				+ " 这意味着默认的3方块范围实际上只有2方块。\n\n"
-				+ "如果他们修复了这个问题，请取消勾选此框。",
-		true);
+	private final CheckboxSetting mcmmoRangeBug =
+		new CheckboxSetting("mcMMO范围bug", "在撰写本文时，mcMMO的范围计算中存在一个bug，"
+			+ " 这意味着默认的3方块范围实际上只有2方块。\n\n" + "如果他们修复了这个问题，请取消勾选此框。", true);
 	
 	private final SliderSetting mcmmoLimit = new SliderSetting("mcMMO限制",
 		"mcMMO的OverFishLimit配置选项的值。过度钓鱼从"
@@ -93,10 +87,8 @@ public final class FishingSpotManager
 			if(spot2MsgShown)
 				return false;
 			
-			ChatUtils
-				.message("自动钓鱼mcMMO模式需要另一个钓鱼点。");
-			ChatUtils.message("移动你的相机（或玩家，如果必要）"
-				+ " 使浮标落在红色框外，然后投掷鱼竿。");
+			ChatUtils.message("自动钓鱼mcMMO模式需要另一个钓鱼点。");
+			ChatUtils.message("移动你的相机（或玩家，如果必要）" + " 使浮标落在红色框外，然后投掷鱼竿。");
 			spot2MsgShown = true;
 			setupDoneMsgShown = false;
 			return false;
@@ -106,8 +98,7 @@ public final class FishingSpotManager
 		// 确认设置完成
 		if(!setupDoneMsgShown)
 		{
-			ChatUtils.message("设置完成！自动钓鱼现在将自动运行"
-				+ " 并根据需要在钓鱼点之间切换。");
+			ChatUtils.message("设置完成！自动钓鱼现在将自动运行" + " 并根据需要在钓鱼点之间切换。");
 			setupDoneMsgShown = true;
 		}
 		

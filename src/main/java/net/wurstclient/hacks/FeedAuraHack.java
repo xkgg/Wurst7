@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -43,23 +43,18 @@ import net.wurstclient.util.RotationUtils;
 public final class FeedAuraHack extends Hack
 	implements UpdateListener, HandleInputListener, RenderListener
 {
-	private final SliderSetting range = new SliderSetting("范围",
-		"决定喂养光环可以喂食动物的距离。\n"
-			+ "任何超出指定值的动物都不会被喂食。",
-		5, 1, 10, 0.05, ValueDisplay.DECIMAL);
+	private final SliderSetting range =
+		new SliderSetting("范围", "决定喂养光环可以喂食动物的距离。\n" + "任何超出指定值的动物都不会被喂食。", 5,
+			1, 10, 0.05, ValueDisplay.DECIMAL);
 	
 	private final FilterBabiesSetting filterBabies =
-		new FilterBabiesSetting("不会喂食幼年动物。\n"
-			+ "节省食物，但不会加速幼年动物的生长。", true);
+		new FilterBabiesSetting("不会喂食幼年动物。\n" + "节省食物，但不会加速幼年动物的生长。", true);
 	
 	private final CheckboxSetting filterUntamed =
-		new CheckboxSetting("过滤未驯服",
-			"不会喂食尚未被驯服的可驯服动物。", false);
+		new CheckboxSetting("过滤未驯服", "不会喂食尚未被驯服的可驯服动物。", false);
 	
-	private final CheckboxSetting filterHorses = new CheckboxSetting(
-		"过滤马类动物",
-		"不会喂食马、羊驼、驴等。\n"
-			+ "推荐使用，因为Minecraft bug MC-233276会导致这些动物无限消耗物品。",
+	private final CheckboxSetting filterHorses = new CheckboxSetting("过滤马类动物",
+		"不会喂食马、羊驼、驴等。\n" + "推荐使用，因为Minecraft bug MC-233276会导致这些动物无限消耗物品。",
 		true);
 	
 	private final Random random = new Random();
@@ -107,12 +102,11 @@ public final class FeedAuraHack extends Hack
 	@Override
 	public void onUpdate()
 	{
-		ClientPlayerEntity player = MC.player;
-		ItemStack heldStack = player.getInventory().getMainHandStack();
+		ItemStack heldStack = MC.player.getInventory().getMainHandStack();
 		
 		double rangeSq = range.getValueSq();
 		Stream<AnimalEntity> stream = EntityUtils.getValidAnimals()
-			.filter(e -> player.squaredDistanceTo(e) <= rangeSq)
+			.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq)
 			.filter(e -> e.isBreedingItem(heldStack))
 			.filter(AnimalEntity::canEat);
 		

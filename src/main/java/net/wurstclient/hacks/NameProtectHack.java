@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -29,7 +29,9 @@ public final class NameProtectHack extends Hack
 	
 	/**
 	 * 处理文本中的玩家名称，替换为保护后的别名
-	 * @param string 原始文本（如聊天消息、实体名称标签等）
+	 *
+	 * @param string
+	 *            原始文本（如聊天消息、实体名称标签等）
 	 * @return 替换后的保护文本
 	 */
 	public String protect(String string)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -29,7 +29,7 @@ import net.wurstclient.settings.EnumSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@SearchTags({"自动钓鱼","AutoFishing", "auto fishing", "AutoFisher", "auto fisher",
+@SearchTags({"自动钓鱼", "AutoFishing", "auto fishing", "AutoFisher", "auto fisher",
 	"AFKFishBot", "afk fish bot", "AFKFishingBot", "afk fishing bot",
 	"AFKFisherBot", "afk fisher bot"})
 public final class AutoFishHack extends Hack
@@ -46,26 +46,24 @@ public final class AutoFishHack extends Hack
 	
 	// 有效范围（仅声音模式生效）
 	private final SliderSetting validRange = new SliderSetting("有效范围",
-		"超出此范围的咬钩音效将被忽略。\n\n"
-			+ "若咬钩未被检测到，可增大此数值；若检测到他人的咬钩，可减小此数值。\n\n"
+		"超出此范围的咬钩音效将被忽略。\n\n" + "若咬钩未被检测到，可增大此数值；若检测到他人的咬钩，可减小此数值。\n\n"
 			+ "当「咬钩检测模式」设为「实体」时，此设置无效。",
 		1.5, 0.25, 8, 0.25, ValueDisplay.DECIMAL);
 	
 	// 上钩延迟（检测到咬钩后等待多久收杆）
-	private final SliderSetting catchDelay = new SliderSetting("上钩延迟",
-		"检测到咬钩后，自动钓鱼将等待该时长再收杆。", 0, 0, 60,
-		1, ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1刻"));
+	private final SliderSetting catchDelay =
+		new SliderSetting("上钩延迟", "检测到咬钩后，自动钓鱼将等待该时长再收杆。", 0, 0, 60, 1,
+			ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1刻"));
 	
 	// 重试延迟（抛竿/收杆失败后等待多久重试）
-	private final SliderSetting retryDelay = new SliderSetting("重试延迟",
-		"若抛竿或收杆操作失败，自动钓鱼将等待该时长后重试。",
-		15, 0, 100, 1,
-		ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1刻"));
+	private final SliderSetting retryDelay =
+		new SliderSetting("重试延迟", "若抛竿或收杆操作失败，自动钓鱼将等待该时长后重试。", 15, 0, 100, 1,
+			ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1刻"));
 	
 	// 耐心值（无咬钩时等待多久收杆重新抛竿）
-	private final SliderSetting patience = new SliderSetting("耐心时长",
-		"若长时间未检测到咬钩，自动钓鱼将等待该时长后收杆。",
-		60, 10, 120, 1, ValueDisplay.INTEGER.withSuffix("秒"));
+	private final SliderSetting patience =
+		new SliderSetting("耐心时长", "若长时间未检测到咬钩，自动钓鱼将等待该时长后收杆。", 60, 10, 120, 1,
+			ValueDisplay.INTEGER.withSuffix("秒"));
 	
 	// 浅水区警告开关
 	private final ShallowWaterWarningCheckbox shallowWaterWarning =
@@ -187,7 +185,7 @@ public final class AutoFishHack extends Hack
 			// 重置咬钩标记
 			biteDetected = false;
 			
-		// 鱼钩勾到实体：直接设置收杆延迟
+			// 鱼钩勾到实体：直接设置收杆延迟
 		}else if(MC.player.fishHook.getHookedEntity() != null)
 			reelInTimer = catchDelay.getValueI();
 		
@@ -214,7 +212,9 @@ public final class AutoFishHack extends Hack
 	
 	/**
 	 * 处理声音模式的数据包（检测咬钩音效）
-	 * @param event 数据包输入事件
+	 *
+	 * @param event
+	 *            数据包输入事件
 	 */
 	private void processSoundUpdate(PacketInputEvent event)
 	{
@@ -248,7 +248,9 @@ public final class AutoFishHack extends Hack
 	
 	/**
 	 * 处理实体模式的数据包（检测鱼钩实体更新）
-	 * @param event 数据包输入事件
+	 *
+	 * @param event
+	 *            数据包输入事件
 	 */
 	private void processEntityUpdate(PacketInputEvent event)
 	{
@@ -282,6 +284,7 @@ public final class AutoFishHack extends Hack
 	
 	/**
 	 * 判断玩家是否正在钓鱼
+	 *
 	 * @return 钓鱼状态
 	 */
 	private boolean isFishing()

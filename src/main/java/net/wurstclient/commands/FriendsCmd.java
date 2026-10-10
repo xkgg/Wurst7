@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -22,9 +22,7 @@ public class FriendsCmd extends Command
 	private static final int FRIENDS_PER_PAGE = 8;
 	
 	private final CheckboxSetting middleClickFriends =
-		new CheckboxSetting("中键添加好友",
-			"通过鼠标中键点击玩家来添加/移除好友。",
-			true);
+		new CheckboxSetting("中键添加好友", "通过鼠标中键点击玩家来添加/移除好友。", true);
 	
 	public FriendsCmd()
 	{
@@ -71,8 +69,7 @@ public class FriendsCmd extends Command
 		
 		String name = args[1];
 		if(WURST.getFriends().contains(name))
-			throw new CmdError(
-				"\"" + name + "\" 已经在你的好友列表中。");
+			throw new CmdError("\"" + name + "\" 已经在你的好友列表中。");
 		
 		WURST.getFriends().addAndSave(name);
 		ChatUtils.message("已添加好友 \"" + name + "\".");

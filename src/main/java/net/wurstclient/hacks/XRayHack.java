@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -42,9 +42,7 @@ public final class XRayHack extends Hack implements UpdateListener,
 	ShouldDrawSideListener, RenderBlockEntityListener
 {
 	private final BlockListSetting ores = new BlockListSetting("方块",
-		"矿透将显示的方块列表。它们不一定只是矿石" 
-			+ " - 你可以添加任何你想要的方块。\n\n"
-			+ "更改此设置后请记得重启矿透。",
+		"矿透将显示的方块列表。它们不一定只是矿石" + " - 你可以添加任何你想要的方块。\n\n" + "更改此设置后请记得重启矿透。",
 		"minecraft:amethyst_cluster", "minecraft:ancient_debris",
 		"minecraft:anvil", "minecraft:beacon", "minecraft:bone_block",
 		"minecraft:bookshelf", "minecraft:brewing_stand",
@@ -75,17 +73,12 @@ public final class XRayHack extends Hack implements UpdateListener,
 		"minecraft:tnt", "minecraft:torch", "minecraft:trapped_chest",
 		"minecraft:wall_torch", "minecraft:water");
 	
-	private final CheckboxSetting onlyExposed = new CheckboxSetting(
-		"只显示暴露的",
-		"只显示在洞穴中可见的矿石。这可以帮助对抗反X光插件。\n\n"
-			+ "更改此设置后请记得重启X光。",
-		false);
+	private final CheckboxSetting onlyExposed = new CheckboxSetting("只显示暴露的",
+		"只显示在洞穴中可见的矿石。这可以帮助对抗反X光插件。\n\n" + "更改此设置后请记得重启X光。", false);
 	
 	private final SliderSetting opacity = new SliderSetting("透明度",
-		"矿透启用时非矿石方块的透明度。\n\n"
-			+ "安装Sodium时不起作用。\n\n"
-			+ "更改此设置后请记得重启矿透。",
-		0, 0, 0.99, 0.01, ValueDisplay.PERCENTAGE.withLabel(0, "off"));
+		"矿透启用时非矿石方块的透明度。\n\n" + "安装Sodium时不起作用。\n\n" + "更改此设置后请记得重启矿透。", 0, 0,
+		0.99, 0.01, ValueDisplay.PERCENTAGE.withLabel(0, "off"));
 	
 	private final String optiFineWarning;
 	private final String renderName =
@@ -247,4 +240,3 @@ public final class XRayHack extends Hack implements UpdateListener,
 	
 	// See AbstractBlockRenderContextMixin, RenderLayersMixin
 }
-

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -29,13 +29,11 @@ import net.wurstclient.settings.CheckboxSetting;
 	"inventory move", "MenuWalk", "menu walk"})
 public final class InvWalkHack extends Hack implements UpdateListener
 {
-	private final CheckboxSetting allowClickGUI =
-		new CheckboxSetting("允许ClickGUI",
-			"description.wurst.setting.invwalk.allow_clickgui", true);
+	private final CheckboxSetting allowClickGUI = new CheckboxSetting(
+		"允许ClickGUI", "description.wurst.setting.invwalk.allow_clickgui", true);
 	
-	private final CheckboxSetting allowOther =
-		new CheckboxSetting("允许其他界面",
-			"description.wurst.setting.invwalk.allow_other", true);
+	private final CheckboxSetting allowOther = new CheckboxSetting("允许其他界面",
+		"description.wurst.setting.invwalk.allow_other", true);
 	
 	private final CheckboxSetting allowSneak =
 		new CheckboxSetting("允许潜行键", true);

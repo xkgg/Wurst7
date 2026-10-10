@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -27,6 +27,7 @@ import net.wurstclient.settings.EspBoxSizeSetting;
 import net.wurstclient.settings.EspStyleSetting;
 import net.wurstclient.settings.EspStyleSetting.EspStyle;
 import net.wurstclient.settings.filterlists.EntityFilterList;
+import net.wurstclient.settings.filters.FilterCreativeSetting;
 import net.wurstclient.settings.filters.FilterInvisibleSetting;
 import net.wurstclient.settings.filters.FilterSleepingSetting;
 import net.wurstclient.util.EntityUtils;
@@ -42,13 +43,14 @@ public final class PlayerEspHack extends Hack implements UpdateListener,
 	private final EspStyleSetting style =
 		new EspStyleSetting(EspStyle.LINES_AND_BOXES);
 	
-	private final EspBoxSizeSetting boxSize = new EspBoxSizeSetting(
-		"\u00a7l精确\u00a7r 模式显示每个玩家的确切碰撞箱。\n"
+	private final EspBoxSizeSetting boxSize =
+		new EspBoxSizeSetting("\u00a7l精确\u00a7r 模式显示每个玩家的确切碰撞箱。\n"
 			+ "\u00a7l精美\u00a7r 模式显示稍大的方块，看起来更好。");
 	
-	private final EntityFilterList entityFilters = new EntityFilterList(
-		new FilterSleepingSetting("不显示睡觉的玩家。", false),
-		new FilterInvisibleSetting("不显示隐形的玩家。", false));
+	private final EntityFilterList entityFilters =
+		new EntityFilterList(FilterCreativeSetting.genericVision(false),
+			new FilterSleepingSetting("不显示睡觉的玩家。", false),
+			new FilterInvisibleSetting("不显示隐形的玩家。", false));
 	
 	private final ArrayList<PlayerEntity> players = new ArrayList<>();
 	

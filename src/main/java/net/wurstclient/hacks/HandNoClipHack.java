@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,10 +18,9 @@ import net.wurstclient.util.BlockUtils;
 public final class HandNoClipHack extends Hack
 {
 	private final BlockListSetting blocks = new BlockListSetting("方块",
-		"你希望穿墙能到达的方块。", "minecraft:barrel",
-		"minecraft:black_shulker_box", "minecraft:blue_shulker_box",
-		"minecraft:brown_shulker_box", "minecraft:chest",
-		"minecraft:cyan_shulker_box", "minecraft:dispenser",
+		"你希望穿墙能到达的方块。", "minecraft:barrel", "minecraft:black_shulker_box",
+		"minecraft:blue_shulker_box", "minecraft:brown_shulker_box",
+		"minecraft:chest", "minecraft:cyan_shulker_box", "minecraft:dispenser",
 		"minecraft:dropper", "minecraft:ender_chest",
 		"minecraft:gray_shulker_box", "minecraft:green_shulker_box",
 		"minecraft:hopper", "minecraft:light_blue_shulker_box",

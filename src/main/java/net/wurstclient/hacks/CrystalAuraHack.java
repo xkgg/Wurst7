@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -15,7 +15,6 @@ import java.util.stream.StreamSupport;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
@@ -40,6 +39,7 @@ import net.wurstclient.settings.SwingHandSetting.SwingHand;
 import net.wurstclient.settings.filterlists.CrystalAuraFilterList;
 import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.util.BlockUtils;
+import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.FakePlayerEntity;
 import net.wurstclient.util.InventoryUtils;
 import net.wurstclient.util.RotationUtils;
@@ -48,33 +48,24 @@ import net.wurstclient.util.RotationUtils;
 public final class CrystalAuraHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range = new SliderSetting("范围",
-		"决定末影水晶光环可以放置和引爆水晶的距离。",
-		6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		"决定末影水晶光环可以放置和引爆水晶的距离。", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting autoPlace = new CheckboxSetting(
-		"自动放置水晶",
-		"启用时，末影水晶光环会在有效实体附近自动放置水晶。\n"
-			+ "禁用时，末影水晶光环只会引爆手动放置的水晶。",
-		true);
+	private final CheckboxSetting autoPlace = new CheckboxSetting("自动放置水晶",
+		"启用时，末影水晶光环会在有效实体附近自动放置水晶。\n" + "禁用时，末影水晶光环只会引爆手动放置的水晶。", true);
 	
-	private final FacingSetting faceBlocks =
-		FacingSetting.withPacketSpam("面向水晶",
-			"末影水晶光环在放置和左键点击末影水晶时是否应该面向正确的方向。\n\n"
-				+ "速度较慢，但可以帮助应对反作弊插件。",
-			Facing.OFF);
+	private final FacingSetting faceBlocks = FacingSetting.withPacketSpam(
+		"面向水晶", "末影水晶光环在放置和左键点击末影水晶时是否应该面向正确的方向。\n\n" + "速度较慢，但可以帮助应对反作弊插件。",
+		Facing.OFF);
 	
-	private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"检查视线",
-		"确保你在放置或左键点击末影水晶时不会穿过方块。\n\n"
-			+ "速度较慢，但可以帮助应对反作弊插件。",
-		false);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检查视线",
+		"确保你在放置或左键点击末影水晶时不会穿过方块。\n\n" + "速度较慢，但可以帮助应对反作弊插件。", false);
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.CLIENT);
 	
 	private final EnumSetting<TakeItemsFrom> takeItemsFrom =
-		new EnumSetting<>("从何处获取物品", "在哪里寻找末影水晶。",
-			TakeItemsFrom.values(), TakeItemsFrom.INVENTORY);
+		new EnumSetting<>("从何处获取物品", "在哪里寻找末影水晶。", TakeItemsFrom.values(),
+			TakeItemsFrom.INVENTORY);
 	
 	private final EntityFilterList entityFilters =
 		CrystalAuraFilterList.create();
@@ -226,17 +217,16 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	
 	private ArrayList<Entity> getNearbyCrystals()
 	{
-		ClientPlayerEntity player = MC.player;
 		double rangeSq = Math.pow(range.getValue(), 2);
 		
-		Comparator<Entity> furthestFromPlayer = Comparator
-			.<Entity> comparingDouble(e -> MC.player.squaredDistanceTo(e))
-			.reversed();
+		Comparator<Entity> furthestFromPlayer =
+			Comparator.<Entity> comparingDouble(EntityUtils::distanceToHitboxSq)
+				.reversed();
 		
 		return StreamSupport.stream(MC.world.getEntities().spliterator(), true)
 			.filter(EndCrystalEntity.class::isInstance)
 			.filter(e -> !e.isRemoved())
-			.filter(e -> player.squaredDistanceTo(e) <= rangeSq)
+			.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq)
 			.sorted(furthestFromPlayer)
 			.collect(Collectors.toCollection(ArrayList::new));
 	}
@@ -245,9 +235,9 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	{
 		double rangeSq = Math.pow(range.getValue(), 2);
 		
-		Comparator<Entity> furthestFromPlayer = Comparator
-			.<Entity> comparingDouble(e -> MC.player.squaredDistanceTo(e))
-			.reversed();
+		Comparator<Entity> furthestFromPlayer =
+			Comparator.<Entity> comparingDouble(EntityUtils::distanceToHitboxSq)
+				.reversed();
 		
 		Stream<Entity> stream =
 			StreamSupport.stream(MC.world.getEntities().spliterator(), false)
@@ -257,7 +247,7 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 				.filter(e -> e != MC.player)
 				.filter(e -> !(e instanceof FakePlayerEntity))
 				.filter(e -> !WURST.getFriends().contains(e.getEntityName()))
-				.filter(e -> MC.player.squaredDistanceTo(e) <= rangeSq);
+				.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
 		
 		stream = entityFilters.applyTo(stream);
 		

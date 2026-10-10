@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -14,9 +14,12 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.AmbientEntity;
+import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PufferfishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -111,6 +114,9 @@ public final class RadarComponent extends Component
 			return 0xFF0000FF;
 		if(e instanceof PlayerEntity)
 			return 0xFFFF0000;
+		if(e instanceof Angerable || e instanceof PufferfishEntity
+			|| e instanceof PiglinEntity)
+			return 0xFFFFFF00;
 		if(e instanceof Monster)
 			return 0xFFFF8000;
 		if(e instanceof AnimalEntity || e instanceof AmbientEntity

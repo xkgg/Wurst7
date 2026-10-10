@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -14,8 +14,7 @@ import net.wurstclient.WurstClient;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.update.Version;
 
-@SearchTags({"更新日志", "Wurst更新", "发布说明", "新增内容",
-	"有什么新内容", "新功能", "最近添加的功能"})
+@SearchTags({"更新日志", "Wurst更新", "发布说明", "新增内容", "有什么新内容", "新功能", "最近添加的功能"})
 @DontBlock
 public final class ChangelogOtf extends OtherFeature
 {

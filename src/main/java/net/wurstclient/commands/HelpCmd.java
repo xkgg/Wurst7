@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -23,8 +23,7 @@ public final class HelpCmd extends Command
 	
 	public HelpCmd()
 	{
-		super("help", "显示命令的帮助或命令列表。",
-			".help <命令>", "列出命令: .help [<页码>]");
+		super("help", "显示命令的帮助或命令列表。", ".help <命令>", "列出命令: .help [<页码>]");
 	}
 	
 	@Override

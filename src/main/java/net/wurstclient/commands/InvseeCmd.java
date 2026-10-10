@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -23,9 +23,7 @@ public final class InvseeCmd extends Command implements RenderListener
 	
 	public InvseeCmd()
 	{
-		super("invsee",
-			"允许你查看其他玩家的部分背包。",
-			".invsee <玩家>");
+		super("invsee", "允许你查看其他玩家的部分背包。", ".invsee <玩家>");
 	}
 	
 	@Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,9 +9,12 @@ package net.wurstclient.settings.filters;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.PiglinEntity;
+import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.entity.passive.PufferfishEntity;
+import net.minecraft.entity.passive.WolfEntity;
+import net.wurstclient.util.MobDisposition;
 
 public final class FilterNeutralSetting extends AttackDetectingEntityFilter
 {
@@ -29,22 +32,34 @@ public final class FilterNeutralSetting extends AttackDetectingEntityFilter
 	@Override
 	public boolean onTest(Entity e)
 	{
-		return !(e instanceof Angerable || e instanceof PufferfishEntity
-			|| e instanceof PiglinEntity);
+		return !(e instanceof MobEntity mob
+			&& MobDisposition.of(mob) == MobDisposition.NEUTRAL);
 	}
 	
 	@Override
 	public boolean ifCalmTest(Entity e)
 	{
-		// special case for pufferfish
+		if(!(e instanceof MobEntity mob)
+			|| MobDisposition.of(mob) != MobDisposition.NEUTRAL)
+			return true;
+		
 		if(e instanceof PufferfishEntity pfe)
 			return pfe.getPuffState() > 0;
 		
-		if(e instanceof Angerable || e instanceof PiglinEntity)
-			if(e instanceof MobEntity me)
-				return me.isAttacking();
-			
-		return true;
+		if(e instanceof Angerable angerable && angerable.hasAngerTime())
+			return true;
+		
+		if(e instanceof WolfEntity wolf && wolf.isAttacking())
+			return true;
+		
+		if(e instanceof BeeEntity bee && bee.isAttacking())
+			return true;
+		
+		if(e instanceof EndermanEntity enderman
+			&& (enderman.isAngry() || enderman.isAttacking()))
+			return true;
+		
+		return mob.isAttacking();
 	}
 	
 	public static FilterNeutralSetting genericCombat(Mode selected)
@@ -67,4 +82,3 @@ public final class FilterNeutralSetting extends AttackDetectingEntityFilter
 		return new FilterNeutralSetting(description, null, onByDefault);
 	}
 }
-

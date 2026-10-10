@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -17,7 +17,6 @@ public final class CleanUpOtf extends OtherFeature
 {
 	public CleanUpOtf()
 	{
-		super("清理", "清理你的服务器列表。\n"
-			+ "要使用它，请在服务器选择屏幕上按'清理'按钮。");
+		super("清理", "清理你的服务器列表。\n" + "要使用它，请在服务器选择屏幕上按'清理'按钮。");
 	}
 }

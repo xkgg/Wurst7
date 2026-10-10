@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -35,21 +35,18 @@ import net.wurstclient.util.InventoryUtils;
 public final class AutoToolHack extends Hack
 	implements BlockBreakingProgressListener, UpdateListener
 {
-	private final CheckboxSetting useSwords = new CheckboxSetting("使用剑",
-		"使用剑来破坏树叶、蜘蛛网等。", false);
+	private final CheckboxSetting useSwords =
+		new CheckboxSetting("使用剑", "使用剑来破坏树叶、蜘蛛网等。", false);
 	
-	private final CheckboxSetting useHands = new CheckboxSetting("使用手",
-		"当没有找到适用的工具时，使用空手或不可损坏的物品。",
-		true);
+	private final CheckboxSetting useHands =
+		new CheckboxSetting("使用手", "当没有找到适用的工具时，使用空手或不可损坏的物品。", true);
 	
 	private final SliderSetting repairMode = new SliderSetting("修理模式",
-		"当工具的耐久度达到给定阈值时，防止使用工具，以便在它们损坏之前修理它们。\n"
-			+ "可以从 0（关闭）调整到 100 剩余使用次数。",
+		"当工具的耐久度达到给定阈值时，防止使用工具，以便在它们损坏之前修理它们。\n" + "可以从 0（关闭）调整到 100 剩余使用次数。",
 		0, 0, 100, 1, ValueDisplay.INTEGER.withLabel(0, "关闭"));
 	
-	private final CheckboxSetting switchBack = new CheckboxSetting(
-		"切换回", "使用工具后，自动切换回之前选择的物品栏。",
-		false);
+	private final CheckboxSetting switchBack =
+		new CheckboxSetting("切换回", "使用工具后，自动切换回之前选择的物品栏。", false);
 	
 	private int prevSelectedSlot;
 	

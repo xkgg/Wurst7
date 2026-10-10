@@ -77,6 +77,7 @@ dependencies {
 }
 
 import net.fabricmc.loom.util.Platform
+def loomExtension = extensions.getByName("loom")
 tasks.register('runEndToEndTest', JavaExec) {
 	dependsOn remapJar, downloadAssets
 	classpath.from configurations.productionRuntime
@@ -84,12 +85,12 @@ tasks.register('runEndToEndTest', JavaExec) {
 	workingDir = file("run")
 	
 	doFirst {
-		classpath.from loom.minecraftProvider.minecraftClientJar
+		classpath.from loomExtension.minecraftProvider.minecraftClientJar
 		workingDir.mkdirs()
 		
 		args(
-			"--assetIndex", loom.minecraftProvider.versionInfo.assetIndex().fabricId(loom.minecraftProvider.minecraftVersion()),
-			"--assetsDir", new File(loom.files.userCache, "assets").absolutePath,
+			"--assetIndex", loomExtension.minecraftProvider.versionInfo.assetIndex().fabricId(loomExtension.minecraftProvider.minecraftVersion()),
+			"--assetsDir", new File(loomExtension.files.userCache, "assets").absolutePath,
 			"--gameDir", workingDir.absolutePath
 		)
 		

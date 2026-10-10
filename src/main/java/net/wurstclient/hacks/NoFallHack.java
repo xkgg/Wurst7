@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -14,31 +14,36 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.settings.SliderSetting;
+import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
 @SearchTags({"无跌落伤害", "no fall"})
 public final class NoFallHack extends Hack implements UpdateListener
 {
-	private final CheckboxSetting allowElytra = new CheckboxSetting(
-		"允许鞘翅", "description.wurst.setting.nofall.allow_elytra", false);
+	private final CheckboxSetting allowElytra = new CheckboxSetting("允许鞘翅",
+		"description.wurst.setting.nofall.allow_elytra", false);
+	
+	private final SliderSetting minFallDistance = new SliderSetting("最小坠落距离",
+		"description.wurst.setting.nofall.min_fall_distance", 1, 0, 10, 0.1,
+		ValueDisplay.DECIMAL.withSuffix("米").withLabel(0, "关闭"));
+	
+	private final SliderSetting minFallDistanceElytra = new SliderSetting(
+		"鞘翅最小坠落距离", "description.wurst.setting.nofall.min_elytra_fall_distance",
+		2, 0, 10, 0.1, ValueDisplay.DECIMAL.withSuffix("米").withLabel(0, "关闭"));
 	
 	public NoFallHack()
 	{
 		super("无跌落伤害");
 		setCategory(Category.MOVEMENT);
 		addSetting(allowElytra);
+		addSetting(minFallDistance);
+		addSetting(minFallDistanceElytra);
 	}
 	
 	@Override
 	public String getRenderName()
 	{
-		ClientPlayerEntity player = MC.player;
-		if(player == null)
-			return getName();
-		
-		if(player.isFallFlying() && !allowElytra.isChecked())
-			return getName() + " (paused)";
-		
-		if(player.isCreative())
+		if(MC.player != null && isPaused())
 			return getName() + " (paused)";
 		
 		return getName();
@@ -60,23 +65,39 @@ public final class NoFallHack extends Hack implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
+		if(isPaused())
+			return;
+		
+		// send packet to stop fall damage
+		MC.player.networkHandler.sendPacket(new OnGroundOnly(true));
+	}
+	
+	private boolean isPaused()
+	{
 		// do nothing in creative mode, since there is no fall damage anyway
 		ClientPlayerEntity player = MC.player;
 		if(player.isCreative())
-			return;
+			return true;
 		
 		// pause when flying with elytra, unless allowed
 		boolean fallFlying = player.isFallFlying();
 		if(fallFlying && !allowElytra.isChecked())
-			return;
+			return true;
+			
+		// ignore small falls that can't cause damage, unless CreativeFlight
+		// is enabled in survival mode
+		boolean creativeFlying = WURST.getHax().creativeFlightHack.isEnabled()
+			&& player.getAbilities().flying;
+		if(!creativeFlying && player.fallDistance <= (fallFlying
+			? minFallDistanceElytra.getValue() : minFallDistance.getValue()))
+			return true;
 		
 		// attempt to fix elytra weirdness, if allowed
 		if(fallFlying && player.isSneaking()
 			&& !isFallingFastEnoughToCauseDamage(player))
-			return;
+			return true;
 		
-		// send packet to stop fall damage
-		player.networkHandler.sendPacket(new OnGroundOnly(true));
+		return false;
 	}
 	
 	private boolean isFallingFastEnoughToCauseDamage(ClientPlayerEntity player)

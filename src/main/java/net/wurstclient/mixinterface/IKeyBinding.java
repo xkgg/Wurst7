@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,6 +11,15 @@ import net.minecraft.client.option.KeyBinding;
 
 public interface IKeyBinding
 {
+	/**
+	 * Returns whether the user is actually pressing this key on their keyboard
+	 * or mouse.
+	 */
+	public default boolean isActuallyDown()
+	{
+		return wurst_isActuallyDown();
+	}
+	
 	/**
 	 * Resets the pressed state to whether or not the user is actually pressing
 	 * this key on their keyboard.
@@ -48,6 +57,12 @@ public interface IKeyBinding
 	{
 		return (IKeyBinding)kb;
 	}
+	
+	/**
+	 * @deprecated Use {@link #isActuallyDown()} instead.
+	 */
+	@Deprecated
+	public boolean wurst_isActuallyDown();
 	
 	/**
 	 * @deprecated Use {@link #resetPressedState()} instead.

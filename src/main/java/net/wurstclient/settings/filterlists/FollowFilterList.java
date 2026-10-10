@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -26,28 +26,27 @@ public final class FollowFilterList extends EntityFilterList
 		builder.add(new FilterPlayersSetting(
 			"description.wurst.setting.follow.filter_players", false));
 		
+		builder.add(new FilterCreativeSetting(
+			"description.wurst.setting.follow.filter_creative", false));
+		
 		builder.add(new FilterSleepingSetting(
 			"description.wurst.setting.follow.filter_sleeping", false));
 		
 		builder.add(new FilterFlyingSetting(
 			"description.wurst.setting.follow.filter_flying", 0));
 		
-		builder.add(new FilterHostileSetting(
-			"不会跟随敌对生物，如僵尸和爬行者。", true));
+		builder.add(new FilterHostileSetting("不会跟随敌对生物，如僵尸和爬行者。", true));
 		
 		builder.add(FilterNeutralSetting.onOffOnly(
 			"description.wurst.setting.follow.filter_neutral", true));
 		
 		builder.add(new FilterPassiveSetting(
-			"不会跟随动物，如猪和牛，环境生物，如蝙蝠，以及水生生物，如鱼、鱿鱼和海豚。",
-			true));
+			"不会跟随动物，如猪和牛，环境生物，如蝙蝠，以及水生生物，如鱼、鱿鱼和海豚。", true));
 		
-		builder.add(new FilterPassiveWaterSetting(
-			"不会跟随被动水生生物，如鱼、鱿鱼、海豚和蝾螈。",
-			true));
+		builder.add(
+			new FilterPassiveWaterSetting("不会跟随被动水生生物，如鱼、鱿鱼、海豚和蝾螈。", true));
 		
-		builder.add(new FilterBabiesSetting(
-			"不会跟随小猪、小村民等。", true));
+		builder.add(new FilterBabiesSetting("不会跟随小猪、小村民等。", true));
 		
 		builder.add(new FilterBatsSetting(
 			"description.wurst.setting.follow.filter_bats", true));
@@ -66,8 +65,7 @@ public final class FollowFilterList extends EntityFilterList
 		builder.add(new FilterGolemsSetting(
 			"description.wurst.setting.follow.filter_golems", true));
 		
-		builder
-			.add(FilterPiglinsSetting.onOffOnly("不会跟随猪灵。", true));
+		builder.add(FilterPiglinsSetting.onOffOnly("不会跟随猪灵。", true));
 		
 		builder.add(FilterZombiePiglinsSetting.onOffOnly(
 			"description.wurst.setting.follow.filter_zombie_piglins", true));
@@ -89,6 +87,8 @@ public final class FollowFilterList extends EntityFilterList
 		
 		builder.add(new FilterMinecartsSetting(
 			"description.wurst.setting.follow.filter_minecarts", true));
+		
+		builder.add(FilterInteractionsSetting.follow());
 		
 		return new FollowFilterList(builder);
 	}

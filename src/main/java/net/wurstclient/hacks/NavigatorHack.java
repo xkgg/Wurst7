@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -19,8 +19,8 @@ import net.wurstclient.navigator.NavigatorMainScreen;
  */
 @DontSaveState // 禁用状态保存（重启客户端后默认关闭）
 @DontBlock // 标记为无需屏蔽的功能（客户端内置机制）
-@SearchTags({"功能菜单", "ClickGUI", "click gui", "SearchGUI", "search gui", "HackMenu",
-	"hack menu"}) // 搜索标签（兼容中英文关键词）
+@SearchTags({"功能菜单", "ClickGUI", "click gui", "SearchGUI", "search gui",
+	"HackMenu", "hack menu"}) // 搜索标签（兼容中英文关键词）
 public final class NavigatorHack extends Hack
 {
 	public NavigatorHack()

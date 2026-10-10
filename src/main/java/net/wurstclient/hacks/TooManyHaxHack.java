@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -25,8 +25,8 @@ import net.wurstclient.TooManyHaxFile;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.util.json.JsonException;
 
-@SearchTags({"屏蔽功能", "too many hax", "TooManyHacks", "too many hacks", "YesCheat+",
-	"YesCheatPlus", "yes cheat plus"})
+@SearchTags({"屏蔽功能", "too many hax", "TooManyHacks", "too many hacks",
+	"YesCheat+", "YesCheatPlus", "yes cheat plus"})
 @DontBlock
 public final class TooManyHaxHack extends Hack
 {

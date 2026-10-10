@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -56,31 +56,26 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 		new AttackSpeedSliderSetting();
 	
 	// 速度随机化：通过随机攻击间隔规避反作弊检测
-	private final SliderSetting speedRandMS =
-		new SliderSetting("攻击间隔随机化",
-			"通过随机调整攻击间隔帮助规避反作弊插件检测。\n\n" + "推荐为Vulcan反作弊设置±100ms。\n\n"
-				+ "NoCheat+、AAC、Grim、Verus、Spartan反作弊及原版服务器设置0（关闭）即可。",
-			100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("±")
-				.withSuffix("ms").withLabel(0, "关闭"));
+	private final SliderSetting speedRandMS = new SliderSetting("攻击间隔随机化",
+		"通过随机调整攻击间隔帮助规避反作弊插件检测。\n\n" + "推荐为Vulcan反作弊设置±100ms。\n\n"
+			+ "NoCheat+、AAC、Grim、Verus、Spartan反作弊及原版服务器设置0（关闭）即可。",
+		100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("±").withSuffix("ms")
+			.withLabel(0, "关闭"));
 	
 	// 转头速度：控制自动转向目标的速度（度/秒）
-	private final SliderSetting rotationSpeed =
-		new SliderSetting("转头速度", 600, 10, 3600, 10,
-			ValueDisplay.DEGREES.withSuffix("/秒"));
+	private final SliderSetting rotationSpeed = new SliderSetting("转头速度", 600,
+		10, 3600, 10, ValueDisplay.DEGREES.withSuffix("/秒"));
 	
 	// 攻击优先级：决定优先攻击哪个实体
 	private final EnumSetting<Priority> priority = new EnumSetting<>("攻击优先级",
-		"决定优先攻击哪个实体。\n"
-			+ "§l距离§r - 优先攻击最近的实体。\n"
-			+ "§l角度§r - 优先攻击需要转头幅度最小的实体。\n"
-			+ "§l血量§r - 优先攻击血量最低的实体。",
+		"决定优先攻击哪个实体。\n" + "§l距离§r - 优先攻击最近的实体。\n"
+			+ "§l角度§r - 优先攻击需要转头幅度最小的实体。\n" + "§l血量§r - 优先攻击血量最低的实体。",
 		Priority.values(), Priority.ANGLE);
 	
 	// 视野范围（FOV）：准星周围可攻击的角度范围
 	private final SliderSetting fov = new SliderSetting("视野范围(FOV)",
-		"视野范围 - 实体离准星的最大角度，超过则忽略该实体。\n"
-			+ "360° = 可攻击周围所有实体。",
-		360, 30, 360, 10, ValueDisplay.DEGREES);
+		"视野范围 - 实体离准星的最大角度，超过则忽略该实体。\n" + "360° = 可攻击周围所有实体。", 360, 30, 360, 10,
+		ValueDisplay.DEGREES);
 	
 	// 挥动手臂样式：无副手选项（仅主手攻击）
 	private final SwingHandSetting swingHand =
@@ -88,14 +83,13 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 			SwingHandSetting.genericCombatDescription(this), SwingHand.CLIENT);
 	
 	// 伤害指示器：在目标实体上渲染与剩余血量成反比的彩色方框
-	private final CheckboxSetting damageIndicator = new CheckboxSetting(
-		"伤害指示器",
-		"在目标实体内部渲染彩色方框，方框大小与剩余血量成反比（血量越少方框越大）。",
-		true);
+	private final CheckboxSetting damageIndicator = new CheckboxSetting("伤害指示器",
+		"在目标实体内部渲染彩色方框，方框大小与剩余血量成反比（血量越少方框越大）。", true);
 	
 	// 实体过滤列表：与普通杀戮光环相同，但默认规则更严格
 	private final EntityFilterList entityFilters =
 		new EntityFilterList(FilterPlayersSetting.genericCombat(false), // 玩家过滤
+			FilterCreativeSetting.genericCombat(true), // 创造模式玩家过滤
 			FilterSleepingSetting.genericCombat(true), // 睡眠玩家过滤
 			FilterFlyingSetting.genericCombat(0.5), // 飞行实体过滤
 			FilterHostileSetting.genericCombat(false), // 敌对生物过滤
@@ -121,6 +115,8 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 			FilterInvisibleSetting.genericCombat(true), // 隐身实体过滤
 			FilterNamedSetting.genericCombat(false), // 命名实体过滤
 			FilterShulkerBulletSetting.genericCombat(false), // 潜影贝子弹过滤
+			FilterProjectilesSetting.genericCombat(false), // 可反弹火球过滤
+			FilterInteractionsSetting.genericCombat(true), // 交互实体过滤
 			FilterArmorStandsSetting.genericCombat(false), // 盔甲架过滤
 			FilterCrystalsSetting.genericCombat(false)); // 水晶过滤
 	
@@ -195,10 +191,11 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 			return;
 		
 		// 筛选可攻击的实体
-		Stream<Entity> stream = EntityUtils.getAttackableEntities();
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities();
 		double rangeSq = range.getValueSq(); // 攻击范围的平方（优化性能）
 		// 过滤：在攻击范围内的实体
-		stream = stream.filter(e -> MC.player.squaredDistanceTo(e) <= rangeSq);
+		stream =
+			stream.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
 		
 		// 过滤：在视野范围内的实体（FOV<360时）
 		if(fov.getValue() < 360.0)
@@ -254,7 +251,9 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 	
 	/**
 	 * 客户端侧缓慢转向目标实体（模拟手动转头）
-	 * @param entity 目标实体
+	 *
+	 * @param entity
+	 *            目标实体
 	 * @return 是否已对准目标
 	 */
 	private boolean faceEntityClient(Entity entity)
@@ -335,7 +334,7 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 	 */
 	private enum Priority
 	{
-		DISTANCE("距离", e -> MC.player.squaredDistanceTo(e)), // 按距离排序（近→远）
+		DISTANCE("距离", EntityUtils::distanceToHitboxSq), // 按距离排序（近→远）
 		
 		ANGLE("角度",
 			e -> RotationUtils

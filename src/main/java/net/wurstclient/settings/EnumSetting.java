@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -66,6 +66,12 @@ public class EnumSetting<T extends Enum<T>> extends Setting
 	{
 		this.selected = Objects.requireNonNull(selected);
 		WurstClient.INSTANCE.saveSettings();
+	}
+	
+	@Override
+	public void resetToDefault()
+	{
+		setSelected(defaultSelected);
 	}
 	
 	public boolean setSelected(String selected)

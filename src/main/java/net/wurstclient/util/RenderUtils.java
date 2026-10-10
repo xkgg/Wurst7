@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -19,7 +19,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.option.Perspective;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.RenderLayer;
@@ -110,6 +109,15 @@ public enum RenderUtils
 		return camera.getPos();
 	}
 	
+	public static Rotation getCameraRotation()
+	{
+		Camera camera = WurstClient.MC.gameRenderer.getCamera();
+		if(camera == null)
+			return new Rotation(0, 0);
+		
+		return new Rotation(camera.getYaw(), camera.getPitch());
+	}
+	
 	public static BlockPos getCameraBlockPos()
 	{
 		Camera camera = WurstClient.MC.getBlockEntityRenderDispatcher().camera;
@@ -173,12 +181,7 @@ public enum RenderUtils
 	
 	private static Vec3d getTracerOrigin(float partialTicks)
 	{
-		Vec3d start = RotationUtils.getClientLookVec(partialTicks).multiply(10);
-		if(WurstClient.MC.options
-			.getPerspective() == Perspective.THIRD_PERSON_FRONT)
-			start = start.negate();
-		
-		return start;
+		return getCameraRotation().toLookVec().multiply(10);
 	}
 	
 	public static void drawTracer(MatrixStack matrices, float partialTicks,

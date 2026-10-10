@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,156 +9,231 @@ package net.wurstclient.hacks;
 
 import java.awt.Color;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import net.wurstclient.WurstClient;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
-import net.wurstclient.events.*;
+import net.wurstclient.events.CameraTransformViewBobbingListener;
+import net.wurstclient.events.CameraTransformViewBobbingListener.CameraTransformViewBobbingEvent;
+import net.wurstclient.events.MouseScrollListener;
+import net.wurstclient.events.RenderListener;
+import net.wurstclient.events.UpdateListener;
+import net.wurstclient.events.VisGraphListener;
 import net.wurstclient.hack.DontSaveState;
 import net.wurstclient.hack.Hack;
+import net.wurstclient.hacks.freecam.FreecamInitialPosSetting;
+import net.wurstclient.hacks.freecam.FreecamInputSetting;
+import net.wurstclient.hacks.freecam.FreecamInputSetting.ApplyInputTo;
 import net.wurstclient.mixinterface.IKeyBinding;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ColorSetting;
+import net.wurstclient.settings.InteractFromSetting;
+import net.wurstclient.settings.InteractFromSetting.InteractFrom;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
-import net.wurstclient.util.FakePlayerEntity;
+import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RenderUtils;
 
 @DontSaveState
 @SearchTags({"灵魂出窍", "free camera", "spectator"})
-public final class FreecamHack extends Hack implements UpdateListener,
-	PacketOutputListener, IsPlayerInWaterListener, AirStrafingSpeedListener,
-	IsPlayerInLavaListener, CameraTransformViewBobbingListener,
-	IsNormalCubeListener, SetOpaqueCubeListener, RenderListener
+public final class FreecamHack extends Hack
+	implements UpdateListener, VisGraphListener,
+	CameraTransformViewBobbingListener, RenderListener, MouseScrollListener
 {
-	private final SliderSetting speed =
-		new SliderSetting("速度", 1, 0.05, 10, 0.05, ValueDisplay.DECIMAL);
+	private final FreecamInputSetting applyInputTo = new FreecamInputSetting();
 	
-	private final CheckboxSetting tracer = new CheckboxSetting("追踪线",
-		"绘制一条线到你角色的实际位置。", false);
+	private final InteractFromSetting interactFrom = new InteractFromSetting(
+		"description.wurst.setting.freecam.interact_from", InteractFrom.CAMERA);
 	
-	private final ColorSetting color =
-		new ColorSetting("追踪线颜色", Color.WHITE);
+	private final SliderSetting horizontalSpeed = new SliderSetting("水平速度",
+		"description.wurst.setting.freecam.horizontal_speed", 1, 0.05, 10, 0.05,
+		ValueDisplay.DECIMAL);
 	
-	private FakePlayerEntity fakePlayer;
+	private final SliderSetting verticalSpeed = new SliderSetting("垂直速度",
+		"description.wurst.setting.freecam.vertical_speed", 1, 0.05, 5, 0.05,
+		v -> ValueDisplay.DECIMAL.getValueString(getActualVerticalSpeed()));
+	
+	private final CheckboxSetting scrollToChangeSpeed =
+		new CheckboxSetting("滚轮调整速度",
+			"description.wurst.setting.freecam.scroll_to_change_speed", true);
+	
+	private final CheckboxSetting renderSpeed =
+		new CheckboxSetting("在 HackList 显示速度",
+			"description.wurst.setting.freecam.show_speed_in_hacklist", true);
+	
+	private final FreecamInitialPosSetting initialPos =
+		new FreecamInitialPosSetting();
+	
+	private final CheckboxSetting tracer =
+		new CheckboxSetting("追踪线", "绘制一条线到你角色的实际位置。", false);
+	
+	private final ColorSetting color = new ColorSetting("追踪线颜色", Color.WHITE);
+	
+	private final CheckboxSetting hideHand =
+		new CheckboxSetting("隐藏手部", "启用 Freecam 时隐藏第一人称手部和手持物。", true);
+	
+	private final CheckboxSetting disableOnDamage =
+		new CheckboxSetting("受伤时关闭", "生命值减少时自动关闭 Freecam。", true);
+	
+	private final CheckboxSetting reloadChunks =
+		new CheckboxSetting("关闭时重载区块", "关闭 Freecam 时重新载入区块。", true);
+	
+	private Vec3d camPos;
+	private Vec3d prevCamPos;
+	private float camYaw;
+	private float camPitch;
+	private float lastHealth = Float.MIN_VALUE;
 	
 	public FreecamHack()
 	{
 		super("灵魂出窍");
 		setCategory(Category.RENDER);
-		addSetting(speed);
+		addSetting(applyInputTo);
+		addSetting(interactFrom);
+		addSetting(horizontalSpeed);
+		addSetting(verticalSpeed);
+		addSetting(scrollToChangeSpeed);
+		addSetting(renderSpeed);
+		addSetting(initialPos);
 		addSetting(tracer);
 		addSetting(color);
+		addSetting(hideHand);
+		addSetting(disableOnDamage);
+		addSetting(reloadChunks);
+	}
+	
+	@Override
+	public String getRenderName()
+	{
+		if(!renderSpeed.isChecked())
+			return getName();
+		
+		return getName() + " [" + horizontalSpeed.getValueString() + ", "
+			+ verticalSpeed.getValueString() + "]";
 	}
 	
 	@Override
 	protected void onEnable()
 	{
+		Entity cameraEntity =
+			MC.getCameraEntity() != null ? MC.getCameraEntity() : MC.player;
+		WurstClient.INSTANCE.getHax().remoteViewHack.setEnabled(false);
+		
 		EVENTS.add(UpdateListener.class, this);
-		EVENTS.add(PacketOutputListener.class, this);
-		EVENTS.add(IsPlayerInWaterListener.class, this);
-		EVENTS.add(IsPlayerInLavaListener.class, this);
-		EVENTS.add(AirStrafingSpeedListener.class, this);
+		EVENTS.add(VisGraphListener.class, this);
 		EVENTS.add(CameraTransformViewBobbingListener.class, this);
-		EVENTS.add(IsNormalCubeListener.class, this);
-		EVENTS.add(SetOpaqueCubeListener.class, this);
 		EVENTS.add(RenderListener.class, this);
+		EVENTS.add(MouseScrollListener.class, this);
 		
-		fakePlayer = new FakePlayerEntity();
-		
-		GameOptions opt = MC.options;
-		KeyBinding[] bindings = {opt.forwardKey, opt.backKey, opt.leftKey,
-			opt.rightKey, opt.jumpKey, opt.sneakKey};
-		
-		for(KeyBinding binding : bindings)
-			IKeyBinding.get(binding).resetPressedState();
+		lastHealth = Float.MIN_VALUE;
+		camPos = initialPos.getSelected().getPos(cameraEntity);
+		prevCamPos = camPos;
+		camYaw = cameraEntity.getYaw();
+		camPitch = cameraEntity.getPitch();
 	}
 	
 	@Override
 	protected void onDisable()
 	{
 		EVENTS.remove(UpdateListener.class, this);
-		EVENTS.remove(PacketOutputListener.class, this);
-		EVENTS.remove(IsPlayerInWaterListener.class, this);
-		EVENTS.remove(IsPlayerInLavaListener.class, this);
-		EVENTS.remove(AirStrafingSpeedListener.class, this);
+		EVENTS.remove(VisGraphListener.class, this);
 		EVENTS.remove(CameraTransformViewBobbingListener.class, this);
-		EVENTS.remove(IsNormalCubeListener.class, this);
-		EVENTS.remove(SetOpaqueCubeListener.class, this);
 		EVENTS.remove(RenderListener.class, this);
+		EVENTS.remove(MouseScrollListener.class, this);
 		
-		fakePlayer.resetPlayerPosition();
-		fakePlayer.despawn();
+		lastHealth = Float.MIN_VALUE;
 		
-		ClientPlayerEntity player = MC.player;
-		player.setVelocity(Vec3d.ZERO);
-		
-		MC.worldRenderer.reload();
+		if(reloadChunks.isChecked())
+			MC.worldRenderer.reload();
 	}
 	
 	@Override
 	public void onUpdate()
 	{
-		ClientPlayerEntity player = MC.player;
-		player.setVelocity(Vec3d.ZERO);
-		player.getAbilities().flying = false;
+		float currentHealth = MC.player.getHealth();
+		if(disableOnDamage.isChecked() && currentHealth < lastHealth)
+		{
+			setEnabled(false);
+			return;
+		}
+		lastHealth = currentHealth;
 		
-		player.setOnGround(false);
-		Vec3d velocity = player.getVelocity();
+		if(!isMovingCamera() || MC.currentScreen != null)
+		{
+			prevCamPos = camPos;
+			return;
+		}
 		
-		if(MC.options.jumpKey.isPressed())
-			player.setVelocity(velocity.add(0, speed.getValue(), 0));
+		Vec2f moveVector = MC.player.input.getMovementInput();
+		double yawRad = MC.gameRenderer.getCamera().getYaw()
+			* MathHelper.RADIANS_PER_DEGREE;
+		double sinYaw = Math.sin(yawRad);
+		double cosYaw = Math.cos(yawRad);
+		double offsetX = moveVector.x * cosYaw - moveVector.y * sinYaw;
+		double offsetZ = moveVector.x * sinYaw + moveVector.y * cosYaw;
 		
-		if(MC.options.sneakKey.isPressed())
-			player.setVelocity(velocity.subtract(0, speed.getValue(), 0));
+		double offsetY = 0;
+		double vSpeed = getActualVerticalSpeed();
+		if(IKeyBinding.get(MC.options.jumpKey).isActuallyDown())
+			offsetY += vSpeed;
+		if(IKeyBinding.get(MC.options.sneakKey).isActuallyDown())
+			offsetY -= vSpeed;
+		
+		Vec3d offset = new Vec3d(offsetX, 0, offsetZ)
+			.multiply(horizontalSpeed.getValue()).add(0, offsetY, 0);
+		prevCamPos = camPos;
+		camPos = camPos.add(offset);
 	}
 	
-	@Override
-	public void onGetAirStrafingSpeed(AirStrafingSpeedEvent event)
+	private double getActualVerticalSpeed()
 	{
-		event.setSpeed(speed.getValueF());
+		return MathHelper.clamp(
+			horizontalSpeed.getValue() * verticalSpeed.getValue(), 0.05, 10);
 	}
 	
 	@Override
-	public void onSentPacket(PacketOutputEvent event)
+	public void onMouseScroll(double amount)
 	{
-		if(event.getPacket() instanceof PlayerMoveC2SPacket)
-			event.cancel();
+		if(!isControllingScrollEvents())
+			return;
+		
+		if(amount > 0)
+			horizontalSpeed.increaseValue();
+		else if(amount < 0)
+			horizontalSpeed.decreaseValue();
 	}
 	
-	@Override
-	public void onIsPlayerInWater(IsPlayerInWaterEvent event)
+	public boolean isControllingScrollEvents()
 	{
-		event.setInWater(false);
+		return isMovingCamera() && scrollToChangeSpeed.isChecked()
+			&& MC.currentScreen == null
+			&& !WURST.getOtfs().zoomOtf.isControllingScrollEvents();
 	}
 	
-	@Override
-	public void onIsPlayerInLava(IsPlayerInLavaEvent event)
+	public boolean isMovingCamera()
 	{
-		event.setInLava(false);
+		return isEnabled() && applyInputTo.getSelected() == ApplyInputTo.CAMERA;
 	}
 	
-	@Override
-	public void onCameraTransformViewBobbing(
-		CameraTransformViewBobbingEvent event)
+	public boolean isClickingFromCamera()
 	{
-		if(tracer.isChecked())
-			event.cancel();
+		return isEnabled() && interactFrom.getSelected() == InteractFrom.CAMERA;
 	}
 	
 	@Override
-	public void onIsNormalCube(IsNormalCubeEvent event)
+	public void onVisGraph(VisGraphEvent event)
 	{
 		event.cancel();
 	}
 	
 	@Override
-	public void onSetOpaqueCube(SetOpaqueCubeEvent event)
+	public void onCameraTransformViewBobbing(
+		CameraTransformViewBobbingEvent event)
 	{
 		event.cancel();
 	}
@@ -166,19 +241,49 @@ public final class FreecamHack extends Hack implements UpdateListener,
 	@Override
 	public void onRender(MatrixStack matrixStack, float partialTicks)
 	{
-		if(fakePlayer == null || !tracer.isChecked())
+		if(!tracer.isChecked())
 			return;
 		
 		int colorI = color.getColorI(0x80);
-		
-		// box
 		double extraSize = 0.05;
-		Box box = fakePlayer.getBoundingBox().offset(0, extraSize, 0)
-			.expand(extraSize);
+		Box rawBox = EntityUtils.getLerpedBox(MC.player, partialTicks);
+		Box box = rawBox.offset(0, extraSize, 0).expand(extraSize);
 		RenderUtils.drawOutlinedBox(matrixStack, box, colorI, false);
-		
-		// line
-		RenderUtils.drawTracer(matrixStack, partialTicks,
-			fakePlayer.getBoundingBox().getCenter(), colorI, false);
+		RenderUtils.drawTracer(matrixStack, partialTicks, rawBox.getCenter(),
+			colorI, false);
+	}
+	
+	public boolean shouldHideHand()
+	{
+		return isEnabled() && hideHand.isChecked();
+	}
+	
+	public Vec3d getCamPos(float partialTicks)
+	{
+		return new Vec3d(MathHelper.lerp(partialTicks, prevCamPos.x, camPos.x),
+			MathHelper.lerp(partialTicks, prevCamPos.y, camPos.y),
+			MathHelper.lerp(partialTicks, prevCamPos.z, camPos.z));
+	}
+	
+	public void turn(double deltaYaw, double deltaPitch)
+	{
+		camYaw += (float)(deltaYaw * 0.15);
+		camPitch += (float)(deltaPitch * 0.15);
+		camPitch = MathHelper.clamp(camPitch, -90, 90);
+	}
+	
+	public float getCamYaw()
+	{
+		return camYaw;
+	}
+	
+	public float getCamPitch()
+	{
+		return camPitch;
+	}
+	
+	public Vec3d getScaledCamDir(double scale)
+	{
+		return Vec3d.fromPolar(new Vec2f(camPitch, camYaw)).multiply(scale);
 	}
 }

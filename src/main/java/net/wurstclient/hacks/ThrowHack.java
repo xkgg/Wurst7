@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -19,8 +19,8 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 @SearchTags({"急速放置", "throw"})
 public final class ThrowHack extends Hack implements RightClickListener
 {
-	private final SliderSetting amount = new SliderSetting("数量",
-		"每次点击的使用次数。", 16, 2, 1000000, 1, ValueDisplay.INTEGER);
+	private final SliderSetting amount = new SliderSetting("数量", "每次点击的使用次数。",
+		16, 2, 1000000, 1, ValueDisplay.INTEGER);
 	
 	public ThrowHack()
 	{

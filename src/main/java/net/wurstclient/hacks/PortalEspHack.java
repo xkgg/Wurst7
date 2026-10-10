@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -46,39 +46,34 @@ public final class PortalEspHack extends Hack implements UpdateListener,
 	// 下界传送门配置组：颜色（红色）、是否启用
 	private final PortalEspBlockGroup netherPortal =
 		new PortalEspBlockGroup(Blocks.NETHER_PORTAL,
-			new ColorSetting("下界传送门颜色",
-				"下界传送门将以此颜色高亮显示。", Color.RED),
+			new ColorSetting("下界传送门颜色", "下界传送门将以此颜色高亮显示。", Color.RED),
 			new CheckboxSetting("显示下界传送门", true));
 	
 	// 末地传送门配置组：颜色（绿色）、是否启用
 	private final PortalEspBlockGroup endPortal =
 		new PortalEspBlockGroup(Blocks.END_PORTAL,
-			new ColorSetting("末地传送门颜色",
-				"末地传送门将以此颜色高亮显示。", Color.GREEN),
+			new ColorSetting("末地传送门颜色", "末地传送门将以此颜色高亮显示。", Color.GREEN),
 			new CheckboxSetting("显示末地传送门", true));
 	
 	// 末地传送门框架配置组：颜色（蓝色）、是否启用
-	private final PortalEspBlockGroup endPortalFrame = new PortalEspBlockGroup(
-		Blocks.END_PORTAL_FRAME,
-		new ColorSetting("末地传送门框架颜色",
-			"末地传送门框架将以此颜色高亮显示。", Color.BLUE),
-		new CheckboxSetting("显示末地传送门框架", true));
+	private final PortalEspBlockGroup endPortalFrame =
+		new PortalEspBlockGroup(Blocks.END_PORTAL_FRAME,
+			new ColorSetting("末地传送门框架颜色", "末地传送门框架将以此颜色高亮显示。", Color.BLUE),
+			new CheckboxSetting("显示末地传送门框架", true));
 	
 	// 末地折跃门配置组：颜色（黄色）、是否启用
-	private final PortalEspBlockGroup endGateway = new PortalEspBlockGroup(
-		Blocks.END_GATEWAY,
-		new ColorSetting("末地折跃门颜色",
-			"末地折跃门将以此颜色高亮显示。", Color.YELLOW),
-		new CheckboxSetting("显示末地折跃门", true));
+	private final PortalEspBlockGroup endGateway =
+		new PortalEspBlockGroup(Blocks.END_GATEWAY,
+			new ColorSetting("末地折跃门颜色", "末地折跃门将以此颜色高亮显示。", Color.YELLOW),
+			new CheckboxSetting("显示末地折跃门", true));
 	
 	// 所有传送门配置组列表
 	private final List<PortalEspBlockGroup> groups =
 		Arrays.asList(netherPortal, endPortal, endPortalFrame, endGateway);
 	
 	// 搜索范围设置：控制玩家周围搜索传送门的区块范围（值越高性能要求越高）
-	private final ChunkAreaSetting area = new ChunkAreaSetting("搜索范围",
-		"玩家周围需要搜索传送门的区块范围。\n"
-			+ "数值越高，对电脑性能要求越高。");
+	private final ChunkAreaSetting area =
+		new ChunkAreaSetting("搜索范围", "玩家周围需要搜索传送门的区块范围。\n" + "数值越高，对电脑性能要求越高。");
 	
 	// 区块搜索查询条件：匹配下界传送门/末地传送门/末地传送门框架/末地折跃门
 	private final BiPredicate<BlockPos, BlockState> query =

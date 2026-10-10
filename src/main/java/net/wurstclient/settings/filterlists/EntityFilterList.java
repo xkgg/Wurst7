@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,6 +7,7 @@
  */
 package net.wurstclient.settings.filterlists;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -61,34 +62,54 @@ public class EntityFilterList
 	
 	public static EntityFilterList genericCombat()
 	{
-		return new EntityFilterList(FilterPlayersSetting.genericCombat(false),
-			FilterSleepingSetting.genericCombat(false),
-			FilterFlyingSetting.genericCombat(0),
-			FilterHostileSetting.genericCombat(false),
-			FilterNeutralSetting
-				.genericCombat(AttackDetectingEntityFilter.Mode.OFF),
-			FilterPassiveSetting.genericCombat(false),
-			FilterPassiveWaterSetting.genericCombat(false),
-			FilterBabiesSetting.genericCombat(false),
-			FilterBatsSetting.genericCombat(false),
-			FilterSlimesSetting.genericCombat(false),
-			FilterPetsSetting.genericCombat(false),
-			FilterVillagersSetting.genericCombat(false),
-			FilterZombieVillagersSetting.genericCombat(false),
-			FilterGolemsSetting.genericCombat(false),
-			FilterPiglinsSetting
-				.genericCombat(AttackDetectingEntityFilter.Mode.OFF),
-			FilterZombiePiglinsSetting
-				.genericCombat(AttackDetectingEntityFilter.Mode.OFF),
-			FilterEndermenSetting
-				.genericCombat(AttackDetectingEntityFilter.Mode.OFF),
-			FilterShulkersSetting.genericCombat(false),
-			FilterAllaysSetting.genericCombat(false),
-			FilterInvisibleSetting.genericCombat(false),
-			FilterNamedSetting.genericCombat(false),
-			FilterShulkerBulletSetting.genericCombat(false),
-			FilterArmorStandsSetting.genericCombat(false),
-			FilterCrystalsSetting.genericCombat(false));
+		return genericMeleeCombat();
+	}
+	
+	public static EntityFilterList genericMeleeCombat()
+	{
+		List<EntityFilter> filters = getGenericCombatFilters();
+		filters.add(FilterInteractionsSetting.genericCombat(true));
+		return new EntityFilterList(filters);
+	}
+	
+	public static EntityFilterList genericRangedCombat()
+	{
+		return new EntityFilterList(getGenericCombatFilters());
+	}
+	
+	private static List<EntityFilter> getGenericCombatFilters()
+	{
+		return new ArrayList<>(
+			Arrays.asList(FilterPlayersSetting.genericCombat(false),
+				FilterCreativeSetting.genericCombat(false),
+				FilterSleepingSetting.genericCombat(false),
+				FilterFlyingSetting.genericCombat(0),
+				FilterHostileSetting.genericCombat(false),
+				FilterNeutralSetting
+					.genericCombat(AttackDetectingEntityFilter.Mode.OFF),
+				FilterPassiveSetting.genericCombat(false),
+				FilterPassiveWaterSetting.genericCombat(false),
+				FilterBabiesSetting.genericCombat(false),
+				FilterBatsSetting.genericCombat(false),
+				FilterSlimesSetting.genericCombat(false),
+				FilterPetsSetting.genericCombat(false),
+				FilterVillagersSetting.genericCombat(false),
+				FilterZombieVillagersSetting.genericCombat(false),
+				FilterGolemsSetting.genericCombat(false),
+				FilterPiglinsSetting
+					.genericCombat(AttackDetectingEntityFilter.Mode.OFF),
+				FilterZombiePiglinsSetting
+					.genericCombat(AttackDetectingEntityFilter.Mode.OFF),
+				FilterEndermenSetting
+					.genericCombat(AttackDetectingEntityFilter.Mode.OFF),
+				FilterShulkersSetting.genericCombat(false),
+				FilterAllaysSetting.genericCombat(false),
+				FilterInvisibleSetting.genericCombat(false),
+				FilterNamedSetting.genericCombat(false),
+				FilterShulkerBulletSetting.genericCombat(false),
+				FilterProjectilesSetting.genericCombat(false),
+				FilterArmorStandsSetting.genericCombat(false),
+				FilterCrystalsSetting.genericCombat(false)));
 	}
 	
 	public static interface EntityFilter extends Predicate<Entity>

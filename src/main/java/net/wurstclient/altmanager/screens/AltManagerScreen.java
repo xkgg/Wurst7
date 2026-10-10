@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -251,8 +251,7 @@ public final class AltManagerScreen extends Screen
 		Text text = Text.literal("确定要移除这个alt账号吗？");
 		
 		String altName = alt.getDisplayName();
-		Text message = Text.literal(
-			"\"" + altName + "\" 将永远丢失！（很长时间！）");
+		Text message = Text.literal("\"" + altName + "\" 将永远丢失！（很长时间！）");
 		
 		ConfirmScreen screen = new ConfirmScreen(this::confirmRemove, text,
 			message, Text.literal("删除"), Text.literal("取消"));
@@ -295,7 +294,7 @@ public final class AltManagerScreen extends Screen
 		
 		for(String line : lines)
 		{
-			String[] data = line.split(":");
+			String[] data = line.split(":", 2);
 			
 			switch(data.length)
 			{
@@ -420,13 +419,13 @@ public final class AltManagerScreen extends Screen
 		}
 		
 		// title text
-		context.drawCenteredTextWithShadow(textRenderer, "Alt账号管理器",
-			width / 2, 4, 16777215);
+		context.drawCenteredTextWithShadow(textRenderer, "Alt账号管理器", width / 2,
+			4, 16777215);
 		context.drawCenteredTextWithShadow(textRenderer,
 			"账号数量: " + altManager.getList().size(), width / 2, 14, 10526880);
-		context.drawCenteredTextWithShadow(
-			textRenderer, "付费版: " + altManager.getNumPremium()
-				+ ", 破解版: " + altManager.getNumCracked(),
+		context.drawCenteredTextWithShadow(textRenderer,
+			"付费版: " + altManager.getNumPremium() + ", 破解版: "
+				+ altManager.getNumCracked(),
 			width / 2, 24, 10526880);
 		
 		// red flash for errors
@@ -593,8 +592,8 @@ public final class AltManagerScreen extends Screen
 			TextRenderer tr = client.textRenderer;
 			
 			// name / email
-				context.drawText(tr, "名称: " + alt.getDisplayName(), x + 31, y + 3,
-					0xA0A0A0, false);
+			context.drawText(tr, "名称: " + alt.getDisplayName(), x + 31, y + 3,
+				0xA0A0A0, false);
 			
 			// status
 			context.drawText(tr, getBottomText(), x + 31, y + 15, 10526880,

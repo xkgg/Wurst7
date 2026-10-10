@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -41,6 +41,7 @@ import net.wurstclient.settings.filterlists.AnchorAuraFilterList;
 import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.ChatUtils;
+import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.FakePlayerEntity;
 import net.wurstclient.util.InventoryUtils;
 import net.wurstclient.util.RotationUtils;
@@ -49,28 +50,25 @@ import net.wurstclient.util.RotationUtils;
 public final class AnchorAuraHack extends Hack implements UpdateListener
 {
 	private final SliderSetting range =
-		new SliderSetting("范围", "description.wurst.setting.anchoraura.range",
-			6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		new SliderSetting("范围", "description.wurst.setting.anchoraura.range", 6,
+			1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting autoPlace =
-		new CheckboxSetting("自动放置重生锚",
-			"description.wurst.setting.anchoraura.auto-place_anchors", true);
+	private final CheckboxSetting autoPlace = new CheckboxSetting("自动放置重生锚",
+		"description.wurst.setting.anchoraura.auto-place_anchors", true);
 	
 	private final FacingSetting faceBlocks =
 		FacingSetting.withPacketSpam("朝向重生锚",
 			"description.wurst.setting.anchoraura.face_anchors", Facing.OFF);
 	
-	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("检查视线",
-			"description.wurst.setting.anchoraura.check_line_of_sight", false);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检查视线",
+		"description.wurst.setting.anchoraura.check_line_of_sight", false);
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.CLIENT);
 	
-	private final EnumSetting<TakeItemsFrom> takeItemsFrom =
-		new EnumSetting<>("从哪里拿物品",
-			"description.wurst.setting.anchoraura.take_items_from",
-			TakeItemsFrom.values(), TakeItemsFrom.INVENTORY);
+	private final EnumSetting<TakeItemsFrom> takeItemsFrom = new EnumSetting<>(
+		"从哪里拿物品", "description.wurst.setting.anchoraura.take_items_from",
+		TakeItemsFrom.values(), TakeItemsFrom.INVENTORY);
 	
 	private final EntityFilterList entityFilters =
 		AnchorAuraFilterList.create();
@@ -322,9 +320,9 @@ public final class AnchorAuraHack extends Hack implements UpdateListener
 	{
 		double rangeSq = range.getValueSq();
 		
-		Comparator<Entity> furthestFromPlayer = Comparator
-			.<Entity> comparingDouble(e -> MC.player.squaredDistanceTo(e))
-			.reversed();
+		Comparator<Entity> furthestFromPlayer =
+			Comparator.<Entity> comparingDouble(EntityUtils::distanceToHitboxSq)
+				.reversed();
 		
 		Stream<Entity> stream =
 			StreamSupport.stream(MC.world.getEntities().spliterator(), false)
@@ -334,7 +332,7 @@ public final class AnchorAuraHack extends Hack implements UpdateListener
 				.filter(e -> e != MC.player)
 				.filter(e -> !(e instanceof FakePlayerEntity))
 				.filter(e -> !WURST.getFriends().contains(e.getEntityName()))
-				.filter(e -> MC.player.squaredDistanceTo(e) <= rangeSq);
+				.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
 		
 		stream = entityFilters.applyTo(stream);
 		

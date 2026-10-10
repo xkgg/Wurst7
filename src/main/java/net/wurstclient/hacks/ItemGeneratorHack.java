@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -26,14 +26,12 @@ import net.wurstclient.util.InventoryUtils;
 @SearchTags({"物品生成器", "item generator", "drop infinite"})
 public final class ItemGeneratorHack extends Hack implements UpdateListener
 {
-	private final SliderSetting speed = new SliderSetting("速度",
-		"\u00a74\u00a7l警告:\u00a7r 高速会导致大量卡顿，容易使游戏崩溃！",
-		1, 1, 36, 1, ValueDisplay.INTEGER);
+	private final SliderSetting speed =
+		new SliderSetting("速度", "\u00a74\u00a7l警告:\u00a7r 高速会导致大量卡顿，容易使游戏崩溃！",
+			1, 1, 36, 1, ValueDisplay.INTEGER);
 	
 	private final SliderSetting stackSize = new SliderSetting("堆叠大小",
-		"每个堆叠中放置的物品数量。\n"
-			+ "似乎不影响性能。",
-		1, 1, 64, 1, ValueDisplay.INTEGER);
+		"每个堆叠中放置的物品数量。\n" + "似乎不影响性能。", 1, 1, 64, 1, ValueDisplay.INTEGER);
 	
 	private final Random random = Random.createLocal();
 	

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -132,15 +132,14 @@ public final class KeybindProfilesScreen extends Screen
 		renderBackground(context);
 		listGui.render(context, mouseX, mouseY, partialTicks);
 		
-		context.drawCenteredTextWithShadow(client.textRenderer,
-			"按键绑定配置文件", width / 2, 12, 0xffffff);
+		context.drawCenteredTextWithShadow(client.textRenderer, "按键绑定配置文件",
+			width / 2, 12, 0xffffff);
 		
 		super.render(context, mouseX, mouseY, partialTicks);
 		
 		if(loadButton.isSelected() && !loadButton.active)
 			context.drawTooltip(textRenderer,
-				Arrays.asList(Text.literal("您必须先选择一个文件。")),
-				mouseX, mouseY);
+				Arrays.asList(Text.literal("您必须先选择一个文件。")), mouseX, mouseY);
 	}
 	
 	@Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -23,8 +23,9 @@ import net.wurstclient.hacks.autocomplete.OpenAiMessageCompleter;
 import net.wurstclient.hacks.autocomplete.SuggestionHandler;
 import net.wurstclient.util.ChatUtils;
 
-@SearchTags({"自动聊天", "auto complete", "Copilot", "ChatGPT", "chat GPT", "GPT-3", "GPT3",
-	"GPT 3", "OpenAI", "open ai", "ChatAI", "chat AI", "ChatBot", "chat bot"})
+@SearchTags({"自动聊天", "auto complete", "Copilot", "ChatGPT", "chat GPT", "GPT-3",
+	"GPT3", "GPT 3", "OpenAI", "open ai", "ChatAI", "chat AI", "ChatBot",
+	"chat bot"})
 public final class AutoCompleteHack extends Hack
 	implements ChatOutputListener, UpdateListener
 {
@@ -127,7 +128,7 @@ public final class AutoCompleteHack extends Hack
 			suggestionHandler.getMaxSuggestionsFor(draftMessage);
 		if(maxSuggestions < 1)
 			return;
-			
+		
 		// 复制变量到本地（避免线程运行时变量被修改）
 		String draftMessage2 = draftMessage;
 		BiConsumer<SuggestionsBuilder, String> suggestionsUpdater2 =
@@ -164,8 +165,11 @@ public final class AutoCompleteHack extends Hack
 	
 	/**
 	 * 刷新聊天补全建议
-	 * @param draftMessage 聊天框中的草稿消息
-	 * @param suggestionsUpdater 建议更新回调函数
+	 *
+	 * @param draftMessage
+	 *            聊天框中的草稿消息
+	 * @param suggestionsUpdater
+	 *            建议更新回调函数
 	 */
 	public void onRefresh(String draftMessage,
 		BiConsumer<SuggestionsBuilder, String> suggestionsUpdater)

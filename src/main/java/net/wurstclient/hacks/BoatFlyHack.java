@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -22,15 +22,13 @@ import net.wurstclient.settings.SliderSetting;
 public final class BoatFlyHack extends Hack implements UpdateListener
 {
 	private final CheckboxSetting changeForwardSpeed = new CheckboxSetting(
-		"更改前进速度",
-		"允许 \u00a7e前进速度\u00a7r 待更改，无法实现平滑加速。",
-		false);
+		"更改前进速度", "允许 \u00a7e前进速度\u00a7r 待更改，无法实现平滑加速。", false);
 	
-	private final SliderSetting forwardSpeed = new SliderSetting(
-		"前进速度", 1, 0.05, 5, 0.05, SliderSetting.ValueDisplay.DECIMAL);
+	private final SliderSetting forwardSpeed = new SliderSetting("前进速度", 1,
+		0.05, 5, 0.05, SliderSetting.ValueDisplay.DECIMAL);
 	
-	private final SliderSetting upwardSpeed = new SliderSetting("上升速度",
-		0.3, 0, 5, 0.05, SliderSetting.ValueDisplay.DECIMAL);
+	private final SliderSetting upwardSpeed = new SliderSetting("上升速度", 0.3, 0,
+		5, 0.05, SliderSetting.ValueDisplay.DECIMAL);
 	
 	public BoatFlyHack()
 	{
@@ -88,4 +86,3 @@ public final class BoatFlyHack extends Hack implements UpdateListener
 		vehicle.setVelocity(motionX, motionY, motionZ);
 	}
 }
-

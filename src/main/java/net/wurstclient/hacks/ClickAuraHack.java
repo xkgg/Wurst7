@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -39,8 +39,7 @@ public final class ClickAuraHack extends Hack
 		new AttackSpeedSliderSetting();
 	
 	private final EnumSetting<Priority> priority = new EnumSetting<>("优先级",
-		"决定首先攻击哪个实体。\n"
-			+ "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
+		"决定首先攻击哪个实体。\n" + "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
 			+ "\u00a7l角度\u00a7r - 攻击需要最少头部移动的实体。\n"
 			+ "\u00a7l生命值\u00a7r - 攻击最弱的实体。",
 		Priority.values(), Priority.ANGLE);
@@ -49,7 +48,7 @@ public final class ClickAuraHack extends Hack
 		new SliderSetting("视野", 360, 30, 360, 10, ValueDisplay.DEGREES);
 	
 	private final EntityFilterList entityFilters =
-		EntityFilterList.genericCombat();
+		EntityFilterList.genericMeleeCombat();
 	
 	public ClickAuraHack()
 	{
@@ -113,10 +112,11 @@ public final class ClickAuraHack extends Hack
 	{
 		// set entity
 		ClientPlayerEntity player = MC.player;
-		Stream<Entity> stream = EntityUtils.getAttackableEntities();
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities();
 		
 		double rangeSq = Math.pow(range.getValue(), 2);
-		stream = stream.filter(e -> player.squaredDistanceTo(e) <= rangeSq);
+		stream =
+			stream.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
 		
 		if(fov.getValue() < 360.0)
 			stream = stream.filter(e -> RotationUtils.getAngleToLookVec(
@@ -143,7 +143,7 @@ public final class ClickAuraHack extends Hack
 	
 	private enum Priority
 	{
-		DISTANCE("距离", e -> MC.player.squaredDistanceTo(e)),
+		DISTANCE("距离", EntityUtils::distanceToHitboxSq),
 		
 		ANGLE("角度",
 			e -> RotationUtils

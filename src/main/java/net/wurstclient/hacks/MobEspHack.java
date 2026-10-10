@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -13,7 +13,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.InteractionEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -39,8 +41,8 @@ public final class MobEspHack extends Hack implements UpdateListener,
 {
 	private final EspStyleSetting style = new EspStyleSetting();
 	
-	private final EspBoxSizeSetting boxSize = new EspBoxSizeSetting(
-		"\u00a7l精确\u00a7r 模式显示每个生物的确切碰撞箱。\n"
+	private final EspBoxSizeSetting boxSize =
+		new EspBoxSizeSetting("\u00a7l精确\u00a7r 模式显示每个生物的确切碰撞箱。\n"
 			+ "\u00a7l精美\u00a7r 模式显示稍大的方块，看起来更好。");
 	
 	private final EntityFilterList entityFilters =
@@ -65,9 +67,10 @@ public final class MobEspHack extends Hack implements UpdateListener,
 			FilterAllaysSetting.genericVision(false),
 			FilterInvisibleSetting.genericVision(false),
 			FilterNamedSetting.genericVision(false),
-			FilterArmorStandsSetting.genericVision(true));
+			FilterArmorStandsSetting.genericVision(true),
+			FilterInteractionsSetting.genericVision(false));
 	
-	private final ArrayList<LivingEntity> mobs = new ArrayList<>();
+	private final ArrayList<Entity> mobs = new ArrayList<>();
 	
 	public MobEspHack()
 	{
@@ -99,11 +102,13 @@ public final class MobEspHack extends Hack implements UpdateListener,
 	{
 		mobs.clear();
 		
-		Stream<LivingEntity> stream = StreamSupport
-			.stream(MC.world.getEntities().spliterator(), false)
-			.filter(LivingEntity.class::isInstance).map(e -> (LivingEntity)e)
-			.filter(e -> !(e instanceof PlayerEntity))
-			.filter(e -> !e.isRemoved() && e.getHealth() > 0);
+		Stream<Entity> stream =
+			StreamSupport.stream(MC.world.getEntities().spliterator(), false)
+				.filter(e -> !(e instanceof PlayerEntity))
+				.filter(e -> e instanceof LivingEntity
+					|| e instanceof InteractionEntity)
+				.filter(e -> !e.isRemoved()
+					&& (!(e instanceof LivingEntity le) || le.getHealth() > 0));
 		
 		stream = entityFilters.applyTo(stream);
 		
@@ -126,7 +131,7 @@ public final class MobEspHack extends Hack implements UpdateListener,
 			double extraSize = boxSize.getExtraSize() / 2;
 			
 			ArrayList<ColoredBox> boxes = new ArrayList<>(mobs.size());
-			for(LivingEntity e : mobs)
+			for(Entity e : mobs)
 			{
 				Box box = EntityUtils.getLerpedBox(e, partialTicks)
 					.offset(0, extraSize, 0).expand(extraSize);
@@ -139,7 +144,7 @@ public final class MobEspHack extends Hack implements UpdateListener,
 		if(style.hasLines())
 		{
 			ArrayList<ColoredPoint> ends = new ArrayList<>(mobs.size());
-			for(LivingEntity e : mobs)
+			for(Entity e : mobs)
 			{
 				Vec3d point =
 					EntityUtils.getLerpedBox(e, partialTicks).getCenter();
@@ -150,7 +155,7 @@ public final class MobEspHack extends Hack implements UpdateListener,
 		}
 	}
 	
-	private int getColor(LivingEntity e)
+	private int getColor(Entity e)
 	{
 		float f = MC.player.distanceTo(e) / 20F;
 		float r = MathHelper.clamp(2 - f, 0, 1);

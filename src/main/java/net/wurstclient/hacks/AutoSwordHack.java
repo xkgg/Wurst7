@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -36,15 +36,12 @@ public final class AutoSwordHack extends Hack implements UpdateListener
 	private final EnumSetting<Priority> priority =
 		new EnumSetting<>("优先级", Priority.values(), Priority.SPEED);
 	
-	private final CheckboxSetting switchBack = new CheckboxSetting(
-		"切换回", "在\u00a7l释放时间\u00a7r过后切换回之前选择的物品栏。",
-		true);
+	private final CheckboxSetting switchBack =
+		new CheckboxSetting("切换回", "在\u00a7l释放时间\u00a7r过后切换回之前选择的物品栏。", true);
 	
 	private final SliderSetting releaseTime = new SliderSetting("释放时间",
-		"自动剑从武器切换回之前选择的物品栏的时间。\n\n"
-			+ "仅在\u00a7l切换回\u00a7r被选中时生效。",
-		10, 1, 200, 1,
-		ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1 刻"));
+		"自动剑从武器切换回之前选择的物品栏的时间。\n\n" + "仅在\u00a7l切换回\u00a7r被选中时生效。", 10, 1, 200,
+		1, ValueDisplay.INTEGER.withSuffix(" 刻").withLabel(1, "1 刻"));
 	
 	private int oldSlot;
 	private int timer;
@@ -82,7 +79,7 @@ public final class AutoSwordHack extends Hack implements UpdateListener
 			Entity entity = ((EntityHitResult)MC.crosshairTarget).getEntity();
 			
 			if(entity instanceof LivingEntity
-				&& EntityUtils.IS_ATTACKABLE.test(entity))
+				&& EntityUtils.IS_ATTACKABLE_MELEE.test(entity))
 				setSlot(entity);
 		}
 		
@@ -185,21 +182,21 @@ public final class AutoSwordHack extends Hack implements UpdateListener
 	}
 	
 	private enum Priority
-{
-	SPEED("速度 (剑)"),
-	DAMAGE("伤害 (斧)");
-	
-	private final String name;
-	
-	private Priority(String name)
 	{
-		this.name = name;
+		SPEED("速度 (剑)"),
+		DAMAGE("伤害 (斧)");
+		
+		private final String name;
+		
+		private Priority(String name)
+		{
+			this.name = name;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return name;
+		}
 	}
-	
-	@Override
-	public String toString()
-	{
-		return name;
-	}
-}
 }

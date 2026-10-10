@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -45,11 +45,9 @@ public final class FacingSetting extends EnumSetting<FacingSetting.Facing>
 	{
 		OFF("关闭", v -> {}),
 		
-		SERVER("服务器端",
-			v -> WURST.getRotationFaker().faceVectorPacket(v)),
+		SERVER("服务器端", v -> WURST.getRotationFaker().faceVectorPacket(v)),
 		
-		CLIENT("客户端",
-			v -> WURST.getRotationFaker().faceVectorClient(v)),
+		CLIENT("客户端", v -> WURST.getRotationFaker().faceVectorClient(v)),
 		
 		SPAM("数据包 spam",
 			v -> RotationUtils.getNeededRotations(v).sendPlayerLookPacket());

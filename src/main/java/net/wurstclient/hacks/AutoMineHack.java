@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -22,15 +22,13 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.mixinterface.IKeyBinding;
 import net.wurstclient.settings.CheckboxSetting;
 
-@SearchTags({"自动挖掘","AutoMine", "auto mine", "AutoBreak", "auto break"})
+@SearchTags({"自动挖掘", "AutoMine", "auto mine", "AutoBreak", "auto break"})
 public final class AutoMineHack extends Hack
 	implements UpdateListener, HandleBlockBreakingListener
 {
 	// 超高速模式（挖掘速度远超正常水平，易被反作弊检测）
 	private final CheckboxSetting superFastMode =
-		new CheckboxSetting("超高速模式",
-			"以超出正常水平的速度破坏方块，可能会被反作弊插件检测到。",
-			false);
+		new CheckboxSetting("超高速模式", "以超出正常水平的速度破坏方块，可能会被反作弊插件检测到。", false);
 	
 	public AutoMineHack()
 	{
@@ -42,6 +40,8 @@ public final class AutoMineHack extends Hack
 	@Override
 	protected void onEnable()
 	{
+		WURST.getHax().autoFarmHack.setEnabled(false);
+		
 		// 禁用冲突的挖掘类功能，避免功能叠加
 		WURST.getHax().excavatorHack.setEnabled(false);
 		WURST.getHax().nukerHack.setEnabled(false);

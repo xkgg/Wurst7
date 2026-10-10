@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -46,7 +46,7 @@ public final class MultiAuraHack extends Hack implements UpdateListener
 		new PauseAttackOnContainersSetting(false);
 	
 	private final EntityFilterList entityFilters =
-		EntityFilterList.genericCombat();
+		EntityFilterList.genericMeleeCombat();
 	
 	public MultiAuraHack()
 	{
@@ -97,9 +97,10 @@ public final class MultiAuraHack extends Hack implements UpdateListener
 			return;
 		
 		// get entities
-		Stream<Entity> stream = EntityUtils.getAttackableEntities();
-		double rangeSq = Math.pow(range.getValue(), 2);
-		stream = stream.filter(e -> MC.player.squaredDistanceTo(e) <= rangeSq);
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities();
+		double rangeSq = range.getValueSq();
+		stream =
+			stream.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
 		
 		if(fov.getValue() < 360.0)
 			stream = stream.filter(e -> RotationUtils.getAngleToLookVec(

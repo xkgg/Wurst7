@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -38,32 +38,28 @@ public final class TriggerBotHack extends Hack
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
 	
-	private final SliderSetting speedRandMS =
-		new SliderSetting("速度随机化",
-			"通过改变攻击之间的延迟来帮助你绕过反作弊插件。\n\n" + "\u00b1100ms 推荐用于Vulcan。\n\n"
-				+ "0 (关闭) 适用于NoCheat+、AAC、Grim、Verus、Spartan和" 
-				+ "原版服务器。",
-			100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
-				.withSuffix("ms").withLabel(0, "off"));
+	private final SliderSetting speedRandMS = new SliderSetting("速度随机化",
+		"通过改变攻击之间的延迟来帮助你绕过反作弊插件。\n\n" + "\u00b1100ms 推荐用于Vulcan。\n\n"
+			+ "0 (关闭) 适用于NoCheat+、AAC、Grim、Verus、Spartan和" + "原版服务器。",
+		100, 0, 1000, 50, ValueDisplay.INTEGER.withPrefix("\u00b1")
+			.withSuffix("ms").withLabel(0, "off"));
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.CLIENT);
 	
-	private final CheckboxSetting attackWhileBlocking =
-		new CheckboxSetting("格挡时攻击",
-			"即使在使用盾牌格挡或使用物品时也会攻击。\n\n"
-				+ "这在原版中是不可能的，如果启用了\"模拟鼠标点击\"则不会生效。",
+	private final CheckboxSetting attackWhileBlocking = new CheckboxSetting(
+		"格挡时攻击",
+		"即使在使用盾牌格挡或使用物品时也会攻击。\n\n" + "这在原版中是不可能的，如果启用了\"模拟鼠标点击\"则不会生效。", false);
+	
+	private final CheckboxSetting simulateMouseClick =
+		new CheckboxSetting("模拟鼠标点击",
+			"攻击时模拟实际的鼠标点击（或按键按下）。可以用来欺骗CPS测量工具，让它们认为你是手动攻击。\n\n"
+				+ "\u00a7c\u00a7l警告：\u00a7r 模拟鼠标点击可能会导致意外行为，比如游戏菜单自动点击。"
+				+ "此外，当启用此选项时，\"挥动手臂\"和\"格挡时攻击\"设置将不起作用。",
 			false);
 	
-	private final CheckboxSetting simulateMouseClick = new CheckboxSetting(
-		"模拟鼠标点击",
-		"攻击时模拟实际的鼠标点击（或按键按下）。可以用来欺骗CPS测量工具，让它们认为你是手动攻击。\n\n"
-			+ "\u00a7c\u00a7l警告：\u00a7r 模拟鼠标点击可能会导致意外行为，比如游戏菜单自动点击。"
-			+ "此外，当启用此选项时，\"挥动手臂\"和\"格挡时攻击\"设置将不起作用。",
-		false);
-	
 	private final EntityFilterList entityFilters =
-		EntityFilterList.genericCombat();
+		EntityFilterList.genericMeleeCombat();
 	
 	private boolean simulatingMouseClick;
 	
@@ -164,10 +160,10 @@ public final class TriggerBotHack extends Hack
 	
 	private boolean isCorrectEntity(Entity entity)
 	{
-		if(!EntityUtils.IS_ATTACKABLE.test(entity))
+		if(!EntityUtils.IS_ATTACKABLE_MELEE.test(entity))
 			return false;
 		
-		if(MC.player.squaredDistanceTo(entity) > range.getValueSq())
+		if(EntityUtils.distanceToHitboxSq(entity) > range.getValueSq())
 			return false;
 		
 		return entityFilters.testOne(entity);

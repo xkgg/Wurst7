@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -45,26 +45,22 @@ public final class RestockHack extends Hack implements UpdateListener
 			.collect(Collectors.toCollection(ArrayList::new));
 	
 	// 需补货的物品列表：指定要自动补充的物品（默认示例：矿车）
-	private ItemListSetting items = new ItemListSetting("补货物品",
-		"需要自动补货的物品。", "minecraft:minecart");
+	private ItemListSetting items =
+		new ItemListSetting("补货物品", "需要自动补货的物品。", "minecraft:minecart");
 	
 	// 补货目标槽位：指定补充到哪个槽位（-1=当前选中槽位，9=副手，0-8=快捷栏对应槽位）
-	private final SliderSetting restockSlot = new SliderSetting("补货槽位",
-		"将物品补充到哪个槽位。", 0, -1, 9, 1,
-		ValueDisplay.INTEGER.withLabel(9, "副手").withLabel(-1, "当前选中"));
+	private final SliderSetting restockSlot =
+		new SliderSetting("补货槽位", "将物品补充到哪个槽位。", 0, -1, 9, 1,
+			ValueDisplay.INTEGER.withLabel(9, "副手").withLabel(-1, "当前选中"));
 	
 	// 最低数量阈值：物品数量低于该值时触发补货
-	private final SliderSetting restockAmount = new SliderSetting(
-		"最低数量阈值",
-		"快捷栏中物品数量低于该值时，触发新一轮补货。",
-		1, 1, 64, 1, ValueDisplay.INTEGER);
+	private final SliderSetting restockAmount = new SliderSetting("最低数量阈值",
+		"快捷栏中物品数量低于该值时，触发新一轮补货。", 1, 1, 64, 1, ValueDisplay.INTEGER);
 	
 	// 工具修复模式：耐久低于阈值时自动替换工具（0=关闭，1-100=剩余耐久阈值）
-	private final SliderSetting repairMode = new SliderSetting(
-		"工具修复模式",
-		"当工具耐久剩余量达到设定阈值时自动替换，方便你在工具损坏前修复。\n"
-			+ "可设置0（关闭）到100（剩余使用次数）。",
-		0, 0, 100, 1, ValueDisplay.INTEGER.withLabel(0, "关闭"));
+	private final SliderSetting repairMode = new SliderSetting("工具修复模式",
+		"当工具耐久剩余量达到设定阈值时自动替换，方便你在工具损坏前修复。\n" + "可设置0（关闭）到100（剩余使用次数）。", 0, 0,
+		100, 1, ValueDisplay.INTEGER.withLabel(0, "关闭"));
 	
 	public RestockHack()
 	{
@@ -179,8 +175,11 @@ public final class RestockHack extends Hack implements UpdateListener
 	
 	/**
 	 * 搜索背包中包含指定物品的槽位（跳过目标槽位）
-	 * @param itemName 目标物品ID
-	 * @param slotToSkip 需跳过的槽位（避免重复操作）
+	 *
+	 * @param itemName
+	 *            目标物品ID
+	 * @param slotToSkip
+	 *            需跳过的槽位（避免重复操作）
 	 * @return 包含目标物品的槽位列表
 	 */
 	private List<Integer> searchSlotsWithItem(String itemName, int slotToSkip)
@@ -208,8 +207,11 @@ public final class RestockHack extends Hack implements UpdateListener
 	
 	/**
 	 * 判断物品是否匹配（包含耐久检测）
-	 * @param itemName 目标物品ID
-	 * @param stack 待检测物品栈
+	 *
+	 * @param itemName
+	 *            目标物品ID
+	 * @param stack
+	 *            待检测物品栈
 	 * @return 是否匹配
 	 */
 	private boolean itemEqual(String itemName, ItemStack stack)

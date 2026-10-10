@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -13,8 +13,7 @@ import net.minecraft.entity.mob.SlimeEntity;
 
 public final class FilterSlimesSetting extends EntityFilterCheckbox
 {
-	private static final String EXCEPTIONS_TEXT =
-		"\n\n这个过滤器不影响岩浆史莱姆";
+	private static final String EXCEPTIONS_TEXT = "\n\n这个过滤器不影响岩浆史莱姆";
 	
 	public FilterSlimesSetting(String description, boolean checked)
 	{
@@ -37,4 +36,3 @@ public final class FilterSlimesSetting extends EntityFilterCheckbox
 		return new FilterSlimesSetting("不会显示史莱姆.", checked);
 	}
 }
-

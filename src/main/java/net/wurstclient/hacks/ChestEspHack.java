@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -32,6 +32,7 @@ import net.wurstclient.hacks.chestesp.ChestEspGroup;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ColorSetting;
 import net.wurstclient.settings.EspStyleSetting;
+import net.wurstclient.util.LootrModCompat;
 import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.chunk.ChunkUtils;
 import net.wurstclient.SearchTags;
@@ -43,76 +44,62 @@ public class ChestEspHack extends Hack implements UpdateListener,
 	private final EspStyleSetting style = new EspStyleSetting();
 	
 	private final ChestEspBlockGroup basicChests = new ChestEspBlockGroup(
-		new ColorSetting("箱子颜色",
-			"普通箱子将以此颜色突出显示。", Color.GREEN),
-		null);
+		new ColorSetting("箱子颜色", "普通箱子将以此颜色突出显示。", Color.GREEN),
+		new CheckboxSetting("包含普通箱子", true));
 	
 	private final ChestEspBlockGroup trapChests = new ChestEspBlockGroup(
-		new ColorSetting("陷阱箱颜色",
-			"陷阱箱将以此颜色突出显示。",
-			new Color(0xFF8000)),
+		new ColorSetting("陷阱箱颜色", "陷阱箱将以此颜色突出显示。", new Color(0xFF8000)),
 		new CheckboxSetting("包含陷阱箱", true));
 	
 	private final ChestEspBlockGroup enderChests = new ChestEspBlockGroup(
-		new ColorSetting("末影箱颜色",
-			"末影箱将以此颜色突出显示。", Color.CYAN),
+		new ColorSetting("末影箱颜色", "末影箱将以此颜色突出显示。", Color.CYAN),
 		new CheckboxSetting("包含末影箱", true));
 	
-	private final ChestEspEntityGroup chestCarts =
-		new ChestEspEntityGroup(
-			new ColorSetting("箱子矿车颜色",
-				"带箱子的矿车将以此颜色突出显示。",
-				Color.YELLOW),
-			new CheckboxSetting("包含箱子矿车", true));
+	private final ChestEspEntityGroup chestCarts = new ChestEspEntityGroup(
+		new ColorSetting("箱子矿车颜色", "带箱子的矿车将以此颜色突出显示。", Color.YELLOW),
+		new CheckboxSetting("包含箱子矿车", true));
 	
-	private final ChestEspEntityGroup chestBoats =
-		new ChestEspEntityGroup(
-			new ColorSetting("箱子船颜色",
-				"带箱子的船将以此颜色突出显示。",
-				Color.YELLOW),
-			new CheckboxSetting("包含箱子船", true));
+	private final ChestEspEntityGroup chestBoats = new ChestEspEntityGroup(
+		new ColorSetting("箱子船颜色", "带箱子的船将以此颜色突出显示。", Color.YELLOW),
+		new CheckboxSetting("包含箱子船", true));
 	
 	private final ChestEspBlockGroup barrels = new ChestEspBlockGroup(
-		new ColorSetting("木桶颜色",
-			"木桶将以此颜色突出显示。", Color.GREEN),
+		new ColorSetting("木桶颜色", "木桶将以此颜色突出显示。", Color.GREEN),
 		new CheckboxSetting("包含木桶", true));
 	
+	private final ChestEspBlockGroup pots = new ChestEspBlockGroup(
+		new ColorSetting("装饰陶罐颜色",
+			"description.wurst.setting.chestesp.pots_color", Color.GREEN),
+		new CheckboxSetting("包含装饰陶罐",
+			"description.wurst.setting.chestesp.include_pots", false));
+	
 	private final ChestEspBlockGroup shulkerBoxes = new ChestEspBlockGroup(
-		new ColorSetting("潜影盒颜色",
-			"潜影盒将以此颜色突出显示。", Color.MAGENTA),
+		new ColorSetting("潜影盒颜色", "潜影盒将以此颜色突出显示。", Color.MAGENTA),
 		new CheckboxSetting("包含潜影盒", true));
 	
 	private final ChestEspBlockGroup hoppers = new ChestEspBlockGroup(
-		new ColorSetting("漏斗颜色",
-			"漏斗将以此颜色突出显示。", Color.WHITE),
+		new ColorSetting("漏斗颜色", "漏斗将以此颜色突出显示。", Color.WHITE),
 		new CheckboxSetting("包含漏斗", false));
 	
-	private final ChestEspEntityGroup hopperCarts =
-		new ChestEspEntityGroup(
-			new ColorSetting("漏斗矿车颜色",
-				"带漏斗的矿车将以此颜色突出显示。",
-				Color.YELLOW),
-			new CheckboxSetting("包含漏斗矿车", false));
+	private final ChestEspEntityGroup hopperCarts = new ChestEspEntityGroup(
+		new ColorSetting("漏斗矿车颜色", "带漏斗的矿车将以此颜色突出显示。", Color.YELLOW),
+		new CheckboxSetting("包含漏斗矿车", false));
 	
 	private final ChestEspBlockGroup droppers = new ChestEspBlockGroup(
-		new ColorSetting("投掷器颜色",
-			"投掷器将以此颜色突出显示。", Color.WHITE),
+		new ColorSetting("投掷器颜色", "投掷器将以此颜色突出显示。", Color.WHITE),
 		new CheckboxSetting("包含投掷器", false));
 	
 	private final ChestEspBlockGroup dispensers = new ChestEspBlockGroup(
-		new ColorSetting("发射器颜色",
-			"发射器将以此颜色突出显示。",
-			new Color(0xFF8000)),
+		new ColorSetting("发射器颜色", "发射器将以此颜色突出显示。", new Color(0xFF8000)),
 		new CheckboxSetting("包含发射器", false));
 	
-	private final ChestEspBlockGroup furnaces =
-		new ChestEspBlockGroup(new ColorSetting("熔炉颜色",
-			"熔炉、烟熏炉和高炉将以此颜色突出显示。",
-			Color.RED), new CheckboxSetting("包含熔炉", false));
+	private final ChestEspBlockGroup furnaces = new ChestEspBlockGroup(
+		new ColorSetting("熔炉颜色", "熔炉、烟熏炉和高炉将以此颜色突出显示。", Color.RED),
+		new CheckboxSetting("包含熔炉", false));
 	
 	private final List<ChestEspGroup> groups = Arrays.asList(basicChests,
-		trapChests, enderChests, chestCarts, chestBoats, barrels, shulkerBoxes,
-		hoppers, hopperCarts, droppers, dispensers, furnaces);
+		trapChests, enderChests, chestCarts, chestBoats, barrels, pots,
+		shulkerBoxes, hoppers, hopperCarts, droppers, dispensers, furnaces);
 	
 	private final List<ChestEspEntityGroup> entityGroups =
 		Arrays.asList(chestCarts, chestBoats, hopperCarts);
@@ -158,13 +145,21 @@ public class ChestEspHack extends Hack implements UpdateListener,
 			if(blockEntity instanceof TrappedChestBlockEntity)
 				trapChests.add(blockEntity);
 			else if(blockEntity instanceof ChestBlockEntity)
-				basicChests.add(blockEntity);
-			else if(blockEntity instanceof EnderChestBlockEntity)
+			{
+				if(LootrModCompat.isLootrTrappedChest(blockEntity))
+					trapChests.add(blockEntity);
+				else
+					basicChests.add(blockEntity);
+			}else if(blockEntity instanceof EnderChestBlockEntity)
 				enderChests.add(blockEntity);
-			else if(blockEntity instanceof ShulkerBoxBlockEntity)
+			else if(blockEntity instanceof ShulkerBoxBlockEntity
+				|| LootrModCompat.isLootrShulkerBox(blockEntity))
 				shulkerBoxes.add(blockEntity);
-			else if(blockEntity instanceof BarrelBlockEntity)
+			else if(blockEntity instanceof BarrelBlockEntity
+				|| LootrModCompat.isLootrBarrel(blockEntity))
 				barrels.add(blockEntity);
+			else if(blockEntity instanceof DecoratedPotBlockEntity)
+				pots.add(blockEntity);
 			else if(blockEntity instanceof HopperBlockEntity)
 				hoppers.add(blockEntity);
 			else if(blockEntity instanceof DropperBlockEntity)

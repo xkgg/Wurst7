@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -19,10 +19,8 @@ public final class DamageCmd extends Command
 {
 	public DamageCmd()
 	{
-		super("damage", "应用给定的伤害量。",
-			".damage <数量>", "注意: 数量以半心为单位。",
-			"示例: .damage 7 (应用3.5心伤害)",
-			"要应用更多伤害，请多次运行此命令。");
+		super("damage", "应用给定的伤害量。", ".damage <数量>", "注意: 数量以半心为单位。",
+			"示例: .damage 7 (应用3.5心伤害)", "要应用更多伤害，请多次运行此命令。");
 	}
 	
 	@Override

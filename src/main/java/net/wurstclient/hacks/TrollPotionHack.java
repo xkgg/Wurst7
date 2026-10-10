@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -24,9 +24,8 @@ import net.wurstclient.util.InventoryUtils;
 @SearchTags({"恼人药水", "troll potion", "TrollingPotion", "trolling potion"})
 public final class TrollPotionHack extends Hack
 {
-	private final EnumSetting<PotionType> potionType =
-		new EnumSetting<>("药水类型", "要生成的药水类型。",
-			PotionType.values(), PotionType.SPLASH);
+	private final EnumSetting<PotionType> potionType = new EnumSetting<>("药水类型",
+		"要生成的药水类型。", PotionType.values(), PotionType.SPLASH);
 	
 	public TrollPotionHack()
 	{

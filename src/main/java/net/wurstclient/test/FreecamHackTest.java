@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,6 +11,7 @@ import static net.wurstclient.test.WurstClientTestHelper.*;
 
 import java.time.Duration;
 
+import net.wurstclient.WurstClient;
 import net.wurstclient.mixinterface.IKeyBinding;
 
 public enum FreecamHackTest
@@ -19,12 +20,20 @@ public enum FreecamHackTest
 	
 	public static void testFreecamHack()
 	{
-		System.out.println("Testing 自由视角 hack");
+		String hackName = WurstClient.INSTANCE.getHax().freecamHack.getName();
+		System.out.println("Testing " + hackName + " hack");
 		
 		// Enable Freecam with default settings
-		runWurstCommand("setcheckbox 自由视角 追踪线 off");
-		runWurstCommand("t 自由视角 on");
+		runWurstCommand("setcheckbox " + hackName + " 追踪线 off");
+		runWurstCommand("t " + hackName + " on");
 		takeScreenshot("freecam_default", Duration.ofMillis(100));
+		clearChat();
+		
+		// Hide hand
+		takeScreenshot("freecam_hidden_hand", Duration.ofMillis(100));
+		runWurstCommand("setcheckbox " + hackName + " 隐藏手部 off");
+		takeScreenshot("freecam_hand_visible", Duration.ofMillis(100));
+		runWurstCommand("setcheckbox " + hackName + " 隐藏手部 on");
 		clearChat();
 		
 		// Press shift to fly down a bit
@@ -37,16 +46,15 @@ public enum FreecamHackTest
 		clearChat();
 		
 		// Tracer
-		runWurstCommand("setcheckbox 自由视角 追踪线 on");
+		runWurstCommand("setcheckbox " + hackName + " 追踪线 on");
 		takeScreenshot("freecam_tracer", Duration.ofMillis(100));
 		clearChat();
 		
 		// Clean up
-		runWurstCommand("setcheckbox 自由视角 追踪线 off");
-		runWurstCommand("t 自由视角 off");
+		runWurstCommand("setcheckbox " + hackName + " 追踪线 off");
+		runWurstCommand("setcheckbox " + hackName + " 关闭时重载区块 off");
+		runWurstCommand("t " + hackName + " off");
 		waitForWorldTicks(5);
 		clearChat();
 	}
 }
-
-

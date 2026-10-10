@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,10 +18,8 @@ import net.wurstclient.settings.CheckboxSetting;
 @DontBlock
 public final class TranslationsOtf extends OtherFeature
 {
-	private final CheckboxSetting forceEnglish = new CheckboxSetting(
-		"强制使用英语",
-		"即使Minecraft设置为不同的语言，也以英语显示Wurst客户端。",
-		true);
+	private final CheckboxSetting forceEnglish = new CheckboxSetting("强制使用英语",
+		"即使Minecraft设置为不同的语言，也以英语显示Wurst客户端。", true);
 	
 	public TranslationsOtf()
 	{

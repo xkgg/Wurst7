@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -13,6 +13,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import net.wurstclient.WurstClient;
+import net.wurstclient.keybinds.Keybind;
 
 public final class KeybindEditorScreen extends Screen
 	implements PressAKeyCallback
@@ -100,14 +101,12 @@ public final class KeybindEditorScreen extends Screen
 		renderBackground(context);
 		
 		context.drawCenteredTextWithShadow(textRenderer,
-			(oldKey != null ? "编辑" : "添加") + "按键绑定", width / 2, 20,
-			0xffffff);
+			(oldKey != null ? "编辑" : "添加") + "按键绑定", width / 2, 20, 0xffffff);
 		
 		context.drawTextWithShadow(textRenderer,
-			"按键: " + key.replace("key.keyboard.", ""), width / 2 - 100, 47,
-			0xa0a0a0);
-		context.drawTextWithShadow(textRenderer, "命令（用';'分隔）",
-			width / 2 - 100, 87, 0xa0a0a0);
+			"按键: " + Keybind.getDisplayKey(key), width / 2 - 100, 47, 0xa0a0a0);
+		context.drawTextWithShadow(textRenderer, "命令（用';'分隔）", width / 2 - 100,
+			87, 0xa0a0a0);
 		
 		commandField.render(context, mouseX, mouseY, partialTicks);
 		super.render(context, mouseX, mouseY, partialTicks);

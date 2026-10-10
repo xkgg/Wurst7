@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -25,8 +25,8 @@ import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.ForceOpDialog;
 import net.wurstclient.util.MultiProcessingUtils;
 
-@SearchTags({"破解账号", "Force OP", "AuthMe Cracker", "AuthMeCracker", "auth me cracker",
-	"admin hack", "AuthMe password cracker"})
+@SearchTags({"破解账号", "Force OP", "AuthMe Cracker", "AuthMeCracker",
+	"auth me cracker", "admin hack", "AuthMe password cracker"})
 @DontSaveState
 public final class ForceOpHack extends Hack implements ChatInputListener
 {
@@ -271,9 +271,8 @@ public final class ForceOpHack extends Hack implements ChatInputListener
 			else
 				password = passwords[lastPW - 1];
 			
-			ChatUtils.message(
-				"\u00a7a[\u00a72\u00a7l成功\u00a7a]\u00a7f 密码 \""
-					+ password + "\" 有效。");
+			ChatUtils.message("\u00a7a[\u00a72\u00a7l成功\u00a7a]\u00a7f 密码 \""
+				+ password + "\" 有效。");
 			
 			setEnabled(false);
 			return;

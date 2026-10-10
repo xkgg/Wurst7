@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -8,17 +8,12 @@
 package net.wurstclient.settings.filters;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.AmbientEntity;
-import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.PufferfishEntity;
+import net.minecraft.entity.mob.MobEntity;
+import net.wurstclient.util.MobDisposition;
 
 public final class FilterPassiveSetting extends EntityFilterCheckbox
 {
-	private static final String EXCEPTIONS_TEXT = "\n\n此过滤器不"
-		+ " 影响狼、蜜蜂、北极熊、河豚和村民.";
+	private static final String EXCEPTIONS_TEXT = "\n\n此过滤器不影响狼、蜜蜂、北极熊和河豚。";
 	
 	public FilterPassiveSetting(String description, boolean checked)
 	{
@@ -28,30 +23,19 @@ public final class FilterPassiveSetting extends EntityFilterCheckbox
 	@Override
 	public boolean test(Entity e)
 	{
-		// never filter out hostile mobs (including hoglins)
-		if(e instanceof Monster)
-			return true;
-		
-		// never filter out neutral mobs (including pufferfish)
-		if(e instanceof Angerable || e instanceof PufferfishEntity)
-			return true;
-		
-		return !(e instanceof AnimalEntity || e instanceof AmbientEntity
-			|| e instanceof WaterCreatureEntity);
+		return !(e instanceof MobEntity mob
+			&& MobDisposition.of(mob) == MobDisposition.PASSIVE);
 	}
 	
 	public static FilterPassiveSetting genericCombat(boolean checked)
 	{
-		return new FilterPassiveSetting("不会攻击像猪这样的动物"
-			+ " 奶牛、像蝙蝠这样的环境生物，以及像鱼、乌贼这样的水生生物"
-			+ " 和海豚.", checked);
+		return new FilterPassiveSetting(
+			"不会攻击像猪这样的动物" + " 奶牛、像蝙蝠这样的环境生物，以及像鱼、乌贼这样的水生生物" + " 和海豚.", checked);
 	}
 	
 	public static FilterPassiveSetting genericVision(boolean checked)
 	{
-		return new FilterPassiveSetting("不会展示像猪这样的动物"
-			+ " 奶牛、像蝙蝠这样的环境生物，以及像鱼、乌贼这样的水生生物"
-			+ " 和海豚.", checked);
+		return new FilterPassiveSetting(
+			"不会展示像猪这样的动物" + " 奶牛、像蝙蝠这样的环境生物，以及像鱼、乌贼这样的水生生物" + " 和海豚.", checked);
 	}
 }
-

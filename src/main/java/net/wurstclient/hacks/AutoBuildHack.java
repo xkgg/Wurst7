@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -31,11 +31,15 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.FileSetting;
+import net.wurstclient.settings.FacingSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
+import net.wurstclient.settings.SwingHandSetting;
+import net.wurstclient.settings.SwingHandSetting.SwingHand;
 import net.wurstclient.util.*;
 import net.wurstclient.util.BlockPlacer.BlockPlacingParams;
 import net.wurstclient.util.json.JsonException;
+import net.wurstclient.util.text.WText;
 
 public final class AutoBuildHack extends Hack
 	implements UpdateListener, RightClickListener, RenderListener
@@ -43,36 +47,33 @@ public final class AutoBuildHack extends Hack
 	private static final Box BLOCK_BOX =
 		new Box(1 / 16.0, 1 / 16.0, 1 / 16.0, 15 / 16.0, 15 / 16.0, 15 / 16.0);
 	
-private final FileSetting templateSetting = new FileSetting("模板",
-		"决定要建造的结构。\n\n"
-			+ "模板为JSON格式文件。你可自行添加模板，也可编辑/删除默认模板。\n\n"
+	private final FileSetting templateSetting = new FileSetting("模板",
+		"决定要建造的结构。\n\n" + "模板为JSON格式文件。你可自行添加模板，也可编辑/删除默认模板。\n\n"
 			+ "若配置出错，只需点击「恢复默认设置」按钮，或删除该文件夹即可。",
 		"autobuild", DefaultAutoBuildTemplates::createFiles);
 	
-private final SliderSetting range = new SliderSetting("建造范围",
-		"放置方块时的最远有效距离。\n" + "推荐数值：\n"
-			+ "原版服务器：6.0\n" + "安装NoCheat+反作弊插件：4.25",
+	private final SliderSetting range = new SliderSetting("建造范围",
+		"放置方块时的最远有效距离。\n" + "推荐数值：\n" + "原版服务器：6.0\n" + "安装NoCheat+反作弊插件：4.25",
 		6, 1, 10, 0.05, ValueDisplay.DECIMAL);
 	
-private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"检测视线遮挡",
-		"确保不会穿墙放置方块。可规避部分反作弊插件检测，但会降低建造速度。",
-		false);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检测视线遮挡",
+		"确保不会穿墙放置方块。可规避部分反作弊插件检测，但会降低建造速度。", false);
 	
-private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
-		"使用模板预设方块",
-		"尝试放置模板中保存的方块类型。\n\n"
-			+ "若模板未指定方块类型，则会使用你手中当前持有的方块进行建造。",
-		true);
+	private final FacingSetting facing =
+		FacingSetting.withoutPacketSpam("控制放置方块时玩家的朝向。");
+	
+	private final SwingHandSetting swingHand =
+		new SwingHandSetting(WText.literal("控制放置方块时是否挥动手臂。"), SwingHand.SERVER);
+	
+	private final CheckboxSetting useSavedBlocks =
+		new CheckboxSetting("使用模板预设方块",
+			"尝试放置模板中保存的方块类型。\n\n" + "若模板未指定方块类型，则会使用你手中当前持有的方块进行建造。", true);
 	
 	private final CheckboxSetting fastPlace =
-		new CheckboxSetting("始终快速放置",
-			"即使未启用快速放置功能，也会以快速放置的方式建造。", true);
+		new CheckboxSetting("始终快速放置", "即使未启用快速放置功能，也会以快速放置的方式建造。", true);
 	
 	private final CheckboxSetting strictBuildOrder = new CheckboxSetting(
-		"严格建造顺序",
-		"完全按照模板中定义的顺序放置方块。此模式速度较慢，但建造结果更稳定。",
-		false);
+		"严格建造顺序", "完全按照模板中定义的顺序放置方块。此模式速度较慢，但建造结果更稳定。", false);
 	
 	private Status status = Status.NO_TEMPLATE;
 	private AutoBuildTemplate template;
@@ -86,6 +87,8 @@ private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
 		addSetting(templateSetting);
 		addSetting(range);
 		addSetting(checkLOS);
+		addSetting(facing);
+		addSetting(swingHand);
 		addSetting(useSavedBlocks);
 		addSetting(fastPlace);
 		addSetting(strictBuildOrder);
@@ -237,6 +240,7 @@ private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
 			
 			BlockPlacingParams params = BlockPlacer.getBlockPlacingParams(pos);
 			if(params == null || params.distanceSq() > rangeSq
+				|| params.requiresSneaking()
 				|| checkLOS.isChecked() && !params.lineOfSight())
 				if(strictBuildOrder.isChecked())
 					return;
@@ -251,9 +255,9 @@ private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
 			}
 			
 			MC.itemUseCooldown = 4;
-			RotationUtils.getNeededRotations(params.hitVec())
-				.sendPlayerLookPacket();
-			InteractionSimulator.rightClickBlock(params.toHitResult());
+			facing.getSelected().face(params.hitVec());
+			InteractionSimulator.rightClickBlock(params.toHitResult(),
+				swingHand.getSelected());
 			return;
 		}
 	}

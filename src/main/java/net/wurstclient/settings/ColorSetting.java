@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -110,6 +110,12 @@ public final class ColorSetting extends Setting
 	}
 	
 	@Override
+	public void resetToDefault()
+	{
+		setColor(defaultColor);
+	}
+	
+	@Override
 	public Component getComponent()
 	{
 		return new ColorComponent(this);
@@ -128,7 +134,7 @@ public final class ColorSetting extends Setting
 		}catch(JsonException e)
 		{
 			e.printStackTrace();
-			setColor(defaultColor);
+			resetToDefault();
 		}
 	}
 	

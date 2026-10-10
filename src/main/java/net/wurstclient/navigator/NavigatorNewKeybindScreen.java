@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -21,6 +21,7 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.wurstclient.WurstClient;
 import net.wurstclient.clickgui.ClickGui;
+import net.wurstclient.keybinds.Keybind;
 import net.wurstclient.keybinds.PossibleKeybind;
 
 public class NavigatorNewKeybindScreen extends NavigatorScreen
@@ -32,6 +33,7 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 	private String selectedKey = "key.keyboard.unknown";
 	private String text = "";
 	private ButtonWidget okButton;
+	private ButtonWidget cancelButton;
 	private boolean choosingKey;
 	
 	public NavigatorNewKeybindScreen(Set<PossibleKeybind> possibleKeybinds,
@@ -80,10 +82,11 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 		addDrawableChild(okButton);
 		
 		// cancel button
-		addDrawableChild(ButtonWidget
+		cancelButton = ButtonWidget
 			.builder(Text.literal("Cancel"),
 				b -> WurstClient.MC.setScreen(parent))
-			.dimensions(width / 2 + 2, height - 65, 149, 18).build());
+			.dimensions(width / 2 + 2, height - 65, 149, 18).build();
+		addDrawableChild(cancelButton);
 	}
 	
 	@Override
@@ -103,12 +106,29 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 	@Override
 	protected void onMouseClick(double x, double y, int button)
 	{
+		if(choosingKey && !(x >= okButton.getX()
+			&& x < okButton.getX() + okButton.getWidth() && y >= okButton.getY()
+			&& y < okButton.getY() + okButton.getHeight())
+			&& !(x >= cancelButton.getX()
+				&& x < cancelButton.getX() + cancelButton.getWidth()
+				&& y >= cancelButton.getY()
+				&& y < cancelButton.getY() + cancelButton.getHeight()))
+		{
+			selectedKey =
+				InputUtil.Type.MOUSE.createFromCode(button).getTranslationKey();
+			okButton.active = !selectedKey.equals("key.keyboard.unknown");
+			return;
+		}
+		
 		// back button
 		if(button == GLFW.GLFW_MOUSE_BUTTON_4)
 		{
 			client.setScreen(parent);
 			return;
 		}
+		
+		if(choosingKey)
+			return;
 		
 		// commands
 		if(hoveredCommand != null)
@@ -124,10 +144,10 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 		// text
 		if(choosingKey)
 		{
-			text = "Now press the key that should trigger this keybind.";
+			text = "Now press a key or mouse button for this keybind.";
 			if(!selectedKey.equals("key.keyboard.unknown"))
 			{
-				text += "\n\nKey: " + selectedKey.replace("key.keyboard.", "");
+				text += "\n\nKey: " + Keybind.getDisplayKey(selectedKey);
 				String commands =
 					WurstClient.INSTANCE.getKeybinds().getCommands(selectedKey);
 				if(commands != null)

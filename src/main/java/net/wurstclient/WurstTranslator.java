@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 import com.google.common.collect.Lists;
+import com.google.gson.JsonParseException;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
@@ -188,18 +189,38 @@ public class WurstTranslator implements SynchronousResourceReloader
 			Identifier langId = Identifier.of("wurst", langFilePath);
 			
 			for(Resource resource : manager.getAllResources(langId))
+			{
+				if(!isBuiltInWurstResourcePack(resource))
+					continue;
+				
 				try(InputStream stream = resource.getInputStream())
 				{
 					Language.load(stream, entryConsumer);
 					
-				}catch(IOException e)
+				}catch(IOException | JsonParseException e)
 				{
 					ResourcePack pack = resource.getPack();
 					System.out.println("Failed to load translations for "
 						+ langCode + " from pack "
 						+ (pack == null ? "(null)" : pack.getName()));
 					e.printStackTrace();
+					
+				}catch(Exception e)
+				{
+					System.out.println(
+						"Unexpected exception while loading translations for "
+							+ langCode);
+					e.printStackTrace();
 				}
+			}
 		}
+	}
+	
+	private boolean isBuiltInWurstResourcePack(Resource resource)
+	{
+		// In Minecraft 1.20.1, Fabric combines mod resources into one pack
+		// named "fabric". Server resource packs use a different pack name.
+		ResourcePack pack = resource.getPack();
+		return pack != null && "fabric".equals(pack.getName());
 	}
 }

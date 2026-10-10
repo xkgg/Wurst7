@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -92,17 +92,13 @@ public final class AimAtSetting extends EnumSetting<AimAtSetting.AimAt>
 	
 	public enum AimAt
 	{
-		AUTO("自动", "瞄准目标碰撞箱的最近点。",
-			AimAtSetting::aimAtClosestPoint),
+		AUTO("自动", "瞄准目标碰撞箱的最近点。", AimAtSetting::aimAtClosestPoint),
 		
-		HEAD("头部", "瞄准目标的眼睛位置。",
-			AimAtSetting::aimAtHead),
+		HEAD("头部", "瞄准目标的眼睛位置。", AimAtSetting::aimAtHead),
 		
-		CENTER("中心", "瞄准目标碰撞箱的中心。",
-			AimAtSetting::aimAtCenter),
+		CENTER("中心", "瞄准目标碰撞箱的中心。", AimAtSetting::aimAtCenter),
 		
-		FEET("脚部", "瞄准目标碰撞箱的底部。",
-			AimAtSetting::aimAtFeet);
+		FEET("脚部", "瞄准目标碰撞箱的底部。", AimAtSetting::aimAtFeet);
 		
 		private final String name;
 		private final String description;

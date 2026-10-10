@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -38,6 +38,7 @@ public class Window
 	private boolean closing;
 	
 	private boolean invisible;
+	private boolean positionClampingEnabled = true;
 	
 	private boolean fixedWidth;
 	private int innerHeight;
@@ -68,6 +69,9 @@ public class Window
 	 */
 	public final int getX()
 	{
+		if(!positionClampingEnabled)
+			return x;
+		
 		int scaledWidth = WurstClient.MC.getWindow().getScaledWidth();
 		return MathHelper.clamp(x, -width + 1, scaledWidth - 1);
 	}
@@ -92,6 +96,9 @@ public class Window
 	 */
 	public final int getY()
 	{
+		if(!positionClampingEnabled)
+			return y;
+		
 		int scaledHeight = WurstClient.MC.getWindow().getScaledHeight();
 		return MathHelper.clamp(y, -12, scaledHeight - 1);
 	}
@@ -340,6 +347,17 @@ public class Window
 	public final void setInvisible(boolean invisible)
 	{
 		this.invisible = invisible;
+	}
+	
+	public final boolean isPositionClampingEnabled()
+	{
+		return positionClampingEnabled;
+	}
+	
+	public final void setPositionClampingEnabled(
+		boolean positionClampingEnabled)
+	{
+		this.positionClampingEnabled = positionClampingEnabled;
 	}
 	
 	public final boolean isFixedWidth()

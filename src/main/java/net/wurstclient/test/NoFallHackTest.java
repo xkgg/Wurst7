@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -26,8 +26,18 @@ public enum NoFallHackTest
 		assertOnGround();
 		assertPlayerHealth(health -> health == 20);
 		
-		// Fall 10 blocks with NoFall enabled
+		// Ignore falls below the configured minimum distance
 		runWurstCommand("t 无跌落伤害 on");
+		runWurstCommand("setslider 无跌落伤害 最小坠落距离 10");
+		runChatCommand("tp ~ ~5 ~");
+		waitForWorldTicks(5);
+		waitUntil("player is on ground", mc -> mc.player.isOnGround());
+		waitForWorldTicks(5);
+		assertPlayerHealth(health -> health < 20);
+		restoreHealth();
+		runWurstCommand("setslider 无跌落伤害 最小坠落距离 1");
+		
+		// Fall 10 blocks with NoFall enabled
 		runChatCommand("tp ~ ~10 ~");
 		waitForWorldTicks(5);
 		waitUntil("player is on ground", mc -> mc.player.isOnGround());
@@ -45,9 +55,16 @@ public enum NoFallHackTest
 		assertPlayerHealth(health -> Math.abs(health - 13) <= 1);
 		
 		// Clean up
-		submitAndWait(mc -> mc.player.heal(20));
+		restoreHealth();
 		runChatCommand("gamemode creative");
 		setPerspective(Perspective.FIRST_PERSON);
+	}
+	
+	private static void restoreHealth()
+	{
+		runChatCommand("effect give @s minecraft:instant_health 1 4 true");
+		waitUntil("player has full health", mc -> mc.player.getHealth() == 20);
+		assertPlayerHealth(health -> health == 20);
 	}
 	
 	private static void assertOnGround()
@@ -65,5 +82,3 @@ public enum NoFallHackTest
 		System.out.println("玩家的生命值是正确的: " + health);
 	}
 }
-
-

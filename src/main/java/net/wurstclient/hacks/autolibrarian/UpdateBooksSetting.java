@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -16,7 +16,9 @@ public final class UpdateBooksSetting
 	public UpdateBooksSetting()
 	{
 		super("更新书籍",
-			"当村民学会出售其中一本书时，自动更新想要的书籍列表。\n\n" + "\u00a7l关闭\u00a7r - 不更新列表。\n\n" + "\u00a7l移除\u00a7r - 从列表中移除书籍，以便" + "下一个村民会学习不同的书籍。\n\n" + "\u00a7l价格\u00a7r - 更新书籍的最高价格，以便" + "下一个村民必须以更便宜的价格出售它。",
+			"当村民学会出售其中一本书时，自动更新想要的书籍列表。\n\n" + "\u00a7l关闭\u00a7r - 不更新列表。\n\n"
+				+ "\u00a7l移除\u00a7r - 从列表中移除书籍，以便" + "下一个村民会学习不同的书籍。\n\n"
+				+ "\u00a7l价格\u00a7r - 更新书籍的最高价格，以便" + "下一个村民必须以更便宜的价格出售它。",
 			UpdateBooks.values(), UpdateBooks.REMOVE);
 	}
 	

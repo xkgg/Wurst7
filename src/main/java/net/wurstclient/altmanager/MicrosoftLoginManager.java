@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -94,7 +94,7 @@ public enum MicrosoftLoginManager
 		Pattern.compile("\"urlPost\":\"([^\"]+)");
 	
 	private static final Pattern AUTHCODE_REGEX =
-		Pattern.compile("[?&]code=([\\w\\.-]+)");
+		Pattern.compile("[?&]code=([^&]+)");
 	
 	public static void login(String email, String password)
 		throws LoginException
@@ -228,8 +228,7 @@ public enum MicrosoftLoginManager
 			
 			int responseCode = connection.getResponseCode();
 			if(responseCode >= 500 && responseCode <= 599)
-				throw new LoginException(
-					"服务器宕机（代码 " + responseCode + "）。");
+				throw new LoginException("服务器宕机（代码 " + responseCode + "）。");
 			
 			if(responseCode != 200)
 				throw new LoginException(
@@ -240,8 +239,7 @@ public enum MicrosoftLoginManager
 			
 			Matcher matcher = AUTHCODE_REGEX.matcher(decodedUrl);
 			if(!matcher.find())
-				throw new LoginException(
-					"未获取到 authCode。（邮箱/密码错误？）");
+				throw new LoginException("未获取到 authCode。（邮箱/密码错误？）");
 			
 			return matcher.group(1);
 			
@@ -441,9 +439,8 @@ public enum MicrosoftLoginManager
 			WsonObject json = JsonUtils.parseConnectionToObject(connection);
 			
 			if(json.has("error"))
-				throw new LoginException(
-					"来自 api.minecraftservices.com 的错误消息:\n"
-						+ json.getElement("error"));
+				throw new LoginException("来自 api.minecraftservices.com 的错误消息:\n"
+					+ json.getElement("error"));
 			
 			UUID uuid = uuidFromJson(json.getString("id"));
 			String name = json.getString("name");

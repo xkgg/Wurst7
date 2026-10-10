@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -35,12 +35,10 @@ public final class AutoFishDebugDraw
 	private static final MinecraftClient MC = WurstClient.MC;
 	
 	private final CheckboxSetting debugDraw = new CheckboxSetting("调试绘制",
-		"显示咬钩发生的位置以及它们将被检测的位置。"
-			+ " 用于优化你的'有效范围'设置。",
-		false);
+		"显示咬钩发生的位置以及它们将被检测的位置。" + " 用于优化你的'有效范围'设置。", false);
 	
-	private final ColorSetting ddColor = new ColorSetting("调试颜色",
-		"如果启用，调试绘制的颜色。", Color.RED);
+	private final ColorSetting ddColor =
+		new ColorSetting("调试颜色", "如果启用，调试绘制的颜色。", Color.RED);
 	
 	private final SliderSetting validRange;
 	private final FishingSpotManager fishingSpots;

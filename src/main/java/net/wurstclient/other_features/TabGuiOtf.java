@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -22,8 +22,7 @@ public final class TabGuiOtf extends OtherFeature
 	
 	public TabGuiOtf()
 	{
-		super("标签GUI", "允许你在游戏时快速切换黑客。\n"
-			+ "使用方向键导航。\n\n"
+		super("标签GUI", "允许你在游戏时快速切换黑客。\n" + "使用方向键导航。\n\n"
 			+ "将\u00a76黑客列表 \u00a76位置\u00a7r设置更改为\u00a76右侧\u00a7r，以防止TabGUI与黑客列表重叠。");
 		
 		addSetting(status);

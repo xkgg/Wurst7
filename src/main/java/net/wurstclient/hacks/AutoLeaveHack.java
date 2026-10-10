@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -19,37 +19,33 @@ import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.InventoryUtils;
 
-@SearchTags({"自动登出","auto leave", "AutoDisconnect", "auto disconnect", "AutoQuit",
-	"auto quit"})
+@SearchTags({"自动登出", "auto leave", "AutoDisconnect", "auto disconnect",
+	"AutoQuit", "auto quit"})
 public final class AutoLeaveHack extends Hack implements UpdateListener
 {
 	// 触发生命值（生命值低于/等于该值时登出服务器）
-	private final SliderSetting health = new SliderSetting("触发生命值",
-		"当你的生命值降至该数值或以下时，自动退出服务器。",
-		4, 0.5, 9.5, 0.5, ValueDisplay.DECIMAL.withSuffix(" 颗心"));
+	private final SliderSetting health =
+		new SliderSetting("触发生命值", "当你的生命值降至该数值或以下时，自动退出服务器。", 4, 0.5, 9.5, 0.5,
+			ValueDisplay.DECIMAL.withSuffix(" 颗心"));
 	
 	// 退出模式（不同的登出方式，适配不同反作弊）
 	public final EnumSetting<Mode> mode = new EnumSetting<>("退出模式",
-		"\u00a7l正常退出\u00a7r模式会正常退出游戏。\n"
-			+ "可绕过NoCheat+，但无法绕过CombatLog。\n\n"
+		"\u00a7l正常退出\u00a7r模式会正常退出游戏。\n" + "可绕过NoCheat+，但无法绕过CombatLog。\n\n"
 			+ "\u00a7l特殊字符\u00a7r模式会发送特殊聊天消息，触发服务器将你踢出。\n"
 			+ "可绕过NoCheat+和部分版本的CombatLog。\n\n"
-			+ "\u00a7l自伤发包\u00a7r模式会发送攻击数据包，将自己同时设为攻击者和目标，"
-			+ "触发服务器踢人机制。\n"
+			+ "\u00a7l自伤发包\u00a7r模式会发送攻击数据包，将自己同时设为攻击者和目标，" + "触发服务器踢人机制。\n"
 			+ "可同时绕过CombatLog和NoCheat+。",
 		Mode.values(), Mode.QUIT);
 	
 	// 禁用自动重连（登出时自动关闭AutoReconnect功能）
-	private final CheckboxSetting disableAutoReconnect = new CheckboxSetting(
-		"禁用自动重连", "当自动登出触发时，自动关闭自动重连功能。",
-		true);
+	private final CheckboxSetting disableAutoReconnect =
+		new CheckboxSetting("禁用自动重连", "当自动登出触发时，自动关闭自动重连功能。", true);
 	
 	// 图腾数量阈值（图腾数量高于该值时不触发登出）
 	private final SliderSetting totems = new SliderSetting("图腾数量阈值",
-		"仅当你的不死图腾数量降至该数值或以下时，才会触发登出。\n\n"
-			+ "设为11 = 忽略图腾数量，始终可触发登出",
-		11, 0, 11, 1, ValueDisplay.INTEGER.withSuffix(" 个图腾")
-			.withLabel(1, "1个图腾").withLabel(11, "忽略"));
+		"仅当你的不死图腾数量降至该数值或以下时，才会触发登出。\n\n" + "设为11 = 忽略图腾数量，始终可触发登出", 11, 0, 11,
+		1, ValueDisplay.INTEGER.withSuffix(" 个图腾").withLabel(1, "1个图腾")
+			.withLabel(11, "忽略"));
 	
 	public AutoLeaveHack()
 	{
@@ -65,7 +61,7 @@ public final class AutoLeaveHack extends Hack implements UpdateListener
 	public String getRenderName()
 	{
 		// 创造模式下标注"已暂停"
-		if(MC.player.getAbilities().creativeMode)
+		if(MC.player != null && MC.player.getAbilities().creativeMode)
 			return getName() + " (已暂停)";
 		
 		// 显示当前选中的退出模式
@@ -128,7 +124,7 @@ public final class AutoLeaveHack extends Hack implements UpdateListener
 				.sendPacket(PlayerInteractEntityC2SPacket.attack(MC.player,
 					MC.player.isSneaking())));
 		
-		private final String name;	// 显示名称
+		private final String name; // 显示名称
 		private final Runnable leave; // 登出执行逻辑
 		
 		private Mode(String name, Runnable leave)

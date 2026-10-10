@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -7,8 +7,11 @@
  */
 package net.wurstclient.hacks;
 
+import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.option.GameOptionsScreen;
+import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.hack.Hack;
@@ -18,8 +21,8 @@ import net.wurstclient.settings.CheckboxSetting;
 	"NoGradient", "no gradient"})
 public final class NoBackgroundHack extends Hack
 {
-	public final CheckboxSetting allGuis = new CheckboxSetting("所有界面",
-		"移除所有界面的背景，而不仅仅是物品栏。", false);
+	public final CheckboxSetting allGuis =
+		new CheckboxSetting("所有界面", "移除所有界面的背景，而不仅仅是物品栏。", false);
 	
 	public NoBackgroundHack()
 	{
@@ -34,6 +37,11 @@ public final class NoBackgroundHack extends Hack
 			return false;
 		
 		if(MC.world == null)
+			return false;
+		
+		if(screen instanceof GameMenuScreen
+			|| screen instanceof GameOptionsScreen
+			|| screen instanceof OptionsScreen)
 			return false;
 		
 		if(!allGuis.isChecked() && !(screen instanceof HandledScreen))

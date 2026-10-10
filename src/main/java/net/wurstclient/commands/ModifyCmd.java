@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -27,10 +27,9 @@ public final class ModifyCmd extends Command
 {
 	public ModifyCmd()
 	{
-		super("modify", "允许你修改物品的NBT数据。",
-			".modify add <nbt_data>", ".modify set <nbt_data>",
-			".modify remove <nbt_path>", "使用$表示颜色，使用$$表示$", "",
-			"示例:",
+		super("modify", "允许你修改物品的NBT数据。", ".modify add <nbt_data>",
+			".modify set <nbt_data>", ".modify remove <nbt_path>",
+			"使用$表示颜色，使用$$表示$", "", "示例:",
 			".modify add {display:{Name:'{\"text\":\"$cRed Name\"}'}}",
 			"(将物品名称更改为 \u00a7cRed Name\u00a7r)");
 	}
@@ -89,10 +88,10 @@ public final class ModifyCmd extends Command
 			stack.getNbt().copyFrom(tag);
 			
 		}catch(CommandSyntaxException e)
-			{
-				ChatUtils.message(e.getMessage());
-				throw new CmdError("NBT数据无效。");
-			}
+		{
+			ChatUtils.message(e.getMessage());
+			throw new CmdError("NBT数据无效。");
+		}
 	}
 	
 	private void set(ItemStack stack, String[] args) throws CmdError
@@ -106,10 +105,10 @@ public final class ModifyCmd extends Command
 			stack.setNbt(tag);
 			
 		}catch(CommandSyntaxException e)
-			{
-				ChatUtils.message(e.getMessage());
-				throw new CmdError("NBT数据无效。");
-			}
+		{
+			ChatUtils.message(e.getMessage());
+			throw new CmdError("NBT数据无效。");
+		}
 	}
 	
 	private void remove(ItemStack stack, String[] args) throws CmdException

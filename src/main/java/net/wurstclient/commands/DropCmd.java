@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -19,10 +19,8 @@ public final class DropCmd extends Command implements UpdateListener
 	
 	public DropCmd()
 	{
-		super("drop", "将你所有的物品丢在地上。", ".drop",
-			"慢速模式: .drop slow",
-			"如果常规的.drop会导致你被服务器踢出，",
-			"请使用慢速模式。");
+		super("drop", "将你所有的物品丢在地上。", ".drop", "慢速模式: .drop slow",
+			"如果常规的.drop会导致你被服务器踢出，", "请使用慢速模式。");
 	}
 	
 	@Override

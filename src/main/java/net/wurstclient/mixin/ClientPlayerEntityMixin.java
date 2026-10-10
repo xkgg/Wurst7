@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,6 +11,7 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -41,6 +42,8 @@ import net.wurstclient.events.PostMotionListener.PostMotionEvent;
 import net.wurstclient.events.PreMotionListener.PreMotionEvent;
 import net.wurstclient.events.UpdateListener.UpdateEvent;
 import net.wurstclient.hack.HackList;
+import net.wurstclient.hacks.FreecamHack;
+import net.wurstclient.hacks.RemoteViewHack;
 import net.wurstclient.mixinterface.IClientPlayerEntity;
 
 @Mixin(ClientPlayerEntity.class)
@@ -50,6 +53,15 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 	@Shadow
 	@Final
 	protected MinecraftClient client;
+	
+	@Shadow
+	public Input input;
+	
+	@Unique
+	private Input freecam$realInput;
+	
+	@Unique
+	private int freecam$inputSwapDepth;
 	
 	private Screen tempCurrentScreen;
 	private boolean hideNextItemUse;
@@ -65,7 +77,92 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		ordinal = 0), method = "tick()V")
 	private void onTick(CallbackInfo ci)
 	{
-		EventManager.fire(UpdateEvent.INSTANCE);
+		if(freecam$realInput == null)
+		{
+			EventManager.fire(UpdateEvent.INSTANCE);
+			return;
+		}
+		
+		input = freecam$realInput;
+		try
+		{
+			EventManager.fire(UpdateEvent.INSTANCE);
+		}finally
+		{
+			input = new Input();
+		}
+	}
+	
+	@Inject(at = @At("HEAD"), method = "tick()V")
+	private void onTickHead(CallbackInfo ci)
+	{
+		freecam$swapInput();
+	}
+	
+	@Inject(at = @At("RETURN"), method = "tick()V")
+	private void onTickReturn(CallbackInfo ci)
+	{
+		freecam$restoreInput();
+	}
+	
+	@Inject(at = @At("HEAD"), method = "tickRiding()V")
+	private void onTickRidingHead(CallbackInfo ci)
+	{
+		freecam$swapInput();
+	}
+	
+	@Inject(at = @At("RETURN"), method = "tickRiding()V")
+	private void onTickRidingReturn(CallbackInfo ci)
+	{
+		freecam$restoreInput();
+	}
+	
+	@Unique
+	private void freecam$swapInput()
+	{
+		if(!WurstClient.INSTANCE.getHax().freecamHack.isMovingCamera())
+			return;
+		
+		freecam$inputSwapDepth++;
+		if(freecam$inputSwapDepth > 1)
+			return;
+		
+		freecam$realInput = input;
+		freecam$realInput.tick(false, 1);
+		input = new Input();
+	}
+	
+	@Unique
+	private void freecam$restoreInput()
+	{
+		if(freecam$inputSwapDepth > 0)
+			freecam$inputSwapDepth--;
+		
+		if(freecam$inputSwapDepth > 0 || freecam$realInput == null)
+			return;
+		
+		input = freecam$realInput;
+		freecam$realInput = null;
+	}
+	
+	@Override
+	public void changeLookDirection(double cursorDeltaX, double cursorDeltaY)
+	{
+		FreecamHack freecam = WurstClient.INSTANCE.getHax().freecamHack;
+		if(freecam.isMovingCamera())
+		{
+			freecam.turn(cursorDeltaX, cursorDeltaY);
+			return;
+		}
+		
+		super.changeLookDirection(cursorDeltaX, cursorDeltaY);
+	}
+	
+	@Inject(at = @At("HEAD"), method = "isSneaking()Z", cancellable = true)
+	private void onIsSneaking(CallbackInfoReturnable<Boolean> cir)
+	{
+		if(WurstClient.INSTANCE.getHax().freecamHack.isMovingCamera())
+			cir.setReturnValue(false);
 	}
 	
 	/**
@@ -201,6 +298,38 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 	}
 	
 	/**
+	 * Allows sprinting to start while using an item when NoSlowdown is enabled.
+	 */
+	@WrapOperation(method = "canStartSprinting()Z",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z",
+			ordinal = 0))
+	private boolean wrapCanStartSprintingItemUse(ClientPlayerEntity instance,
+		Operation<Boolean> original)
+	{
+		if(WurstClient.INSTANCE.getHax().noSlowdownHack.isEnabled())
+			return false;
+		
+		return original.call(instance);
+	}
+	
+	/**
+	 * Prevents Flight from starting elytra flight while it overrides the
+	 * player's fall-flying state.
+	 */
+	@WrapOperation(method = "tickMovement()V",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/client/network/ClientPlayerEntity;checkFallFlying()Z"))
+	private boolean wurst$checkFallFlying(ClientPlayerEntity player,
+		Operation<Boolean> original)
+	{
+		if(WurstClient.INSTANCE.getHax().flightHack.isEnabled())
+			return false;
+		
+		return original.call(player);
+	}
+	
+	/**
 	 * Getter method for what used to be airStrafingSpeed.
 	 * Overridden to allow for the speed to be modified by hacks.
 	 */
@@ -244,8 +373,23 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 	@Override
 	public boolean isSpectator()
 	{
-		return super.isSpectator()
-			|| WurstClient.INSTANCE.getHax().freecamHack.isEnabled();
+		return super.isSpectator();
+	}
+	
+	@Inject(at = @At("RETURN"), method = "isCamera()Z", cancellable = true)
+	private void onIsCamera(CallbackInfoReturnable<Boolean> cir)
+	{
+		RemoteViewHack remoteView =
+			WurstClient.INSTANCE.getHax().remoteViewHack;
+		if(remoteView.isViewingEntity() && !isSpectator())
+			cir.setReturnValue(true);
+	}
+	
+	@Override
+	public boolean isFallFlying()
+	{
+		return !WurstClient.INSTANCE.getHax().flightHack.isEnabled()
+			&& super.isFallFlying();
 	}
 	
 	@Override

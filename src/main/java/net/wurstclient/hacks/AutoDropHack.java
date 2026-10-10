@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -22,15 +22,15 @@ import net.wurstclient.settings.ItemListSetting;
 	"InventoryCleaner", "inventory cleaner", "InvCleaner", "inv cleaner"})
 public final class AutoDropHack extends Hack implements UpdateListener
 {
-private ItemListSetting items = new ItemListSetting("清理物品列表",
-		"将会被丢弃的不需要的物品。", "minecraft:allium",
-		"minecraft:azure_bluet", "minecraft:blue_orchid",
-		"minecraft:cornflower", "minecraft:dandelion", "minecraft:lilac",
-		"minecraft:lily_of_the_valley", "minecraft:orange_tulip",
-		"minecraft:oxeye_daisy", "minecraft:peony", "minecraft:pink_tulip",
-		"minecraft:poisonous_potato", "minecraft:poppy", "minecraft:red_tulip",
-		"minecraft:rose_bush", "minecraft:rotten_flesh", "minecraft:sunflower",
-		"minecraft:wheat_seeds", "minecraft:white_tulip");
+	private ItemListSetting items = new ItemListSetting("清理物品列表",
+		"将会被丢弃的不需要的物品。", "minecraft:allium", "minecraft:azure_bluet",
+		"minecraft:blue_orchid", "minecraft:cornflower", "minecraft:dandelion",
+		"minecraft:lilac", "minecraft:lily_of_the_valley",
+		"minecraft:orange_tulip", "minecraft:oxeye_daisy", "minecraft:peony",
+		"minecraft:pink_tulip", "minecraft:poisonous_potato", "minecraft:poppy",
+		"minecraft:red_tulip", "minecraft:rose_bush", "minecraft:rotten_flesh",
+		"minecraft:sunflower", "minecraft:wheat_seeds",
+		"minecraft:white_tulip");
 	
 	// 1%的概率将名称显示为"AutoLinus"
 	private final String renderName =

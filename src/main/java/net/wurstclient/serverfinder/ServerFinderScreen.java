@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -64,10 +64,9 @@ public class ServerFinderScreen extends Screen
 				.dimensions(width / 2 - 100, height / 4 + 120 + 12, 200, 20)
 				.build());
 		
-		addDrawableChild(
-			ButtonWidget.builder(Text.literal("返回"), b -> close())
-				.dimensions(width / 2 - 100, height / 4 + 144 + 12, 200, 20)
-				.build());
+		addDrawableChild(ButtonWidget.builder(Text.literal("返回"), b -> close())
+			.dimensions(width / 2 - 100, height / 4 + 144 + 12, 200, 20)
+			.build());
 		
 		ipBox = new TextFieldWidget(textRenderer, width / 2 - 100,
 			height / 4 + 34, 200, 20, Text.empty());
@@ -210,15 +209,6 @@ public class ServerFinderScreen extends Screen
 	}
 	
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int int_3)
-	{
-		if(keyCode == GLFW.GLFW_KEY_ENTER)
-			searchButton.onPress();
-		
-		return super.keyPressed(keyCode, scanCode, int_3);
-	}
-	
-	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button)
 	{
 		if(button == GLFW.GLFW_MOUSE_BUTTON_4)
@@ -236,32 +226,28 @@ public class ServerFinderScreen extends Screen
 	{
 		renderBackground(context);
 		
-		context.drawCenteredTextWithShadow(textRenderer, "服务器查找器",
-			width / 2, 20, Colors.WHITE);
-		context.drawCenteredTextWithShadow(textRenderer,
-			"这将搜索具有相似IP的服务器", width / 2, 40,
-			0xFFA0A0A0);
-		context.drawCenteredTextWithShadow(textRenderer,
-			"与你在下面字段中输入的IP。", width / 2, 50,
-			0xFFA0A0A0);
-		context.drawCenteredTextWithShadow(textRenderer,
-			"找到的服务器将添加到你的服务器列表中。",
+		context.drawCenteredTextWithShadow(textRenderer, "服务器查找器", width / 2,
+			20, Colors.WHITE);
+		context.drawCenteredTextWithShadow(textRenderer, "这将搜索具有相似IP的服务器",
+			width / 2, 40, 0xFFA0A0A0);
+		context.drawCenteredTextWithShadow(textRenderer, "与你在下面字段中输入的IP。",
+			width / 2, 50, 0xFFA0A0A0);
+		context.drawCenteredTextWithShadow(textRenderer, "找到的服务器将添加到你的服务器列表中。",
 			width / 2, 60, 0xFFA0A0A0);
 		
-		context.drawTextWithShadow(textRenderer, "服务器地址：",
-			width / 2 - 100, height / 4 + 24, 0xFFA0A0A0);
+		context.drawTextWithShadow(textRenderer, "服务器地址：", width / 2 - 100,
+			height / 4 + 24, 0xFFA0A0A0);
 		ipBox.render(context, mouseX, mouseY, partialTicks);
 		
-		context.drawTextWithShadow(textRenderer, "最大线程数：",
-			width / 2 - 100, height / 4 + 60, 0xFFA0A0A0);
+		context.drawTextWithShadow(textRenderer, "最大线程数：", width / 2 - 100,
+			height / 4 + 60, 0xFFA0A0A0);
 		maxThreadsBox.render(context, mouseX, mouseY, partialTicks);
 		
 		context.drawCenteredTextWithShadow(textRenderer, state.toString(),
 			width / 2, height / 4 + 73, 0xFFA0A0A0);
 		
-		context.drawTextWithShadow(textRenderer,
-			"已检查: " + checked + " / 1792", width / 2 - 100, height / 4 + 84,
-			0xFFA0A0A0);
+		context.drawTextWithShadow(textRenderer, "已检查: " + checked + " / 1792",
+			width / 2 - 100, height / 4 + 84, 0xFFA0A0A0);
 		context.drawTextWithShadow(textRenderer, "可用: " + working,
 			width / 2 - 100, height / 4 + 94, 0xFFA0A0A0);
 		

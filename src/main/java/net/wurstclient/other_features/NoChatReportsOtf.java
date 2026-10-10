@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -97,10 +97,9 @@ public final class NoChatReportsOtf extends OtherFeature
 		HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT,
 			Text.literal("Original message: ").append(originalText));
 		
-		ChatUtils.component(Text.literal(
-			"服务器拒绝让你在不启用聊天报告的情况下聊天。点击\u00a7n这里\u00a7r了解更多。")
-				.styled(
-					s -> s.withClickEvent(clickEvent).withHoverEvent(hoverEvent)));
+		ChatUtils.component(Text
+			.literal("服务器拒绝让你在不启用聊天报告的情况下聊天。点击\u00a7n这里\u00a7r了解更多。").styled(
+				s -> s.withClickEvent(clickEvent).withHoverEvent(hoverEvent)));
 	}
 	
 	private void onLoginStart(ClientLoginNetworkHandler handler,

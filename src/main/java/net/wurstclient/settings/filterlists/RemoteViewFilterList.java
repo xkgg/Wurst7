@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -26,25 +26,27 @@ public final class RemoteViewFilterList extends EntityFilterList
 		builder.add(new FilterPlayersSetting(
 			"description.wurst.setting.remoteview.filter_players", false));
 		
+		builder.add(new FilterCreativeSetting(
+			"description.wurst.setting.remoteview.filter_creative", false));
+		
 		builder.add(new FilterSleepingSetting(
 			"description.wurst.setting.remoteview.filter_sleeping", false));
 		
 		builder.add(new FilterFlyingSetting(
 			"description.wurst.setting.remoteview.filter_flying", 0));
 		
-		builder.add(new FilterHostileSetting(
-			"不会查看敌对生物，如僵尸和爬行者。", true));
+		builder.add(new FilterHostileSetting("不会查看敌对生物，如僵尸和爬行者。", true));
 		
 		builder.add(FilterNeutralSetting.onOffOnly(
 			"description.wurst.setting.remoteview.filter_neutral", true));
 		
-		builder.add(new FilterPassiveSetting("不会查看动物，如猪和牛，环境生物，如蝙蝠，以及水生生物，如鱼、鱿鱼"
-			+ "和海豚。", true));
+		builder.add(new FilterPassiveSetting(
+			"不会查看动物，如猪和牛，环境生物，如蝙蝠，以及水生生物，如鱼、鱿鱼" + "和海豚。", true));
 		
-		builder.add(new FilterPassiveWaterSetting("不会查看被动水生生物，如鱼、鱿鱼、海豚和蝾螈。", true));
+		builder.add(
+			new FilterPassiveWaterSetting("不会查看被动水生生物，如鱼、鱿鱼、海豚和蝾螈。", true));
 		
-		builder.add(new FilterBabiesSetting(
-			"不会查看小猪、小村民等。", true));
+		builder.add(new FilterBabiesSetting("不会查看小猪、小村民等。", true));
 		
 		builder.add(new FilterBatsSetting(
 			"description.wurst.setting.remoteview.filter_bats", true));
@@ -64,8 +66,7 @@ public final class RemoteViewFilterList extends EntityFilterList
 		builder.add(new FilterGolemsSetting(
 			"description.wurst.setting.remoteview.filter_golems", true));
 		
-		builder
-			.add(FilterPiglinsSetting.onOffOnly("不会查看猪灵。", true));
+		builder.add(FilterPiglinsSetting.onOffOnly("不会查看猪灵。", true));
 		
 		builder.add(FilterZombiePiglinsSetting.onOffOnly(
 			"description.wurst.setting.remoteview.filter_zombie_piglins",
@@ -85,6 +86,8 @@ public final class RemoteViewFilterList extends EntityFilterList
 		
 		builder.add(new FilterArmorStandsSetting(
 			"description.wurst.setting.remoteview.filter_armor_stands", true));
+		
+		builder.add(FilterInteractionsSetting.remoteView());
 		
 		return new RemoteViewFilterList(builder);
 	}

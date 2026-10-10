@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -79,10 +79,9 @@ public abstract class AltEditorScreen extends Screen
 			.dimensions(width / 2 - 100, height / 4 + 72 + 12, 200, 20)
 			.build());
 		
-		addDrawableChild(
-			ButtonWidget.builder(Text.literal("取消"), b -> close())
-				.dimensions(width / 2 - 100, height / 4 + 120 + 12, 200, 20)
-				.build());
+		addDrawableChild(ButtonWidget.builder(Text.literal("取消"), b -> close())
+			.dimensions(width / 2 - 100, height / 4 + 120 + 12, 200, 20)
+			.build());
 		
 		addDrawableChild(ButtonWidget
 			.builder(Text.literal("随机名称"),
@@ -97,10 +96,10 @@ public abstract class AltEditorScreen extends Screen
 				20)
 			.build());
 		
-		addDrawableChild(ButtonWidget
-			.builder(Text.literal("打开皮肤文件夹"), b -> openSkinFolder())
-			.dimensions((width / 2 - 100) / 2 - 64, height - 32, 128, 20)
-			.build());
+		addDrawableChild(
+			ButtonWidget.builder(Text.literal("打开皮肤文件夹"), b -> openSkinFolder())
+				.dimensions((width / 2 - 100) / 2 - 64, height - 32, 128, 20)
+				.build());
 		
 		setFocused(nameOrEmailBox);
 	}

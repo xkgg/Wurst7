@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -82,16 +82,16 @@ public final class ChooseNameState extends TemplateToolState
 			setFocused(nameField);
 			
 			includeTypesBox = new CheckboxWidget(middleX - 99, middleY + 32,
-			150, 20, Text.literal("包含方块类型"), true);
-		addDrawableChild(includeTypesBox);
-		
-		doneButton = ButtonWidget.builder(Text.literal("完成"), b -> done())
-			.dimensions(middleX - 75, middleY + 56, 150, 20).build();
-		addDrawableChild(doneButton);
-		
-		cancelButton =
-			ButtonWidget.builder(Text.literal("取消"), b -> cancel())
-				.dimensions(middleX - 50, middleY + 80, 100, 15).build();
+				150, 20, Text.literal("包含方块类型"), true);
+			addDrawableChild(includeTypesBox);
+			
+			doneButton = ButtonWidget.builder(Text.literal("完成"), b -> done())
+				.dimensions(middleX - 75, middleY + 56, 150, 20).build();
+			addDrawableChild(doneButton);
+			
+			cancelButton =
+				ButtonWidget.builder(Text.literal("取消"), b -> cancel())
+					.dimensions(middleX - 50, middleY + 80, 100, 15).build();
 			addDrawableChild(cancelButton);
 		}
 		

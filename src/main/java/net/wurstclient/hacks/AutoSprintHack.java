@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,11 +18,10 @@ import net.wurstclient.settings.CheckboxSetting;
 public final class AutoSprintHack extends Hack implements UpdateListener
 {
 	private final CheckboxSetting allDirections =
-		new CheckboxSetting("全方位疾跑",
-			"向所有方向疾跑，而不仅仅是向前。", false);
+		new CheckboxSetting("全方位疾跑", "向所有方向疾跑，而不仅仅是向前。", false);
 	
-	private final CheckboxSetting hungry = new CheckboxSetting("饥饿时疾跑",
-		"即使在低饥饿度时也疾跑。", false);
+	private final CheckboxSetting hungry =
+		new CheckboxSetting("饥饿时疾跑", "即使在低饥饿度时也疾跑。", false);
 	
 	public AutoSprintHack()
 	{
@@ -51,7 +50,10 @@ public final class AutoSprintHack extends Hack implements UpdateListener
 		if(player.horizontalCollision || player.isSneaking())
 			return;
 		
-		if(player.isInsideWaterOrBubbleColumn() || player.isSubmergedInWater())
+		if(player.isSwimming())
+			return;
+		
+		if(player.isSubmergedInWater() && !player.getAbilities().flying)
 			return;
 		
 		if(!allDirections.isChecked() && player.forwardSpeed <= 0)

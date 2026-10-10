@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CactusBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -38,6 +39,9 @@ public abstract class CactusBlockMixin extends Block
 		BlockPos pos, ShapeContext context,
 		CallbackInfoReturnable<VoxelShape> cir)
 	{
+		if(world instanceof ServerWorld)
+			return;
+		
 		CactusCollisionShapeEvent event = new CactusCollisionShapeEvent();
 		EventManager.fire(event);
 		

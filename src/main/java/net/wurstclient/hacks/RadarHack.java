@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.decoration.InteractionEntity;
 import net.minecraft.entity.LivingEntity;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
@@ -36,20 +37,23 @@ public final class RadarHack extends Hack implements UpdateListener
 	private final Window window;
 	private final ArrayList<Entity> entities = new ArrayList<>();
 	
-	private final SliderSetting radius = new SliderSetting("半径",
-		"以方块为单位的半径。", 100, 1, 100, 1, ValueDisplay.INTEGER);
-	private final CheckboxSetting rotate =
-		new CheckboxSetting("随玩家旋转", true);
+	private final SliderSetting radius = new SliderSetting("半径", "以方块为单位的半径。",
+		100, 1, 100, 1, ValueDisplay.INTEGER);
+	private final CheckboxSetting rotate = new CheckboxSetting("随玩家旋转", true);
 	
 	private final EntityFilterList entityFilters =
 		new EntityFilterList(FilterPlayersSetting.genericVision(false),
+			FilterCreativeSetting.genericVision(false),
 			FilterSleepingSetting.genericVision(false),
 			FilterHostileSetting.genericVision(false),
+			FilterNeutralSetting
+				.genericVision(AttackDetectingEntityFilter.Mode.OFF),
 			FilterPassiveSetting.genericVision(false),
 			FilterPassiveWaterSetting.genericVision(false),
 			FilterBatsSetting.genericVision(true),
 			FilterSlimesSetting.genericVision(false),
-			FilterInvisibleSetting.genericVision(false));
+			FilterInvisibleSetting.genericVision(false),
+			FilterInteractionsSetting.genericVision(false));
 	
 	public RadarHack()
 	{
@@ -87,12 +91,13 @@ public final class RadarHack extends Hack implements UpdateListener
 		ClientWorld world = MC.world;
 		
 		entities.clear();
-		Stream<Entity> stream =
-			StreamSupport.stream(world.getEntities().spliterator(), true)
-				.filter(e -> !e.isRemoved() && e != player)
-				.filter(e -> !(e instanceof FakePlayerEntity))
-				.filter(LivingEntity.class::isInstance)
-				.filter(e -> ((LivingEntity)e).getHealth() > 0);
+		Stream<Entity> stream = StreamSupport
+			.stream(world.getEntities().spliterator(), true)
+			.filter(e -> !e.isRemoved() && e != player)
+			.filter(e -> !(e instanceof FakePlayerEntity))
+			.filter(e -> e instanceof LivingEntity
+				|| e instanceof InteractionEntity)
+			.filter(e -> !(e instanceof LivingEntity le) || le.getHealth() > 0);
 		
 		stream = entityFilters.applyTo(stream);
 		

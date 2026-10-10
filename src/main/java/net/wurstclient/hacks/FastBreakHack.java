@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -29,16 +29,13 @@ import net.wurstclient.util.BlockUtils;
 public final class FastBreakHack extends Hack
 	implements UpdateListener, BlockBreakingProgressListener
 {
-	private final SliderSetting activationChance = new SliderSetting(
-		"触发概率",
-		"仅以设定概率快速破坏你所挖掘的部分方块，以此增加反作弊插件的检测难度。\n\n"
-			+ "启用合规模式时，此设置无效。",
-		1, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
+	private final SliderSetting activationChance = new SliderSetting("触发概率",
+		"仅以设定概率快速破坏你所挖掘的部分方块，以此增加反作弊插件的检测难度。\n\n" + "启用合规模式时，此设置无效。", 1, 0, 1,
+		0.01, ValueDisplay.PERCENTAGE);
 	
 	private final CheckboxSetting legitMode = new CheckboxSetting("合规模式",
-		"仅移除方块破坏之间的延迟，不会加速破坏过程本身。\n\n"
-		+ "该模式速度较慢，但能有效规避反作弊插件检测。"
-		+ "如果常规快速破坏无效且调整触发概率滑块也无帮助，请使用此模式。",
+		"仅移除方块破坏之间的延迟，不会加速破坏过程本身。\n\n" + "该模式速度较慢，但能有效规避反作弊插件检测。"
+			+ "如果常规快速破坏无效且调整触发概率滑块也无帮助，请使用此模式。",
 		false);
 	
 	private final Random random = new Random();

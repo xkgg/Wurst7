@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -36,19 +36,14 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 public final class AutoArmorHack extends Hack
 	implements UpdateListener, PacketOutputListener
 {
-	private final CheckboxSetting useEnchantments = new CheckboxSetting(
-		"使用附魔",
-		"在计算护甲强度时是否考虑保护附魔",
-		true);
+	private final CheckboxSetting useEnchantments =
+		new CheckboxSetting("使用附魔", "在计算护甲强度时是否考虑保护附魔", true);
 	
-	private final CheckboxSetting swapWhileMoving = new CheckboxSetting(
-		"移动时切换",
-		"是否在玩家移动时切换盔甲\n\n\u00a7c\u00a7l警告: \u00a7r如果没有作弊, 这是不可能的",
-		false);
+	private final CheckboxSetting swapWhileMoving = new CheckboxSetting("移动时切换",
+		"是否在玩家移动时切换盔甲\n\n\u00a7c\u00a7l警告: \u00a7r如果没有作弊, 这是不可能的", false);
 	
 	private final SliderSetting delay = new SliderSetting("延迟",
-		"在切换下一件盔甲之前要等待的延迟.", 2,
-		0, 20, 1, ValueDisplay.INTEGER);
+		"在切换下一件盔甲之前要等待的延迟.", 2, 0, 20, 1, ValueDisplay.INTEGER);
 	
 	private int timer;
 	
@@ -146,7 +141,7 @@ public final class AutoArmorHack extends Hack
 			int slot = bestArmorSlots[type];
 			if(slot == -1)
 				continue;
-				
+			
 			// 检查是否可以切换盔甲（需要一个空槽位来放置旧盔甲）
 			ItemStack oldArmor = inventory.getArmorStack(type);
 			if(!oldArmor.isEmpty() && inventory.getEmptySlot() == -1)
@@ -188,7 +183,7 @@ public final class AutoArmorHack extends Hack
 			int prtLvl = EnchantmentHelper.getLevel(protection, stack);
 			
 			ClientPlayerEntity player = MC.player;
-			DamageSource dmgSource = 
+			DamageSource dmgSource =
 				player.getDamageSources().playerAttack(player);
 			prtPoints = protection.getProtectionAmount(prtLvl, dmgSource);
 		}

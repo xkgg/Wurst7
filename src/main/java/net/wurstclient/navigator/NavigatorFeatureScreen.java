@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -68,6 +68,7 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 		
 		window.setWidth(308);
 		window.setFixedWidth(true);
+		window.setPositionClampingEnabled(false);
 		window.pack();
 	}
 	
@@ -179,9 +180,8 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 					{
 						if(noKeybindsSet)
 							noKeybindsSet = false;
-						text +=
-							"\n" + keybind.getKey().replace("key.keyboard.", "")
-								+ ": " + keybindDescription;
+						text += "\n" + Keybind.getDisplayKey(keybind.getKey())
+							+ ": " + keybindDescription;
 						existingKeybinds.put(keybind.getKey(),
 							new PossibleKeybind(command, keybindDescription));
 						
@@ -190,9 +190,8 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 					{
 						if(noKeybindsSet)
 							noKeybindsSet = false;
-						text +=
-							"\n" + keybind.getKey().replace("key.keyboard.", "")
-								+ ": " + "Toggle " + feature.getName();
+						text += "\n" + Keybind.getDisplayKey(keybind.getKey())
+							+ ": " + "Toggle " + feature.getName();
 						existingKeybinds.put(keybind.getKey(),
 							new PossibleKeybind(command,
 								"Toggle " + feature.getName()));
@@ -236,8 +235,7 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 	protected void onMouseClick(double x, double y, int button)
 	{
 		// popups
-		if(WurstClient.INSTANCE.getGui().handleNavigatorPopupClick(x, y,
-			button))
+		if(WurstClient.INSTANCE.getGui().handlePopupMouseClick(x, y, button))
 			return;
 		
 		// back button
@@ -468,6 +466,7 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 		}
 		
 		// popups & tooltip
+		gui.closePopupsOutsideArea(window, bgx1, bgy1, bgx2, bgy3);
 		gui.renderPopups(context, mouseX, mouseY);
 		gui.renderTooltip(context, mouseX, mouseY);
 	}

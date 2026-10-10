@@ -28,5 +28,7 @@ accessible	field	net/minecraft/client/network/ClientPlayerInteractionManager	cur
 accessible	field	net/minecraft/client/toast/ToastManager	toastQueue	Ljava/util/Deque;
 accessible	field	net/minecraft/entity/Entity	movementMultiplier	Lnet/minecraft/util/math/Vec3d;
 accessible	field	net/minecraft/entity/Entity	stepHeight	F
+accessible	method	net/minecraft/entity/passive/FoxEntity	getTrustedUuids	()Ljava/util/List;
+accessible	method	net/minecraft/entity/passive/OcelotEntity	isTrusting	()Z
 accessible	field	net/minecraft/item/ArmorItem	toughness	F
 accessible	field	net/minecraft/network/packet/s2c/play/ChunkDeltaUpdateS2CPacket	sectionPos	Lnet/minecraft/util/math/ChunkSectionPos;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -13,7 +13,8 @@ import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.CheckboxSetting;
 
 @DontBlock
-@SearchTags({"隐私", "数据", "跟踪", "窥探", "间谍软件", "privacy", "data", "tracking", "snooper", "spyware"})
+@SearchTags({"隐私", "数据", "跟踪", "窥探", "间谍软件", "privacy", "data", "tracking",
+	"snooper", "spyware"})
 public final class NoTelemetryOtf extends OtherFeature
 {
 	private final CheckboxSetting disableTelemetry =
@@ -21,8 +22,7 @@ public final class NoTelemetryOtf extends OtherFeature
 	
 	public NoTelemetryOtf()
 	{
-		super("无遥测",
-			"禁用Mojang在22w46a中引入的\"必需\"遥测。事实证明，它根本不是必需的。");
+		super("无遥测", "禁用Mojang在22w46a中引入的\"必需\"遥测。事实证明，它根本不是必需的。");
 		addSetting(disableTelemetry);
 	}
 	

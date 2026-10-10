@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -20,7 +20,8 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
 @DontSaveState
 @DontBlock
-@SearchTags({"点击GUI", "click gui", "WindowGUI", "window gui", "HackMenu", "hack menu"})
+@SearchTags({"点击GUI", "click gui", "WindowGUI", "window gui", "HackMenu",
+	"hack menu"})
 public final class ClickGuiHack extends Hack
 {
 	private final ColorSetting bgColor =
@@ -32,20 +33,18 @@ public final class ClickGuiHack extends Hack
 	private final ColorSetting txtColor =
 		new ColorSetting("文字色", "界面文字颜色", new Color(0xF0F0F0));
 	
-	private final SliderSetting opacity = new SliderSetting("不透明度", 0.5,
-		0.15, 0.85, 0.01, ValueDisplay.PERCENTAGE);
+	private final SliderSetting opacity = new SliderSetting("不透明度", 0.5, 0.15,
+		0.85, 0.01, ValueDisplay.PERCENTAGE);
 	
-	private final SliderSetting ttOpacity = new SliderSetting("提示框不透明度",
-		0.75, 0.15, 1, 0.01, ValueDisplay.PERCENTAGE);
+	private final SliderSetting ttOpacity = new SliderSetting("提示框不透明度", 0.75,
+		0.15, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
 	private final SliderSetting maxHeight = new SliderSetting("最大窗口高度",
-		"窗口的最大高度\n" + "0 = 无限制", 200, 0, 1000, 50,
-		ValueDisplay.INTEGER);
+		"窗口的最大高度\n" + "0 = 无限制", 200, 0, 1000, 50, ValueDisplay.INTEGER);
 	
 	private final SliderSetting maxSettingsHeight =
-		new SliderSetting("设置窗口最大高度",
-			"设置类窗口的最大高度\n" + "0 = 无限制", 200, 0,
-			1000, 50, ValueDisplay.INTEGER);
+		new SliderSetting("设置窗口最大高度", "设置类窗口的最大高度\n" + "0 = 无限制", 200, 0, 1000,
+			50, ValueDisplay.INTEGER);
 	
 	public ClickGuiHack()
 	{

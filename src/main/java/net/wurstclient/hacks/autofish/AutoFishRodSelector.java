@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -27,15 +27,11 @@ public final class AutoFishRodSelector
 {
 	private static final MinecraftClient MC = WurstClient.MC;
 	
-	private final CheckboxSetting stopWhenOutOfRods = new CheckboxSetting(
-		"没有钓鱼竿时停止",
-		"如果启用，当没有钓鱼竿时，自动钓鱼将关闭自身。",
-		false);
+	private final CheckboxSetting stopWhenOutOfRods =
+		new CheckboxSetting("没有钓鱼竿时停止", "如果启用，当没有钓鱼竿时，自动钓鱼将关闭自身。", false);
 	
-	private final CheckboxSetting stopWhenInvFull = new CheckboxSetting(
-		"背包满时停止",
-		"如果启用，当你的背包满时，自动钓鱼将关闭自身。",
-		false);
+	private final CheckboxSetting stopWhenInvFull =
+		new CheckboxSetting("背包满时停止", "如果启用，当你的背包满时，自动钓鱼将关闭自身。", false);
 	
 	private final AutoFishHack autoFish;
 	private int bestRodSlot;
@@ -108,8 +104,7 @@ public final class AutoFishRodSelector
 		// 背包满时停止
 		if(stopWhenInvFull.isChecked() && inventory.getEmptySlot() == -1)
 		{
-			ChatUtils.message(
-				"自动钓鱼已停止，因为你的背包已满。");
+			ChatUtils.message("自动钓鱼已停止，因为你的背包已满。");
 			autoFish.setEnabled(false);
 			return false;
 		}

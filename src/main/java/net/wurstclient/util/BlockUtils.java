@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -11,12 +11,33 @@ import java.util.ArrayList;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import net.minecraft.block.AbstractChestBlock;
+import net.minecraft.block.AbstractFurnaceBlock;
+import net.minecraft.block.AnvilBlock;
+import net.minecraft.block.BarrelBlock;
+import net.minecraft.block.BeaconBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.BrewingStandBlock;
+import net.minecraft.block.CartographyTableBlock;
+import net.minecraft.block.CommandBlock;
+import net.minecraft.block.CraftingTableBlock;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.EnchantingTableBlock;
+import net.minecraft.block.GrindstoneBlock;
+import net.minecraft.block.HopperBlock;
+import net.minecraft.block.JigsawBlock;
+import net.minecraft.block.LecternBlock;
+import net.minecraft.block.LoomBlock;
+import net.minecraft.block.ShulkerBoxBlock;
+import net.minecraft.block.SignBlock;
+import net.minecraft.block.StonecutterBlock;
+import net.minecraft.block.StructureBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.Registries;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.util.hit.BlockHitResult;
@@ -108,6 +129,46 @@ public enum BlockUtils
 		{
 			return null;
 		}
+	}
+	
+	/**
+	 * Returns whether interacting with this block opens or changes its state
+	 * in a way that requires sneaking while placing against it.
+	 */
+	public static boolean isInteractive(BlockState state)
+	{
+		if(state == null)
+			return false;
+		
+		Block block = state.getBlock();
+		
+		if(block instanceof AbstractChestBlock || block instanceof BarrelBlock
+			|| block instanceof ShulkerBoxBlock)
+			return true;
+		
+		if(block instanceof AnvilBlock || block instanceof CartographyTableBlock
+			|| block instanceof CraftingTableBlock
+			|| block instanceof EnchantingTableBlock
+			|| block instanceof GrindstoneBlock || block instanceof LoomBlock
+			|| block instanceof StonecutterBlock)
+			return true;
+		
+		if(block instanceof AbstractFurnaceBlock
+			|| block instanceof BrewingStandBlock
+			|| block instanceof DispenserBlock || block instanceof HopperBlock)
+			return true;
+		
+		if(block instanceof BeaconBlock || block instanceof SignBlock)
+			return true;
+		
+		if(block instanceof LecternBlock)
+			return state.get(Properties.HAS_BOOK);
+		
+		if(block instanceof CommandBlock || block instanceof StructureBlock
+			|| block instanceof JigsawBlock)
+			return MC.player != null && MC.player.isCreativeLevelTwoOp();
+		
+		return false;
 	}
 	
 	public static float getHardness(BlockPos pos)

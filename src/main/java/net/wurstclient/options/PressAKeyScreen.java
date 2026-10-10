@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -45,6 +45,15 @@ public class PressAKeyScreen extends Screen
 	}
 	
 	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton)
+	{
+		prevScreen.setKey(InputUtil.Type.MOUSE.createFromCode(mouseButton)
+			.getTranslationKey());
+		client.setScreen((Screen)prevScreen);
+		return true;
+	}
+	
+	@Override
 	public boolean shouldCloseOnEsc()
 	{
 		return false;
@@ -55,8 +64,8 @@ public class PressAKeyScreen extends Screen
 		float partialTicks)
 	{
 		renderBackground(context);
-		context.drawCenteredTextWithShadow(textRenderer, "按一个键",
-			width / 2, height / 4 + 48, Colors.WHITE);
+		context.drawCenteredTextWithShadow(textRenderer, "按一个键或鼠标按键", width / 2,
+			height / 4 + 48, Colors.WHITE);
 		super.render(context, mouseX, mouseY, partialTicks);
 	}
 }

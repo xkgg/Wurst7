@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -27,8 +27,7 @@ public final class GiveCmd extends Command
 {
 	public GiveCmd()
 	{
-		super("give",
-			"给你一个带有自定义NBT数据的物品。\n" + "需要创造模式。",
+		super("give", "给你一个带有自定义NBT数据的物品。\n" + "需要创造模式。",
 			".give <物品> [<数量>] [<nbt>]", ".give <id> [<数量>] [<nbt>]");
 	}
 	
@@ -75,10 +74,10 @@ public final class GiveCmd extends Command
 				stack.setNbt(tag);
 				
 			}catch(CommandSyntaxException e)
-				{
-					ChatUtils.message(e.getMessage());
-					throw new CmdSyntaxError("NBT数据无效。");
-				}
+			{
+				ChatUtils.message(e.getMessage());
+				throw new CmdSyntaxError("NBT数据无效。");
+			}
 		
 		// give item
 		CmdUtils.giveItem(stack);

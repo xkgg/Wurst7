@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -20,21 +20,15 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 public final class ParkourHack extends Hack implements UpdateListener
 {
 	private final SliderSetting minDepth = new SliderSetting("最小深度",
-		"如果坑的深度不至少达到此值，不会跳过。\n"
-			+ "增加以阻止跑酷从楼梯上跳下。\n"
-			+ "减少以使跑酷在地毯边缘跳跃。",
-		0.5, 0.05, 10, 0.05, ValueDisplay.DECIMAL.withSuffix("m"));
+		"如果坑的深度不至少达到此值，不会跳过。\n" + "增加以阻止跑酷从楼梯上跳下。\n" + "减少以使跑酷在地毯边缘跳跃。", 0.5,
+		0.05, 10, 0.05, ValueDisplay.DECIMAL.withSuffix("m"));
 	
 	private final SliderSetting edgeDistance =
-		new SliderSetting("边缘距离",
-			"跑酷会让你在跳跃前离边缘多近。",
-			0.001, 0.001, 0.25, 0.001, ValueDisplay.DECIMAL.withSuffix("m"));
+		new SliderSetting("边缘距离", "跑酷会让你在跳跃前离边缘多近。", 0.001, 0.001, 0.25, 0.001,
+			ValueDisplay.DECIMAL.withSuffix("m"));
 	
-	private final CheckboxSetting sneak = new CheckboxSetting(
-		"潜行时跳跃",
-		"即使在潜行时也保持跑酷激活。\n"
-			+ "使用此选项时，你可能需要增加\u00a7l边缘距离\u00a7r滑块。",
-		false);
+	private final CheckboxSetting sneak = new CheckboxSetting("潜行时跳跃",
+		"即使在潜行时也保持跑酷激活。\n" + "使用此选项时，你可能需要增加\u00a7l边缘距离\u00a7r滑块。", false);
 	
 	public ParkourHack()
 	{

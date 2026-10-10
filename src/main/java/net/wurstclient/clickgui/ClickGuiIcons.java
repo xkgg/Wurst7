@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -172,6 +172,22 @@ public enum ClickGuiIcons
 		float[][] outlineVertices = {{xc2, yc3}, {xc3, yc5}, {xc4, yc1},
 			{xc5, yc2}, {xc3, yc6}, {xc1, yc4}, {xc2, yc3}};
 		RenderUtils.drawLineStrip2D(context, outlineVertices, outlineColor);
+	}
+	
+	public static void drawIndeterminateCheck(DrawContext context, float x1,
+		float y1, float x2, float y2, boolean hovering, boolean grayedOut)
+	{
+		float xc1 = x1 + 2.5F;
+		float xc2 = x2 - 2.5F;
+		float yc1 = y1 + 2.5F;
+		float yc2 = y2 - 2.5F;
+		
+		int checkColor =
+			grayedOut ? 0xC0808080 : hovering ? 0xFF00FF00 : 0xFF00D900;
+		RenderUtils.fill2D(context, xc1, yc1, xc2, yc2, checkColor);
+		
+		int outlineColor = 0x80101010;
+		RenderUtils.drawBorder2D(context, xc1, yc1, xc2, yc2, outlineColor);
 	}
 	
 	public static void drawCross(DrawContext context, float x1, float y1,

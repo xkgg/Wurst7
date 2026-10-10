@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -13,6 +13,7 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
+import net.wurstclient.hacks.fullbright.BadOptimizationsLightmapHook;
 import net.wurstclient.mixinterface.ISimpleOption;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.EnumSetting;
@@ -29,13 +30,11 @@ public final class FullbrightHack extends Hack implements UpdateListener
 			+ "\u00a7l夜视\u00a7r 通过应用夜视效果来工作。这\u00a7o通常\u00a7r 与着色器包兼容。",
 		Method.values(), Method.GAMMA);
 	
-	private final CheckboxSetting fade = new CheckboxSetting("渐变",
-		"在亮度和黑暗之间缓慢渐变。", true);
+	private final CheckboxSetting fade =
+		new CheckboxSetting("渐变", "在亮度和黑暗之间缓慢渐变。", true);
 	
-	private final SliderSetting defaultGamma = new SliderSetting(
-		"默认亮度",
-		"当你关闭夜视时，它会将你的亮度滑块恢复到这个值。",
-		0.5, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
+	private final SliderSetting defaultGamma = new SliderSetting("默认亮度",
+		"当你关闭夜视时，它会将你的亮度滑块恢复到这个值。", 0.5, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
 	private boolean wasGammaChanged;
 	private float nightVisionStrength;
@@ -70,6 +69,21 @@ public final class FullbrightHack extends Hack implements UpdateListener
 				EVENTS.remove(UpdateListener.class, this);
 			}
 		});
+	}
+	
+	public void turnOffInstantly()
+	{
+		setEnabled(false);
+		
+		if(wasGammaChanged)
+		{
+			ISimpleOption.get(MC.options.getGamma())
+				.forceSetValue(defaultGamma.getValue());
+			wasGammaChanged = false;
+		}
+		
+		nightVisionStrength = 0;
+		BadOptimizationsLightmapHook.markForUpdate();
 	}
 	
 	@Override
@@ -132,6 +146,7 @@ public final class FullbrightHack extends Hack implements UpdateListener
 	
 	private void updateNightVision()
 	{
+		float oldNightVisionStrength = nightVisionStrength;
 		boolean shouldGiveNightVision =
 			isEnabled() && method.getSelected() == Method.NIGHT_VISION;
 		
@@ -148,6 +163,9 @@ public final class FullbrightHack extends Hack implements UpdateListener
 			nightVisionStrength = 1;
 		else
 			nightVisionStrength = 0;
+		
+		if(oldNightVisionStrength != nightVisionStrength)
+			BadOptimizationsLightmapHook.markForUpdate();
 	}
 	
 	public boolean isNightVisionActive()

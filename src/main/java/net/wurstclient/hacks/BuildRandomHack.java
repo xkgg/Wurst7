@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -31,8 +31,8 @@ import net.wurstclient.util.InteractionSimulator;
 import net.wurstclient.util.RenderUtils;
 import net.wurstclient.util.RotationUtils;
 
-@SearchTags({"随机建造", "build random", "RandomBuild", "random build", "PlaceRandom",
-	"place random", "RandomPlace", "random place"})
+@SearchTags({"随机建造", "build random", "RandomBuild", "random build",
+	"PlaceRandom", "place random", "RandomPlace", "random place"})
 public final class BuildRandomHack extends Hack
 	implements UpdateListener, RenderListener
 {
@@ -40,24 +40,18 @@ public final class BuildRandomHack extends Hack
 		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private SliderSetting maxAttempts = new SliderSetting("最大尝试次数",
-		"BuildRandom在一个刻内尝试放置方块的最大随机位置数。\n\n"
-			+ "更高的值会加快建造过程，但会增加卡顿。",
-		128, 1, 1024, 1, ValueDisplay.INTEGER);
+		"BuildRandom在一个刻内尝试放置方块的最大随机位置数。\n\n" + "更高的值会加快建造过程，但会增加卡顿。", 128, 1,
+		1024, 1, ValueDisplay.INTEGER);
 	
-	private final CheckboxSetting checkItem =
-		new CheckboxSetting("检查手持物品",
-			"仅在你实际手持方块时建造。\n"
-				+ "关闭此选项以使用火焰、水、岩浆、刷怪蛋建造，"
-				+ "或如果你只是想在随机位置用空手右键点击。",
-			true);
+	private final CheckboxSetting checkItem = new CheckboxSetting("检查手持物品",
+		"仅在你实际手持方块时建造。\n" + "关闭此选项以使用火焰、水、岩浆、刷怪蛋建造，" + "或如果你只是想在随机位置用空手右键点击。",
+		true);
 	
 	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("检查视线",
-			"确保BuildRandom不会尝试在墙后放置方块。",
-			false);
+		new CheckboxSetting("检查视线", "确保BuildRandom不会尝试在墙后放置方块。", false);
 	
-	private final FacingSetting facing = FacingSetting.withoutPacketSpam(
-		"BuildRandom应该如何面对随机放置的方块。\n\n"
+	private final FacingSetting facing =
+		FacingSetting.withoutPacketSpam("BuildRandom应该如何面对随机放置的方块。\n\n"
 			+ "\u00a7l关闭\u00a7r - 完全不面对方块。会被反作弊插件检测到。\n\n"
 			+ "\u00a7l服务器端\u00a7r - 在服务器端面对方块，同时仍允许你在客户端自由移动相机。\n\n"
 			+ "\u00a7l客户端\u00a7r - 通过在客户端移动相机来面对方块。这是最合法的选项，但看起来可能非常令人困惑。");
@@ -66,23 +60,16 @@ public final class BuildRandomHack extends Hack
 		new SwingHandSetting(this, SwingHand.SERVER);
 	
 	private final CheckboxSetting fastPlace =
-		new CheckboxSetting("始终快速放置",
-			"即使FastPlace未启用，也会像启用了一样建造。", false);
+		new CheckboxSetting("始终快速放置", "即使FastPlace未启用，也会像启用了一样建造。", false);
 	
 	private final CheckboxSetting placeWhileBreaking = new CheckboxSetting(
-		"破坏时放置",
-		"即使在破坏方块时也会建造。\n"
-			+ "使用 hacks 可能实现，但在原版中不起作用。可能看起来可疑。",
-		false);
+		"破坏时放置", "即使在破坏方块时也会建造。\n" + "使用 hacks 可能实现，但在原版中不起作用。可能看起来可疑。", false);
 	
 	private final CheckboxSetting placeWhileRiding = new CheckboxSetting(
-		"骑乘时放置",
-		"即使在骑乘载具时也会建造。\n"
-			+ "使用 hacks 可能实现，但在原版中不起作用。可能看起来可疑。",
-		false);
+		"骑乘时放置", "即使在骑乘载具时也会建造。\n" + "使用 hacks 可能实现，但在原版中不起作用。可能看起来可疑。", false);
 	
-	private final CheckboxSetting indicator = new CheckboxSetting("指示器",
-		"显示BuildRandom正在放置方块的位置。", true);
+	private final CheckboxSetting indicator =
+		new CheckboxSetting("指示器", "显示BuildRandom正在放置方块的位置。", true);
 	
 	private final Random random = new Random();
 	private BlockPos lastPos;
@@ -123,9 +110,6 @@ public final class BuildRandomHack extends Hack
 	{
 		lastPos = null;
 		
-		if(WURST.getHax().freecamHack.isEnabled())
-			return;
-		
 		if(!fastPlace.isChecked() && MC.itemUseCooldown > 0)
 			return;
 		
@@ -164,7 +148,8 @@ public final class BuildRandomHack extends Hack
 			return false;
 		
 		BlockPlacingParams params = BlockPlacer.getBlockPlacingParams(pos);
-		if(params == null || params.distanceSq() > range.getValueSq())
+		if(params == null || params.requiresSneaking()
+			|| params.distanceSq() > range.getValueSq())
 			return false;
 		if(checkLOS.isChecked() && !params.lineOfSight())
 			return false;

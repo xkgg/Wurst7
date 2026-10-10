@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -15,7 +15,8 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 
-@SearchTags({"随机皮肤", "SpookySkin", "spooky skin", "SkinBlinker", "skin blinker"})
+@SearchTags({"随机皮肤", "SpookySkin", "spooky skin", "SkinBlinker",
+	"skin blinker"})
 public final class SkinDerpHack extends Hack implements UpdateListener
 {
 	private final Random random = new Random();

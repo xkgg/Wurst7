@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -21,10 +21,13 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.wurstclient.WurstClient;
+import net.wurstclient.options.WurstOptionsScreen;
 
 @Mixin(StatsScreen.class)
 public abstract class StatsScreenMixin extends Screen implements StatsListener
 {
+	private ButtonWidget wurstOptionsButton;
+	
 	private StatsScreenMixin(WurstClient wurst, Text title)
 	{
 		super(title);
@@ -43,6 +46,16 @@ public abstract class StatsScreenMixin extends Screen implements StatsListener
 		updateWurstButtonText(toggleWurstButton);
 		addDrawableChild(toggleWurstButton);
 		
+		if(WurstClient.INSTANCE.getOtfs().wurstOptionsOtf
+			.isVisibleInStatistics())
+		{
+			wurstOptionsButton = ButtonWidget
+				.builder(Text.literal("Wurst选项"),
+					b -> client.setScreen(new WurstOptionsScreen(this)))
+				.dimensions(width / 2 - 102, height - 52, 204, 20).build();
+			addDrawableChild(wurstOptionsButton);
+		}
+		
 		for(ClickableWidget button : Screens.getButtons(this))
 		{
 			if(!button.getMessage().getString()
@@ -60,6 +73,8 @@ public abstract class StatsScreenMixin extends Screen implements StatsListener
 		wurst.setEnabled(!wurst.isEnabled());
 		
 		updateWurstButtonText(button);
+		if(wurstOptionsButton != null)
+			wurstOptionsButton.active = wurst.isEnabled();
 	}
 	
 	private void updateWurstButtonText(ButtonWidget button)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -41,8 +41,8 @@ import net.wurstclient.util.EntityUtils;
 public final class FightBotHack extends Hack
 	implements UpdateListener, RenderListener
 {
-	private final SliderSetting range = new SliderSetting("范围",
-		"攻击范围（如杀戮光环）", 4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	private final SliderSetting range = new SliderSetting("范围", "攻击范围（如杀戮光环）",
+		4.25, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
@@ -51,9 +51,7 @@ public final class FightBotHack extends Hack
 		SwingHandSetting.genericCombatDescription(this), SwingHand.CLIENT);
 	
 	private final SliderSetting distance = new SliderSetting("距离",
-		"跟随目标的紧密程度。\n"
-			+ "此值应设置为低于范围的值。",
-		3, 1, 6, 0.05, ValueDisplay.DECIMAL);
+		"跟随目标的紧密程度。\n" + "此值应设置为低于范围的值。", 3, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting useAi =
 		new CheckboxSetting("使用AI（实验性）", false);
@@ -62,7 +60,7 @@ public final class FightBotHack extends Hack
 		new PauseAttackOnContainersSetting(true);
 	
 	private final EntityFilterList entityFilters =
-		EntityFilterList.genericCombat();
+		EntityFilterList.genericMeleeCombat();
 	
 	private EntityPathFinder pathFinder;
 	private PathProcessor processor;
@@ -127,12 +125,11 @@ public final class FightBotHack extends Hack
 			return;
 		
 		// 设置目标实体
-		Stream<Entity> stream = EntityUtils.getAttackableEntities();
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities();
 		stream = entityFilters.applyTo(stream);
 		
 		Entity entity = stream
-			.min(
-				Comparator.comparingDouble(e -> MC.player.squaredDistanceTo(e)))
+			.min(Comparator.comparingDouble(EntityUtils::distanceToHitboxSq))
 			.orElse(null);
 		if(entity == null)
 			return;
@@ -208,7 +205,7 @@ public final class FightBotHack extends Hack
 			return;
 		
 		// 检查范围
-		if(MC.player.squaredDistanceTo(entity) > Math.pow(range.getValue(), 2))
+		if(EntityUtils.distanceToHitboxSq(entity) > range.getValueSq())
 			return;
 		
 		// 攻击实体

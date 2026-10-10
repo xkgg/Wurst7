@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -9,13 +9,10 @@ package net.wurstclient.hacks;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.Category;
@@ -33,7 +30,7 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.settings.filterlists.FollowFilterList;
 import net.wurstclient.util.ChatUtils;
-import net.wurstclient.util.FakePlayerEntity;
+import net.wurstclient.util.EntityUtils;
 
 /**
  * 自动跟随（Follow）：让玩家自动跟随指定实体（生物/矿车）的移动功能，
@@ -54,9 +51,8 @@ public final class FollowHack extends Hack
 	private int ticksProcessing;
 	
 	// 跟随距离：与目标保持的最小距离（1-12格，步长0.5）
-	private final SliderSetting distance =
-		new SliderSetting("跟随距离", "与目标实体保持的跟随距离", 1, 1,
-			12, 0.5, ValueDisplay.DECIMAL);
+	private final SliderSetting distance = new SliderSetting("跟随距离",
+		"与目标实体保持的跟随距离", 1, 1, 12, 0.5, ValueDisplay.DECIMAL);
 	
 	// AI寻路开关：启用实验性AI寻路功能
 	private final CheckboxSetting useAi =
@@ -98,27 +94,10 @@ public final class FollowHack extends Hack
 		// 未指定跟随实体时，自动筛选最近的有效实体
 		if(entity == null)
 		{
-			// 筛选规则：
-			// 1. 未被移除的实体
-			// 2. 存活的生物 或 矿车实体
-			// 3. 非本地玩家
-			// 4. 非假人实体
-			Stream<Entity> stream =
-				StreamSupport.stream(MC.world.getEntities().spliterator(), true)
-					.filter(e -> !e.isRemoved())
-					.filter(e -> e instanceof LivingEntity
-						&& ((LivingEntity)e).getHealth() > 0
-						|| e instanceof AbstractMinecartEntity)
-					.filter(e -> e != MC.player)
-					.filter(e -> !(e instanceof FakePlayerEntity));
-			
-			// 应用实体过滤规则
-			stream = entityFilters.applyTo(stream);
-			
 			// 选择距离最近的实体作为目标
-			entity = stream
-				.min(Comparator
-					.comparingDouble(e -> MC.player.squaredDistanceTo(e)))
+			entity = entityFilters.applyTo(EntityUtils.getFollowableEntities())
+				.min(
+					Comparator.comparingDouble(EntityUtils::distanceToHitboxSq))
 				.orElse(null);
 			
 			// 无有效实体时提示并禁用功能
@@ -155,8 +134,7 @@ public final class FollowHack extends Hack
 		
 		// 聊天栏提示停止跟随
 		if(entity != null)
-			ChatUtils
-				.message("停止跟随：" + entity.getName().getString());
+			ChatUtils.message("停止跟随：" + entity.getName().getString());
 		
 		// 清空跟随实体
 		entity = null;
@@ -174,22 +152,25 @@ public final class FollowHack extends Hack
 			return;
 		}
 		
-		// 检查目标实体是否消失/死亡
-		if(entity.isRemoved() || entity instanceof LivingEntity
-			&& ((LivingEntity)entity).getHealth() <= 0)
+		// A stale entity reference can outlive a chunk unload or replacement.
+		if(entity == null || MC.world == null || entity.isRemoved()
+			|| MC.world.getEntityById(entity.getId()) != entity
+			|| entity instanceof LivingEntity
+				&& ((LivingEntity)entity).getHealth() <= 0)
 		{
-			// 重新寻找同名的有效实体
-			entity = StreamSupport
-				.stream(MC.world.getEntities().spliterator(), true)
-				.filter(LivingEntity.class::isInstance)
+			if(entity == null || MC.world == null)
+			{
+				ChatUtils.message("目标实体消失，停止跟随");
+				setEnabled(false);
+				return;
+			}
+			
+			String entityName = entity.getName().getString();
+			entity = entityFilters.applyTo(EntityUtils.getFollowableEntities())
 				.filter(
-					e -> !e.isRemoved() && ((LivingEntity)e).getHealth() > 0)
-				.filter(e -> e != MC.player)
-				.filter(e -> !(e instanceof FakePlayerEntity))
-				.filter(e -> entity.getName().getString()
-					.equalsIgnoreCase(e.getName().getString()))
-				.min(Comparator
-					.comparingDouble(e -> MC.player.squaredDistanceTo(e)))
+					e -> entityName.equalsIgnoreCase(e.getName().getString()))
+				.min(
+					Comparator.comparingDouble(EntityUtils::distanceToHitboxSq))
 				.orElse(null);
 			
 			// 未找到同名实体时停止跟随
@@ -298,7 +279,9 @@ public final class FollowHack extends Hack
 	
 	/**
 	 * 手动设置跟随的实体
-	 * @param entity 目标实体
+	 *
+	 * @param entity
+	 *            目标实体
 	 */
 	public void setEntity(Entity entity)
 	{

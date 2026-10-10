@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -8,6 +8,8 @@
 package net.wurstclient.keybinds;
 
 import java.util.Objects;
+
+import net.minecraft.client.util.InputUtil;
 
 public class Keybind implements Comparable<Keybind>
 {
@@ -56,6 +58,19 @@ public class Keybind implements Comparable<Keybind>
 	@Override
 	public String toString()
 	{
-		return key.replace("key.keyboard.", "") + " -> " + commands;
+		return getDisplayKey(key) + " -> " + commands;
+	}
+	
+	public static String getDisplayKey(String key)
+	{
+		try
+		{
+			return InputUtil.fromTranslationKey(key).getLocalizedText()
+				.getString();
+			
+		}catch(IllegalArgumentException e)
+		{
+			return key;
+		}
 	}
 }

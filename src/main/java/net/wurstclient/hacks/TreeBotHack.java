@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -49,19 +49,14 @@ public final class TreeBotHack extends Hack
 	implements UpdateListener, RenderListener
 {
 	private final SliderSetting range = new SliderSetting("范围",
-		"自动砍树可以到达多远来破坏方块", 4.5, 1, 6, 0.05,
-		ValueDisplay.DECIMAL);
+		"自动砍树可以到达多远来破坏方块", 4.5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final FacingSetting facing = FacingSetting.withoutPacketSpam(
-		"TreeBot在砍伐树木时应如何面对树枝和树叶.\n\n"
-			+ "\u00a7lOff\u00a7r - 完全不要面对这些障碍。将会"
-			+ " 被反作弊插件检测到。\n\n"
-			+ "\u00a7lServer-side\u00a7r - 面对眼前的障碍"
-			+ " server-side, 同时还能让你自由移动屏幕"
-			+ " 客户端\n\n"
+		"TreeBot在砍伐树木时应如何面对树枝和树叶.\n\n" + "\u00a7lOff\u00a7r - 完全不要面对这些障碍。将会"
+			+ " 被反作弊插件检测到。\n\n" + "\u00a7lServer-side\u00a7r - 面对眼前的障碍"
+			+ " server-side, 同时还能让你自由移动屏幕" + " 客户端\n\n"
 			+ "\u00a7lClient-side\u00a7r - 通过移动你的身体来面对这些障碍物"
-			+ " 客户端的屏幕。这是最合理的选择，但"
-			+ " 看着会让人迷失方向");
+			+ " 客户端的屏幕。这是最合理的选择，但" + " 看着会让人迷失方向");
 	
 	private final SwingHandSetting swingHand =
 		new SwingHandSetting(this, SwingHand.SERVER);
@@ -476,4 +471,3 @@ public final class TreeBotHack extends Hack
 		}
 	}
 }
-

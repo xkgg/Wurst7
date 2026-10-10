@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -37,19 +37,14 @@ import net.wurstclient.util.RotationUtils;
 	"auto hoe"})
 public final class TillauraHack extends Hack implements HandleInputListener
 {
-	private final SliderSetting range = new SliderSetting("范围",
-		"自动耕地的工作范围。", 5, 1, 6, 0.05,
-		ValueDisplay.DECIMAL);
+	private final SliderSetting range = new SliderSetting("范围", "自动耕地的工作范围。", 5,
+		1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting multiTill =
-		new CheckboxSetting("多块耕地", "一次耕地多个方块。\n"
-			+ "更快，但无法绕过NoCheat+。", false);
+		new CheckboxSetting("多块耕地", "一次耕地多个方块。\n" + "更快，但无法绕过NoCheat+。", false);
 	
-	private final CheckboxSetting checkLOS =
-		new CheckboxSetting("检查视线",
-			"防止自动耕地穿过方块。\n"
-				+ "适合NoCheat+服务器，但在原版中不必要。",
-			true);
+	private final CheckboxSetting checkLOS = new CheckboxSetting("检查视线",
+		"防止自动耕地穿过方块。\n" + "适合NoCheat+服务器，但在原版中不必要。", true);
 	
 	private final List<Block> tillableBlocks = List.of(Blocks.GRASS_BLOCK,
 		Blocks.DIRT_PATH, Blocks.DIRT, Blocks.COARSE_DIRT);

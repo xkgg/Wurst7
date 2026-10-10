@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -27,8 +27,7 @@ public final class WikiDataExportOtf extends OtherFeature
 	public WikiDataExportOtf()
 	{
 		super("Wiki数据导出",
-			"创建一个包含此版本Wurst中所有不同功能和设置的技术细节的JSON文件。"
-				+ " 主要用于更新Wurst Wiki。");
+			"创建一个包含此版本Wurst中所有不同功能和设置的技术细节的JSON文件。" + " 主要用于更新Wurst Wiki。");
 	}
 	
 	@Override

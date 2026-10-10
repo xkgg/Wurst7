@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -21,9 +21,7 @@ import net.wurstclient.settings.EnumSetting;
 public final class WurstLogoOtf extends OtherFeature
 {
 	private final ColorSetting bgColor = new ColorSetting("背景",
-		"背景颜色。\n"
-			+ "仅在\u00a76RainbowUI\u00a7r禁用时可见。",
-		Color.WHITE);
+		"背景颜色。\n" + "仅在\u00a76RainbowUI\u00a7r禁用时可见。", Color.WHITE);
 	
 	private final ColorSetting txtColor =
 		new ColorSetting("文本", "文本颜色。", Color.BLACK);
@@ -58,8 +56,7 @@ public final class WurstLogoOtf extends OtherFeature
 	{
 		ALWAYS("始终", () -> true),
 		
-		ONLY_OUTDATED("仅当过时",
-			() -> WURST.getUpdater().isOutdated());
+		ONLY_OUTDATED("仅当过时", () -> WURST.getUpdater().isOutdated());
 		
 		private final String name;
 		private final BooleanSupplier visible;

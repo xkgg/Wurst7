@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -44,21 +44,17 @@ public final class InstaBuildHack extends Hack
 	implements UpdateListener, RightClickListener
 {
 	private final FileSetting templateSetting = new FileSetting("模板",
-		"决定要建造什么。\n\n"
-			+ "模板只是JSON文件。随意添加自己的模板或编辑/删除默认模板。\n\n"
+		"决定要建造什么。\n\n" + "模板只是JSON文件。随意添加自己的模板或编辑/删除默认模板。\n\n"
 			+ "如果你搞砸了，只需按'重置为默认值'按钮或删除文件夹。",
 		"autobuild", path -> {});
 	
 	private final SliderSetting range = new SliderSetting("范围",
-		"放置方块时的 reach 距离。\n" + "推荐值：\n"
-			+ "原版：6.0\n" + "NoCheat+：4.25",
-		6, 1, 10, 0.05, ValueDisplay.DECIMAL);
+		"放置方块时的 reach 距离。\n" + "推荐值：\n" + "原版：6.0\n" + "NoCheat+：4.25", 6, 1,
+		10, 0.05, ValueDisplay.DECIMAL);
 	
-	private final CheckboxSetting useSavedBlocks = new CheckboxSetting(
-		"使用保存的方块",
-		"尝试放置模板中保存的相同方块。\n\n"
-			+ "如果模板未指定方块类型，它将使用你手持的任何方块建造。",
-		false);
+	private final CheckboxSetting useSavedBlocks =
+		new CheckboxSetting("使用保存的方块",
+			"尝试放置模板中保存的相同方块。\n\n" + "如果模板未指定方块类型，它将使用你手持的任何方块建造。", false);
 	
 	private Status status = Status.NO_TEMPLATE;
 	private AutoBuildTemplate template;
@@ -176,7 +172,8 @@ public final class InstaBuildHack extends Hack
 				continue;
 			
 			BlockPlacingParams params = BlockPlacer.getBlockPlacingParams(pos);
-			if(params == null || params.distanceSq() > range.getValueSq())
+			if(params == null || params.requiresSneaking()
+				|| params.distanceSq() > range.getValueSq())
 				continue;
 			
 			if(useSavedBlocks.isChecked() && item != Items.AIR
@@ -219,17 +216,17 @@ public final class InstaBuildHack extends Hack
 			status = Status.IDLE;
 			
 		}catch(IOException | JsonException e)
-			{
-				Path fileName = path.getFileName();
-				ChatUtils.error("无法加载模板 '" + fileName + "'。");
-				
-				String simpleClassName = e.getClass().getSimpleName();
-				String message = e.getMessage();
-				ChatUtils.message(simpleClassName + ": " + message);
-				
-				e.printStackTrace();
-				setEnabled(false);
-			}
+		{
+			Path fileName = path.getFileName();
+			ChatUtils.error("无法加载模板 '" + fileName + "'。");
+			
+			String simpleClassName = e.getClass().getSimpleName();
+			String message = e.getMessage();
+			ChatUtils.message(simpleClassName + ": " + message);
+			
+			e.printStackTrace();
+			setEnabled(false);
+		}
 	}
 	
 	private enum Status

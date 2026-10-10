@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,24 +18,20 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
+import net.wurstclient.mixinterface.IKeyBinding;
 import net.wurstclient.settings.CheckboxSetting;
 
 @SearchTags({"鞘翅飞行", "EasyElytra", "extra elytra", "easy elytra"})
 public final class ExtraElytraHack extends Hack implements UpdateListener
 {
-	private final CheckboxSetting instantFly = new CheckboxSetting(
-		"即时飞行", "跳跃即可飞行，无需奇怪的双击跳跃！", true);
+	private final CheckboxSetting instantFly =
+		new CheckboxSetting("即时飞行", "跳跃即可飞行，无需奇怪的双击跳跃！", true);
 	
-	private final CheckboxSetting speedCtrl = new CheckboxSetting(
-		"速度控制", "使用前进和后退键控制速度。\n"
-			+ "(默认: W 和 S)\n" + "无需烟花！",
-		true);
+	private final CheckboxSetting speedCtrl = new CheckboxSetting("速度控制",
+		"使用前进和后退键控制速度。\n" + "(默认: W 和 S)\n" + "无需烟花！", true);
 	
-	private final CheckboxSetting heightCtrl =
-		new CheckboxSetting("高度控制",
-			"使用跳跃和潜行键控制高度。\n"
-				+ "(默认: 空格键和 Shift)\n" + "无需烟花！",
-		false);
+	private final CheckboxSetting heightCtrl = new CheckboxSetting("高度控制",
+		"使用跳跃和潜行键控制高度。\n" + "(默认: 空格键和 Shift)\n" + "无需烟花！", false);
 	
 	private final CheckboxSetting stopInWater =
 		new CheckboxSetting("在水中停止飞行", true);
@@ -105,10 +101,16 @@ public final class ExtraElytraHack extends Hack implements UpdateListener
 			return;
 		
 		Vec3d v = MC.player.getVelocity();
+		boolean jump = MC.options.jumpKey.isPressed();
+		boolean sneak = IKeyBinding.get(MC.options.sneakKey).isActuallyDown();
 		
-		if(MC.options.jumpKey.isPressed())
+		// Avoid entering the sneaking pose while using Shift to control height.
+		if(sneak)
+			MC.options.sneakKey.setPressed(false);
+		
+		if(jump && !sneak)
 			MC.player.setVelocity(v.x, v.y + 0.08, v.z);
-		else if(MC.options.sneakKey.isPressed())
+		else if(sneak && !jump)
 			MC.player.setVelocity(v.x, v.y - 0.04, v.z);
 	}
 	

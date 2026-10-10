@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -23,19 +23,15 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 @SearchTags({"创造飞行", "creative flight", "CreativeFly", "creative fly"})
 public final class CreativeFlightHack extends Hack implements UpdateListener
 {
-	private final CheckboxSetting antiKick = new CheckboxSetting("防踢",
-		"时不时让你摔一跤，以防你被踢到.",
-		false);
+	private final CheckboxSetting antiKick =
+		new CheckboxSetting("防踢", "时不时让你摔一跤，以防你被踢到.", false);
 	
 	private final SliderSetting antiKickInterval =
-		new SliderSetting("防踢间隔",
-			"反踢应该多久防止你被踢一次.\n"
-				+ "大多数服务器会在80秒后踢你.",
-			30, 5, 80, 1, SliderSetting.ValueDisplay.INTEGER
-				.withSuffix(" 刻").withLabel(1, "1 刻"));
+		new SliderSetting("防踢间隔", "反踢应该多久防止你被踢一次.\n" + "大多数服务器会在80秒后踢你.", 30, 5,
+			80, 1, SliderSetting.ValueDisplay.INTEGER.withSuffix(" 刻")
+				.withLabel(1, "1 刻"));
 	
-	private final SliderSetting antiKickDistance = new SliderSetting(
-		"防踢距离",
+	private final SliderSetting antiKickDistance = new SliderSetting("防踢距离",
 		"反踢能让你倒退多远.\n"
 			+ "大多数服务器要求至少0.032米（注：此处的“0.032m”可能指的是某种距离或数值，具体含义需根据上下文确定）才能防止你被踢出.",
 		0.07, 0.01, 0.2, 0.001, ValueDisplay.DECIMAL.withSuffix("m"));
@@ -130,5 +126,3 @@ public final class CreativeFlightHack extends Hack implements UpdateListener
 			IKeyBinding.get(key).resetPressedState();
 	}
 }
-
-

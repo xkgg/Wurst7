@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -18,6 +18,7 @@ import net.wurstclient.clickgui.Component;
 import net.wurstclient.clickgui.screens.EditSliderScreen;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.util.RenderUtils;
+import net.wurstclient.util.text.WText;
 
 public final class SliderComponent extends Component
 {
@@ -51,7 +52,7 @@ public final class SliderComponent extends Component
 			break;
 			
 			case GLFW.GLFW_MOUSE_BUTTON_RIGHT:
-			setting.setValue(setting.getDefaultValue());
+			setting.resetToDefault();
 			break;
 		}
 	}
@@ -184,10 +185,11 @@ public final class SliderComponent extends Component
 	
 	private String getSliderTooltip()
 	{
-		String tooltip =
-			"\u00a7e[ctrl]\u00a7r+\u00a7e[left-click]\u00a7r for precise input\n";
-		tooltip += "\u00a7e[right-click]\u00a7r to reset";
-		return tooltip;
+		return WText
+			.translated("gui.wurst.generic.ctrl_left_click_for_precise_input")
+			.append(WText.literal("\n"))
+			.append(WText.translated("gui.wurst.generic.right_click_to_reset"))
+			.toString();
 	}
 	
 	@Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -272,7 +272,7 @@ public enum JsonUtils
 	
 	public static WsonArray getAsArray(JsonElement json) throws JsonException
 	{
-		if(!json.isJsonArray())
+		if(json == null || !json.isJsonArray())
 			throw new JsonException("Not an array: " + json);
 		
 		return new WsonArray(json.getAsJsonArray());
@@ -280,7 +280,7 @@ public enum JsonUtils
 	
 	public static WsonObject getAsObject(JsonElement json) throws JsonException
 	{
-		if(!json.isJsonObject())
+		if(json == null || !json.isJsonObject())
 			throw new JsonException("Not an object: " + json);
 		
 		return new WsonObject(json.getAsJsonObject());

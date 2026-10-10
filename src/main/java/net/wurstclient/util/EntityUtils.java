@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -14,8 +14,11 @@ import java.util.stream.StreamSupport;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.InteractionEntity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -29,19 +32,47 @@ public enum EntityUtils
 	protected static final WurstClient WURST = WurstClient.INSTANCE;
 	protected static final MinecraftClient MC = WurstClient.MC;
 	
-	public static Stream<Entity> getAttackableEntities()
+	public static Stream<Entity> getFollowableEntities()
 	{
-		return StreamSupport.stream(MC.world.getEntities().spliterator(), true)
-			.filter(IS_ATTACKABLE);
+		return StreamSupport.stream(MC.world.getEntities().spliterator(), false)
+			.filter(e -> !e.isRemoved())
+			.filter(e -> e instanceof LivingEntity
+				&& ((LivingEntity)e).getHealth() > 0
+				|| e instanceof AbstractMinecartEntity
+				|| e instanceof InteractionEntity)
+			.filter(e -> e != MC.player && !(e instanceof FakePlayerEntity));
 	}
 	
-	public static final Predicate<Entity> IS_ATTACKABLE = e -> e != null
+	public static Stream<Entity> getAttackableEntities()
+	{
+		return getMeleeAttackableEntities();
+	}
+	
+	public static Stream<Entity> getMeleeAttackableEntities()
+	{
+		return StreamSupport.stream(MC.world.getEntities().spliterator(), true)
+			.filter(IS_ATTACKABLE_MELEE);
+	}
+	
+	public static Stream<Entity> getRangedAttackableEntities()
+	{
+		return StreamSupport.stream(MC.world.getEntities().spliterator(), true)
+			.filter(IS_ATTACKABLE_RANGED);
+	}
+	
+	public static final Predicate<Entity> IS_ATTACKABLE_MELEE = e -> e != null
 		&& !e.isRemoved()
 		&& (e instanceof LivingEntity && ((LivingEntity)e).getHealth() > 0
-			|| e instanceof EndCrystalEntity
-			|| e instanceof ShulkerBulletEntity)
+			|| e instanceof EndCrystalEntity || e instanceof ShulkerBulletEntity
+			|| e instanceof AbstractFireballEntity
+			|| e instanceof InteractionEntity)
 		&& e != MC.player && !(e instanceof FakePlayerEntity)
 		&& !WURST.getFriends().isFriend(e);
+	
+	public static final Predicate<Entity> IS_ATTACKABLE_RANGED =
+		IS_ATTACKABLE_MELEE.and(e -> !(e instanceof InteractionEntity));
+	
+	public static final Predicate<Entity> IS_ATTACKABLE = IS_ATTACKABLE_MELEE;
 	
 	public static Stream<AnimalEntity> getValidAnimals()
 	{
@@ -52,6 +83,16 @@ public enum EntityUtils
 	
 	public static final Predicate<AnimalEntity> IS_VALID_ANIMAL =
 		a -> a != null && !a.isRemoved() && a.getHealth() > 0;
+	
+	public static double distanceToHitboxSq(Entity e)
+	{
+		Vec3d eyes = RotationUtils.getEyesPos();
+		Box box = e.getBoundingBox();
+		double x = MathHelper.clamp(eyes.x, box.minX, box.maxX);
+		double y = MathHelper.clamp(eyes.y, box.minY, box.maxY);
+		double z = MathHelper.clamp(eyes.z, box.minZ, box.maxZ);
+		return eyes.squaredDistanceTo(new Vec3d(x, y, z));
+	}
 	
 	/**
 	 * Interpolates (or "lerps") between the entity's position in the previous

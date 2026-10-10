@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -8,14 +8,13 @@
 package net.wurstclient.settings.filters;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.mob.PiglinEntity;
+import net.minecraft.entity.mob.MobEntity;
+import net.wurstclient.util.MobDisposition;
 
 public final class FilterHostileSetting extends EntityFilterCheckbox
 {
-	private static final String EXCEPTIONS_TEXT = "\n\n这个过滤器不"
-		+ " 影响末影人、未被激怒的猪灵和僵尸猪灵.";
+	private static final String EXCEPTIONS_TEXT =
+		"\n\n此过滤器不影响中立生物，如末影人、猪灵和僵尸猪灵。";
 	
 	public FilterHostileSetting(String description, boolean checked)
 	{
@@ -25,24 +24,17 @@ public final class FilterHostileSetting extends EntityFilterCheckbox
 	@Override
 	public boolean test(Entity e)
 	{
-		// never filter out neutral mobs (including piglins)
-		if(e instanceof Angerable || e instanceof PiglinEntity)
-			return true;
-		
-		return !(e instanceof Monster);
+		return !(e instanceof MobEntity mob
+			&& MobDisposition.of(mob) == MobDisposition.HOSTILE);
 	}
 	
 	public static FilterHostileSetting genericCombat(boolean checked)
 	{
-		return new FilterHostileSetting(
-			"不会攻击像僵尸和爬行者这样的敌对生物.", checked);
+		return new FilterHostileSetting("不会攻击像僵尸和爬行者这样的敌对生物.", checked);
 	}
 	
 	public static FilterHostileSetting genericVision(boolean checked)
 	{
-		return new FilterHostileSetting(
-			"不会显示敌意生物如僵尸和苦力怕.", checked);
+		return new FilterHostileSetting("不会显示敌意生物如僵尸和苦力怕.", checked);
 	}
 }
-
-

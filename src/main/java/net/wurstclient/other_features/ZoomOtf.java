@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -24,20 +24,17 @@ import net.wurstclient.util.MathUtils;
 @DontBlock
 public final class ZoomOtf extends OtherFeature implements MouseScrollListener
 {
-	private final SliderSetting level = new SliderSetting("缩放级别", 3, 1,
-		50, 0.1, ValueDisplay.DECIMAL.withSuffix("x"));
+	private final SliderSetting level = new SliderSetting("缩放级别", 3, 1, 50, 0.1,
+		ValueDisplay.DECIMAL.withSuffix("x"));
 	
-	private final CheckboxSetting scroll = new CheckboxSetting(
-		"使用鼠标滚轮", "如果启用，你可以在缩放时使用鼠标滚轮进一步放大。",
-		true);
+	private final CheckboxSetting scroll =
+		new CheckboxSetting("使用鼠标滚轮", "如果启用，你可以在缩放时使用鼠标滚轮进一步放大。", true);
 	
-	private final CheckboxSetting zoomInScreens = new CheckboxSetting(
-		"在屏幕中缩放", "如果启用，你也可以在屏幕（聊天、物品栏等）打开时进行缩放。",
-		false);
+	private final CheckboxSetting zoomInScreens =
+		new CheckboxSetting("在屏幕中缩放", "如果启用，你也可以在屏幕（聊天、物品栏等）打开时进行缩放。", false);
 	
 	private final TextFieldSetting keybind = new TextFieldSetting("按键绑定",
-		"确定缩放按键绑定。\n\n"
-			+ "不要手动编辑此值，你应该前往Wurst选项 -> 缩放并在那里设置。",
+		"确定缩放按键绑定。\n\n" + "不要手动编辑此值，你应该前往Wurst选项 -> 缩放并在那里设置。",
 		"key.keyboard.v", this::isValidKeybind);
 	
 	private Double currentLevel;
@@ -45,8 +42,7 @@ public final class ZoomOtf extends OtherFeature implements MouseScrollListener
 	
 	public ZoomOtf()
 	{
-		super("缩放", "允许你放大。\n"
-			+ "默认情况下，按\u00a7lV\u00a7r键激活缩放。\n"
+		super("缩放", "允许你放大。\n" + "默认情况下，按\u00a7lV\u00a7r键激活缩放。\n"
 			+ "前往Wurst选项 -> 缩放来更改此按键绑定。");
 		addSetting(level);
 		addSetting(scroll);
@@ -107,6 +103,11 @@ public final class ZoomOtf extends OtherFeature implements MouseScrollListener
 	}
 	
 	public boolean shouldPreventHotbarScrolling()
+	{
+		return isZoomKeyPressed() && scroll.isChecked();
+	}
+	
+	public boolean isControllingScrollEvents()
 	{
 		return isZoomKeyPressed() && scroll.isChecked();
 	}

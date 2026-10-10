@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -8,19 +8,20 @@
 package net.wurstclient.settings.filters;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.AxolotlEntity;
+import net.minecraft.entity.passive.DolphinEntity;
+import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.entity.passive.PufferfishEntity;
+import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.entity.passive.TurtleEntity;
 
 public final class FilterPassiveWaterSetting extends EntityFilterCheckbox
 {
-	private static final String EXCEPTIONS_TEXT =
-		"\n\n此过滤器不会影响守护者、溺水者和河豚";
+	private static final String EXCEPTIONS_TEXT = "\n\n此过滤器不会影响守护者、溺水者和河豚";
 	
 	public FilterPassiveWaterSetting(String description, boolean checked)
 	{
-		super("过滤非攻击性水生生物", description + EXCEPTIONS_TEXT,
-			checked);
+		super("过滤非攻击性水生生物", description + EXCEPTIONS_TEXT, checked);
 	}
 	
 	@Override
@@ -30,20 +31,20 @@ public final class FilterPassiveWaterSetting extends EntityFilterCheckbox
 		if(e instanceof PufferfishEntity)
 			return true;
 		
-		return !(e instanceof WaterCreatureEntity
-			|| e instanceof AxolotlEntity);
+		return !(e instanceof FishEntity || e instanceof SquidEntity
+			|| e instanceof DolphinEntity || e instanceof AxolotlEntity
+			|| e instanceof TurtleEntity);
 	}
 	
 	public static FilterPassiveWaterSetting genericCombat(boolean checked)
 	{
-		return new FilterPassiveWaterSetting("不会攻击非攻击性水生生物"
-			+ " 如鱼、鱿鱼、海豚和阿维洛特尔。.", checked);
+		return new FilterPassiveWaterSetting(
+			"不会攻击非攻击性水生生物" + " 如鱼、鱿鱼、海豚和阿维洛特尔。.", checked);
 	}
 	
 	public static FilterPassiveWaterSetting genericVision(boolean checked)
 	{
-		return new FilterPassiveWaterSetting("不会显示非攻击性水生生物"
-			+ "如鱼、鱿鱼、海豚和阿维洛特尔", checked);
+		return new FilterPassiveWaterSetting("不会显示非攻击性水生生物" + "如鱼、鱿鱼、海豚和阿维洛特尔",
+			checked);
 	}
 }
-

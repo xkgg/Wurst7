@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -53,8 +53,8 @@ public final class VeinMinerHack extends Hack
 		new SliderSetting("挖矿范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	// 平面模式（不破坏脚下以下的方块）
-	private final CheckboxSetting flat = new CheckboxSetting("平面模式",
-		"不会破坏你脚下以下的任何方块。", false);
+	private final CheckboxSetting flat =
+		new CheckboxSetting("平面模式", "不会破坏你脚下以下的任何方块。", false);
 	
 	// 连锁挖矿的方块类型列表
 	private final NukerMultiIdListSetting multiIdList =
@@ -71,13 +71,11 @@ public final class VeinMinerHack extends Hack
 	
 	// 最大矿脉大小
 	private final SliderSetting maxVeinSize = new SliderSetting("最大矿脉大小",
-		"单次连锁挖矿的最大方块数量。", 64, 1, 1000, 1,
-		ValueDisplay.INTEGER);
+		"单次连锁挖矿的最大方块数量。", 64, 1, 1000, 1, ValueDisplay.INTEGER);
 	
 	// 检测视线遮挡
-	private final CheckboxSetting checkLOS = new CheckboxSetting(
-		"检测视线遮挡",
-		"确保不会穿墙破坏方块。", false);
+	private final CheckboxSetting checkLOS =
+		new CheckboxSetting("检测视线遮挡", "确保不会穿墙破坏方块。", false);
 	
 	public VeinMinerHack()
 	{

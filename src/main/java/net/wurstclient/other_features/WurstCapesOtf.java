@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -15,7 +15,6 @@ public final class WurstCapesOtf extends OtherFeature
 {
 	public WurstCapesOtf()
 	{
-		super("Wurst披风",
-			"Wurst有自己的披风！只有Wurst用户可以看到它们。");
+		super("Wurst披风", "Wurst有自己的披风！只有Wurst用户可以看到它们。");
 	}
 }

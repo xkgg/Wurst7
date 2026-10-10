@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -28,9 +28,8 @@ public final class StepHack extends Hack implements UpdateListener
 		Mode.values(), Mode.LEGIT);
 	
 	// 台阶高度（仅简易模式生效）
-	private final SliderSetting height =
-		new SliderSetting("高度", "仅在\u00a7l简易\u00a7r模式下生效。",
-			1, 1, 10, 1, ValueDisplay.INTEGER);
+	private final SliderSetting height = new SliderSetting("高度",
+		"仅在\u00a7l简易\u00a7r模式下生效。", 1, 1, 10, 1, ValueDisplay.INTEGER);
 	
 	public StepHack()
 	{

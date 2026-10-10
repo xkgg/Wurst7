@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -35,17 +35,16 @@ import net.wurstclient.util.RotationUtils;
 public final class KaboomHack extends Hack implements UpdateListener
 {
 	// 爆破强度：控制单次破坏的方块数量（32-512，步长32）
-	private final SliderSetting power =
-		new SliderSetting("核爆强度", "设置单次爆破破坏的方块数量",
-			128, 32, 512, 32, ValueDisplay.INTEGER);
+	private final SliderSetting power = new SliderSetting("核爆强度",
+		"设置单次爆破破坏的方块数量", 128, 32, 512, 32, ValueDisplay.INTEGER);
 	
 	// 爆炸音效：是否播放爆炸音效
-	private final CheckboxSetting sound = new CheckboxSetting("爆炸音效",
-		"触发爆破时播放爆炸音效", true);
+	private final CheckboxSetting sound =
+		new CheckboxSetting("爆炸音效", "触发爆破时播放爆炸音效", true);
 	
 	// 爆炸粒子：是否生成爆炸粒子效果
-	private final CheckboxSetting particles = new CheckboxSetting("爆炸粒子",
-		"触发爆破时生成爆炸粒子特效", true);
+	private final CheckboxSetting particles =
+		new CheckboxSetting("爆炸粒子", "触发爆破时生成爆炸粒子特效", true);
 	
 	// 随机数生成器：用于音效音调随机化
 	private final Random random = Random.create();
@@ -112,6 +111,7 @@ public final class KaboomHack extends Hack implements UpdateListener
 	
 	/**
 	 * 获取玩家周围6格范围内的方块列表，按距离从远到近排序
+	 *
 	 * @return 按距离倒序排列的方块坐标列表
 	 */
 	private ArrayList<BlockPos> getBlocksByDistanceReversed()

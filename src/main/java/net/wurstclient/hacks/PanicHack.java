@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2025 Wurst-Imperium and contributors.
+ * Copyright (c) 2014-2026 Wurst-Imperium and contributors.
  *
  * This source code is subject to the terms of the GNU General Public
  * License, version 3. If a copy of the GPL was not distributed with this
@@ -38,6 +38,8 @@ public final class PanicHack extends Hack implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
+		WURST.getHax().fullbrightHack.turnOffInstantly();
+		
 		for(Hack hack : WURST.getHax().getAllHax())
 			if(hack.isEnabled() && hack != this)
 				hack.setEnabled(false);
