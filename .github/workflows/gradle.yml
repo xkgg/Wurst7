@@ -30,7 +30,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      actions: write
       contents: read
     steps:
 
@@ -38,10 +37,10 @@ jobs:
       run: echo ${{ inputs.distinct_id }}
 
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
 
     - name: Set up Java 21
-      uses: actions/setup-java@v5
+      uses: actions/setup-java@v6
       with:
         java-version: "21"
         distribution: "microsoft"
@@ -50,7 +49,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v5
+      uses: gradle/actions/setup-gradle@v6
       with:
         build-scan-publish: true
         build-scan-terms-of-use-url: "https://gradle.com/help/legal-terms-of-use"
@@ -61,6 +60,20 @@ jobs:
     - name: Apply Spotless formatting
       run: ./gradlew spotlessApply
 
+
+    - name: Resolve dependencies
+      run: |
+        max_attempts=3
+        attempt=1
+        until ./gradlew dependencies --stacktrace; do
+          if [ "$attempt" -ge "$max_attempts" ]; then
+            echo "Failed to resolve dependencies after $max_attempts attempts"
+            exit 1
+          fi
+          echo "Dependency resolution attempt $attempt failed; retrying in 30 seconds..."
+          attempt=$((attempt + 1))
+          sleep 30
+        done
 
     - name: Build
       run: ./gradlew build --stacktrace --warning-mode=fail
@@ -76,7 +89,7 @@ jobs:
       env:
         VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
       if: ${{ env.VIRUSTOTAL_API_KEY }}
-      uses: crazy-max/ghaction-virustotal@v4
+      uses: crazy-max/ghaction-virustotal@v5
       with:
         vt_api_key: ${{ env.VIRUSTOTAL_API_KEY }}
         files: |
@@ -119,14 +132,6 @@ jobs:
         name: crash-reports
         path: run/crash-reports
 
-    - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@v2.1.0
-      with:
-        token: ${{ github.token }}
-        repository: ${{ github.repository }}
-        retain_days: 1
-        keep_minimum_runs: 3
-        
     - name: Create test screenshot gallery
       env:
         IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}

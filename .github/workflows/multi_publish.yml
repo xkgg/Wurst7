@@ -68,8 +68,8 @@ jobs:
       uses: Wurst-Imperium/dispatch-and-wait@v1
       with:
         token: ${{ github.token }}
-        owner: Wurst-Imperium
-        repo: Wurst7
+        owner: ${{ github.repository_owner }}
+        repo: ${{ github.event.repository.name }}
         ref: ${{ matrix.branch }}
         workflow: publish.yml
         workflow_inputs: |
