@@ -24,6 +24,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.wurstclient.settings.FileSetting;
+import net.wurstclient.util.text.WText;
 
 public final class SelectFileScreen extends Screen
 {
@@ -46,22 +47,29 @@ public final class SelectFileScreen extends Screen
 		listGui = new ListGui(client, this, setting.listFiles());
 		addSelectableChild(listGui);
 		
-		addDrawableChild(
-			ButtonWidget.builder(Text.literal("Open Folder"), b -> openFolder())
-				.dimensions(8, 8, 100, 20).build());
+		addDrawableChild(ButtonWidget
+			.builder(translatedText("gui.wurst.select_file.open_folder"),
+				b -> openFolder())
+			.dimensions(8, 8, 100, 20).build());
 		
 		addDrawableChild(ButtonWidget
-			.builder(Text.literal("Reset to Defaults"),
+			.builder(translatedText("gui.wurst.select_file.reset_to_defaults"),
 				b -> askToConfirmReset())
 			.dimensions(width - 108, 8, 100, 20).build());
 		
-		doneButton = addDrawableChild(
-			ButtonWidget.builder(Text.literal("Done"), b -> done())
-				.dimensions(width / 2 - 102, height - 48, 100, 20).build());
+		doneButton = addDrawableChild(ButtonWidget
+			.builder(translatedText("gui.wurst.select_file.done"), b -> done())
+			.dimensions(width / 2 - 102, height - 48, 100, 20).build());
 		
-		addDrawableChild(
-			ButtonWidget.builder(Text.literal("Cancel"), b -> openPrevScreen())
-				.dimensions(width / 2 + 2, height - 48, 100, 20).build());
+		addDrawableChild(ButtonWidget
+			.builder(translatedText("gui.wurst.select_file.cancel"),
+				b -> openPrevScreen())
+			.dimensions(width / 2 + 2, height - 48, 100, 20).build());
+	}
+	
+	private static Text translatedText(String key, Object... args)
+	{
+		return Text.literal(WText.translated(key, args).toString());
 	}
 	
 	private void openFolder()
@@ -88,12 +96,11 @@ public final class SelectFileScreen extends Screen
 	
 	private void askToConfirmReset()
 	{
-		Text title = Text.literal("Reset Folder");
-		
-		Text message = Text
-			.literal("This will empty the '" + setting.getFolder().getFileName()
-				+ "' folder and then re-generate the default files.\n"
-				+ "Are you sure you want to do this?");
+		Text title =
+			translatedText("gui.wurst.select_file.reset_confirm.title");
+		Text message =
+			translatedText("gui.wurst.select_file.reset_confirm.message",
+				setting.getFolder().getFileName());
 		
 		client.setScreen(new ConfirmScreen(this::confirmReset, title, message));
 	}
@@ -137,7 +144,8 @@ public final class SelectFileScreen extends Screen
 		
 		if(doneButton.isSelected() && !doneButton.active)
 			context.drawTooltip(textRenderer,
-				Arrays.asList(Text.literal("You must first select a file.")),
+				Arrays.asList(
+					translatedText("gui.wurst.select_file.no_file_selected")),
 				mouseX, mouseY);
 	}
 	
@@ -167,7 +175,8 @@ public final class SelectFileScreen extends Screen
 		public Text getNarration()
 		{
 			return Text.translatable("narrator.select",
-				"File " + path.getFileName());
+				WText.translated("gui.wurst.select_file.entry_narration",
+					path.getFileName()).toString());
 		}
 		
 		@Override

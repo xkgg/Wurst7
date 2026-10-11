@@ -27,6 +27,7 @@ import net.minecraft.text.Text;
 import net.wurstclient.settings.BlockListSetting;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.RenderUtils;
+import net.wurstclient.util.text.WText;
 
 public final class EditBlockListScreen extends Screen
 {
@@ -59,31 +60,41 @@ public final class EditBlockListScreen extends Screen
 		addSelectableChild(blockNameField);
 		blockNameField.setMaxLength(256);
 		
-		addDrawableChild(
-			addButton = ButtonWidget.builder(Text.literal("Add"), b -> {
+		addDrawableChild(addButton = ButtonWidget
+			.builder(translatedText("gui.wurst.blocklist.add"), b -> {
 				blockList.add(blockToAdd);
 				client.setScreen(EditBlockListScreen.this);
 			}).dimensions(width / 2 - 2, height - 56, 30, 20).build());
 		
-		addDrawableChild(removeButton =
-			ButtonWidget.builder(Text.literal("Remove Selected"), b -> {
-				blockList
-					.remove(blockList.indexOf(listGui.getSelectedBlockName()));
-				client.setScreen(EditBlockListScreen.this);
-			}).dimensions(width / 2 + 52, height - 56, 100, 20).build());
+		addDrawableChild(removeButton = ButtonWidget
+			.builder(translatedText("gui.wurst.blocklist.remove_selected"),
+				b -> {
+					blockList.remove(
+						blockList.indexOf(listGui.getSelectedBlockName()));
+					client.setScreen(EditBlockListScreen.this);
+				})
+			.dimensions(width / 2 + 52, height - 56, 100, 20).build());
 		
-		addDrawableChild(ButtonWidget.builder(Text.literal("Reset to Defaults"),
-			b -> client.setScreen(new ConfirmScreen(b2 -> {
-				if(b2)
-					blockList.resetToDefault();
-				client.setScreen(EditBlockListScreen.this);
-			}, Text.literal("Reset to Defaults"),
-				Text.literal("Are you sure?"))))
+		addDrawableChild(ButtonWidget
+			.builder(translatedText("gui.wurst.blocklist.reset_to_defaults"),
+				b -> client.setScreen(new ConfirmScreen(b2 -> {
+					if(b2)
+						blockList.resetToDefault();
+					client.setScreen(EditBlockListScreen.this);
+				}, translatedText("gui.wurst.blocklist.reset_confirm.title"),
+					translatedText(
+						"gui.wurst.blocklist.reset_confirm.message"))))
 			.dimensions(width - 108, 8, 100, 20).build());
 		
 		addDrawableChild(doneButton = ButtonWidget
-			.builder(Text.literal("Done"), b -> client.setScreen(prevScreen))
+			.builder(translatedText("gui.wurst.blocklist.done"),
+				b -> client.setScreen(prevScreen))
 			.dimensions(width / 2 - 100, height - 28, 200, 20).build());
+	}
+	
+	private static Text translatedText(String key, Object... args)
+	{
+		return Text.literal(WText.translated(key, args).toString());
 	}
 	
 	@Override
@@ -152,7 +163,8 @@ public final class EditBlockListScreen extends Screen
 		matrixStack.translate(-64 + width / 2 - 152, 0, 0);
 		
 		if(blockNameField.getText().isEmpty() && !blockNameField.isFocused())
-			context.drawTextWithShadow(client.textRenderer, "block name or ID",
+			context.drawTextWithShadow(client.textRenderer, WText
+				.translated("gui.wurst.blocklist.block_name_or_id").toString(),
 				68, height - 50, 0x808080);
 		
 		int border = blockNameField.isFocused() ? 0xFFFFFFFF : 0xFFA0A0A0;
@@ -206,8 +218,10 @@ public final class EditBlockListScreen extends Screen
 			ItemStack stack = new ItemStack(block);
 			
 			return Text.translatable("narrator.select",
-				"Block " + getDisplayName(stack) + ", " + blockName + ", "
-					+ getIdText(block));
+				WText
+					.translated("gui.wurst.blocklist.entry_narration",
+						getDisplayName(stack), blockName, getIdText(block))
+					.toString());
 		}
 		
 		@Override
@@ -235,13 +249,17 @@ public final class EditBlockListScreen extends Screen
 		
 		private String getDisplayName(ItemStack stack)
 		{
-			return stack.isEmpty() ? "\u00a7ounknown block\u00a7r"
+			return stack.isEmpty()
+				? WText.translated("gui.wurst.generic.unknown_block").toString()
 				: stack.getName().getString();
 		}
 		
 		private String getIdText(Block block)
 		{
-			return "ID: " + Block.getRawIdFromState(block.getDefaultState());
+			return WText
+				.translated("gui.wurst.blocklist.id",
+					Block.getRawIdFromState(block.getDefaultState()))
+				.toString();
 		}
 	}
 	

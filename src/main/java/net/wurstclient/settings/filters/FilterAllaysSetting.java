@@ -9,12 +9,20 @@ package net.wurstclient.settings.filters;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.AllayEntity;
+import net.wurstclient.WurstClient;
 
 public final class FilterAllaysSetting extends EntityFilterCheckbox
 {
 	public FilterAllaysSetting(String description, boolean checked)
 	{
 		super("过滤盟友", description, checked);
+	}
+	
+	@Override
+	public String getDisplayName()
+	{
+		return WurstClient.INSTANCE
+			.translate("gui.wurst.generic.filter_allays");
 	}
 	
 	@Override

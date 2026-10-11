@@ -31,12 +31,26 @@ public final class ColorSetting extends Setting
 {
 	private Color color;
 	private final Color defaultColor;
+	private final String displayNameKey;
 	
 	public ColorSetting(String name, WText description, Color color)
+	{
+		this(name, description, color, null);
+	}
+	
+	public ColorSetting(String name, String descriptionKey,
+		String displayNameKey, Color color)
+	{
+		this(name, WText.translated(descriptionKey), color, displayNameKey);
+	}
+	
+	private ColorSetting(String name, WText description, Color color,
+		String displayNameKey)
 	{
 		super(name, description);
 		this.color = Objects.requireNonNull(color);
 		defaultColor = color;
+		this.displayNameKey = displayNameKey;
 	}
 	
 	public ColorSetting(String name, String descriptionKey, Color color)
@@ -47,6 +61,13 @@ public final class ColorSetting extends Setting
 	public ColorSetting(String name, Color color)
 	{
 		this(name, WText.empty(), color);
+	}
+	
+	@Override
+	public String getDisplayName()
+	{
+		return displayNameKey == null ? super.getDisplayName()
+			: WurstClient.INSTANCE.translate(displayNameKey);
 	}
 	
 	public Color getColor()

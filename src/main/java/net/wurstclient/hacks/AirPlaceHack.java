@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
+import net.wurstclient.WurstClient;
 import net.wurstclient.events.RenderListener;
 import net.wurstclient.events.RightClickListener;
 import net.wurstclient.events.UpdateListener;
@@ -35,10 +36,18 @@ public final class AirPlaceHack extends Hack
 		new SliderSetting("范围", 5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
 	private final CheckboxSetting guide = new CheckboxSetting("Guide",
-		"description.wurst.setting.airplace.guide", true);
+		"description.wurst.setting.airplace.guide", true)
+	{
+		@Override
+		public String getDisplayName()
+		{
+			return WurstClient.INSTANCE.translate("gui.wurst.airplace.guide");
+		}
+	};
 	
 	private final ColorSetting guideColor = new ColorSetting("Guide color",
-		"description.wurst.setting.airplace.guide_color", Color.RED);
+		"description.wurst.setting.airplace.guide_color",
+		"gui.wurst.airplace.guide_color", Color.RED);
 	
 	private BlockPos renderPos;
 	

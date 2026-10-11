@@ -29,6 +29,7 @@ import net.minecraft.util.Identifier;
 import net.wurstclient.settings.ItemListSetting;
 import net.wurstclient.util.ItemUtils;
 import net.wurstclient.util.RenderUtils;
+import net.wurstclient.util.text.WText;
 
 public final class EditItemListScreen extends Screen
 {
@@ -61,31 +62,41 @@ public final class EditItemListScreen extends Screen
 		addSelectableChild(itemNameField);
 		itemNameField.setMaxLength(256);
 		
-		addDrawableChild(
-			addButton = ButtonWidget.builder(Text.literal("Add"), b -> {
+		addDrawableChild(addButton = ButtonWidget
+			.builder(translatedText("gui.wurst.itemlist.add"), b -> {
 				itemList.add(itemToAdd);
 				client.setScreen(EditItemListScreen.this);
 			}).dimensions(width / 2 - 2, height - 56, 30, 20).build());
 		
-		addDrawableChild(removeButton =
-			ButtonWidget.builder(Text.literal("Remove Selected"), b -> {
-				itemList.remove(itemList.getItemNames()
-					.indexOf(listGui.getSelectedBlockName()));
-				client.setScreen(EditItemListScreen.this);
-			}).dimensions(width / 2 + 52, height - 56, 100, 20).build());
+		addDrawableChild(removeButton = ButtonWidget
+			.builder(translatedText("gui.wurst.itemlist.remove_selected"),
+				b -> {
+					itemList.remove(itemList.getItemNames()
+						.indexOf(listGui.getSelectedBlockName()));
+					client.setScreen(EditItemListScreen.this);
+				})
+			.dimensions(width / 2 + 52, height - 56, 100, 20).build());
 		
-		addDrawableChild(ButtonWidget.builder(Text.literal("Reset to Defaults"),
-			b -> client.setScreen(new ConfirmScreen(b2 -> {
-				if(b2)
-					itemList.resetToDefault();
-				client.setScreen(EditItemListScreen.this);
-			}, Text.literal("Reset to Defaults"),
-				Text.literal("Are you sure?"))))
+		addDrawableChild(ButtonWidget
+			.builder(translatedText("gui.wurst.itemlist.reset_to_defaults"),
+				b -> client.setScreen(new ConfirmScreen(b2 -> {
+					if(b2)
+						itemList.resetToDefault();
+					client.setScreen(EditItemListScreen.this);
+				}, translatedText("gui.wurst.itemlist.reset_confirm.title"),
+					translatedText(
+						"gui.wurst.itemlist.reset_confirm.message"))))
 			.dimensions(width - 108, 8, 100, 20).build());
 		
 		addDrawableChild(doneButton = ButtonWidget
-			.builder(Text.literal("Done"), b -> client.setScreen(prevScreen))
+			.builder(translatedText("gui.wurst.itemlist.done"),
+				b -> client.setScreen(prevScreen))
 			.dimensions(width / 2 - 100, height - 28, 200, 20).build());
+	}
+	
+	private static Text translatedText(String key, Object... args)
+	{
+		return Text.literal(WText.translated(key, args).toString());
 	}
 	
 	@Override
@@ -157,7 +168,8 @@ public final class EditItemListScreen extends Screen
 		{
 			matrixStack.push();
 			matrixStack.translate(0, 0, 300);
-			context.drawTextWithShadow(client.textRenderer, "item name or ID",
+			context.drawTextWithShadow(client.textRenderer, WText
+				.translated("gui.wurst.itemlist.item_name_or_id").toString(),
 				68, height - 50, 0x808080);
 			matrixStack.pop();
 		}
@@ -213,8 +225,10 @@ public final class EditItemListScreen extends Screen
 			ItemStack stack = new ItemStack(item);
 			
 			return Text.translatable("narrator.select",
-				"Item " + getDisplayName(stack) + ", " + itemName + ", "
-					+ getIdText(item));
+				WText
+					.translated("gui.wurst.itemlist.entry_narration",
+						getDisplayName(stack), itemName, getIdText(item))
+					.toString());
 		}
 		
 		@Override
@@ -242,13 +256,15 @@ public final class EditItemListScreen extends Screen
 		
 		private String getDisplayName(ItemStack stack)
 		{
-			return stack.isEmpty() ? "\u00a7ounknown item\u00a7r"
+			return stack.isEmpty()
+				? WText.translated("gui.wurst.generic.unknown_item").toString()
 				: stack.getName().getString();
 		}
 		
 		private String getIdText(Item item)
 		{
-			return "ID: " + Registries.ITEM.getRawId(item);
+			return WText.translated("gui.wurst.itemlist.id",
+				Registries.ITEM.getRawId(item)).toString();
 		}
 	}
 	

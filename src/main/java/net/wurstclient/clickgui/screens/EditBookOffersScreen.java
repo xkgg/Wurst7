@@ -27,9 +27,11 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.wurstclient.WurstClient;
 import net.wurstclient.hacks.autolibrarian.BookOffer;
 import net.wurstclient.settings.BookOffersSetting;
 import net.wurstclient.util.RenderUtils;
+import net.wurstclient.util.text.WText;
 
 public final class EditBookOffersScreen extends Screen
 {
@@ -56,13 +58,13 @@ public final class EditBookOffersScreen extends Screen
 		
 		addDrawableChild(
 			ButtonWidget
-				.builder(Text.literal("Add"),
+				.builder(translatedText("gui.wurst.book_offers.add"),
 					b -> client
 						.setScreen(new AddBookOfferScreen(this, bookOffers)))
 				.dimensions(width / 2 - 154, height - 56, 100, 20).build());
 		
-		addDrawableChild(
-			editButton = ButtonWidget.builder(Text.literal("Edit"), b -> {
+		addDrawableChild(editButton = ButtonWidget
+			.builder(translatedText("gui.wurst.book_offers.edit"), b -> {
 				BookOffer selected = listGui.getSelectedOffer();
 				if(selected == null)
 					return;
@@ -72,26 +74,34 @@ public final class EditBookOffersScreen extends Screen
 			}).dimensions(width / 2 - 50, height - 56, 100, 20).build());
 		editButton.active = false;
 		
-		addDrawableChild(
-			removeButton = ButtonWidget.builder(Text.literal("Remove"), b -> {
+		addDrawableChild(removeButton = ButtonWidget
+			.builder(translatedText("gui.wurst.book_offers.remove"), b -> {
 				bookOffers
 					.remove(bookOffers.indexOf(listGui.getSelectedOffer()));
 				client.setScreen(EditBookOffersScreen.this);
 			}).dimensions(width / 2 + 54, height - 56, 100, 20).build());
 		removeButton.active = false;
 		
-		addDrawableChild(ButtonWidget.builder(Text.literal("Reset to Defaults"),
-			b -> client.setScreen(new ConfirmScreen(b2 -> {
-				if(b2)
-					bookOffers.resetToDefault();
-				client.setScreen(EditBookOffersScreen.this);
-			}, Text.literal("Reset to Defaults"),
-				Text.literal("Are you sure?"))))
+		addDrawableChild(ButtonWidget
+			.builder(translatedText("gui.wurst.book_offers.reset_to_defaults"),
+				b -> client.setScreen(new ConfirmScreen(b2 -> {
+					if(b2)
+						bookOffers.resetToDefault();
+					client.setScreen(EditBookOffersScreen.this);
+				}, translatedText("gui.wurst.book_offers.reset_confirm.title"),
+					translatedText(
+						"gui.wurst.book_offers.reset_confirm.message"))))
 			.dimensions(width - 106, 6, 100, 20).build());
 		
 		addDrawableChild(doneButton = ButtonWidget
-			.builder(Text.literal("Done"), b -> client.setScreen(prevScreen))
+			.builder(translatedText("gui.wurst.book_offers.done"),
+				b -> client.setScreen(prevScreen))
 			.dimensions(width / 2 - 100, height - 32, 200, 20).build());
+	}
+	
+	private static Text translatedText(String key, Object... args)
+	{
+		return Text.literal(WText.translated(key, args).toString());
 	}
 	
 	@Override
@@ -184,8 +194,9 @@ public final class EditBookOffersScreen extends Screen
 		public Text getNarration()
 		{
 			return Text.translatable("narrator.select",
-				"Book offer " + bookOffer.getEnchantmentNameWithLevel()
-					+ ", ID " + bookOffer.id() + ", " + getPriceText());
+				WText.translated("gui.wurst.book_offers.entry_narration",
+					getEnchantmentNameWithLevel(), bookOffer.id(),
+					getPriceText()).toString());
 		}
 		
 		@Override
@@ -204,7 +215,7 @@ public final class EditBookOffersScreen extends Screen
 			RenderUtils.drawItem(context, stack, x + 1, y + 1, true);
 			
 			TextRenderer tr = client.textRenderer;
-			String name = bookOffer.getEnchantmentNameWithLevel();
+			String name = getEnchantmentNameWithLevel();
 			
 			Enchantment enchantment = bookOffer.getEnchantment();
 			int nameColor = enchantment.isCursed() ? 0xFF5555 : 0xF0F0F0;
@@ -224,9 +235,25 @@ public final class EditBookOffersScreen extends Screen
 		private String getPriceText()
 		{
 			if(bookOffer.price() >= 64)
-				return "any price";
+				return WurstClient.INSTANCE
+					.translate("gui.wurst.book_offers.any_price");
 			
-			return "max " + bookOffer.price();
+			return WurstClient.INSTANCE.translate(
+				"gui.wurst.book_offers.max_price", bookOffer.price());
+		}
+		
+		private String getEnchantmentNameWithLevel()
+		{
+			WurstClient wurst = WurstClient.INSTANCE;
+			Enchantment enchantment = bookOffer.getEnchantment();
+			String name = wurst.getTranslator()
+				.translateMc(enchantment.getTranslationKey());
+			
+			if(enchantment.getMaxLevel() > 1)
+				name += " " + wurst.getTranslator()
+					.translateMc("enchantment.level." + bookOffer.level());
+			
+			return name;
 		}
 	}
 	
