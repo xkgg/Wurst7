@@ -6,7 +6,7 @@ buildscript {
 
 plugins {
 	id "fabric-loom" version "${loom_version}"
-	id "com.diffplug.spotless" version "8.0.0"
+	id "com.diffplug.spotless" version "8.10.4"
 }
 
 def ENV = System.getenv()
@@ -16,6 +16,10 @@ group = project.maven_group
 
 base {
 	archivesName = project.archives_base_name
+}
+
+tasks.withType(org.gradle.api.tasks.bundling.AbstractArchiveTask).configureEach {
+	archiveVersion = project.mod_version.toString().replace("-backport", "")
 }
 
 repositories {

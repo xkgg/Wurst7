@@ -9,7 +9,7 @@ updates:
     interval: "weekly"
     day: "monday"
     time: "06:00"
-    timezone: "Europe/Berlin"
+    timezone: "Asia/Shanghai"
 - package-ecosystem: "github-actions"
   # Directory should be `/` instead of `/.github/workflows` according to the docs.
   directory: "/"
@@ -17,4 +17,4 @@ updates:
     interval: "weekly"
     day: "monday"
     time: "06:00"
-    timezone: "Europe/Berlin"
+    timezone: "Asia/Shanghai"

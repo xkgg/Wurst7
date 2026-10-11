@@ -36,6 +36,8 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
     steps:
 
     - name: Echo distinct ID ${{ inputs.distinct_id }}

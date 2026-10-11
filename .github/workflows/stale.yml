@@ -3,6 +3,7 @@ name: Close stale issues and pull requests
 on:
   schedule:
   - cron: "30 1 * * 1-5"
+    timezone: "Asia/Shanghai"
 
 permissions:
   # Both needed by the stale action.
