@@ -218,9 +218,9 @@ public class WurstTranslator implements SynchronousResourceReloader
 	
 	private boolean isBuiltInWurstResourcePack(Resource resource)
 	{
-		// In Minecraft 1.20.1, Fabric combines mod resources into one pack
-		// named "fabric". Server resource packs use a different pack name.
+		// Resource#getPack() returns the mod pack providing the resource,
+		// not Fabric's aggregate pack.
 		ResourcePack pack = resource.getPack();
-		return pack != null && "fabric".equals(pack.getName());
+		return pack != null && "wurst".equals(pack.getName());
 	}
 }
