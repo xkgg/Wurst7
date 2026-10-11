@@ -52,6 +52,11 @@ public class EnumSetting<T extends Enum<T>> extends Setting
 		return values;
 	}
 	
+	public String getDisplayValue(T value)
+	{
+		return value.toString();
+	}
+	
 	public T getSelected()
 	{
 		return selected;

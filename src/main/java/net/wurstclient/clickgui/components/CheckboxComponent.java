@@ -80,7 +80,7 @@ public final class CheckboxComponent extends Component
 				setting.isLocked());
 		
 		// text
-		String name = setting.getName();
+		String name = setting.getDisplayName();
 		context.drawText(TR, name, x3 + 2, y1 + 2, GUI.getTxtColor(), false);
 	}
 	
@@ -105,7 +105,7 @@ public final class CheckboxComponent extends Component
 	@Override
 	public int getDefaultWidth()
 	{
-		return BOX_SIZE + TR.getWidth(setting.getName()) + 2;
+		return BOX_SIZE + TR.getWidth(setting.getDisplayName()) + 2;
 	}
 	
 	@Override

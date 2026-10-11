@@ -18,7 +18,8 @@ public final class SettingsWindow extends Window
 {
 	public SettingsWindow(Feature feature, Window parent, int buttonY)
 	{
-		super(feature.getName() + " Settings");
+		super(WurstClient.INSTANCE.translate("gui.wurst.generic.settings_title",
+			feature.getName()));
 		
 		Stream<Setting> settings = feature.getSettings().values().stream();
 		settings.map(Setting::getComponent).forEach(this::add);

@@ -7,7 +7,10 @@
  */
 package net.wurstclient.hacks.chattranslator;
 
+import java.util.Locale;
+
 import net.minecraft.text.Text;
+import net.wurstclient.WurstClient;
 import net.wurstclient.settings.EnumSetting;
 
 public final class LanguageSetting extends EnumSetting<LanguageSetting.Language>
@@ -44,6 +47,12 @@ public final class LanguageSetting extends EnumSetting<LanguageSetting.Language>
 		return new LanguageSetting(name, "", values, selected);
 	}
 	
+	@Override
+	public String getDisplayValue(Language value)
+	{
+		return value.getDisplayName();
+	}
+	
 	public enum Language
 	{
 		AUTO_DETECT("Detect Language", "auto"),
@@ -74,13 +83,11 @@ public final class LanguageSetting extends EnumSetting<LanguageSetting.Language>
 		
 		private final String name;
 		private final String value;
-		private final String prefix;
 		
 		private Language(String name, String value)
 		{
 			this.name = name;
 			this.value = value;
-			prefix = "\u00a7a[\u00a7b" + name + "\u00a7a]:\u00a7r ";
 		}
 		
 		public String getValue()
@@ -90,12 +97,19 @@ public final class LanguageSetting extends EnumSetting<LanguageSetting.Language>
 		
 		public String getPrefix()
 		{
-			return prefix;
+			return "\u00a7a[\u00a7b" + getDisplayName() + "\u00a7a]:\u00a7r ";
 		}
 		
 		public Text prefixText(String s)
 		{
-			return Text.literal(prefix + s);
+			return Text.literal(getPrefix() + s);
+		}
+		
+		public String getDisplayName()
+		{
+			String key = "gui.wurst.chattranslator.language."
+				+ name().toLowerCase(Locale.ROOT);
+			return WurstClient.INSTANCE.translate(key);
 		}
 		
 		@Override

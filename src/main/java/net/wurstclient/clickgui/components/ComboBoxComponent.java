@@ -34,8 +34,9 @@ public final class ComboBoxComponent<T extends Enum<T>> extends Component
 	public ComboBoxComponent(EnumSetting<T> setting)
 	{
 		this.setting = setting;
-		popupWidth = Arrays.stream(setting.getValues()).map(T::toString)
-			.mapToInt(s -> TR.getWidth(s)).max().getAsInt();
+		popupWidth =
+			Arrays.stream(setting.getValues()).map(setting::getDisplayValue)
+				.mapToInt(s -> TR.getWidth(s)).max().getAsInt();
 		
 		setWidth(getDefaultWidth());
 		setHeight(getDefaultHeight());
@@ -120,8 +121,8 @@ public final class ComboBoxComponent<T extends Enum<T>> extends Component
 			hBox, !isPopupOpen());
 		
 		// text
-		String name = setting.getName();
-		String value = "" + setting.getSelected();
+		String name = setting.getDisplayName();
+		String value = setting.getDisplayValue(setting.getSelected());
 		int txtColor = GUI.getTxtColor();
 		context.drawText(TR, name, x1, y1 + 2, txtColor, false);
 		context.drawText(TR, value, x4 + 2, y1 + 2, txtColor, false);
@@ -136,7 +137,8 @@ public final class ComboBoxComponent<T extends Enum<T>> extends Component
 	@Override
 	public int getDefaultWidth()
 	{
-		return TR.getWidth(setting.getName()) + popupWidth + ARROW_SIZE + 6;
+		return TR.getWidth(setting.getDisplayName()) + popupWidth + ARROW_SIZE
+			+ 6;
 	}
 	
 	@Override

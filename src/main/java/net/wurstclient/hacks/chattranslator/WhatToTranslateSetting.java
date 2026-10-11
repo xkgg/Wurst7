@@ -7,6 +7,9 @@
  */
 package net.wurstclient.hacks.chattranslator;
 
+import java.util.Locale;
+
+import net.wurstclient.WurstClient;
 import net.wurstclient.settings.EnumSetting;
 
 public final class WhatToTranslateSetting
@@ -16,6 +19,21 @@ public final class WhatToTranslateSetting
 	{
 		super("Translate", "", WhatToTranslate.values(),
 			WhatToTranslate.RECEIVED_MESSAGES);
+	}
+	
+	@Override
+	public String getDisplayName()
+	{
+		return WurstClient.INSTANCE
+			.translate("gui.wurst.chattranslator.translate");
+	}
+	
+	@Override
+	public String getDisplayValue(WhatToTranslate value)
+	{
+		String key = "gui.wurst.chattranslator.mode."
+			+ value.name().toLowerCase(Locale.ROOT);
+		return WurstClient.INSTANCE.translate(key);
 	}
 	
 	public boolean includesReceived()

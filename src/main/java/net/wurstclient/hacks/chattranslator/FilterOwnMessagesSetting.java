@@ -24,6 +24,13 @@ public class FilterOwnMessagesSetting extends CheckboxSetting
 			true);
 	}
 	
+	@Override
+	public String getDisplayName()
+	{
+		return WurstClient.INSTANCE
+			.translate("gui.wurst.chattranslator.filter_own_messages");
+	}
+	
 	public boolean isOwnMessage(String message)
 	{
 		updateOwnMessagePattern();

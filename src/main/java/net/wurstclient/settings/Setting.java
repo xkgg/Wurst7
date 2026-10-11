@@ -34,6 +34,11 @@ public abstract class Setting
 		return name;
 	}
 	
+	public String getDisplayName()
+	{
+		return name;
+	}
+	
 	public final String getDescription()
 	{
 		return description.toString();
