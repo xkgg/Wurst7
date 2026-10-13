@@ -94,9 +94,14 @@ public enum RenderingRegressionTest
 			{
 				if(blocking)
 				{
-					submitAndWait(mc -> mc.interactionManager
-						.interactItem(mc.player, Hand.MAIN_HAND));
-					waitUntil("shield blocking", mc -> mc.player.isUsingItem());
+					submitAndWait(mc -> {
+						// Minecraft releases active items unless use stays
+						// held.
+						mc.options.useKey.setPressed(true);
+						mc.interactionManager.interactItem(mc.player,
+							Hand.MAIN_HAND);
+					});
+					waitUntil("shield blocking", mc -> mc.player.isBlocking());
 				}
 				String name = blocking ? "blocking" : "idle";
 				Path off = takeScreenshotPath(
@@ -109,7 +114,8 @@ public enum RenderingRegressionTest
 					"NoShieldOverlay did not move the " + name + " shield");
 				submitAndWait(mc -> {
 					hack.setEnabled(false);
-					mc.player.clearActiveItem();
+					mc.options.useKey.setPressed(false);
+					mc.interactionManager.stopUsingItem(mc.player);
 				});
 				waitForWorldTicks(2);
 			}
@@ -126,7 +132,8 @@ public enum RenderingRegressionTest
 		{
 			submitAndWait(mc -> {
 				hack.setEnabled(false);
-				mc.player.clearActiveItem();
+				mc.options.useKey.setPressed(false);
+				mc.interactionManager.stopUsingItem(mc.player);
 			});
 			runChatCommand("clear");
 			waitForWorldTicks(10);
