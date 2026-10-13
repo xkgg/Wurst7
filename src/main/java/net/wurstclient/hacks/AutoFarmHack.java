@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -27,6 +28,7 @@ import net.wurstclient.hacks.autofarm.AutoFarmPlantTypeManager;
 import net.wurstclient.hacks.autofarm.AutoFarmRenderer;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.FacingSetting;
+import net.wurstclient.settings.FacingSetting.Facing;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.SwingHandSetting;
@@ -260,7 +262,9 @@ public final class AutoFarmHack extends Hack
 				|| checkLOS.isChecked() && !params.lineOfSight())
 				continue;
 			
-			if(InventoryUtils.selectItem(plantType.getSeedItem()))
+			Item seed = plantType.getSeedItem();
+			if(InventoryUtils.selectItem(seed)
+				|| InventoryUtils.giveCreativeItem(seed))
 			{
 				cancelBreakingBlock();
 				return true;
@@ -283,6 +287,16 @@ public final class AutoFarmHack extends Hack
 				|| checkLOS.isChecked() && !params.lineOfSight())
 				continue;
 			
+			if(MC.player.getMainHandStack().isOf(Items.BONE_MEAL))
+			{
+				if(!InventoryUtils
+					.selectItem(stack -> !stack.isOf(Items.BONE_MEAL)))
+					continue;
+				
+				if(MC.player.getMainHandStack().isOf(Items.BONE_MEAL))
+					return true;
+			}
+			
 			cancelBreakingBlock();
 			facing.getSelected().face(params.hitVec());
 			MC.itemUseCooldown = 4;
@@ -296,7 +310,8 @@ public final class AutoFarmHack extends Hack
 	
 	private void harvestByMining(List<BlockPos> blocksToMine)
 	{
-		if(MC.player.getAbilities().creativeMode)
+		if(MC.player.getAbilities().creativeMode
+			&& facing.getSelected() == Facing.OFF)
 		{
 			MC.interactionManager.cancelBlockBreaking();
 			overlay.resetProgress();
@@ -308,12 +323,13 @@ public final class AutoFarmHack extends Hack
 			
 			currentlyHarvesting = blocks.get(0);
 			BlockBreaker.breakBlocksWithPacketSpam(blocks);
+			swingHand.swing(Hand.MAIN_HAND);
 			return;
 		}
 		
 		currentlyHarvesting = blocksToMine.stream().filter(pos -> {
 			BlockBreakingParams params = getValidBreakingParams(pos);
-			return params != null && BlockBreaker.breakOneBlock(params);
+			return params != null && breakOneBlock(params);
 		}).findFirst().orElse(null);
 		
 		if(currentlyHarvesting == null)
@@ -324,6 +340,17 @@ public final class AutoFarmHack extends Hack
 		}
 		
 		overlay.updateProgress();
+	}
+	
+	private boolean breakOneBlock(BlockBreakingParams params)
+	{
+		facing.getSelected().face(params.hitVec());
+		if(!MC.interactionManager.updateBlockBreakingProgress(params.pos(),
+			params.side()))
+			return false;
+		
+		swingHand.swing(Hand.MAIN_HAND);
+		return true;
 	}
 	
 	private void cancelBreakingBlock()

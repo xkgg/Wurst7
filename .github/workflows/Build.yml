@@ -43,6 +43,20 @@ jobs:
       run: ./gradlew spotlessApply
 
 
+    - name: Resolve dependencies
+      run: |
+        max_attempts=3
+        attempt=1
+        until ./gradlew dependencies --stacktrace; do
+          if [ "$attempt" -ge "$max_attempts" ]; then
+            echo "Failed to resolve dependencies after $max_attempts attempts"
+            exit 1
+          fi
+          echo "Dependency resolution attempt $attempt failed; retrying in 30 seconds..."
+          attempt=$((attempt + 1))
+          sleep 30
+        done
+
     - name: Build
       run: ./gradlew build --stacktrace --warning-mode=fail
       
@@ -81,8 +95,17 @@ jobs:
         echo "</details>" >> $GITHUB_STEP_SUMMARY
 
     - name: Run the mod and take screenshots
+      timeout-minutes: 15
       # TODO: Migrate to Fabric Client Gametest API so this can run with configuration cache enabled
       run: xvfb-run --auto-servernum ./gradlew runEndToEndTest --stacktrace --warning-mode=fail --no-configuration-cache
+
+    - name: Upload client logs
+      uses: actions/upload-artifact@v7
+      if: ${{ always() }}
+      with:
+        name: client-logs
+        path: run/logs
+        if-no-files-found: ignore
 
     - name: Upload screenshots.zip artifact
       uses: actions/upload-artifact@v7

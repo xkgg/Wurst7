@@ -58,9 +58,19 @@ public enum GoogleTranslate
 	
 	public static String translate(String text, String langFrom, String langTo)
 	{
-		String html = getHTML(text, langFrom, langTo);
-		String translated = parseHTML(html);
+		return translate(text, createURL(text, langFrom, langTo));
+	}
+	
+	static String translate(String text, URL url)
+	{
+		String html = getHTML(url);
+		if(html == null)
+			return null;
 		
+		String translated = parseHTML(html);
+		if(translated == null)
+			return null;
+			
 		// Return null if Google Translate just returned the original text,
 		// ignoring capitalization changes, whitespace, and broken characters
 		if(simplify(text).equals(simplify(translated)))
@@ -69,10 +79,8 @@ public enum GoogleTranslate
 		return translated;
 	}
 	
-	private static String getHTML(String text, String langFrom, String langTo)
+	private static String getHTML(URL url)
 	{
-		URL url = createURL(text, langFrom, langTo);
-		
 		try
 		{
 			URLConnection connection = setupConnection(url);
@@ -91,6 +99,7 @@ public enum GoogleTranslate
 			
 		}catch(IOException e)
 		{
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -118,6 +127,7 @@ public enum GoogleTranslate
 		URLConnection connection = url.openConnection();
 		
 		connection.setConnectTimeout(5000);
+		connection.setReadTimeout(5000);
 		connection.setRequestProperty("User-Agent",
 			"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
 		

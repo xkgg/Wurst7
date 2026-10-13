@@ -9,20 +9,34 @@ package net.wurstclient.altmanager;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Uuids;
+import net.wurstclient.WurstClient;
 
 public final class AltRenderer
 {
+	private static final ExecutorService BACKGROUND_THREAD =
+		Executors.newSingleThreadExecutor(task -> {
+			Thread thread = new Thread(task, "Wurst Alt skins");
+			thread.setDaemon(true);
+			return thread;
+		});
+	
 	private static final HashMap<String, Identifier> loadedSkins =
 		new HashMap<>();
+	private static final ConcurrentHashMap<String, Identifier> onlineSkins =
+		new ConcurrentHashMap<>();
 	
 	private static Identifier getSkinTexture(String name)
 	{
@@ -33,13 +47,37 @@ public final class AltRenderer
 		if(texture == null)
 		{
 			UUID uuid = Uuids.getOfflinePlayerUuid(name);
-			GameProfile profile = new GameProfile(uuid, name);
-			PlayerListEntry entry = new PlayerListEntry(profile, false);
-			texture = entry.getSkinTexture();
+			texture = DefaultSkinHelper.getTexture(uuid);
 			loadedSkins.put(name, texture);
+			queueOnlineSkinLoading(name);
 		}
 		
-		return texture;
+		return onlineSkins.getOrDefault(name, texture);
+	}
+	
+	private static void queueOnlineSkinLoading(String name)
+	{
+		CompletableFuture.supplyAsync(() -> {
+			UUID uuid = SkinStealer.getUUIDOrNull(name);
+			if(uuid == null)
+				return null;
+			
+			return WurstClient.MC.getSessionService()
+				.fillProfileProperties(new GameProfile(uuid, name), false);
+		}, BACKGROUND_THREAD).thenAccept(profile -> {
+			if(profile == null)
+				return;
+			
+			WurstClient.MC.execute(() -> WurstClient.MC.getSkinProvider()
+				.loadSkin(profile, (type, skin, profileTexture) -> {
+					if(type == Type.SKIN)
+						onlineSkins.put(name, skin);
+				}, false));
+		}).exceptionally(error -> {
+			System.err.println("[Wurst] Failed to load skin for " + name);
+			error.printStackTrace();
+			return null;
+		});
 	}
 	
 	public static void drawAltFace(DrawContext context, String name, int x,

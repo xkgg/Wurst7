@@ -105,6 +105,7 @@ tasks.register('runEndToEndTest', JavaExec) {
 		jvmArgs(
 			"-Dfabric.addMods=${configurations.modImplementation.find { it.name.contains('fabric-api') }.absolutePath}${File.pathSeparator}${remapJar.archiveFile.get().asFile.absolutePath}",
 			"-Dwurst.e2eTest",
+			"-Dwurst.e2eTestFilter=${System.getProperty('wurst.e2eTestFilter', '')}",
 			"-Dfabric-tag-conventions-v2.missingTagTranslationWarning=fail",
 			"-Dfabric-tag-conventions-v1.legacyTagWarning=fail",
 			"-Dmixin.debug.verify=true",

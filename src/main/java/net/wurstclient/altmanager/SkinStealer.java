@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -118,13 +119,19 @@ public enum SkinStealer
 			URI.create("https://api.mojang.com/users/profiles/minecraft/")
 				.resolve(URLEncoder.encode(username, "UTF-8")).toURL();
 		
-		try(InputStream profileInputStream = profileURL.openStream())
+		URLConnection connection = profileURL.openConnection();
+		connection.setConnectTimeout(5000);
+		connection.setReadTimeout(5000);
+		try(InputStream profileInputStream = connection.getInputStream())
 		{
 			// {"name":"<username>","id":"<UUID>"}
 			
 			JsonObject profileJson = new Gson().fromJson(
 				IOUtils.toString(profileInputStream, StandardCharsets.UTF_8),
 				JsonObject.class);
+			
+			if(profileJson == null || !profileJson.has("id"))
+				throw new IOException("No Minecraft profile for " + username);
 			
 			return profileJson.get("id").getAsString();
 		}

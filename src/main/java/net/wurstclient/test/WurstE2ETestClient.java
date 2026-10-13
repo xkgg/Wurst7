@@ -125,20 +125,46 @@ public final class WurstE2ETestClient implements ModInitializer
 		clearChat();
 		
 		// Test Wurst hacks
-		AutoMineHackTest.testAutoMineHack();
-		FreecamHackTest.testFreecamHack();
-		NoFallHackTest.testNoFallHack();
-		XRayHackTest.testXRayHack();
+		if(System.getProperty("wurst.e2eTestFilter", "").isEmpty())
+		{
+			AutoMineHackTest.testAutoMineHack();
+			FreecamHackTest.testFreecamHack();
+			NoFallHackTest.testNoFallHack();
+			XRayHackTest.testXRayHack();
+			
+			CopyItemCmdTest.testCopyItemCmd();
+			GiveCmdTest.testGiveCmd();
+			ModifyCmdTest.testModifyCmd();
+			PistonTest.testPistonDoesntCrash();
+		}
 		
-		// Test Wurst commands
-		CopyItemCmdTest.testCopyItemCmd();
-		GiveCmdTest.testGiveCmd();
-		ModifyCmdTest.testModifyCmd();
-		
-		// TODO: Test more Wurst features
-		
-		// Test special cases
-		PistonTest.testPistonDoesntCrash();
+		prepareRegressionScene();
+		runScenario("FilterBabies", EntityFilterRegressionTest::testBabies);
+		runScenario("FilterCalm", EntityFilterRegressionTest::testCalm);
+		runScenario("FilterPassiveWater",
+			EntityFilterRegressionTest::testPassiveWater);
+		runScenario("FilterPets", EntityFilterRegressionTest::testPets);
+		runScenario("MobDisposition",
+			EntityFilterRegressionTest::testDisposition);
+		runScenario("Translations", MenuAndTranslationTest::testTranslations);
+		runScenario("AutoFarm", AutomationRegressionTest::testAutoFarm);
+		runScenario("AutoFarmFacing",
+			AutomationRegressionTest::testAutoFarmFacing);
+		runScenario("AutoFarmBoneMeal",
+			AutomationRegressionTest::testAutoFarmBoneMeal);
+		runScenario("AutoSteal", AutomationRegressionTest::testAutoSteal);
+		runScenario("AutoSprint", MovementRegressionTest::testAutoSprint);
+		runScenario("Blink", MovementRegressionTest::testBlink);
+		runScenario("Damage", MovementRegressionTest::testDamage);
+		runScenario("AttributeSwap", MovementRegressionTest::testAttributeSwap);
+		runScenario("FreecamOcclusion", MovementRegressionTest::testOcclusion);
+		runScenario("AntiWobble", RenderingRegressionTest::testAntiWobble);
+		runScenario("LSD", RenderingRegressionTest::testLsd);
+		runScenario("NoShieldOverlay",
+			RenderingRegressionTest::testNoShieldOverlay);
+		runScenario("NoWeather", RenderingRegressionTest::testNoWeather);
+		runScenario("ChestESP", ChestEspRegressionTest::testGroupsAndRendering);
+		runScenario("InGameMenu", MenuAndTranslationTest::testMenus);
 		
 		System.out.println("Opening game menu");
 		openGameMenu();
@@ -152,5 +178,60 @@ public final class WurstE2ETestClient implements ModInitializer
 		
 		System.out.println("Stopping the game");
 		clickButton("menu.quit");
+	}
+	
+	private void prepareRegressionScene()
+	{
+		runChatCommand("gamemode creative");
+		runChatCommand("gamerule doMobSpawning false");
+		runChatCommand("gamerule keepInventory true");
+		runChatCommand("weather clear");
+		runChatCommand("time set noon");
+		runChatCommand("forceload add -16 -16 16 16");
+		submitOnServer(server -> {
+			for(int x = -1; x <= 1; x++)
+				for(int z = -1; z <= 1; z++)
+					server.getOverworld().getChunk(x, z);
+			return null;
+		});
+		runChatCommand("fill -16 99 -16 16 99 16 stone");
+		runChatCommand("fill -8 100 -8 8 114 10 air");
+		runChatCommand("fill -7 100 8 7 109 8 stone");
+		runChatCommand("fill -6 101 8 -4 103 8 red_wool");
+		runChatCommand("fill 4 101 8 6 103 8 blue_wool");
+		runChatCommand("tp @s 0.5 100 0.5 0 0");
+		waitUntil("regression scene loaded",
+			mc -> Math.abs(mc.player.getY() - 100) < 0.01
+				&& mc.player.isOnGround());
+		submitAndWait(mc -> {
+			mc.options.getBobView().setValue(false);
+			mc.player.getInventory().selectedSlot = 0;
+		});
+		runChatCommand("clear");
+		clearChat();
+		waitForWorldTicks(10);
+	}
+	
+	private void runScenario(String name, Runnable test)
+	{
+		String filter = System.getProperty("wurst.e2eTestFilter", "");
+		if(!filter.isEmpty() && !filter.equals("*")
+			&& !name.toLowerCase().contains(filter.toLowerCase()))
+			return;
+		
+		System.out.println("Running regression scenario: " + name);
+		try
+		{
+			test.run();
+			clearChat();
+			assertTrue(
+				submitAndGet(mc -> net.wurstclient.WurstClient.INSTANCE.getHax()
+					.getAllHax().stream().noneMatch(hack -> hack.isEnabled())),
+				"Scenario " + name + " left a hack enabled");
+		}catch(Throwable failure)
+		{
+			takeScreenshot(name + "_failure", Duration.ZERO);
+			throw failure;
+		}
 	}
 }

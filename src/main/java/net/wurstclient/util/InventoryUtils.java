@@ -246,6 +246,19 @@ public enum InventoryUtils
 		return slot;
 	}
 	
+	public static boolean giveCreativeItem(Item item)
+	{
+		if(!MC.player.getAbilities().creativeMode)
+			return false;
+		
+		int slot = MC.player.getInventory().getEmptySlot();
+		if(slot < 0)
+			return false;
+		
+		setCreativeStack(slot, new ItemStack(item));
+		return true;
+	}
+	
 	/**
 	 * Spawns/modifies/deletes the given item stack in Creative Mode. If the
 	 * given slot is negative, this method will do nothing.

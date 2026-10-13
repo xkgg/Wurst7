@@ -382,15 +382,15 @@ public final class AutoFarmPlantTypeManager
 		if(!isTwistingVine(state))
 			return false;
 		
-		BlockPos floorPos = pos.down();
-		BlockState floor = BlockUtils.getState(floorPos);
-		return !isTwistingVine(floor) && floor.isSideSolidFullSquare(
-			WurstClient.MC.world, floorPos, Direction.UP);
+		return hasTwistingVineSurface(pos);
 	}
 	
 	private static boolean hasTwistingVineSurface(BlockPos pos)
 	{
-		return isTwistingVineBase(pos, BlockUtils.getState(pos));
+		BlockPos floorPos = pos.down();
+		BlockState floor = BlockUtils.getState(floorPos);
+		return !isTwistingVine(floor) && floor.isSideSolidFullSquare(
+			WurstClient.MC.world, floorPos, Direction.UP);
 	}
 	
 	private static boolean isWeepingVine(BlockState state)
@@ -404,15 +404,15 @@ public final class AutoFarmPlantTypeManager
 		if(!isWeepingVine(state))
 			return false;
 		
-		BlockPos ceilPos = pos.up();
-		BlockState ceil = BlockUtils.getState(ceilPos);
-		return !isWeepingVine(ceil) && ceil.isSideSolidFullSquare(
-			WurstClient.MC.world, ceilPos, Direction.DOWN);
+		return hasWeepingVineSurface(pos);
 	}
 	
 	private static boolean hasWeepingVineSurface(BlockPos pos)
 	{
-		return isWeepingVineBase(pos, BlockUtils.getState(pos));
+		BlockPos ceilPos = pos.up();
+		BlockState ceil = BlockUtils.getState(ceilPos);
+		return !isWeepingVine(ceil) && ceil.isSideSolidFullSquare(
+			WurstClient.MC.world, ceilPos, Direction.DOWN);
 	}
 	
 	private static boolean isEndStoneBelow(BlockPos pos, BlockState state)

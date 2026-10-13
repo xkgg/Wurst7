@@ -7,6 +7,7 @@
  */
 package net.wurstclient.hacks;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -72,8 +73,8 @@ public final class AutoStealHack extends Hack
 	private void shiftClickSlots(HandledScreen<?> screen, int from, int to,
 		boolean steal)
 	{
-		List<Slot> slots = IntStream.range(from, to)
-			.mapToObj(i -> screen.getScreenHandler().slots.get(i)).toList();
+		List<Slot> slots = new ArrayList<>(IntStream.range(from, to)
+			.mapToObj(i -> screen.getScreenHandler().slots.get(i)).toList());
 		
 		if(reverseSteal.isChecked() && steal)
 			Collections.reverse(slots);

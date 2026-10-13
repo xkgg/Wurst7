@@ -8,9 +8,12 @@
 package net.wurstclient.settings.filters;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.ZombifiedPiglinEntity;
+import net.minecraft.entity.passive.GoatEntity;
 import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.entity.passive.PufferfishEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -59,7 +62,17 @@ public final class FilterNeutralSetting extends AttackDetectingEntityFilter
 			&& (enderman.isAngry() || enderman.isAttacking()))
 			return true;
 		
-		return mob.isAttacking();
+		if(e instanceof GoatEntity goat && goat.preparingRam)
+			return true;
+		
+		if(e instanceof ZombifiedPiglinEntity piglin && piglin
+			.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED)
+			.getModifier(
+				ZombifiedPiglinEntity.ATTACKING_SPEED_BOOST_ID) != null)
+			return true;
+		
+		// PandaEntity.isAttacking() reports its personality, not this flag.
+		return (mob.getDataTracker().get(MobEntity.MOB_FLAGS) & 4) != 0;
 	}
 	
 	public static FilterNeutralSetting genericCombat(Mode selected)

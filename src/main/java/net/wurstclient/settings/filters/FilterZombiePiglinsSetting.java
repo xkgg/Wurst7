@@ -8,6 +8,7 @@
 package net.wurstclient.settings.filters;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 
 public final class FilterZombiePiglinsSetting
@@ -33,7 +34,10 @@ public final class FilterZombiePiglinsSetting
 	@Override
 	public boolean ifCalmTest(Entity e)
 	{
-		return !(e instanceof ZombifiedPiglinEntity zpe) || zpe.isAttacking();
+		return !(e instanceof ZombifiedPiglinEntity zpe) || zpe.isAttacking()
+			|| zpe.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED)
+				.getModifier(
+					ZombifiedPiglinEntity.ATTACKING_SPEED_BOOST_ID) != null;
 	}
 	
 	public static FilterZombiePiglinsSetting genericCombat(Mode selected)

@@ -8,6 +8,9 @@
 package net.wurstclient.test;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,9 +38,11 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.tutorial.TutorialStep;
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.ScreenshotRecorder;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.WurstClient;
@@ -66,6 +71,16 @@ public enum WurstClientTestHelper
 	{
 		MinecraftClient mc = MinecraftClient.getInstance();
 		return mc.submit(() -> function.apply(mc)).join();
+	}
+	
+	public static <T> T submitOnServer(Function<MinecraftServer, T> function)
+	{
+		MinecraftServer server = submitAndGet(MinecraftClient::getServer);
+		if(server == null)
+			throw new IllegalStateException(
+				"Test requires an integrated server");
+		
+		return server.submit(() -> function.apply(server)).join();
 	}
 	
 	/**
@@ -197,6 +212,11 @@ public enum WurstClientTestHelper
 	 */
 	public static void takeScreenshot(String name, Duration delay)
 	{
+		takeScreenshotPath(name, delay);
+	}
+	
+	public static Path takeScreenshotPath(String name, Duration delay)
+	{
 		wait(delay);
 		
 		String count =
@@ -204,8 +224,52 @@ public enum WurstClientTestHelper
 		String filename = count + "_" + name + ".png";
 		File gameDir = FabricLoader.getInstance().getGameDir().toFile();
 		
-		submitAndWait(mc -> ScreenshotRecorder.saveScreenshot(gameDir, filename,
-			mc.getFramebuffer(), message -> {}));
+		Path path = gameDir.toPath().resolve("screenshots").resolve(filename);
+		submitAndWait(mc -> {
+			try(NativeImage image =
+				ScreenshotRecorder.takeScreenshot(mc.getFramebuffer()))
+			{
+				path.getParent().toFile().mkdirs();
+				image.writeTo(path);
+			}catch(IOException e)
+			{
+				throw new UncheckedIOException(e);
+			}
+		});
+		return path;
+	}
+	
+	public static double imageDifference(Path first, Path second)
+	{
+		try(NativeImage a =
+			NativeImage.read(java.nio.file.Files.newInputStream(first));
+			NativeImage b =
+				NativeImage.read(java.nio.file.Files.newInputStream(second)))
+		{
+			if(a.getWidth() != b.getWidth() || a.getHeight() != b.getHeight())
+				throw new AssertionError("Screenshot dimensions differ");
+			
+			long difference = 0;
+			for(int y = 0; y < a.getHeight(); y++)
+				for(int x = 0; x < a.getWidth(); x++)
+				{
+					int ac = a.getColor(x, y);
+					int bc = b.getColor(x, y);
+					for(int shift = 0; shift <= 16; shift += 8)
+						difference += Math
+							.abs((ac >>> shift & 255) - (bc >>> shift & 255));
+				}
+			return (double)difference / (a.getWidth() * a.getHeight() * 3);
+		}catch(IOException e)
+		{
+			throw new UncheckedIOException(e);
+		}
+	}
+	
+	public static void assertTrue(boolean condition, String message)
+	{
+		if(!condition)
+			throw new AssertionError(message);
 	}
 	
 	/**

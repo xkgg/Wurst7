@@ -7,6 +7,8 @@
  */
 package net.wurstclient.settings.filters;
 
+import java.util.Objects;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.Bucketable;
 import net.minecraft.entity.passive.AllayEntity;
@@ -52,7 +54,7 @@ public final class FilterPetsSetting extends EntityFilterCheckbox
 			&& !(e instanceof AllayEntity)
 			&& !(e instanceof OcelotEntity ocelot && ocelot.isTrusting())
 			&& !(e instanceof FoxEntity fox
-				&& !fox.getTrustedUuids().isEmpty());
+				&& fox.getTrustedUuids().stream().anyMatch(Objects::nonNull));
 	}
 	
 	public static FilterPetsSetting genericCombat(boolean checked)

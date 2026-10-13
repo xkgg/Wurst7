@@ -32,7 +32,7 @@ public final class FilterEndermenSetting extends AttackDetectingEntityFilter
 	@Override
 	public boolean ifCalmTest(Entity e)
 	{
-		return !(e instanceof EndermanEntity ee) || ee.isAttacking();
+		return !(e instanceof EndermanEntity ee) || ee.isAngry();
 	}
 	
 	public static FilterEndermenSetting genericCombat(Mode selected)

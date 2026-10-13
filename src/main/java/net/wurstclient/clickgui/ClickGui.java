@@ -84,6 +84,7 @@ public final class ClickGui
 		windows.addAll(windowMap.values());
 		
 		Window uiSettings = new Window("UI 设置");
+		uiSettings.add(new FeatureButton(WURST.getOtfs().wurstOptionsOtf));
 		uiSettings.add(new FeatureButton(WURST.getOtfs().wurstLogoOtf));
 		uiSettings.add(new FeatureButton(WURST.getOtfs().hackListOtf));
 		uiSettings.add(new FeatureButton(WURST.getOtfs().keybindManagerOtf));

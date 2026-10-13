@@ -42,7 +42,7 @@ public class WurstTranslator implements SynchronousResourceReloader
 	public void reload(ResourceManager manager)
 	{
 		mcEnglish = TranslationStorage.load(manager,
-			Lists.newArrayList("zh_cn"), false);
+			Lists.newArrayList("en_us", "zh_cn"), false);
 		
 		HashMap<String, String> currentLangStrings = new HashMap<>();
 		loadTranslations(manager, getCurrentLangCodes(),
@@ -51,7 +51,8 @@ public class WurstTranslator implements SynchronousResourceReloader
 			Collections.unmodifiableMap(currentLangStrings);
 		
 		HashMap<String, String> englishOnlyStrings = new HashMap<>();
-		loadTranslations(manager, List.of("zh_cn"), englishOnlyStrings::put);
+		loadTranslations(manager, List.of("en_us", "zh_cn"),
+			englishOnlyStrings::put);
 		this.englishOnlyStrings =
 			Collections.unmodifiableMap(englishOnlyStrings);
 	}
@@ -173,6 +174,8 @@ public class WurstTranslator implements SynchronousResourceReloader
 			.getLanguage().toLowerCase();
 		
 		ArrayList<String> langCodes = new ArrayList<>();
+		// Preserve the backport's Chinese preference with English fallback.
+		langCodes.add("en_us");
 		langCodes.add("zh_cn");
 		if(!"en_us".equals(mainLangCode))
 			langCodes.add(mainLangCode);
