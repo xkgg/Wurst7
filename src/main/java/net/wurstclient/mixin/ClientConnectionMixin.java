@@ -7,14 +7,14 @@
  */
 package net.wurstclient.mixin;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -29,9 +29,6 @@ import net.wurstclient.events.PacketInputListener.PacketInputEvent;
 public abstract class ClientConnectionMixin
 	extends SimpleChannelInboundHandler<Packet<?>>
 {
-	private ConcurrentLinkedQueue<ConnectionPacketOutputEvent> events =
-		new ConcurrentLinkedQueue<>();
-	
 	@Inject(at = @At(value = "INVOKE",
 		target = "Lnet/minecraft/network/ClientConnection;handlePacket(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;)V",
 		ordinal = 0),
@@ -47,39 +44,16 @@ public abstract class ClientConnectionMixin
 			ci.cancel();
 	}
 	
-	@ModifyVariable(at = @At("HEAD"),
+	@WrapMethod(
 		method = "send(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/PacketCallbacks;)V")
-	public Packet<?> modifyPacket(Packet<?> packet)
+	private void wrapSend(Packet<?> packet, @Nullable PacketCallbacks callbacks,
+		Operation<Void> original)
 	{
 		ConnectionPacketOutputEvent event =
 			new ConnectionPacketOutputEvent(packet);
-		events.add(event);
 		EventManager.fire(event);
-		return event.getPacket();
-	}
-	
-	@Inject(at = @At("HEAD"),
-		method = "send(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/PacketCallbacks;)V",
-		cancellable = true)
-	private void onSend(Packet<?> packet, @Nullable PacketCallbacks callback,
-		CallbackInfo ci)
-	{
-		ConnectionPacketOutputEvent event = getEvent(packet);
-		if(event == null)
-			return;
 		
-		if(event.isCancelled())
-			ci.cancel();
-		
-		events.remove(event);
-	}
-	
-	private ConnectionPacketOutputEvent getEvent(Packet<?> packet)
-	{
-		for(ConnectionPacketOutputEvent event : events)
-			if(event.getPacket() == packet)
-				return event;
-			
-		return null;
+		if(!event.isCancelled())
+			original.call(event.getPacket(), callbacks);
 	}
 }

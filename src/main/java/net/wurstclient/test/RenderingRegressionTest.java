@@ -145,6 +145,10 @@ public enum RenderingRegressionTest
 		var hack = WurstClient.INSTANCE.getHax().noWeatherHack;
 		runChatCommand("weather rain");
 		submitAndWait(mc -> mc.world.setRainGradient(1));
+		submitOnServer(server -> {
+			server.getOverworld().setRainGradient(1);
+			return null;
+		});
 		try
 		{
 			assertTrue(submitAndGet(mc -> mc.world.getRainGradient(1) > 0),
@@ -167,6 +171,20 @@ public enum RenderingRegressionTest
 				((SliderSetting)hack.getSettings().get("月相")).setValue(4);
 				assertTrue(mc.world.getMoonPhase() == 4,
 					"NoWeather did not change moon phase");
+			});
+			submitOnServer(server -> {
+				var world = server.getOverworld();
+				assertTrue(world.getRainGradient(1) > 0,
+					"NoWeather changed server-side rain");
+				assertTrue(
+					Math.abs(world.getSkyAngle(1) - world.getDimension()
+						.getSkyAngle(world.getTimeOfDay())) < 1e-5,
+					"NoWeather changed server-side sky time");
+				assertTrue(
+					world.getMoonPhase() == world.getDimension()
+						.getMoonPhase(world.getLunarTime()),
+					"NoWeather changed server-side moon phase");
+				return null;
 			});
 			takeScreenshot("noweather_midnight_moon_phase_4");
 		}finally

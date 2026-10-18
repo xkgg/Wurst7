@@ -26,10 +26,11 @@ public final class CameraDistanceHack extends Hack
 		addSetting(distance);
 	}
 	
-	public double getDistance()
+	public double getDistance(double original)
 	{
+		if(!isEnabled())
+			return original;
+		
 		return distance.getValueF();
 	}
-	
-	// See CameraMixin.changeClipToSpaceDistance()
 }

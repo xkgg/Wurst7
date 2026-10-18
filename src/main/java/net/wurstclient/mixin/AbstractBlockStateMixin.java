@@ -19,6 +19,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.block.AbstractBlock.AbstractBlockState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.EntityShapeContext;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.state.State;
@@ -76,11 +77,16 @@ public abstract class AbstractBlockStateMixin extends State<Block, BlockState>
 	private void onGetOutlineShape(BlockView view, BlockPos pos,
 		ShapeContext context, CallbackInfoReturnable<VoxelShape> cir)
 	{
-		if(context == ShapeContext.absent())
+		if(!(context instanceof EntityShapeContext entityContext)
+			|| entityContext.getEntity() == null)
 			return;
 		
 		HackList hax = WurstClient.INSTANCE.getHax();
 		if(hax == null)
+			return;
+		
+		if(entityContext.getEntity() != WurstClient.MC.player
+			&& entityContext.getEntity() != WurstClient.MC.getCameraEntity())
 			return;
 		
 		HandNoClipHack handNoClipHack = hax.handNoClipHack;
@@ -103,8 +109,11 @@ public abstract class AbstractBlockStateMixin extends State<Block, BlockState>
 		if(hax == null || !hax.jesusHack.shouldBeSolid())
 			return;
 		
+		if(!(context instanceof EntityShapeContext entityContext)
+			|| entityContext.getEntity() != WurstClient.MC.player)
+			return;
+		
 		cir.setReturnValue(VoxelShapes.fullCube());
-		cir.cancel();
 	}
 	
 	@Shadow

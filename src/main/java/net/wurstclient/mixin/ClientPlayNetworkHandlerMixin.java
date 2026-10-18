@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
@@ -26,12 +27,12 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
-import net.minecraft.network.packet.s2c.play.ChunkData;
 import net.minecraft.network.packet.s2c.play.ChunkDeltaUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.ServerMetadataS2CPacket;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.chunk.WorldChunk;
 import net.wurstclient.WurstClient;
 import net.wurstclient.event.EventManager;
 import net.wurstclient.events.PacketOutputListener.PacketOutputEvent;
@@ -86,11 +87,15 @@ public abstract class ClientPlayNetworkHandlerMixin
 		client.getToastManager().add(systemToast);
 	}
 	
-	@Inject(at = @At("TAIL"),
+	@ModifyExpressionValue(at = @At(value = "INVOKE",
+		target = "Lnet/minecraft/client/world/ClientChunkManager;loadChunkFromPacket(IILnet/minecraft/network/PacketByteBuf;Lnet/minecraft/nbt/NbtCompound;Ljava/util/function/Consumer;)Lnet/minecraft/world/chunk/WorldChunk;"),
 		method = "loadChunk(IILnet/minecraft/network/packet/s2c/play/ChunkData;)V")
-	private void onLoadChunk(int x, int z, ChunkData chunkData, CallbackInfo ci)
+	private WorldChunk onLoadChunk(WorldChunk chunk)
 	{
-		WurstClient.INSTANCE.getHax().newChunksHack.afterLoadChunk(x, z);
+		if(chunk != null)
+			WurstClient.INSTANCE.getHax().newChunksHack.afterLoadChunk(chunk);
+		
+		return chunk;
 	}
 	
 	@Inject(at = @At("TAIL"),

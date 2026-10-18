@@ -12,7 +12,6 @@ import java.util.List;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.util.ChatMessages;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.util.math.MathHelper;
 import net.wurstclient.Category;
@@ -136,17 +135,7 @@ public final class AntiSpamHack extends Hack implements ChatInputListener
 		}
 		
 		if(spamCounter > 1)
-		{
-			// Someone, somewhere, is creating a MutableText object with an
-			// immutable List<Text> siblings parameter, which causes the game to
-			// crash when calling append(). So we always have to create a new
-			// MutableText object to avoid that.
-			MutableText oldText = (MutableText)event.getComponent();
-			MutableText newText = MutableText.of(oldText.getContent());
-			newText.setStyle(oldText.getStyle());
-			oldText.getSiblings().forEach(newText::append);
-			
-			event.setComponent(newText.append(" [x" + spamCounter + "]"));
-		}
+			event.setComponent(
+				event.getComponent().copy().append(" [x" + spamCounter + "]"));
 	}
 }

@@ -8,7 +8,6 @@
 package net.wurstclient.mixin;
 
 import org.objectweb.asm.Opcodes;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,11 +16,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -51,10 +50,6 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 	implements IClientPlayerEntity
 {
 	@Shadow
-	@Final
-	protected MinecraftClient client;
-	
-	@Shadow
 	public Input input;
 	
 	@Unique
@@ -63,7 +58,6 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 	@Unique
 	private int freecam$inputSwapDepth;
 	
-	private Screen tempCurrentScreen;
 	private boolean hideNextItemUse;
 	
 	public ClientPlayerEntityMixin(WurstClient wurst, ClientWorld world,
@@ -252,38 +246,13 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 			cir.setReturnValue(false);
 	}
 	
-	/**
-	 * When PortalGUI is enabled, this mixin temporarily sets the current screen
-	 * to null to prevent the updateNausea() method from closing it.
-	 */
-	@Inject(at = @At(value = "FIELD",
-		target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;",
-		opcode = Opcodes.GETFIELD,
-		ordinal = 0), method = "updateNausea()V")
-	private void beforeUpdateNausea(CallbackInfo ci)
+	@ModifyExpressionValue(at = @At(value = "FIELD",
+		target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;"),
+		method = "updateNausea()V")
+	private Screen hideScreenFromPortalCheck(Screen original)
 	{
-		if(!WurstClient.INSTANCE.getHax().portalGuiHack.isEnabled())
-			return;
-		
-		tempCurrentScreen = client.currentScreen;
-		client.currentScreen = null;
-	}
-	
-	/**
-	 * This mixin restores the current screen as soon as the updateNausea()
-	 * method is done looking at it.
-	 */
-	@Inject(at = @At(value = "FIELD",
-		target = "Lnet/minecraft/client/network/ClientPlayerEntity;nauseaIntensity:F",
-		opcode = Opcodes.GETFIELD,
-		ordinal = 1), method = "updateNausea()V")
-	private void afterUpdateNausea(CallbackInfo ci)
-	{
-		if(tempCurrentScreen == null)
-			return;
-		
-		client.currentScreen = tempCurrentScreen;
-		tempCurrentScreen = null;
+		return WurstClient.INSTANCE.getHax().portalGuiHack.isEnabled() ? null
+			: original;
 	}
 	
 	/**

@@ -50,7 +50,6 @@
     "MouseMixin",
     "MultiplayerScreenMixin",
     "noclip.NoClipPlayerMixin",
-    "PackScreenMixin",
     "PlayerInventoryMixin",
     "PlayerSkinProviderMixin",
     "PowderSnowBlockMixin",

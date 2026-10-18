@@ -8,16 +8,24 @@
 package net.wurstclient.hacks;
 
 import java.awt.Color;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.world.chunk.ChunkSection;
+import net.minecraft.world.chunk.IdListPalette;
+import net.minecraft.world.chunk.Palette;
+import net.minecraft.world.chunk.PalettedContainer;
+import net.minecraft.world.chunk.ReadableContainer;
+import net.minecraft.world.chunk.SingularPalette;
 import net.minecraft.world.chunk.WorldChunk;
-import net.minecraft.world.dimension.DimensionType;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.RenderListener;
@@ -36,7 +44,6 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.RegionPos;
 import net.wurstclient.util.RenderUtils;
-import net.wurstclient.util.chunk.ChunkUtils;
 
 @SearchTags({"新区块", "new chunks"})
 public final class NewChunksHack extends Hack
@@ -46,8 +53,8 @@ public final class NewChunksHack extends Hack
 	
 	private final NewChunksShowSetting show = new NewChunksShowSetting();
 	
-	private final CheckboxSetting showReasons =
-		new CheckboxSetting("显示原因", "高亮显示导致每个区块被标记为新/旧的方块。", false);
+	private final CheckboxSetting showReasons = new CheckboxSetting("显示原因",
+		"高亮显示导致区块被标记为新/旧的流体方块。\n\n" + "根据生物群系或方块调色板标记的区块没有可高亮的原因方块。", false);
 	
 	private final CheckboxSetting showCounter =
 		new CheckboxSetting("显示计数器", "显示到目前为止找到的新/旧区块数量。", false);
@@ -70,12 +77,12 @@ public final class NewChunksHack extends Hack
 	private final CheckboxSetting logChunks =
 		new CheckboxSetting("记录区块", "当找到新/旧区块时写入日志文件。", false);
 	
-	private final Set<ChunkPos> newChunks = ConcurrentHashMap.newKeySet();
-	private final Set<ChunkPos> oldChunks = ConcurrentHashMap.newKeySet();
-	private final Set<ChunkPos> dontCheckAgain = ConcurrentHashMap.newKeySet();
+	private final Set<ChunkPos> newChunks = new HashSet<>();
+	private final Set<ChunkPos> oldChunks = new HashSet<>();
+	private final Set<ChunkPos> notOldChunks = new HashSet<>();
 	
-	private final Set<BlockPos> newChunkReasons = ConcurrentHashMap.newKeySet();
-	private final Set<BlockPos> oldChunkReasons = ConcurrentHashMap.newKeySet();
+	private final Set<BlockPos> newChunkReasons = new HashSet<>();
+	private final Set<BlockPos> oldChunkReasons = new HashSet<>();
 	
 	private final NewChunksRenderer renderer = new NewChunksRenderer(altitude,
 		opacity, newChunksColor, oldChunksColor);
@@ -83,7 +90,6 @@ public final class NewChunksHack extends Hack
 		new NewChunksReasonsRenderer(drawDistance);
 	
 	private RegionPos lastRegion;
-	private DimensionType lastDimension;
 	
 	public NewChunksHack()
 	{
@@ -111,13 +117,18 @@ public final class NewChunksHack extends Hack
 	
 	private void reset()
 	{
-		oldChunks.clear();
 		newChunks.clear();
-		dontCheckAgain.clear();
-		oldChunkReasons.clear();
+		oldChunks.clear();
+		notOldChunks.clear();
 		newChunkReasons.clear();
+		oldChunkReasons.clear();
 		lastRegion = null;
-		lastDimension = MC.world.getDimension();
+	}
+	
+	public void onWorldChange()
+	{
+		reset();
+		renderer.closeBuffers();
 	}
 	
 	@Override
@@ -171,54 +182,84 @@ public final class NewChunksHack extends Hack
 		}
 	}
 	
-	public void afterLoadChunk(int x, int z)
+	public void afterLoadChunk(WorldChunk chunk)
 	{
 		if(!isEnabled())
 			return;
 		
-		WorldChunk chunk = MC.world.getChunk(x, z);
-		new Thread(() -> checkLoadedChunk(chunk), "NewChunks " + chunk.getPos())
-			.start();
-	}
-	
-	private void checkLoadedChunk(WorldChunk chunk)
-	{
 		ChunkPos chunkPos = chunk.getPos();
 		if(newChunks.contains(chunkPos) || oldChunks.contains(chunkPos)
-			|| dontCheckAgain.contains(chunkPos))
+			|| notOldChunks.contains(chunkPos))
 			return;
 		
-		int minX = chunkPos.getStartX();
-		int minY = chunk.getBottomY();
-		int minZ = chunkPos.getStartZ();
-		int maxX = chunkPos.getEndX();
-		int maxY = ChunkUtils.getHighestNonEmptySectionYOffset(chunk) + 16;
-		int maxZ = chunkPos.getEndZ();
+		// Generation can leave unused palette entries until the chunk is saved.
+		for(ChunkSection section : chunk.getSectionArray())
+			if(hasUnusedEntry(section.getBiomeContainer(),
+				biome -> biome.matchesKey(BiomeKeys.PLAINS))
+				|| hasUnusedEntry(section.getBlockStateContainer(),
+					state -> state.isOf(Blocks.AIR)))
+			{
+				newChunks.add(chunkPos);
+				if(logChunks.isChecked())
+					System.out.println("new chunk (palette) at " + chunkPos);
+				return;
+			}
+			
+		// Flowing fluid in the initial packet indicates a previously loaded
+		// chunk.
+		BlockPos reasonForOld = findFlowingFluid(chunk);
+		if(reasonForOld == null)
+		{
+			notOldChunks.add(chunkPos);
+			return;
+		}
 		
-		for(int x = minX; x <= maxX; x++)
-			for(int y = minY; y <= maxY; y++)
-				for(int z = minZ; z <= maxZ; z++)
-				{
-					BlockPos pos = new BlockPos(x, y, z);
-					FluidState fluidState = chunk.getFluidState(pos);
-					
-					if(fluidState.isEmpty() || fluidState.isStill())
-						continue;
-						
-					// Liquid always generates still, the flowing happens later
-					// through block updates. Therefore any chunk that contains
-					// flowing liquids from the start should be an old chunk.
-					oldChunks.add(chunkPos);
-					oldChunkReasons.add(pos);
-					if(logChunks.isChecked())
-						System.out.println("old chunk at " + chunkPos);
-					return;
-				}
-				
-		// If the whole loop ran through without finding anything, make sure it
-		// never runs again on that chunk, as that would be a huge waste of CPU
-		// time.
-		dontCheckAgain.add(chunkPos);
+		oldChunks.add(chunkPos);
+		oldChunkReasons.add(reasonForOld);
+		if(logChunks.isChecked())
+			System.out.println("old chunk (fluid) at " + chunkPos);
+	}
+	
+	private static <T> boolean hasUnusedEntry(ReadableContainer<T> container,
+		Predicate<T> predicate)
+	{
+		Palette<T> palette = ((PalettedContainer<T>)container).data.palette();
+		
+		if(palette instanceof IdListPalette<?>
+			|| palette instanceof SingularPalette<?>
+			|| !palette.hasAny(predicate))
+			return false;
+		
+		Set<T> usedEntries = new HashSet<>();
+		container.count((entry, count) -> usedEntries.add(entry));
+		return usedEntries.stream().noneMatch(predicate);
+	}
+	
+	private BlockPos findFlowingFluid(WorldChunk chunk)
+	{
+		ChunkSection[] sections = chunk.getSectionArray();
+		for(int i = 0; i < sections.length; i++)
+		{
+			ChunkSection section = sections[i];
+			if(section.isEmpty()
+				|| !section.hasAny(state -> isFlowing(state.getFluidState())))
+				continue;
+			
+			for(int y = 0; y < 16; y++)
+				for(int z = 0; z < 16; z++)
+					for(int x = 0; x < 16; x++)
+						if(isFlowing(section.getFluidState(x, y, z)))
+							return new BlockPos(chunk.getPos().getStartX() + x,
+								chunk.getBottomY() + i * 16 + y,
+								chunk.getPos().getStartZ() + z);
+		}
+		
+		return null;
+	}
+	
+	private boolean isFlowing(FluidState fluidState)
+	{
+		return !fluidState.isEmpty() && !fluidState.isStill();
 	}
 	
 	public void afterUpdateBlock(BlockPos pos)
@@ -228,7 +269,7 @@ public final class NewChunksHack extends Hack
 		
 		// Liquid starts flowing -> probably a new chunk
 		FluidState fluidState = BlockUtils.getState(pos).getFluidState();
-		if(fluidState.isEmpty() || fluidState.isStill())
+		if(!isFlowing(fluidState))
 			return;
 		
 		ChunkPos chunkPos = new ChunkPos(pos);
@@ -236,17 +277,14 @@ public final class NewChunksHack extends Hack
 			return;
 		
 		newChunks.add(chunkPos);
-		newChunkReasons.add(pos);
+		newChunkReasons.add(pos.toImmutable());
 		if(logChunks.isChecked())
-			System.out.println("new chunk at " + chunkPos);
+			System.out.println("new chunk (fluid) at " + chunkPos);
 	}
 	
 	@Override
 	public void onRender(MatrixStack matrixStack, float partialTicks)
 	{
-		if(MC.world.getDimension() != lastDimension)
-			reset();
-		
 		RegionPos region = RenderUtils.getCameraRegion();
 		if(!region.equals(lastRegion))
 		{

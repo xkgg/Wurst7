@@ -147,6 +147,17 @@ public final class WurstE2ETestClient implements ModInitializer
 		runScenario("MobDisposition",
 			EntityFilterRegressionTest::testDisposition);
 		runScenario("Translations", MenuAndTranslationTest::testTranslations);
+		runScenario("BackportLocalIsolation",
+			UpstreamBackportTest::testLocalCollisionIsolation);
+		runScenario("BackportChat", UpstreamBackportTest::testChat);
+		runScenario("BackportConnectionPackets",
+			UpstreamBackportTest::testConnectionPackets);
+		runScenario("BackportNewChunks", UpstreamBackportTest::testNewChunks);
+		runScenario("BackportIgnoredChunk",
+			UpstreamBackportTest::testIgnoredChunkPacket);
+		runScenario("BackportPortalAndFeedAura",
+			UpstreamBackportTest::testPortalAndFeedAura);
+		runScenario("BackportTelemetry", UpstreamBackportTest::testTelemetry);
 		runScenario("AutoFarm", AutomationRegressionTest::testAutoFarm);
 		runScenario("AutoFarmFacing",
 			AutomationRegressionTest::testAutoFarmFacing);

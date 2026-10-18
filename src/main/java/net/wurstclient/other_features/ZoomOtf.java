@@ -7,7 +7,6 @@
  */
 package net.wurstclient.other_features;
 
-import net.minecraft.client.option.SimpleOption;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.wurstclient.DontBlock;
@@ -38,7 +37,6 @@ public final class ZoomOtf extends OtherFeature implements MouseScrollListener
 		"key.keyboard.v", this::isValidKeybind);
 	
 	private Double currentLevel;
-	private Double defaultMouseSensitivity;
 	
 	public ZoomOtf()
 	{
@@ -53,35 +51,26 @@ public final class ZoomOtf extends OtherFeature implements MouseScrollListener
 	
 	public double changeFovBasedOnZoom(double fov)
 	{
-		SimpleOption<Double> mouseSensitivitySetting =
-			MC.options.getMouseSensitivity();
+		return fov / getZoomFactor();
+	}
+	
+	public double changeMouseSensitivityBasedOnZoom(double sensitivity)
+	{
+		return sensitivity / getZoomFactor();
+	}
+	
+	private double getZoomFactor()
+	{
+		if(!isZoomKeyPressed())
+		{
+			currentLevel = level.getValue();
+			return 1;
+		}
 		
 		if(currentLevel == null)
 			currentLevel = level.getValue();
 		
-		if(!isZoomKeyPressed())
-		{
-			currentLevel = level.getValue();
-			
-			if(defaultMouseSensitivity != null)
-			{
-				mouseSensitivitySetting.setValue(defaultMouseSensitivity);
-				defaultMouseSensitivity = null;
-			}
-			
-			return fov;
-		}
-		
-		if(defaultMouseSensitivity == null)
-			defaultMouseSensitivity = mouseSensitivitySetting.getValue();
-			
-		// Adjust mouse sensitivity in relation to zoom level.
-		// 1.0 / currentLevel is a value between 0.02 (50x zoom)
-		// and 1 (no zoom).
-		mouseSensitivitySetting
-			.setValue(defaultMouseSensitivity * (1.0 / currentLevel));
-		
-		return fov / currentLevel;
+		return currentLevel;
 	}
 	
 	@Override

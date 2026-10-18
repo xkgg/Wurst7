@@ -176,25 +176,6 @@ public abstract class MinecraftClientMixin
 		cir.setReturnValue(wurstProfileKeys);
 	}
 	
-	@Inject(at = @At("HEAD"),
-		method = "isTelemetryEnabledByApi()Z",
-		cancellable = true)
-	private void onIsTelemetryEnabledByApi(CallbackInfoReturnable<Boolean> cir)
-	{
-		cir.setReturnValue(
-			!WurstClient.INSTANCE.getOtfs().noTelemetryOtf.isEnabled());
-	}
-	
-	@Inject(at = @At("HEAD"),
-		method = "isOptionalTelemetryEnabledByApi()Z",
-		cancellable = true)
-	private void onIsOptionalTelemetryEnabledByApi(
-		CallbackInfoReturnable<Boolean> cir)
-	{
-		cir.setReturnValue(
-			!WurstClient.INSTANCE.getOtfs().noTelemetryOtf.isEnabled());
-	}
-	
 	@Override
 	public IClientPlayerEntity getPlayer()
 	{
@@ -240,6 +221,9 @@ public abstract class MinecraftClientMixin
 		method = "setWorld(Lnet/minecraft/client/world/ClientWorld;)V")
 	private void onSetWorld(ClientWorld world, CallbackInfo ci)
 	{
+		if(WurstClient.INSTANCE.getHax() != null)
+			WurstClient.INSTANCE.getHax().newChunksHack.onWorldChange();
+		
 		if(world == null)
 			return;
 		

@@ -30,6 +30,20 @@ import net.wurstclient.events.VelocityFromFluidListener.VelocityFromFluidEvent;
 @Mixin(Entity.class)
 public abstract class EntityMixin implements Nameable, EntityLike, CommandOutput
 {
+	@Inject(at = @At("RETURN"),
+		method = "getVelocityMultiplier()F",
+		cancellable = true)
+	private void onGetVelocityMultiplier(CallbackInfoReturnable<Float> cir)
+	{
+		if((Object)this != WurstClient.MC.player)
+			return;
+		
+		var hax = WurstClient.INSTANCE.getHax();
+		if(hax != null && hax.noSlowdownHack.isEnabled()
+			&& cir.getReturnValueF() < 1)
+			cir.setReturnValue(1F);
+	}
+	
 	/**
 	 * This mixin makes the VelocityFromFluidEvent work, which is used by
 	 * AntiWaterPush. It's set to require 0 because it doesn't work in Forge,

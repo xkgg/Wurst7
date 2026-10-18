@@ -7,6 +7,7 @@
  */
 package net.wurstclient.other_features;
 
+import net.minecraft.client.util.telemetry.TelemetrySender;
 import net.wurstclient.DontBlock;
 import net.wurstclient.SearchTags;
 import net.wurstclient.other_feature.OtherFeature;
@@ -44,5 +45,11 @@ public final class NoTelemetryOtf extends OtherFeature
 		disableTelemetry.setChecked(!disableTelemetry.isChecked());
 	}
 	
-	// See TelemetrySenderMixin
+	public TelemetrySender wrapSender(TelemetrySender original)
+	{
+		return (type, builder) -> {
+			if(!isEnabled())
+				original.send(type, builder);
+		};
+	}
 }

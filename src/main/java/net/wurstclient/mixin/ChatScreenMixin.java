@@ -8,15 +8,18 @@
 package net.wurstclient.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import net.wurstclient.WurstClient;
 import net.wurstclient.event.EventManager;
@@ -25,59 +28,59 @@ import net.wurstclient.events.ChatOutputListener.ChatOutputEvent;
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin extends Screen
 {
-	@Shadow
-	protected TextFieldWidget chatField;
-	
 	private ChatScreenMixin(WurstClient wurst, Text title)
 	{
 		super(title);
 	}
 	
-	@Inject(at = @At("TAIL"), method = "init()V")
-	protected void onInit(CallbackInfo ci)
+	@ModifyArg(method = "init()V",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;setMaxLength(I)V"),
+		index = 0)
+	private int modifyChatMaxLength(int original)
 	{
-		if(WurstClient.INSTANCE.getHax().infiniChatHack.isEnabled())
-			chatField.setMaxLength(Integer.MAX_VALUE);
+		return WurstClient.INSTANCE.getHax().infiniChatHack.isEnabled()
+			? Integer.MAX_VALUE : original;
 	}
 	
-	@Inject(at = @At("HEAD"),
+	@WrapOperation(method = "normalize(Ljava/lang/String;)Ljava/lang/String;",
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/util/StringHelper;truncateChat(Ljava/lang/String;)Ljava/lang/String;"))
+	private String wrapTruncateChat(String message, Operation<String> original)
+	{
+		if(WurstClient.INSTANCE.getHax().infiniChatHack.isEnabled()
+			&& (message.startsWith("/") || message.startsWith(".")))
+			return message;
+		
+		return original.call(message);
+	}
+	
+	@Inject(
+		at = @At(value = "INVOKE",
+			target = "Ljava/lang/String;isEmpty()Z",
+			shift = At.Shift.AFTER),
 		method = "sendMessage(Ljava/lang/String;Z)Z",
 		cancellable = true)
-	public void onSendMessage(String message, boolean addToHistory,
-		CallbackInfoReturnable<Boolean> cir)
+	private void onSendMessage(String messageDontUse, boolean addToHistory,
+		CallbackInfoReturnable<Boolean> cir,
+		@Local(argsOnly = true) LocalRef<String> message)
 	{
-		// Ignore empty messages just like vanilla
-		if((message = normalize(message)).isEmpty())
+		if(message.get().isEmpty())
 			return;
 		
-		// Create and fire the chat output event
-		ChatOutputEvent event = new ChatOutputEvent(message);
+		ChatOutputEvent event = new ChatOutputEvent(message.get());
 		EventManager.fire(event);
 		
-		// If the event hasn't been modified or cancelled,
-		// let the vanilla method handle the message
-		boolean cancelled = event.isCancelled();
-		if(!cancelled && !event.isModified())
+		if(event.isCancelled())
+		{
+			if(addToHistory)
+				client.inGameHud.getChatHud()
+					.addToMessageHistory(event.getMessage());
+			
+			cir.setReturnValue(true);
 			return;
+		}
 		
-		// Otherwise, cancel the vanilla method and handle the message here
-		cir.setReturnValue(true);
-		
-		// Add the message to history, even if it was cancelled
-		// Otherwise the up/down arrows won't work correctly
-		String newMessage = event.getMessage();
-		if(addToHistory)
-			client.inGameHud.getChatHud().addToMessageHistory(newMessage);
-		
-		// If the event isn't cancelled, send the modified message
-		if(!cancelled)
-			if(newMessage.startsWith("/"))
-				client.player.networkHandler
-					.sendChatCommand(newMessage.substring(1));
-			else
-				client.player.networkHandler.sendChatMessage(newMessage);
+		message.set(event.getMessage());
 	}
-	
-	@Shadow
-	public abstract String normalize(String chatText);
 }

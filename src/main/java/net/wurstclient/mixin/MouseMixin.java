@@ -13,7 +13,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+
 import net.minecraft.client.Mouse;
+import net.wurstclient.WurstClient;
 import net.wurstclient.event.EventManager;
 import net.wurstclient.events.MouseButtonPressListener.MouseButtonPressEvent;
 import net.wurstclient.events.MouseScrollListener.MouseScrollEvent;
@@ -26,6 +29,14 @@ public class MouseMixin
 	private double cursorDeltaX;
 	@Shadow
 	private double cursorDeltaY;
+	
+	@ModifyExpressionValue(method = "updateMouse()V",
+		at = @At(value = "INVOKE", target = "Ljava/lang/Double;doubleValue()D"))
+	private double onGetSensitivity(double original)
+	{
+		return WurstClient.INSTANCE.getOtfs().zoomOtf
+			.changeMouseSensitivityBasedOnZoom(original);
+	}
 	
 	@Inject(at = @At("HEAD"), method = "onMouseButton(JIII)V")
 	private void onOnMouseButton(long window, int button, int action, int mods,

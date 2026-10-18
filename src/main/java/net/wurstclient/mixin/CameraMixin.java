@@ -21,7 +21,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.wurstclient.WurstClient;
-import net.wurstclient.hacks.CameraDistanceHack;
 
 @Mixin(Camera.class)
 public abstract class CameraMixin
@@ -34,12 +33,8 @@ public abstract class CameraMixin
 		argsOnly = true)
 	private double changeClipToSpaceDistance(double desiredCameraDistance)
 	{
-		CameraDistanceHack cameraDistance =
-			WurstClient.INSTANCE.getHax().cameraDistanceHack;
-		if(cameraDistance.isEnabled())
-			return cameraDistance.getDistance();
-		
-		return desiredCameraDistance;
+		return WurstClient.INSTANCE.getHax().cameraDistanceHack
+			.getDistance(desiredCameraDistance);
 	}
 	
 	@Inject(at = @At("HEAD"), method = "clipToSpace(D)D", cancellable = true)

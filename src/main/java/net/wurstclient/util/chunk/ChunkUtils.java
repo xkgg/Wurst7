@@ -63,35 +63,9 @@ public enum ChunkUtils
 	public static Stream<WorldChunk> getLoadedChunks()
 	{
 		int radius = Math.max(2, MC.options.getClampedViewDistance()) + 3;
-		int diameter = radius * 2 + 1;
-		
-		ChunkPos center = MC.player.getChunkPos();
-		ChunkPos min = new ChunkPos(center.x - radius, center.z - radius);
-		ChunkPos max = new ChunkPos(center.x + radius, center.z + radius);
-		
-		Stream<WorldChunk> stream = Stream.<ChunkPos> iterate(min, pos -> {
-			
-			int x = pos.x;
-			int z = pos.z;
-			
-			x++;
-			
-			if(x > max.x)
-			{
-				x = min.x;
-				z++;
-			}
-			
-			if(z > max.z)
-				throw new IllegalStateException("Stream limit didn't work.");
-			
-			return new ChunkPos(x, z);
-			
-		}).limit(diameter * diameter)
+		return ChunkPos.stream(MC.player.getChunkPos(), radius)
 			.filter(c -> MC.world.isChunkLoaded(c.x, c.z))
 			.map(c -> MC.world.getChunk(c.x, c.z)).filter(Objects::nonNull);
-		
-		return stream;
 	}
 	
 	/**

@@ -19,6 +19,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.WurstClient;
 import net.wurstclient.mixinterface.IKeyBinding;
+import net.wurstclient.settings.SliderSetting;
 
 public enum MovementRegressionTest
 {
@@ -88,7 +89,10 @@ public enum MovementRegressionTest
 	
 	public static void testAttributeSwap()
 	{
+		var hack = WurstClient.INSTANCE.getHax().attributeSwapHack;
 		runChatCommand("gamemode survival");
+		waitUntil("survival mode",
+			mc -> !mc.player.getAbilities().creativeMode);
 		runChatCommand("item replace entity @s hotbar.0 with diamond_sword");
 		runChatCommand("item replace entity @s hotbar.1 with stick");
 		submitAndWait(mc -> {
@@ -107,16 +111,46 @@ public enum MovementRegressionTest
 		});
 		waitUntil("golem tracked",
 			mc -> mc.world.getEntityById(golemId) != null);
+		var uuid = submitAndGet(mc -> mc.player.getUuid());
 		try
 		{
+			// Keep the swap and attack in one server tick so network scheduling
+			// cannot refresh the attributes between the two actions.
+			float health = submitOnServer(server -> {
+				var player = server.getPlayerManager().getPlayer(uuid);
+				var golem = (net.minecraft.entity.LivingEntity)server
+					.getOverworld().getEntityById(golemId);
+				player.getInventory().selectedSlot = 1;
+				try
+				{
+					player.attack(golem);
+					assertTrue(golem.getHealth() <= 95,
+						"Same-tick attribute swap did not use sword damage");
+					assertTrue(
+						player.getInventory().getStack(0).getDamage() == 0,
+						"Attribute swap damaged the sword");
+					return golem.getHealth();
+				}finally
+				{
+					player.getInventory().selectedSlot = 0;
+				}
+			});
+			waitForWorldTicks(30);
 			submitAndWait(mc -> {
-				mc.player.getInventory().selectedSlot = 1;
+				hack.getSettings().values()
+					.forEach(setting -> setting.resetToDefault());
+				((SliderSetting)hack.getSettings().get("目标栏位")).setValue(2);
+				hack.setEnabled(true);
 				mc.interactionManager.attackEntity(mc.player,
 					mc.world.getEntityById(golemId));
+				assertTrue(mc.player.getInventory().selectedSlot == 1,
+					"AttributeSwap did not select the configured attack slot");
 			});
-			waitUntil("golem took sword damage",
+			waitUntil("AttributeSwap attack reached the server",
 				mc -> ((net.minecraft.entity.LivingEntity)mc.world
-					.getEntityById(golemId)).getHealth() <= 95);
+					.getEntityById(golemId)).getHealth() < health);
+			waitUntil("AttributeSwap restored the sword slot",
+				mc -> mc.player.getInventory().selectedSlot == 0);
 			assertTrue(
 				submitAndGet(mc -> mc.player.getInventory().getStack(0)
 					.isOf(Items.DIAMOND_SWORD)
@@ -124,6 +158,11 @@ public enum MovementRegressionTest
 				"Attribute swap damaged the sword");
 		}finally
 		{
+			submitAndWait(mc -> {
+				hack.setEnabled(false);
+				hack.getSettings().values()
+					.forEach(setting -> setting.resetToDefault());
+			});
 			submitOnServer(server -> {
 				var golem = server.getOverworld().getEntityById(golemId);
 				if(golem != null)
