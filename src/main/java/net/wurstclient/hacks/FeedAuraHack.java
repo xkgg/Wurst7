@@ -36,7 +36,6 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.filters.FilterBabiesSetting;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RenderUtils;
-import net.wurstclient.util.RotationUtils;
 
 @SearchTags({"喂养光环", "feed aura", "BreedAura", "breed aura", "AutoBreeder",
 	"auto breeder"})
@@ -141,7 +140,7 @@ public final class FeedAuraHack extends Hack
 		
 		// create realistic hit result
 		Box box = target.getBoundingBox();
-		Vec3d start = RotationUtils.getEyesPos();
+		Vec3d start = MC.player.getEyePos();
 		Vec3d end = box.getCenter();
 		Vec3d hitVec = box.raycast(start, end).orElse(start);
 		EntityHitResult hitResult = new EntityHitResult(target, hitVec);

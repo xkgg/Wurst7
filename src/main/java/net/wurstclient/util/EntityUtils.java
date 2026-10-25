@@ -86,7 +86,7 @@ public enum EntityUtils
 	
 	public static double distanceToHitboxSq(Entity e)
 	{
-		Vec3d eyes = RotationUtils.getEyesPos();
+		Vec3d eyes = MC.player.getEyePos();
 		Box box = e.getBoundingBox();
 		double x = MathHelper.clamp(eyes.x, box.minX, box.maxX);
 		double y = MathHelper.clamp(eyes.y, box.minY, box.maxY);

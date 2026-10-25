@@ -396,7 +396,7 @@ public final class AutoLibrarianHack extends Hack
 		
 		// 构造真实的实体命中结果（模拟正常点击）
 		Box box = villager.getBoundingBox();
-		Vec3d start = RotationUtils.getEyesPos();
+		Vec3d start = MC.player.getEyePos();
 		Vec3d end = box.getCenter();
 		Vec3d hitVec = box.raycast(start, end).orElse(start);
 		EntityHitResult hitResult = new EntityHitResult(villager, hitVec);
@@ -520,7 +520,7 @@ public final class AutoLibrarianHack extends Hack
 	 */
 	private void setTargetJobSite()
 	{
-		Vec3d eyesVec = RotationUtils.getEyesPos();
+		Vec3d eyesVec = MC.player.getEyePos();
 		double rangeSq = range.getValueSq();
 		
 		// 流式筛选范围内的讲台

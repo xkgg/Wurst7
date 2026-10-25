@@ -21,13 +21,6 @@ public enum RotationUtils
 	
 	private static final MinecraftClient MC = WurstClient.MC;
 	
-	public static Vec3d getEyesPos()
-	{
-		ClientPlayerEntity player = MC.player;
-		float eyeHeight = player.getEyeHeight(player.getPose());
-		return player.getPos().add(0, eyeHeight, 0);
-	}
-	
 	public static Vec3d getClientLookVec(float partialTicks)
 	{
 		float yaw = MC.player.getYaw(partialTicks);
@@ -43,7 +36,7 @@ public enum RotationUtils
 	
 	public static Rotation getNeededRotations(Vec3d vec)
 	{
-		Vec3d eyes = getEyesPos();
+		Vec3d eyes = MC.player.getEyePos();
 		
 		double diffX = vec.x - eyes.x;
 		double diffZ = vec.z - eyes.z;
@@ -104,7 +97,7 @@ public enum RotationUtils
 	 */
 	public static boolean isFacingBox(Box box, double range)
 	{
-		Vec3d start = getEyesPos();
+		Vec3d start = MC.player.getEyePos();
 		Vec3d end = start.add(getServerLookVec().multiply(range));
 		return box.raycast(start, end).isPresent();
 	}

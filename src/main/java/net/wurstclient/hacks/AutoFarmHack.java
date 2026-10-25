@@ -42,7 +42,6 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.InventoryUtils;
 import net.wurstclient.util.InteractionSimulator;
 import net.wurstclient.util.OverlayRenderer;
-import net.wurstclient.util.RotationUtils;
 import net.wurstclient.util.text.WText;
 
 @SearchTags({"自动农场", "auto farm", "AutoHarvest", "auto harvest"})
@@ -138,7 +137,7 @@ public final class AutoFarmHack extends Hack
 	public void onUpdate()
 	{
 		currentlyHarvesting = null;
-		Vec3d eyesVec = RotationUtils.getEyesPos();
+		Vec3d eyesVec = MC.player.getEyePos();
 		BlockPos eyesBlock = BlockPos.ofFloored(eyesVec);
 		double rangeSq = range.getValueSq();
 		int blockRange = range.getValueCeil();

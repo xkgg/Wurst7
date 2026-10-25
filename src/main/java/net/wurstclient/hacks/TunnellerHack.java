@@ -461,7 +461,7 @@ public final class TunnellerHack extends Hack
 			Vec3d velocity = MC.player.getVelocity();
 			MC.player.setVelocity(0, velocity.y, 0);
 			
-			Vec3d eyes = RotationUtils.getEyesPos().add(-0.5, -0.5, -0.5);
+			Vec3d eyes = MC.player.getEyePos().add(-0.5, -0.5, -0.5);
 			Comparator<BlockPos> comparator =
 				Comparator.<BlockPos> comparingDouble(
 					p -> eyes.squaredDistanceTo(Vec3d.of(p)));
@@ -746,7 +746,7 @@ public final class TunnellerHack extends Hack
 		Direction side = null;
 		Direction[] sides = Direction.values();
 		
-		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d eyesPos = MC.player.getEyePos();
 		Vec3d posVec = Vec3d.ofCenter(pos);
 		double distanceSqPosVec = eyesPos.squaredDistanceTo(posVec);
 		
@@ -818,7 +818,7 @@ public final class TunnellerHack extends Hack
 	{
 		Direction[] sides = Direction.values();
 		
-		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d eyesPos = MC.player.getEyePos();
 		Vec3d relCenter = BlockUtils.getBoundingBox(pos)
 			.offset(-pos.getX(), -pos.getY(), -pos.getZ()).getCenter();
 		Vec3d center = Vec3d.of(pos).add(relCenter);

@@ -37,7 +37,6 @@ import net.wurstclient.util.BlockBreaker;
 import net.wurstclient.util.BlockBreaker.BlockBreakingParams;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.OverlayRenderer;
-import net.wurstclient.util.RotationUtils;
 
 @SearchTags({"合法挖掘光环", "LegitNuker", "nuker legit", "legit nuker"})
 public final class NukerLegitHack extends Hack
@@ -124,7 +123,7 @@ public final class NukerLegitHack extends Hack
 			return;
 		}
 		
-		Vec3d eyesVec = RotationUtils.getEyesPos();
+		Vec3d eyesVec = MC.player.getEyePos();
 		BlockPos eyesBlock = BlockPos.ofFloored(eyesVec);
 		double maxRange = MC.interactionManager.getReachDistance() + 1;
 		double rangeSq = commonSettings.isSphereShape() ? range.getValueSq()

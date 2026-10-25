@@ -210,7 +210,7 @@ public final class AutoBuildHack extends Hack
 		RenderUtils.drawOutlinedBoxes(matrixStack, outlineBoxes, black, true);
 		
 		int green = 0x2600FF00;
-		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d eyesPos = MC.player.getEyePos();
 		double rangeSq = range.getValueSq();
 		List<Box> greenBoxes = blocksToDraw.stream()
 			.filter(pos -> pos.getSquaredDistance(eyesPos) <= rangeSq)

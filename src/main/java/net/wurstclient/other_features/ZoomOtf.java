@@ -9,6 +9,7 @@ package net.wurstclient.other_features;
 
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.MathHelper;
 import net.wurstclient.DontBlock;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.MouseScrollListener;
@@ -17,7 +18,6 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.TextFieldSetting;
-import net.wurstclient.util.MathUtils;
 
 @SearchTags({"望远镜", "telescope", "optifine"})
 @DontBlock
@@ -87,7 +87,7 @@ public final class ZoomOtf extends OtherFeature implements MouseScrollListener
 		else if(amount < 0)
 			currentLevel *= 0.9;
 		
-		currentLevel = MathUtils.clamp(currentLevel, level.getMinimum(),
+		currentLevel = MathHelper.clamp(currentLevel, level.getMinimum(),
 			level.getMaximum());
 	}
 	

@@ -29,7 +29,6 @@ import net.wurstclient.util.BlockPlacer.BlockPlacingParams;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.InteractionSimulator;
 import net.wurstclient.util.RenderUtils;
-import net.wurstclient.util.RotationUtils;
 
 @SearchTags({"随机建造", "build random", "RandomBuild", "random build",
 	"PlaceRandom", "place random", "RandomPlace", "random place"})
@@ -133,7 +132,7 @@ public final class BuildRandomHack extends Hack
 		do
 		{
 			// generate random position
-			pos = BlockPos.ofFloored(RotationUtils.getEyesPos()).add(
+			pos = BlockPos.ofFloored(MC.player.getEyePos()).add(
 				random.nextInt(bound) - blockRange,
 				random.nextInt(bound) - blockRange,
 				random.nextInt(bound) - blockRange);

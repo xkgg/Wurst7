@@ -158,6 +158,11 @@ public final class WurstE2ETestClient implements ModInitializer
 		runScenario("BackportPortalAndFeedAura",
 			UpstreamBackportTest::testPortalAndFeedAura);
 		runScenario("BackportTelemetry", UpstreamBackportTest::testTelemetry);
+		runScenario("BackportAutoSign", UpstreamBackportTest::testAutoSign);
+		runScenario("BackportTemplateNames",
+			UpstreamBackportTest::testTemplateNames);
+		runScenario("BackportCameraOverlay",
+			UpstreamBackportTest::testCameraOverlay);
 		runScenario("AutoFarm", AutomationRegressionTest::testAutoFarm);
 		runScenario("AutoFarmFacing",
 			AutomationRegressionTest::testAutoFarmFacing);

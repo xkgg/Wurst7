@@ -40,7 +40,6 @@ import net.wurstclient.util.BlockBreakingCache;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.OverlayRenderer;
 import net.wurstclient.util.RenderUtils;
-import net.wurstclient.util.RotationUtils;
 
 public final class VeinMinerHack extends Hack
 	implements UpdateListener, LeftClickListener, RenderListener
@@ -135,7 +134,7 @@ public final class VeinMinerHack extends Hack
 		if(MC.options.attackKey.isPressed())
 			return;
 		
-		Vec3d eyesVec = RotationUtils.getEyesPos();
+		Vec3d eyesVec = MC.player.getEyePos();
 		BlockPos eyesBlock = BlockPos.ofFloored(eyesVec);
 		double rangeSq = range.getValueSq();
 		int blockRange = range.getValueCeil();

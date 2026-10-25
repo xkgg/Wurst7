@@ -222,7 +222,7 @@ public enum BlockUtils
 	
 	public static boolean hasLineOfSight(Vec3d to)
 	{
-		return raycast(RotationUtils.getEyesPos(), to)
+		return raycast(MC.player.getEyePos(), to)
 			.getType() == HitResult.Type.MISS;
 	}
 	

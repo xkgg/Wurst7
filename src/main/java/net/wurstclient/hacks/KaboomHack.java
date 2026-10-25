@@ -25,7 +25,6 @@ import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.util.BlockBreaker;
 import net.wurstclient.util.BlockUtils;
-import net.wurstclient.util.RotationUtils;
 
 /**
  * 范围爆破（Kaboom）：以玩家为中心触发大范围方块破坏功能，
@@ -117,7 +116,7 @@ public final class KaboomHack extends Hack implements UpdateListener
 	private ArrayList<BlockPos> getBlocksByDistanceReversed()
 	{
 		// 获取玩家眼睛位置
-		Vec3d eyesVec = RotationUtils.getEyesPos();
+		Vec3d eyesVec = MC.player.getEyePos();
 		// 玩家眼睛所在方块坐标
 		BlockPos eyesBlock = BlockPos.ofFloored(eyesVec);
 		// 搜索范围平方（6格范围，6*6=36）

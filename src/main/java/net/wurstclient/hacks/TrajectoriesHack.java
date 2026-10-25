@@ -32,7 +32,6 @@ import net.wurstclient.settings.ColorSetting;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.RenderUtils;
-import net.wurstclient.util.RotationUtils;
 
 @SearchTags({"轨迹预测", "ArrowTrajectories", "ArrowPrediction", "aim assist",
 	"arrow trajectories", "bow trajectories"})
@@ -140,7 +139,7 @@ public final class TrajectoriesHack extends Hack implements RenderListener
 			arrowMotion = arrowMotion.add(0, -gravity * 0.1, 0);
 			
 			Vec3d lastPos = path.size() > 1 ? path.get(path.size() - 2)
-				: RotationUtils.getEyesPos();
+				: player.getEyePos();
 			
 			// Check for block collision
 			BlockHitResult bResult =

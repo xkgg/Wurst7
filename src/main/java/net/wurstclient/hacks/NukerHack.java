@@ -31,7 +31,6 @@ import net.wurstclient.util.BlockBreaker.BlockBreakingParams;
 import net.wurstclient.util.BlockBreakingCache;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.OverlayRenderer;
-import net.wurstclient.util.RotationUtils;
 
 @SearchTags({"挖掘光环", "nuker", "destroyer"})
 public final class NukerHack extends Hack
@@ -107,7 +106,7 @@ public final class NukerHack extends Hack
 		if(MC.options.attackKey.isPressed() || commonSettings.isIdModeWithAir())
 			return;
 		
-		Vec3d eyesVec = RotationUtils.getEyesPos();
+		Vec3d eyesVec = MC.player.getEyePos();
 		BlockPos eyesBlock = BlockPos.ofFloored(eyesVec);
 		double rangeSq = range.getValueSq();
 		int blockRange = range.getValueCeil();

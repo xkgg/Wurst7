@@ -28,7 +28,6 @@ import net.wurstclient.settings.SwingHandSetting;
 import net.wurstclient.settings.SwingHandSetting.SwingHand;
 import net.wurstclient.util.BlockBreaker;
 import net.wurstclient.util.BlockUtils;
-import net.wurstclient.util.RotationUtils;
 
 /**
  * 快速拆除（SpeedNuker）：高速批量破坏指定范围内的方块，通过数据包轰炸实现无动画快速挖掘，
@@ -102,7 +101,7 @@ public final class SpeedNukerHack extends Hack implements UpdateListener
 			return;
 		
 		// 1. 获取玩家视角核心参数
-		Vec3d eyesVec = RotationUtils.getEyesPos(); // 玩家眼睛的精确坐标（浮点数）
+		Vec3d eyesVec = MC.player.getEyePos(); // 玩家眼睛的精确坐标（浮点数）
 		BlockPos eyesBlock = BlockPos.ofFloored(eyesVec); // 眼睛所在的方块坐标（整数）
 		double rangeSq = range.getValueSq(); // 挖掘半径的平方（用于距离判断，优化性能）
 		int blockRange = range.getValueCeil(); // 挖掘半径向上取整（整数格数，用于立方体范围计算）

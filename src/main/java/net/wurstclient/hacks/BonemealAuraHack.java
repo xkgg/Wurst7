@@ -34,7 +34,6 @@ import net.wurstclient.util.BlockBreaker.BlockBreakingParams;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.InteractionSimulator;
 import net.wurstclient.util.InventoryUtils;
-import net.wurstclient.util.RotationUtils;
 import net.wurstclient.util.text.WText;
 
 @SearchTags({"骨粉光环", "bonemeal aura", "bone meal aura", "AutoBonemeal",
@@ -175,7 +174,7 @@ public final class BonemealAuraHack extends Hack implements HandleInputListener
 	
 	private List<BlockBreakingParams> getValidBlocks()
 	{
-		BlockPos eyesBlock = BlockPos.ofFloored(RotationUtils.getEyesPos());
+		BlockPos eyesBlock = BlockPos.ofFloored(MC.player.getEyePos());
 		double rangeSq = range.getValueSq();
 		
 		Stream<BlockBreakingParams> stream = BlockUtils

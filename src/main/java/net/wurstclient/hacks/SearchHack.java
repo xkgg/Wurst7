@@ -38,7 +38,6 @@ import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.EasyVertexBuffer;
 import net.wurstclient.util.RegionPos;
 import net.wurstclient.util.RenderUtils;
-import net.wurstclient.util.RotationUtils;
 import net.wurstclient.util.chunk.ChunkSearcher;
 import net.wurstclient.util.chunk.ChunkSearcherCoordinator;
 
@@ -206,7 +205,7 @@ public final class SearchHack extends Hack
 	
 	private void startGetMatchingBlocksTask()
 	{
-		BlockPos eyesPos = BlockPos.ofFloored(RotationUtils.getEyesPos());
+		BlockPos eyesPos = BlockPos.ofFloored(MC.player.getEyePos());
 		Comparator<BlockPos> comparator =
 			Comparator.comparingInt(pos -> eyesPos.getManhattanDistance(pos));
 		

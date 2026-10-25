@@ -40,7 +40,6 @@ import net.wurstclient.util.BlockBreaker;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.OverlayRenderer;
 import net.wurstclient.util.RenderUtils;
-import net.wurstclient.util.RotationUtils;
 import net.wurstclient.SearchTags;
 
 @SearchTags({"范围破坏", "Excavator"})
@@ -320,7 +319,7 @@ public final class ExcavatorHack extends Hack
 			return;
 		
 		// prioritize the closest block from the top layer
-		Vec3d eyesVec = RotationUtils.getEyesPos();
+		Vec3d eyesVec = MC.player.getEyePos();
 		Comparator<BlockPos> cNextTargetBlock =
 			Comparator.comparingInt(BlockPos::getY).reversed()
 				.thenComparingDouble(pos -> pos.getSquaredDistance(eyesVec));
@@ -428,7 +427,7 @@ public final class ExcavatorHack extends Hack
 	
 	private ArrayList<BlockPos> getValidBlocks()
 	{
-		Vec3d eyesVec = RotationUtils.getEyesPos();
+		Vec3d eyesVec = MC.player.getEyePos();
 		BlockPos eyesBlock = BlockPos.ofFloored(eyesVec);
 		double rangeSq = Math.pow(range.getValue() + 0.5, 2);
 		int blockRange = range.getValueCeil();

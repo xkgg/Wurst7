@@ -65,7 +65,7 @@ public enum BlockBreaker
 	 */
 	public static BlockBreakingParams getBlockBreakingParams(BlockPos pos)
 	{
-		return getBlockBreakingParams(RotationUtils.getEyesPos(), pos);
+		return getBlockBreakingParams(MC.player.getEyePos(), pos);
 	}
 	
 	/**
@@ -170,7 +170,7 @@ public enum BlockBreaker
 	
 	public static void breakBlocksWithPacketSpam(Iterable<BlockPos> blocks)
 	{
-		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d eyesPos = MC.player.getEyePos();
 		ClientPlayNetworkHandler netHandler = MC.player.networkHandler;
 		
 		for(BlockPos pos : blocks)

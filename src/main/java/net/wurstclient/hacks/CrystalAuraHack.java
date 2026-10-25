@@ -42,7 +42,6 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.FakePlayerEntity;
 import net.wurstclient.util.InventoryUtils;
-import net.wurstclient.util.RotationUtils;
 
 @SearchTags({"水晶光环", "crystal aura"})
 public final class CrystalAuraHack extends Hack implements UpdateListener
@@ -170,7 +169,7 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	
 	private boolean placeCrystal(BlockPos pos)
 	{
-		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d eyesPos = MC.player.getEyePos();
 		double rangeSq = Math.pow(range.getValue(), 2);
 		Vec3d posVec = Vec3d.ofCenter(pos);
 		double distanceSqPosVec = eyesPos.squaredDistanceTo(posVec);
@@ -257,7 +256,7 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	
 	private ArrayList<BlockPos> getFreeBlocksNear(Entity target)
 	{
-		Vec3d eyesVec = RotationUtils.getEyesPos().subtract(0.5, 0.5, 0.5);
+		Vec3d eyesVec = MC.player.getEyePos().subtract(0.5, 0.5, 0.5);
 		double rangeD = range.getValue();
 		double rangeSq = Math.pow(rangeD + 0.5, 2);
 		int rangeI = 2;

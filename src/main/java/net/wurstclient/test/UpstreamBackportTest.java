@@ -11,22 +11,36 @@ import static net.wurstclient.test.WurstClientTestHelper.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+
+import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.entity.HangingSignBlockEntity;
+import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.client.gui.hud.InGameOverlayRenderer;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.ingame.AbstractSignEditScreen;
+import net.minecraft.client.gui.screen.ingame.HangingSignEditScreen;
+import net.minecraft.client.gui.screen.ingame.SignEditScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.telemetry.TelemetryEventType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
+import net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -41,6 +55,7 @@ import net.wurstclient.events.ChatOutputListener;
 import net.wurstclient.events.ConnectionPacketOutputListener;
 import net.wurstclient.events.PacketOutputListener;
 import net.wurstclient.hacks.NewChunksHack;
+import net.wurstclient.hacks.templatetool.states.ChooseNameState.ChooseNameScreen;
 
 public enum UpstreamBackportTest
 {
@@ -445,6 +460,175 @@ public enum UpstreamBackportTest
 			{
 				if(otf.isEnabled() != wasEnabled)
 					otf.doPrimaryAction();
+			}
+		});
+	}
+	
+	public static void testAutoSign()
+	{
+		var hack = WurstClient.INSTANCE.getHax().autoSignHack;
+		var events = WurstClient.INSTANCE.getEventManager();
+		List<UpdateSignC2SPacket> packets = new ArrayList<>();
+		PacketOutputListener listener = event -> {
+			if(event.getPacket() instanceof UpdateSignC2SPacket packet)
+			{
+				packets.add(packet);
+				event.cancel();
+			}
+		};
+		submitAndWait(mc -> {
+			events.add(PacketOutputListener.class, listener);
+			try
+			{
+				String[] expected = {"中文测试", "", "", ""};
+				BlockPos pos = new BlockPos(0, 100, 2);
+				for(boolean hanging : new boolean[]{false, true})
+				{
+					Supplier<AbstractSignEditScreen> screenFactory = () -> {
+						SignBlockEntity sign = hanging
+							? new HangingSignBlockEntity(pos,
+								Blocks.OAK_HANGING_SIGN.getDefaultState())
+							: new SignBlockEntity(pos,
+								Blocks.OAK_SIGN.getDefaultState());
+						sign.setWorld(mc.world);
+						return hanging
+							? new HangingSignEditScreen(sign, true, false)
+							: new SignEditScreen(sign, true, false);
+					};
+					hack.setEnabled(true);
+					var screen = screenFactory.get();
+					mc.setScreen(screen);
+					assertTrue(mc.currentScreen == screen,
+						"AutoSign closed the initial empty sign");
+					for(char character : expected[0].toCharArray())
+						screen.charTyped(character, 0);
+					screen.close();
+					assertTrue(Arrays.equals(hack.getSignText(), expected),
+						"AutoSign did not remember the Chinese sign text");
+					
+					int previousCount = packets.size();
+					mc.setScreen(screenFactory.get());
+					assertTrue(mc.currentScreen == null,
+						"AutoSign did not close the repeated sign");
+					assertTrue(
+						packets.size() == previousCount + 1 && Arrays.equals(
+							packets.get(packets.size() - 1).getText(),
+							expected),
+						"AutoSign did not send the remembered lines once");
+					
+					hack.setEnabled(false);
+					assertTrue(hack.getSignText() == null,
+						"Disabling AutoSign did not clear its text");
+					screen = screenFactory.get();
+					mc.setScreen(screen);
+					assertTrue(mc.currentScreen == screen,
+						"Disabled AutoSign closed the sign editor");
+					screen.close();
+				}
+			}finally
+			{
+				hack.setEnabled(false);
+				mc.setScreen(null);
+				events.remove(PacketOutputListener.class, listener);
+			}
+		});
+	}
+	
+	public static void testTemplateNames()
+	{
+		submitAndWait(mc -> {
+			var hack = WurstClient.INSTANCE.getHax().templateToolHack;
+			var previousFile = hack.getFile();
+			try
+			{
+				var screen = new ChooseNameScreen(hack);
+				mc.setScreen(screen);
+				var field = (TextFieldWidget)screen.getFocused();
+				assertTrue(field != null && field.isFocused(),
+					"Template name field did not receive initial focus");
+				assertTrue(screen.charTyped('a', 0),
+					"Template name field did not accept typing");
+				screen.tick();
+				assertTrue(hack.getFile() != null,
+					"A valid template name did not produce a file");
+				ButtonWidget done = screen.children().stream()
+					.filter(ButtonWidget.class::isInstance)
+					.map(ButtonWidget.class::cast).findFirst().orElseThrow();
+				assertTrue(done.active,
+					"A valid template name did not enable Done");
+				
+				field.setText("");
+				screen.tick();
+				assertTrue(hack.getFile() == null && !done.active,
+					"An empty template name kept the previous file");
+				screen.keyPressed(GLFW.GLFW_KEY_ENTER, 0, 0);
+				assertTrue(mc.currentScreen == screen,
+					"Enter accepted an empty template name");
+				
+				field.setText("invalid\u0000name");
+				screen.tick();
+				assertTrue(hack.getFile() == null && !done.active,
+					"An invalid template path was accepted");
+				field.setText("backport-template");
+				screen.tick();
+				assertTrue(hack.getFile() != null && done.active,
+					"Template name did not recover after an invalid path");
+				
+				screen.resize(mc, screen.width, screen.height);
+				assertTrue(
+					screen.getFocused() instanceof TextFieldWidget text
+						&& text.isFocused(),
+					"Template name field lost focus after resizing");
+			}finally
+			{
+				mc.setScreen(null);
+				hack.setFile(previousFile);
+			}
+		});
+	}
+	
+	public static void testCameraOverlay()
+	{
+		submitAndWait(mc -> {
+			var hax = WurstClient.INSTANCE.getHax();
+			var perspective = mc.options.getPerspective();
+			BlockPos pos = BlockPos.ofFloored(mc.player.getEyePos());
+			BlockState previousState = mc.world.getBlockState(pos);
+			try
+			{
+				var detector = Arrays
+					.stream(InGameOverlayRenderer.class.getDeclaredMethods())
+					.filter(method -> method.getReturnType() == BlockState.class
+						&& Arrays.equals(method.getParameterTypes(),
+							new Class<?>[]{PlayerEntity.class}))
+					.findFirst().orElseThrow();
+				detector.setAccessible(true);
+				mc.world.setBlockState(pos, Blocks.STONE.getDefaultState());
+				mc.options.setPerspective(Perspective.FIRST_PERSON);
+				assertTrue(detector.invoke(null, mc.player) != null,
+					"Overlay setup did not place the player inside a block");
+				hax.freecamHack.setEnabled(true);
+				assertTrue(detector.invoke(null, mc.player) == null,
+					"Freecam retained the in-wall overlay");
+				hax.freecamHack.setEnabled(false);
+				assertTrue(detector.invoke(null, mc.player) != null,
+					"Disabling Freecam did not restore the overlay");
+				
+				hax.cameraNoClipHack.setEnabled(true);
+				assertTrue(detector.invoke(null, mc.player) != null,
+					"CameraNoClip removed the normal first-person overlay");
+				mc.options.setPerspective(Perspective.THIRD_PERSON_BACK);
+				assertTrue(detector.invoke(null, mc.player) == null,
+					"CameraNoClip retained the third-person in-wall overlay");
+			}catch(ReflectiveOperationException e)
+			{
+				throw new AssertionError(e);
+			}finally
+			{
+				hax.freecamHack.setEnabled(false);
+				hax.cameraNoClipHack.setEnabled(false);
+				mc.options.setPerspective(perspective);
+				mc.world.setBlockState(pos, previousState);
 			}
 		});
 	}

@@ -30,7 +30,6 @@ import net.wurstclient.util.BlockBreaker;
 import net.wurstclient.util.BlockBreaker.BlockBreakingParams;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.InteractionSimulator;
-import net.wurstclient.util.RotationUtils;
 
 @SearchTags({"自动耕地", "till aura", "HoeAura", "hoe aura", "FarmlandAura",
 	"farmland aura", "farm land aura", "AutoTill", "auto till", "AutoHoe",
@@ -110,7 +109,7 @@ public final class TillauraHack extends Hack implements HandleInputListener
 	
 	private ArrayList<BlockPos> getValidBlocks()
 	{
-		Vec3d eyesVec = RotationUtils.getEyesPos();
+		Vec3d eyesVec = MC.player.getEyePos();
 		BlockPos eyesBlock = BlockPos.ofFloored(eyesVec);
 		double rangeSq = range.getValueSq();
 		int blockRange = range.getValueCeil();
