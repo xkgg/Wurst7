@@ -32,10 +32,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.WurstClient;
 import net.wurstclient.event.EventManager;
-import net.wurstclient.events.AirStrafingSpeedListener.AirStrafingSpeedEvent;
 import net.wurstclient.events.IsPlayerInLavaListener.IsPlayerInLavaEvent;
 import net.wurstclient.events.IsPlayerInWaterListener.IsPlayerInWaterEvent;
-import net.wurstclient.events.KnockbackListener.KnockbackEvent;
 import net.wurstclient.events.PlayerMoveListener.PlayerMoveEvent;
 import net.wurstclient.events.PostMotionListener.PostMotionEvent;
 import net.wurstclient.events.PreMotionListener.PreMotionEvent;
@@ -218,16 +216,34 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		hideNextItemUse = false;
 	}
 	
+	@Inject(at = @At(value = "INVOKE",
+		target = "Lnet/minecraft/client/network/ClientPlayerEntity;hasVehicle()Z",
+		ordinal = 0), method = "tick()V")
+	private void onTickPreMotion(CallbackInfo ci)
+	{
+		EventManager.fire(PreMotionEvent.INSTANCE);
+	}
+	
+	@Inject(at = @At(value = "FIELD",
+		target = "Lnet/minecraft/client/network/ClientPlayerEntity;tickables:Ljava/util/List;",
+		opcode = Opcodes.GETFIELD,
+		ordinal = 0), method = "tick()V")
+	private void onTickPostMotion(CallbackInfo ci)
+	{
+		EventManager.fire(PostMotionEvent.INSTANCE);
+	}
+	
 	@Inject(at = @At("HEAD"), method = "sendMovementPackets()V")
 	private void onSendMovementPacketsHEAD(CallbackInfo ci)
 	{
-		EventManager.fire(PreMotionEvent.INSTANCE);
+		// PreMotion listeners can request rotations for this packet.
+		WurstClient.INSTANCE.getRotationFaker().applyIfNeeded();
 	}
 	
 	@Inject(at = @At("TAIL"), method = "sendMovementPackets()V")
 	private void onSendMovementPacketsTAIL(CallbackInfo ci)
 	{
-		EventManager.fire(PostMotionEvent.INSTANCE);
+		WurstClient.INSTANCE.getRotationFaker().restoreIfNeeded();
 	}
 	
 	@Inject(at = @At("HEAD"),
@@ -237,13 +253,13 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		EventManager.fire(PlayerMoveEvent.INSTANCE);
 	}
 	
-	@Inject(at = @At("HEAD"),
-		method = "isAutoJumpEnabled()Z",
-		cancellable = true)
-	private void onIsAutoJumpEnabled(CallbackInfoReturnable<Boolean> cir)
+	@ModifyExpressionValue(at = @At(value = "INVOKE",
+		target = "Lnet/minecraft/client/network/ClientPlayerEntity;shouldAutoJump()Z"),
+		method = "autoJump(FF)V")
+	private boolean modifyShouldAutoJump(boolean original)
 	{
-		if(!WurstClient.INSTANCE.getHax().stepHack.isAutoJumpAllowed())
-			cir.setReturnValue(false);
+		return original && !WurstClient.INSTANCE.getHax().stepHack.isEnabled()
+			&& !WurstClient.INSTANCE.getCmds().goToCmd.isActive();
 	}
 	
 	@ModifyExpressionValue(at = @At(value = "FIELD",
@@ -298,27 +314,6 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		return original.call(player);
 	}
 	
-	/**
-	 * Getter method for what used to be airStrafingSpeed.
-	 * Overridden to allow for the speed to be modified by hacks.
-	 */
-	@Override
-	protected float getOffGroundSpeed()
-	{
-		AirStrafingSpeedEvent event =
-			new AirStrafingSpeedEvent(super.getOffGroundSpeed());
-		EventManager.fire(event);
-		return event.getSpeed();
-	}
-	
-	@Override
-	public void setVelocityClient(double x, double y, double z)
-	{
-		KnockbackEvent event = new KnockbackEvent(x, y, z);
-		EventManager.fire(event);
-		super.setVelocityClient(event.getX(), event.getY(), event.getZ());
-	}
-	
 	@Override
 	public boolean isTouchingWater()
 	{
@@ -355,50 +350,9 @@ public class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 	}
 	
 	@Override
-	public boolean isFallFlying()
-	{
-		return !WurstClient.INSTANCE.getHax().flightHack.isEnabled()
-			&& super.isFallFlying();
-	}
-	
-	@Override
 	public boolean isTouchingWaterBypass()
 	{
 		return super.isTouchingWater();
-	}
-	
-	@Override
-	protected float getJumpVelocity()
-	{
-		return super.getJumpVelocity()
-			+ WurstClient.INSTANCE.getHax().highJumpHack
-				.getAdditionalJumpMotion();
-	}
-	
-	/**
-	 * This is the part that makes SafeWalk work.
-	 */
-	@Override
-	protected boolean clipAtLedge()
-	{
-		return super.clipAtLedge()
-			|| WurstClient.INSTANCE.getHax().safeWalkHack.isEnabled();
-	}
-	
-	/**
-	 * This mixin allows SafeWalk to sneak visibly when the player is
-	 * near a ledge.
-	 */
-	@Override
-	protected Vec3d adjustMovementForSneaking(Vec3d movement, MovementType type)
-	{
-		Vec3d result = super.adjustMovementForSneaking(movement, type);
-		
-		if(movement != null)
-			WurstClient.INSTANCE.getHax().safeWalkHack
-				.onClipAtLedge(!movement.equals(result));
-		
-		return result;
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.Category;
 import net.wurstclient.events.MouseUpdateListener;
+import net.wurstclient.events.PreMotionListener;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.AimAtSetting;
@@ -27,11 +28,12 @@ import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.EntityUtils;
 import net.wurstclient.util.Rotation;
 import net.wurstclient.util.RotationUtils;
+import net.wurstclient.util.text.WText;
 import net.wurstclient.SearchTags;
 
 @SearchTags({"辅助瞄准", "aim assist", "aimbot"})
 public final class AimAssistHack extends Hack
-	implements UpdateListener, MouseUpdateListener
+	implements UpdateListener, PreMotionListener, MouseUpdateListener
 {
 	private final SliderSetting range =
 		new SliderSetting("范围", 4.5, 1, 6, 0.05, ValueDisplay.DECIMAL);
@@ -44,7 +46,8 @@ public final class AimAssistHack extends Hack
 			30, 360, 10, ValueDisplay.DEGREES);
 	
 	private final AimAtSetting aimAt = new AimAtSetting(
-		"What point in the target's hitbox AimAssist should aim at.");
+		WText.translated("description.wurst.setting.aimassist.aim_at"),
+		AimAtSetting.AimAt.AUTO);
 	
 	private final SliderSetting ignoreMouseInput =
 		new SliderSetting("Ignore mouse input",
@@ -126,6 +129,7 @@ public final class AimAssistHack extends Hack
 		WURST.getHax().tpAuraHack.setEnabled(false);
 		
 		EVENTS.add(UpdateListener.class, this);
+		EVENTS.add(PreMotionListener.class, this);
 		EVENTS.add(MouseUpdateListener.class, this);
 	}
 	
@@ -133,6 +137,7 @@ public final class AimAssistHack extends Hack
 	protected void onDisable()
 	{
 		EVENTS.remove(UpdateListener.class, this);
+		EVENTS.remove(PreMotionListener.class, this);
 		EVENTS.remove(MouseUpdateListener.class, this);
 		target = null;
 	}
@@ -161,9 +166,17 @@ public final class AimAssistHack extends Hack
 		}
 		
 		WURST.getHax().autoSwordHack.setSlot(target);
+	}
+	
+	@Override
+	public void onPreMotion()
+	{
+		if(target == null)
+			return;
 		
 		// get needed rotation
-		Rotation needed = RotationUtils.getNeededRotations(hitVec);
+		Rotation needed =
+			RotationUtils.getNeededRotations(aimAt.getAimPoint(target));
 		
 		// turn towards center of boundingBox
 		Rotation next = RotationUtils.slowlyTurnTowards(needed,

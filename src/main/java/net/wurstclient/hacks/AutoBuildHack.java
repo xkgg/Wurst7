@@ -155,16 +155,15 @@ public final class AutoBuildHack extends Hack
 		if(status != Status.IDLE)
 			return;
 		
-		HitResult hitResult = MC.crosshairTarget;
-		if(hitResult == null || hitResult.getType() != HitResult.Type.BLOCK
-			|| !(hitResult instanceof BlockHitResult blockHitResult))
+		if(!(MC.crosshairTarget instanceof BlockHitResult hit)
+			|| hit.getType() != HitResult.Type.BLOCK)
 			return;
 		
-		BlockPos hitResultPos = blockHitResult.getBlockPos();
-		if(!BlockUtils.canBeClicked(hitResultPos))
+		BlockPos hitPos = hit.getBlockPos();
+		if(!BlockUtils.canBeClicked(hitPos))
 			return;
 		
-		BlockPos startPos = hitResultPos.offset(blockHitResult.getSide());
+		BlockPos startPos = hitPos.offset(hit.getSide());
 		Direction direction = MC.player.getHorizontalFacing();
 		remainingBlocks = template.getBlocksToPlace(startPos, direction);
 		

@@ -9,24 +9,21 @@ package net.wurstclient;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.math.Vec3d;
-import net.wurstclient.events.PostMotionListener;
-import net.wurstclient.events.PreMotionListener;
 import net.wurstclient.util.Rotation;
 import net.wurstclient.util.RotationUtils;
 
 public final class RotationFaker
-	implements PreMotionListener, PostMotionListener
 {
-	private boolean fakeRotation;
+	private boolean shouldFakeRotation;
+	private boolean didFakeRotation;
 	private float serverYaw;
 	private float serverPitch;
 	private float realYaw;
 	private float realPitch;
 	
-	@Override
-	public void onPreMotion()
+	public void applyIfNeeded()
 	{
-		if(!fakeRotation)
+		if(!shouldFakeRotation || !WurstClient.INSTANCE.isEnabled())
 			return;
 		
 		ClientPlayerEntity player = WurstClient.MC.player;
@@ -34,18 +31,19 @@ public final class RotationFaker
 		realPitch = player.getPitch();
 		player.setYaw(serverYaw);
 		player.setPitch(serverPitch);
+		didFakeRotation = true;
 	}
 	
-	@Override
-	public void onPostMotion()
+	public void restoreIfNeeded()
 	{
-		if(!fakeRotation)
+		if(!didFakeRotation)
 			return;
 		
 		ClientPlayerEntity player = WurstClient.MC.player;
 		player.setYaw(realYaw);
 		player.setPitch(realPitch);
-		fakeRotation = false;
+		shouldFakeRotation = false;
+		didFakeRotation = false;
 	}
 	
 	public void faceVectorPacket(Vec3d vec)
@@ -53,7 +51,7 @@ public final class RotationFaker
 		Rotation needed = RotationUtils.getNeededRotations(vec);
 		ClientPlayerEntity player = WurstClient.MC.player;
 		
-		fakeRotation = true;
+		shouldFakeRotation = true;
 		serverYaw =
 			RotationUtils.limitAngleChange(player.getYaw(), needed.yaw());
 		serverPitch = needed.pitch();
@@ -81,11 +79,12 @@ public final class RotationFaker
 	
 	public float getServerYaw()
 	{
-		return fakeRotation ? serverYaw : WurstClient.MC.player.getYaw();
+		return shouldFakeRotation ? serverYaw : WurstClient.MC.player.getYaw();
 	}
 	
 	public float getServerPitch()
 	{
-		return fakeRotation ? serverPitch : WurstClient.MC.player.getPitch();
+		return shouldFakeRotation ? serverPitch
+			: WurstClient.MC.player.getPitch();
 	}
 }

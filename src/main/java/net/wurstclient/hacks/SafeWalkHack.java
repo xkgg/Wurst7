@@ -83,7 +83,7 @@ public final class SafeWalkHack extends Hack
 		
 		// 计算玩家碰撞箱：调整为“边缘检测箱”（缩小范围，精准判断是否靠近边缘）
 		Box box = player.getBoundingBox();
-		Box adjustedBox = box.stretch(0, -player.stepHeight, 0)
+		Box adjustedBox = box.stretch(0, -player.getStepHeight(), 0)
 			.expand(-edgeDistance.getValue(), 0, -edgeDistance.getValue());
 		
 		// 检测调整后的碰撞箱下方是否为空（即玩家站在边缘）→ 触发潜行
@@ -114,5 +114,5 @@ public final class SafeWalkHack extends Hack
 		this.sneaking = sneaking;
 	}
 	
-	// 注：核心边缘检测逻辑在 ClientPlayerEntityMixin 中实现
+	// 注：核心边缘检测逻辑在 PlayerEntityMixin 中实现
 }

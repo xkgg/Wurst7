@@ -157,9 +157,8 @@ public final class NukerLegitHack extends Hack
 		ClientPlayerInteractionManager im = MC.interactionManager;
 		
 		WURST.getRotationFaker().faceVectorClient(params.hitVec());
-		HitResult hitResult = MC.crosshairTarget;
-		if(hitResult == null || hitResult.getType() != HitResult.Type.BLOCK
-			|| !(hitResult instanceof BlockHitResult bHitResult))
+		if(!(MC.crosshairTarget instanceof BlockHitResult bHitResult)
+			|| bHitResult.getType() != HitResult.Type.BLOCK)
 		{
 			im.cancelBlockBreaking();
 			return true;

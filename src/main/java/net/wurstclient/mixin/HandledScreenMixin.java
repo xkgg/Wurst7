@@ -7,61 +7,66 @@
  */
 package net.wurstclient.mixin;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.text.Text;
 import net.wurstclient.WurstClient;
 import net.wurstclient.hacks.AutoStealHack;
 
-@Mixin(GenericContainerScreen.class)
-public abstract class GenericContainerScreenMixin
-	extends HandledScreen<GenericContainerScreenHandler>
+@Mixin(HandledScreen.class)
+public abstract class HandledScreenMixin extends Screen
 {
 	@Shadow
-	@Final
-	private int rows;
+	protected int backgroundWidth;
+	@Shadow
+	protected int x;
+	@Shadow
+	protected int y;
 	
-	@Unique
-	private final AutoStealHack autoSteal =
-		WurstClient.INSTANCE.getHax().autoStealHack;
-	
-	public GenericContainerScreenMixin(WurstClient wurst,
-		GenericContainerScreenHandler container,
-		PlayerInventory playerInventory, Text name)
+	private HandledScreenMixin(WurstClient wurst, Text title)
 	{
-		super(container, playerInventory, name);
+		super(title);
 	}
 	
-	@Override
-	public void init()
+	@Inject(at = @At("TAIL"), method = "init()V")
+	private void onInit(CallbackInfo ci)
 	{
-		super.init();
+		HandledScreen<?> screen = (HandledScreen<?>)(Object)this;
+		int rows;
+		if(screen instanceof GenericContainerScreen chest)
+			rows = chest.getScreenHandler().getRows();
+		else if(screen instanceof ShulkerBoxScreen)
+			rows = 3;
+		else
+			return;
 		
 		if(!WurstClient.INSTANCE.isEnabled())
 			return;
 		
+		AutoStealHack autoSteal = WurstClient.INSTANCE.getHax().autoStealHack;
 		if(autoSteal.areButtonsVisible())
 		{
 			addDrawableChild(ButtonWidget
 				.builder(Text.literal("Steal"),
-					b -> autoSteal.steal(this, rows))
+					b -> autoSteal.steal(screen, rows))
 				.dimensions(x + backgroundWidth - 108, y + 4, 50, 12).build());
 			
 			addDrawableChild(ButtonWidget
 				.builder(Text.literal("Store"),
-					b -> autoSteal.store(this, rows))
+					b -> autoSteal.store(screen, rows))
 				.dimensions(x + backgroundWidth - 56, y + 4, 50, 12).build());
 		}
 		
 		if(autoSteal.isEnabled())
-			autoSteal.steal(this, rows);
+			autoSteal.steal(screen, rows);
 	}
 }

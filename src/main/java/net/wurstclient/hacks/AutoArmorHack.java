@@ -17,6 +17,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ArmorItem;
@@ -31,6 +32,7 @@ import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
+import net.wurstclient.util.ItemUtils;
 
 @SearchTags({"自动盔甲", "auto armor"})
 public final class AutoArmorHack extends Hack
@@ -106,11 +108,10 @@ public final class AutoArmorHack extends Hack
 			bestArmorSlots[type] = -1;
 			
 			ItemStack stack = inventory.getArmorStack(type);
-			if(stack.isEmpty() || !(stack.getItem() instanceof ArmorItem))
+			if(stack.isEmpty() || ItemUtils.getArmorSlot(stack) == null)
 				continue;
 			
-			ArmorItem item = (ArmorItem)stack.getItem();
-			bestArmorValues[type] = getArmorValue(item, stack);
+			bestArmorValues[type] = getArmorValue(stack);
 		}
 		
 		// 在背包中搜索更好的盔甲
@@ -118,12 +119,12 @@ public final class AutoArmorHack extends Hack
 		{
 			ItemStack stack = inventory.getStack(slot);
 			
-			if(stack.isEmpty() || !(stack.getItem() instanceof ArmorItem))
+			EquipmentSlot equipmentSlot = ItemUtils.getArmorSlot(stack);
+			if(stack.isEmpty() || equipmentSlot == null)
 				continue;
 			
-			ArmorItem item = (ArmorItem)stack.getItem();
-			int armorType = item.getSlotType().getEntitySlotId();
-			int armorValue = getArmorValue(item, stack);
+			int armorType = equipmentSlot.getEntitySlotId();
+			int armorValue = getArmorValue(stack);
 			
 			if(armorValue > bestArmorValues[armorType])
 			{
@@ -168,13 +169,14 @@ public final class AutoArmorHack extends Hack
 			timer = delay.getValueI();
 	}
 	
-	private int getArmorValue(ArmorItem item, ItemStack stack)
+	private int getArmorValue(ItemStack stack)
 	{
 		// 计算盔甲价值（护甲值、保护附魔、韧性等）
-		int armorPoints = item.getProtection();
+		int armorPoints = (int)ItemUtils.getArmorPoints(stack).orElse(0);
 		int prtPoints = 0;
-		int armorToughness = (int)item.toughness;
-		int armorType = item.getMaterial().getProtection(Type.LEGGINGS);
+		int armorToughness = (int)ItemUtils.getToughness(stack).orElse(0);
+		int armorType = stack.getItem() instanceof ArmorItem item
+			? item.getMaterial().getProtection(Type.LEGGINGS) : 0;
 		
 		// 如果启用了附魔考虑，计算保护附魔的价值
 		if(useEnchantments.isChecked())

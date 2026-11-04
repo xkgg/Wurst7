@@ -15,6 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,12 +27,41 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.entity.EntityLike;
 import net.wurstclient.WurstClient;
 import net.wurstclient.event.EventManager;
+import net.wurstclient.events.KnockbackListener.KnockbackEvent;
 import net.wurstclient.events.VelocityFromEntityCollisionListener.VelocityFromEntityCollisionEvent;
 import net.wurstclient.events.VelocityFromFluidListener.VelocityFromFluidEvent;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements Nameable, EntityLike, CommandOutput
 {
+	@WrapOperation(
+		at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/entity/Entity;setVelocity(DDD)V"),
+		method = "setVelocityClient(DDD)V")
+	private void wrapSetVelocityClient(Entity entity, double x, double y,
+		double z, Operation<Void> original)
+	{
+		if(entity != WurstClient.MC.player)
+		{
+			original.call(entity, x, y, z);
+			return;
+		}
+		
+		KnockbackEvent event = new KnockbackEvent(x, y, z);
+		EventManager.fire(event);
+		original.call(entity, event.getX(), event.getY(), event.getZ());
+	}
+	
+	@ModifyReturnValue(at = @At("RETURN"), method = "getStepHeight()F")
+	private float modifyStepHeight(float original)
+	{
+		if((Object)this != WurstClient.MC.player)
+			return original;
+		
+		return WurstClient.INSTANCE.getHax().stepHack
+			.adjustStepHeight(original);
+	}
+	
 	@Inject(at = @At("RETURN"),
 		method = "getVelocityMultiplier()F",
 		cancellable = true)

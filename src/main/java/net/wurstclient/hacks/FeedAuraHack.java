@@ -7,10 +7,8 @@
  */
 package net.wurstclient.hacks;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -27,8 +25,8 @@ import net.minecraft.util.math.Vec3d;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.HandleInputListener;
+import net.wurstclient.events.PreMotionListener;
 import net.wurstclient.events.RenderListener;
-import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
@@ -40,7 +38,7 @@ import net.wurstclient.util.RenderUtils;
 @SearchTags({"喂养光环", "feed aura", "BreedAura", "breed aura", "AutoBreeder",
 	"auto breeder"})
 public final class FeedAuraHack extends Hack
-	implements UpdateListener, HandleInputListener, RenderListener
+	implements PreMotionListener, HandleInputListener, RenderListener
 {
 	private final SliderSetting range =
 		new SliderSetting("范围", "决定喂养光环可以喂食动物的距离。\n" + "任何超出指定值的动物都不会被喂食。", 5,
@@ -57,7 +55,7 @@ public final class FeedAuraHack extends Hack
 		true);
 	
 	private final Random random = new Random();
-	private AnimalEntity target;
+	private AnimalEntity clickTarget;
 	private AnimalEntity renderTarget;
 	
 	public FeedAuraHack()
@@ -73,7 +71,7 @@ public final class FeedAuraHack extends Hack
 	@Override
 	protected void onEnable()
 	{
-		EVENTS.add(UpdateListener.class, this);
+		EVENTS.add(PreMotionListener.class, this);
 		EVENTS.add(HandleInputListener.class, this);
 		EVENTS.add(RenderListener.class, this);
 	}
@@ -81,54 +79,47 @@ public final class FeedAuraHack extends Hack
 	@Override
 	protected void onDisable()
 	{
-		EVENTS.remove(UpdateListener.class, this);
+		EVENTS.remove(PreMotionListener.class, this);
 		EVENTS.remove(HandleInputListener.class, this);
 		EVENTS.remove(RenderListener.class, this);
 		
-		target = null;
+		clickTarget = null;
 		renderTarget = null;
 	}
 	
 	@Override
-	public void onUpdate()
+	public void onPreMotion()
 	{
 		ItemStack heldStack = MC.player.getInventory().getMainHandStack();
-		
 		double rangeSq = range.getValueSq();
-		Stream<AnimalEntity> stream = EntityUtils.getValidAnimals()
+		
+		List<AnimalEntity> targets = EntityUtils.getValidAnimals()
 			.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq)
 			.filter(e -> e.isBreedingItem(heldStack))
-			.filter(AnimalEntity::canEat);
+			.filter(AnimalEntity::canEat)
+			.filter(e -> !filterBabies.isChecked() || filterBabies.test(e))
+			.filter(e -> !filterUntamed.isChecked() || !isUntamed(e))
+			.filter(e -> !filterHorses.isChecked()
+				|| !(e instanceof AbstractHorseEntity))
+			.toList();
 		
-		if(filterBabies.isChecked())
-			stream = stream.filter(filterBabies);
-		
-		if(filterUntamed.isChecked())
-			stream = stream.filter(e -> !isUntamed(e));
-		
-		if(filterHorses.isChecked())
-			stream = stream.filter(e -> !(e instanceof AbstractHorseEntity));
-		
-		// convert targets to list
-		ArrayList<AnimalEntity> targets =
-			stream.collect(Collectors.toCollection(ArrayList::new));
-		
-		// pick a target at random
-		target = targets.isEmpty() ? null
-			: targets.get(random.nextInt(targets.size()));
-		
-		renderTarget = target;
-		if(target == null)
+		if(targets.isEmpty())
+		{
+			clickTarget = null;
+			renderTarget = null;
 			return;
+		}
 		
+		clickTarget = targets.get(random.nextInt(targets.size()));
+		renderTarget = clickTarget;
 		WURST.getRotationFaker()
-			.faceVectorPacket(target.getBoundingBox().getCenter());
+			.faceVectorPacket(clickTarget.getBoundingBox().getCenter());
 	}
 	
 	@Override
 	public void onHandleInput()
 	{
-		if(target == null)
+		if(clickTarget == null)
 			return;
 		
 		ClientPlayerInteractionManager im = MC.interactionManager;
@@ -139,22 +130,22 @@ public final class FeedAuraHack extends Hack
 			return;
 		
 		// create realistic hit result
-		Box box = target.getBoundingBox();
+		Box box = clickTarget.getBoundingBox();
 		Vec3d start = MC.player.getEyePos();
 		Vec3d end = box.getCenter();
 		Vec3d hitVec = box.raycast(start, end).orElse(start);
-		EntityHitResult hitResult = new EntityHitResult(target, hitVec);
+		EntityHitResult hitResult = new EntityHitResult(clickTarget, hitVec);
 		
 		ActionResult actionResult =
-			im.interactEntityAtLocation(player, target, hitResult, hand);
+			im.interactEntityAtLocation(player, clickTarget, hitResult, hand);
 		
 		if(!actionResult.isAccepted())
-			actionResult = im.interactEntity(player, target, hand);
+			actionResult = im.interactEntity(player, clickTarget, hand);
 		
 		if(actionResult.isAccepted() && actionResult.shouldSwingHand())
 			player.swingHand(hand);
 		
-		target = null;
+		clickTarget = null;
 	}
 	
 	@Override
@@ -184,12 +175,7 @@ public final class FeedAuraHack extends Hack
 	
 	private boolean isUntamed(AnimalEntity e)
 	{
-		if(e instanceof AbstractHorseEntity horse && !horse.isTame())
-			return true;
-		
-		if(e instanceof TameableEntity tame && !tame.isTamed())
-			return true;
-		
-		return false;
+		return e instanceof AbstractHorseEntity horse && !horse.isTame()
+			|| e instanceof TameableEntity tame && !tame.isTamed();
 	}
 }

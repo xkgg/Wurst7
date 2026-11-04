@@ -7,10 +7,15 @@
  */
 package net.wurstclient.util;
 
+import java.util.OptionalDouble;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -19,6 +24,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.InvalidIdentifierException;
+import net.wurstclient.WurstClient;
 
 public enum ItemUtils
 {
@@ -55,11 +61,49 @@ public enum ItemUtils
 		}
 	}
 	
-	public static float getAttackSpeed(Item item)
+	public static OptionalDouble calculateModifiedAttribute(ItemStack stack,
+		EntityAttribute attribute, EquipmentSlot slot)
 	{
-		return (float)item.getAttributeModifiers(EquipmentSlot.MAINHAND)
-			.get(EntityAttributes.GENERIC_ATTACK_SPEED).stream().findFirst()
-			.orElseThrow().getValue();
+		EntityAttributeInstance instance =
+			new EntityAttributeInstance(attribute, ignored -> {});
+		instance.setBaseValue(
+			WurstClient.MC.player.getAttributeBaseValue(attribute));
+		
+		stack.getAttributeModifiers(slot).get(attribute).forEach(modifier -> {
+			instance.removeModifier(modifier.getId());
+			instance.addTemporaryModifier(modifier);
+		});
+		
+		return instance.getModifiers().isEmpty() ? OptionalDouble.empty()
+			: OptionalDouble.of(instance.getValue());
+	}
+	
+	public static OptionalDouble getArmorAttribute(ItemStack stack,
+		EntityAttribute attribute)
+	{
+		EquipmentSlot slot = getArmorSlot(stack);
+		return slot == null ? OptionalDouble.empty()
+			: calculateModifiedAttribute(stack, attribute, slot);
+	}
+	
+	public static OptionalDouble getArmorPoints(ItemStack stack)
+	{
+		return getArmorAttribute(stack, EntityAttributes.GENERIC_ARMOR);
+	}
+	
+	public static OptionalDouble getToughness(ItemStack stack)
+	{
+		return getArmorAttribute(stack,
+			EntityAttributes.GENERIC_ARMOR_TOUGHNESS);
+	}
+	
+	public static EquipmentSlot getArmorSlot(ItemStack stack)
+	{
+		Equipment equipment = Equipment.fromStack(stack);
+		if(equipment == null || !equipment.getSlotType().isArmorSlot())
+			return null;
+		
+		return equipment.getSlotType();
 	}
 	
 	/**

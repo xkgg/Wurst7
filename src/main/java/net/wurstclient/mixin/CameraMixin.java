@@ -67,7 +67,8 @@ public abstract class CameraMixin
 		
 		this.thirdPerson = true;
 		setPos(freecam.getCamPos(tickDelta));
-		setRotation(freecam.getCamYaw(), freecam.getCamPitch());
+		if(!WurstClient.MC.gameRenderer.isRenderingPanorama())
+			setRotation(freecam.getCamYaw(), freecam.getCamPitch());
 	}
 	
 	@Shadow

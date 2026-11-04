@@ -82,9 +82,8 @@ public final class AutoMineHack extends Hack
 		}
 		
 		// 获取准星指向的目标：非方块目标则取消挖掘
-		HitResult hitResult = MC.crosshairTarget;
-		if(hitResult == null || hitResult.getType() != HitResult.Type.BLOCK
-			|| !(hitResult instanceof BlockHitResult bHitResult))
+		if(!(MC.crosshairTarget instanceof BlockHitResult bHitResult)
+			|| bHitResult.getType() != HitResult.Type.BLOCK)
 		{
 			im.cancelBlockBreaking();
 			return;

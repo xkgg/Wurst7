@@ -163,6 +163,30 @@ public final class WurstE2ETestClient implements ModInitializer
 			UpstreamBackportTest::testTemplateNames);
 		runScenario("BackportCameraOverlay",
 			UpstreamBackportTest::testCameraOverlay);
+		runScenario("BackportNameProtectDisconnect",
+			Upstream7562Test::testNameProtectDisconnect);
+		runScenario("BackportPacketSneak", Upstream7562Test::testPacketSneak);
+		runScenario("BackportFreecamPanorama",
+			Upstream7562Test::testFreecamPanorama);
+		runScenario("BackportItemAttributes",
+			ItemAttributeBackportTest::testAttributeModifiers);
+		runScenario("BackportAutoSword",
+			ItemAttributeBackportTest::testAutoSword);
+		runScenario("BackportAutoArmor",
+			ItemAttributeBackportTest::testAutoArmor);
+		runScenario("BackportRotationFaker",
+			CombatBackportTest::testRotationFaker);
+		runScenario("BackportMovingTargets",
+			CombatBackportTest::testMovingTargets);
+		runScenario("BackportFeedAura", CombatBackportTest::testFeedAura);
+		runScenario("BackportTpAuraCooldown",
+			CombatBackportTest::testTpAuraCooldown);
+		runScenario("BackportMotionEvents",
+			MotionBackportTest::testMotionEvents);
+		runScenario("BackportHighJumpAccuracy",
+			MotionBackportTest::testHighJumpAccuracy);
+		runScenario("BackportMixinCompatibility",
+			MotionBackportTest::testMixinCompatibility);
 		runScenario("AutoFarm", AutomationRegressionTest::testAutoFarm);
 		runScenario("AutoFarmFacing",
 			AutomationRegressionTest::testAutoFarmFacing);

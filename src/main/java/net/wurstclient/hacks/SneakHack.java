@@ -32,6 +32,8 @@ public final class SneakHack extends Hack
 		new CheckboxSetting("飞行时关闭", "当你飞行或使用自由视角时自动禁用合法潜行，这样它就不会强制你向下飞行。\n\n"
 			+ "请记住，这也意味着在做这些事情时你不会对其他玩家隐藏。", false);
 	
+	private boolean packetSneaking;
+	
 	public SneakHack()
 	{
 		super("保持潜行");
@@ -59,21 +61,16 @@ public final class SneakHack extends Hack
 		EVENTS.remove(PreMotionListener.class, this);
 		EVENTS.remove(PostMotionListener.class, this);
 		
-		switch(mode.getSelected())
-		{
-			case LEGIT:
-			IKeyBinding.get(MC.options.sneakKey).resetPressedState();
-			break;
-			
-			case PACKET:
-			sendSneakPacket(Mode.RELEASE_SHIFT_KEY);
-			break;
-		}
+		IKeyBinding.get(MC.options.sneakKey).resetPressedState();
+		stopPacketSneaking();
 	}
 	
 	@Override
 	public void onPreMotion()
 	{
+		if(MC.player.hasVehicle())
+			return;
+		
 		IKeyBinding sneakKey = IKeyBinding.get(MC.options.sneakKey);
 		
 		switch(mode.getSelected())
@@ -96,11 +93,15 @@ public final class SneakHack extends Hack
 	@Override
 	public void onPostMotion()
 	{
-		if(mode.getSelected() != SneakMode.PACKET)
+		if(mode.getSelected() != SneakMode.PACKET || MC.player.hasVehicle())
+		{
+			stopPacketSneaking();
 			return;
+		}
 		
 		sendSneakPacket(Mode.RELEASE_SHIFT_KEY);
 		sendSneakPacket(Mode.PRESS_SHIFT_KEY);
+		packetSneaking = true;
 	}
 	
 	private boolean isFlying()
@@ -115,6 +116,17 @@ public final class SneakHack extends Hack
 			return true;
 		
 		return false;
+	}
+	
+	private void stopPacketSneaking()
+	{
+		if(!packetSneaking)
+			return;
+		
+		packetSneaking = false;
+		if(MC.player != null)
+			sendSneakPacket(MC.player.isSneaking() ? Mode.PRESS_SHIFT_KEY
+				: Mode.RELEASE_SHIFT_KEY);
 	}
 	
 	private void sendSneakPacket(Mode mode)

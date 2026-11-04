@@ -134,11 +134,10 @@ public final class TriggerBotHack extends Hack
 		if(!attackWhileBlocking.isChecked() && player.isUsingItem())
 			return;
 		
-		if(MC.crosshairTarget == null
-			|| !(MC.crosshairTarget instanceof EntityHitResult eResult))
+		if(!(MC.crosshairTarget instanceof EntityHitResult hit))
 			return;
 		
-		Entity target = eResult.getEntity();
+		Entity target = hit.getEntity();
 		if(!isCorrectEntity(target))
 			return;
 		

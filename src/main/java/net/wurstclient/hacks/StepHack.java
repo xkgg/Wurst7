@@ -49,25 +49,16 @@ public final class StepHack extends Hack implements UpdateListener
 	protected void onDisable()
 	{
 		EVENTS.remove(UpdateListener.class, this);
-		// 禁用时恢复原版默认台阶高度（0.5格）
-		MC.player.stepHeight = 0.5F;
 	}
 	
 	@Override
 	public void onUpdate()
 	{
 		if(mode.getSelected() == Mode.SIMPLE)
-		{
-			// 简易模式：直接修改玩家上台阶高度
-			MC.player.stepHeight = height.getValueF();
 			return;
-		}
 		
 		// 合法模式：模拟原生操作绕过反作弊
 		ClientPlayerEntity player = MC.player;
-		// 恢复原版基础台阶高度
-		player.stepHeight = 0.5F;
-		
 		// 检测是否撞到水平方向的方块（前方有台阶）
 		if(!player.horizontalCollision)
 			return;
@@ -116,12 +107,12 @@ public final class StepHack extends Hack implements UpdateListener
 			player.getZ());
 	}
 	
-	/**
-	 * 判断是否允许自动跳跃
-	 */
-	public boolean isAutoJumpAllowed()
+	public float adjustStepHeight(float stepHeight)
 	{
-		return !isEnabled() && !WURST.getCmds().goToCmd.isActive();
+		if(isEnabled() && mode.getSelected() == Mode.SIMPLE)
+			return height.getValueF();
+		
+		return stepHeight;
 	}
 	
 	/**

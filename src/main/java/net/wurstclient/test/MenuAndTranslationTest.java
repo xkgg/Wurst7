@@ -78,6 +78,11 @@ public enum MenuAndTranslationTest
 			var translator = WurstClient.INSTANCE.getTranslator();
 			for(String key : new String[]{
 				"description.wurst.setting.aimassist.fov",
+				"description.wurst.setting.aimassist.aim_at",
+				"description.wurst.setting.generic.aim_at.auto",
+				"description.wurst.setting.generic.aim_at.head",
+				"description.wurst.setting.generic.aim_at.center",
+				"description.wurst.setting.generic.aim_at.feet",
 				"description.wurst.setting.anchoraura.range",
 				"description.wurst.setting.antiafk.wait_time",
 				"description.wurst.setting.follow.filter_players",

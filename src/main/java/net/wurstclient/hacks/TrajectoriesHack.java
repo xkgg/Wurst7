@@ -158,7 +158,7 @@ public final class TrajectoriesHack extends Hack implements RenderListener
 			double maxDistSq = 64 * 64;
 			EntityHitResult eResult = ProjectileUtil.raycast(player, lastPos,
 				arrowPos, box, predicate, maxDistSq);
-			if(eResult != null && eResult.getType() != HitResult.Type.MISS)
+			if(eResult != null)
 			{
 				// Replace last pos with the collision point
 				type = HitResult.Type.ENTITY;

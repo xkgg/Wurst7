@@ -21,6 +21,7 @@ import net.minecraft.util.math.MathHelper;
 import net.wurstclient.Category;
 import net.wurstclient.events.HandleInputListener;
 import net.wurstclient.events.MouseUpdateListener;
+import net.wurstclient.events.PreMotionListener;
 import net.wurstclient.events.RenderListener;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
@@ -45,7 +46,7 @@ import net.wurstclient.util.RotationUtils;
  * 支持自定义攻击范围、速度、优先级，附带血量伤害指示器。
  */
 public final class KillauraLegitHack extends Hack implements UpdateListener,
-	HandleInputListener, MouseUpdateListener, RenderListener
+	PreMotionListener, HandleInputListener, MouseUpdateListener, RenderListener
 {
 	// 攻击范围：最大4.25格（原版近战攻击最大距离）
 	private final SliderSetting range =
@@ -163,6 +164,7 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 		speed.resetTimer(speedRandMS.getValue());
 		// 注册事件监听器
 		EVENTS.add(UpdateListener.class, this);
+		EVENTS.add(PreMotionListener.class, this);
 		EVENTS.add(HandleInputListener.class, this);
 		EVENTS.add(MouseUpdateListener.class, this);
 		EVENTS.add(RenderListener.class, this);
@@ -173,6 +175,7 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 	{
 		// 移除事件监听器
 		EVENTS.remove(UpdateListener.class, this);
+		EVENTS.remove(PreMotionListener.class, this);
 		EVENTS.remove(HandleInputListener.class, this);
 		EVENTS.remove(MouseUpdateListener.class, this);
 		EVENTS.remove(RenderListener.class, this);
@@ -219,6 +222,14 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 		
 		// 自动切换最优武器（如果AutoSword启用）
 		WURST.getHax().autoSwordHack.setSlot(target);
+	}
+	
+	@Override
+	public void onPreMotion()
+	{
+		if(target == null)
+			return;
+		
 		// 客户端侧转向目标实体
 		faceEntityClient(target);
 	}

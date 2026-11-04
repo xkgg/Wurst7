@@ -14,22 +14,29 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.WurstClient;
+import net.wurstclient.util.text.WText;
 
 public final class AimAtSetting extends EnumSetting<AimAtSetting.AimAt>
 {
-	private static final String FULL_DESCRIPTION_SUFFIX =
+	private static final WText FULL_DESCRIPTION_SUFFIX =
 		buildDescriptionSuffix();
 	
-	private AimAtSetting(String name, String description, AimAt[] values,
+	private AimAtSetting(String name, WText description, AimAt[] values,
 		AimAt selected)
 	{
 		super(name, description, values, selected);
 	}
 	
+	public AimAtSetting(WText description, AimAt selected)
+	{
+		this("瞄准位置", description.append(FULL_DESCRIPTION_SUFFIX),
+			AimAt.values(), selected);
+	}
+	
 	public AimAtSetting(String name, String description, AimAt selected)
 	{
-		this(name, description + FULL_DESCRIPTION_SUFFIX, AimAt.values(),
-			selected);
+		this(name, WText.literal(description).append(FULL_DESCRIPTION_SUFFIX),
+			AimAt.values(), selected);
 	}
 	
 	public AimAtSetting(String description, AimAt selected)
@@ -47,16 +54,15 @@ public final class AimAtSetting extends EnumSetting<AimAtSetting.AimAt>
 		return getSelected().aimFunction.apply(e);
 	}
 	
-	private static String buildDescriptionSuffix()
+	private static WText buildDescriptionSuffix()
 	{
-		StringBuilder builder = new StringBuilder("\n\n");
-		AimAt[] values = AimAt.values();
+		WText text = WText.literal("\n\n");
 		
-		for(AimAt value : values)
-			builder.append("\u00a7l").append(value.name).append("\u00a7r - ")
+		for(AimAt value : AimAt.values())
+			text.append("\u00a7l" + value.name + "\u00a7r - ")
 				.append(value.description).append("\n\n");
 		
-		return builder.toString();
+		return text;
 	}
 	
 	private static Vec3d aimAtClosestPoint(Entity e)
@@ -92,23 +98,26 @@ public final class AimAtSetting extends EnumSetting<AimAtSetting.AimAt>
 	
 	public enum AimAt
 	{
-		AUTO("自动", "瞄准目标碰撞箱的最近点。", AimAtSetting::aimAtClosestPoint),
+		AUTO("自动", AimAtSetting::aimAtClosestPoint),
 		
-		HEAD("头部", "瞄准目标的眼睛位置。", AimAtSetting::aimAtHead),
+		HEAD("头部", AimAtSetting::aimAtHead),
 		
-		CENTER("中心", "瞄准目标碰撞箱的中心。", AimAtSetting::aimAtCenter),
+		CENTER("中心", AimAtSetting::aimAtCenter),
 		
-		FEET("脚部", "瞄准目标碰撞箱的底部。", AimAtSetting::aimAtFeet);
+		FEET("脚部", AimAtSetting::aimAtFeet);
+		
+		private static final String TRANSLATION_KEY_PREFIX =
+			"description.wurst.setting.generic.aim_at.";
 		
 		private final String name;
-		private final String description;
+		private final WText description;
 		private final Function<Entity, Vec3d> aimFunction;
 		
-		private AimAt(String name, String description,
-			Function<Entity, Vec3d> aimFunction)
+		private AimAt(String name, Function<Entity, Vec3d> aimFunction)
 		{
 			this.name = name;
-			this.description = description;
+			description =
+				WText.translated(TRANSLATION_KEY_PREFIX + name().toLowerCase());
 			this.aimFunction = aimFunction;
 		}
 		

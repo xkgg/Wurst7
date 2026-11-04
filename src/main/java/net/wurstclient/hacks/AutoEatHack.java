@@ -371,21 +371,18 @@ public final class AutoEatHack extends Hack implements UpdateListener
 	 */
 	private boolean isClickable(HitResult hitResult)
 	{
-		if(hitResult == null)
-			return false;
-		
 		// 实体目标：村民/可驯服生物（如狗、猫）
-		if(hitResult instanceof EntityHitResult)
+		if(hitResult instanceof EntityHitResult entityHitResult)
 		{
-			Entity entity = ((EntityHitResult)hitResult).getEntity();
+			Entity entity = entityHitResult.getEntity();
 			return entity instanceof VillagerEntity
 				|| entity instanceof TameableEntity;
 		}
 		
 		// 方块目标：带实体的方块（容器/熔炉）/工作台
-		if(hitResult instanceof BlockHitResult)
+		if(hitResult instanceof BlockHitResult blockHitResult)
 		{
-			BlockPos pos = ((BlockHitResult)hitResult).getBlockPos();
+			BlockPos pos = blockHitResult.getBlockPos();
 			if(pos == null)
 				return false;
 			

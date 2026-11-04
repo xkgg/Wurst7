@@ -36,8 +36,8 @@ public final class NameProtectHack extends Hack
 	 */
 	public String protect(String string)
 	{
-		// 功能未启用或玩家未加载 → 返回原始文本
-		if(!isEnabled() || MC.player == null)
+		// 功能未启用或世界尚未加载、正在断开时返回原始文本
+		if(!isEnabled() || MC.player == null || MC.world == null)
 			return string;
 		
 		// 1. 替换自身名称：替换为斜体的“Me”（§o=斜体，§r=重置格式）

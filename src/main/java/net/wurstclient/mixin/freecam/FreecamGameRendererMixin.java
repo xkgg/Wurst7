@@ -51,6 +51,7 @@ public abstract class FreecamGameRendererMixin
 	private HitResult wurst$raycastFromCamera(Entity entity, double maxDistance,
 		float tickDelta, boolean includeFluids, Operation<HitResult> original)
 	{
+		includeFluids |= WurstClient.INSTANCE.getHax().liquidsHack.isEnabled();
 		FreecamHack freecam = WurstClient.INSTANCE.getHax().freecamHack;
 		if(freecam.isClickingFromCamera())
 		{

@@ -7,18 +7,19 @@
  */
 package net.wurstclient.hacks;
 
+import java.util.OptionalDouble;
+
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.MiningToolItem;
-import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.item.TridentItem;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
@@ -73,10 +74,9 @@ public final class AutoSwordHack extends Hack implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(MC.crosshairTarget != null
-			&& MC.crosshairTarget.getType() == HitResult.Type.ENTITY)
+		if(MC.crosshairTarget instanceof EntityHitResult entityHitResult)
 		{
-			Entity entity = ((EntityHitResult)MC.crosshairTarget).getEntity();
+			Entity entity = entityHitResult.getEntity();
 			
 			if(entity instanceof LivingEntity
 				&& EntityUtils.IS_ATTACKABLE_MELEE.test(entity))
@@ -148,18 +148,20 @@ public final class AutoSwordHack extends Hack implements UpdateListener
 		switch(priority.getSelected())
 		{
 			case SPEED:
-			return ItemUtils.getAttackSpeed(item);
+			return (float)ItemUtils.calculateModifiedAttribute(stack,
+				EntityAttributes.GENERIC_ATTACK_SPEED, EquipmentSlot.MAINHAND)
+				.orElse(Integer.MIN_VALUE);
 			
 			case DAMAGE:
+			OptionalDouble damage = ItemUtils.calculateModifiedAttribute(stack,
+				EntityAttributes.GENERIC_ATTACK_DAMAGE, EquipmentSlot.MAINHAND);
+			if(damage.isEmpty())
+				return Integer.MIN_VALUE;
+			
 			EntityGroup group = entity instanceof LivingEntity le
 				? le.getGroup() : EntityGroup.DEFAULT;
-			float dmg = EnchantmentHelper.getAttackDamage(stack, group);
-			if(item instanceof SwordItem sword)
-				dmg += sword.getAttackDamage();
-			if(item instanceof MiningToolItem tool)
-				dmg += tool.getAttackDamage();
-			if(item instanceof TridentItem)
-				dmg += TridentItem.ATTACK_DAMAGE;
+			float dmg = (float)damage.getAsDouble();
+			dmg += EnchantmentHelper.getAttackDamage(stack, group);
 			return dmg;
 		}
 		

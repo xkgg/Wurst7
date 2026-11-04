@@ -31,7 +31,6 @@ import net.minecraft.client.util.ProfileKeys;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
 import net.wurstclient.WurstClient;
 import net.wurstclient.event.EventManager;
@@ -120,11 +119,10 @@ public abstract class MinecraftClientMixin
 		if(!WurstClient.INSTANCE.isEnabled())
 			return;
 		
-		HitResult hitResult = WurstClient.MC.crosshairTarget;
-		if(!(hitResult instanceof EntityHitResult eHitResult))
+		if(!(WurstClient.MC.crosshairTarget instanceof EntityHitResult hit))
 			return;
 		
-		WurstClient.INSTANCE.getFriends().middleClick(eHitResult.getEntity());
+		WurstClient.INSTANCE.getFriends().middleClick(hit.getEntity());
 	}
 	
 	/**

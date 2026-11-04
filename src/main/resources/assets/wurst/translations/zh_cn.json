@@ -1,5 +1,10 @@
 {
   "description.wurst.setting.aimassist.fov": "视野范围：实体距离准星多远时会被忽略。\n360° = 瞄准周围的所有实体。",
+  "description.wurst.setting.aimassist.aim_at": "选择辅助瞄准在目标碰撞箱中瞄准的位置。",
+  "description.wurst.setting.generic.aim_at.auto": "瞄准目标碰撞箱的最近点。",
+  "description.wurst.setting.generic.aim_at.head": "瞄准目标的眼睛位置。",
+  "description.wurst.setting.generic.aim_at.center": "瞄准目标碰撞箱的中心。",
+  "description.wurst.setting.generic.aim_at.feet": "瞄准目标碰撞箱的底部。",
   "description.wurst.setting.aimassist.ignore_mouse_input": "辅助瞄准激活时忽略部分鼠标输入，防止意外将准星移开目标。",
   "description.wurst.setting.aimassist.check_line_of_sight": "不会瞄准位于方块后方的实体。",
   "description.wurst.setting.aimassist.aim_while_blocking": "用盾牌格挡或使用物品时仍会持续瞄准实体。",

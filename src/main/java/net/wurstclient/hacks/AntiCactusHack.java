@@ -61,7 +61,8 @@ public final class AntiCactusHack extends Hack
 	{
 		if(!preventCactusTopDamage.isChecked() || MC.player == null
 			|| MC.world == null || MC.player.networkHandler == null
-			|| MC.player.getVelocity().y > 0 || !isAboveCactus())
+			|| MC.player.hasVehicle() || MC.player.getVelocity().y > 0
+			|| !isAboveCactus())
 			return;
 		
 		Vec3d pos = MC.player.getPos();

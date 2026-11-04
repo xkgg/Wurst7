@@ -115,10 +115,8 @@ public final class AirPlaceHack extends Hack
 	private BlockHitResult getHitResultIfMissed()
 	{
 		HitResult hitResult = MC.player.raycast(range.getValue(), 0, false);
-		if(hitResult.getType() != HitResult.Type.MISS)
-			return null;
-		
-		if(!(hitResult instanceof BlockHitResult blockHitResult))
+		if(!(hitResult instanceof BlockHitResult blockHitResult)
+			|| blockHitResult.getType() != HitResult.Type.MISS)
 			return null;
 		
 		return blockHitResult;

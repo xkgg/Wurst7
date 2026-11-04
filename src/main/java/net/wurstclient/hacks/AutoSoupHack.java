@@ -148,19 +148,16 @@ public final class AutoSoupHack extends Hack implements UpdateListener
 	
 	private boolean isClickable(HitResult hitResult)
 	{
-		if(hitResult == null)
-			return false;
-		
-		if(hitResult instanceof EntityHitResult)
+		if(hitResult instanceof EntityHitResult entityHitResult)
 		{
-			Entity entity = ((EntityHitResult)MC.crosshairTarget).getEntity();
+			Entity entity = entityHitResult.getEntity();
 			return entity instanceof VillagerEntity
 				|| entity instanceof TameableEntity;
 		}
 		
-		if(hitResult instanceof BlockHitResult)
+		if(hitResult instanceof BlockHitResult blockHitResult)
 		{
-			BlockPos pos = ((BlockHitResult)MC.crosshairTarget).getBlockPos();
+			BlockPos pos = blockHitResult.getBlockPos();
 			if(pos == null)
 				return false;
 			
