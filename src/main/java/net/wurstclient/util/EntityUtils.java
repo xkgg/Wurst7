@@ -20,6 +20,7 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -92,6 +93,19 @@ public enum EntityUtils
 		double y = MathHelper.clamp(eyes.y, box.minY, box.maxY);
 		double z = MathHelper.clamp(eyes.z, box.minZ, box.maxZ);
 		return eyes.squaredDistanceTo(new Vec3d(x, y, z));
+	}
+	
+	public static EntityHitResult createHitResult(Entity e)
+	{
+		return createHitResult(e, e.getBoundingBox().getCenter());
+	}
+	
+	public static EntityHitResult createHitResult(Entity e, Vec3d aimPoint)
+	{
+		Box box = e.getBoundingBox();
+		Vec3d start = MC.player.getEyePos();
+		Vec3d hitVec = box.raycast(start, aimPoint).orElse(start);
+		return new EntityHitResult(e, hitVec);
 	}
 	
 	/**

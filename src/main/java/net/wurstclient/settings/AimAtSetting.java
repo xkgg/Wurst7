@@ -14,6 +14,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.WurstClient;
+import net.wurstclient.hack.Hack;
 import net.wurstclient.util.text.WText;
 
 public final class AimAtSetting extends EnumSetting<AimAtSetting.AimAt>
@@ -44,9 +45,10 @@ public final class AimAtSetting extends EnumSetting<AimAtSetting.AimAt>
 		this("瞄准位置", description, selected);
 	}
 	
-	public AimAtSetting(String description)
+	public static WText genericDescription(Hack hack)
 	{
-		this(description, AimAt.AUTO);
+		return WText.translated("description.wurst.setting.generic.aim_at",
+			hack.getName());
 	}
 	
 	public Vec3d getAimPoint(Entity e)
@@ -65,9 +67,17 @@ public final class AimAtSetting extends EnumSetting<AimAtSetting.AimAt>
 		return text;
 	}
 	
-	private static Vec3d aimAtClosestPoint(Entity e)
+	private static Box getInsetBox(Entity e)
 	{
 		Box box = e.getBoundingBox();
+		return box.contract(Math.min(0.05, box.getXLength() / 2),
+			Math.min(0.05, box.getYLength() / 2),
+			Math.min(0.05, box.getZLength() / 2));
+	}
+	
+	private static Vec3d aimAtClosestPoint(Entity e)
+	{
+		Box box = getInsetBox(e);
 		Vec3d eyes = WurstClient.MC.player.getEyePos();
 		
 		if(box.contains(eyes))
@@ -93,7 +103,9 @@ public final class AimAtSetting extends EnumSetting<AimAtSetting.AimAt>
 	
 	private static Vec3d aimAtFeet(Entity e)
 	{
-		return e.getPos().add(0, 0.001, 0);
+		Box box = getInsetBox(e);
+		return new Vec3d((box.minX + box.maxX) / 2, box.minY,
+			(box.minZ + box.maxZ) / 2);
 	}
 	
 	public enum AimAt

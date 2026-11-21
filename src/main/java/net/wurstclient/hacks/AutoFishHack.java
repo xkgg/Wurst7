@@ -126,6 +126,7 @@ public final class AutoFishHack extends Hack
 		// 禁用冲突功能
 		WURST.getHax().antiAfkHack.setEnabled(false);
 		WURST.getHax().aimAssistHack.setEnabled(false);
+		WURST.getHax().killauraLegitHack.setEnabled(false);
 		
 		// 注册事件监听器
 		EVENTS.add(UpdateListener.class, this);

@@ -7,9 +7,8 @@
  */
 package net.wurstclient.hacks;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.stream.Collectors;
+import java.util.List;
 import java.util.stream.Stream;
 
 import net.minecraft.util.Hand;
@@ -113,18 +112,16 @@ public final class SpeedNukerHack extends Hack implements UpdateListener
 				// 2.2 过滤：仅保留可交互的方块（非空气/液体/基岩等）
 				.filter(BlockUtils::canBeClicked)
 				// 2.3 过滤：仅保留符合通用设置规则的方块（黑白名单、模式等）
-				.filter(commonSettings::shouldBreakBlock);
-		
-		// 2.4 球形模式补充过滤：仅保留与玩家眼睛距离≤挖掘半径的方块
-		if(commonSettings.isSphereShape())
-			stream = stream
-				.filter(pos -> pos.getSquaredDistance(eyesVec) <= rangeSq);
+				.filter(commonSettings::shouldBreakBlock)
+				// 2.4 球形模式补充过滤：仅保留挖掘半径内的方块
+				.filter(pos -> !commonSettings.isSphereShape()
+					|| pos.getSquaredDistance(eyesVec) <= rangeSq);
 		
 		// 3. 排序并转为列表：按与玩家距离由近到远排序（优先破坏近处方块）
-		ArrayList<BlockPos> blocks = stream
+		List<BlockPos> blocks = stream
 			.sorted(Comparator
 				.comparingDouble(pos -> pos.getSquaredDistance(eyesVec)))
-			.collect(Collectors.toCollection(ArrayList::new));
+			.toList();
 		
 		// 无符合条件的方块：直接返回，不执行挖掘
 		if(blocks.isEmpty())

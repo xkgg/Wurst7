@@ -89,17 +89,17 @@ class RotationTest
 		Rotation r1 = new Rotation(1, 0);
 		Rotation r2 = new Rotation(-1, 0);
 		double angle = r1.getAngleTo(r2);
-		assertEquals(2, angle);
+		assertEquals(2, angle, 1e-12);
 		
 		r1 = new Rotation(1, 0);
 		r2 = new Rotation(359, 0);
 		angle = r1.getAngleTo(r2);
-		assertEquals(2, angle);
+		assertEquals(2, angle, 1e-12);
 		
 		r1 = new Rotation(361, 0);
 		r2 = new Rotation(-1, 0);
 		angle = r1.getAngleTo(r2);
-		assertEquals(2, angle);
+		assertEquals(2, angle, 1e-12);
 	}
 	
 	@Test
@@ -108,15 +108,90 @@ class RotationTest
 		Rotation r1 = new Rotation(0, 1);
 		Rotation r2 = new Rotation(0, -1);
 		double angle = r1.getAngleTo(r2);
-		assertEquals(2, angle);
+		assertEquals(2, angle, 1e-12);
 		
 		r2 = r2.withPitch(359);
 		angle = r1.getAngleTo(r2);
-		assertEquals(2, angle);
+		assertEquals(2, angle, 1e-12);
 		
 		r1 = r1.withPitch(361);
 		angle = r1.getAngleTo(r2);
-		assertEquals(2, angle);
+		assertEquals(2, angle, 1e-12);
+	}
+	
+	@Test
+	void testGetAngleToWhenLookingStraightUp()
+	{
+		Rotation start = new Rotation(0, -90);
+		Rotation end = new Rotation(179, -90);
+		assertEquals(0, start.getAngleTo(end), 1e-12);
+		assertEquals(179, start.getYawPitchDistanceTo(end));
+	}
+	
+	@Test
+	void testSphericalAngleDiffersFromYawPitchDistance()
+	{
+		Rotation start = new Rotation(0, 45);
+		Rotation end = new Rotation(90, 45);
+		assertEquals(60, start.getAngleTo(end), 1e-12);
+		assertEquals(90, start.getYawPitchDistanceTo(end));
+	}
+	
+	@Test
+	void testGetAngleAcrossWrappedBoundary()
+	{
+		Rotation start = new Rotation(179, 0);
+		Rotation end = new Rotation(-179, 0);
+		assertEquals(2, start.getAngleTo(end), 1e-12);
+		assertEquals(2, start.getYawPitchDistanceTo(end));
+	}
+	
+	@Test
+	void testSlowlyTurnTowardsPreservesAxisProportions()
+	{
+		Rotation start = new Rotation(0, 0);
+		Rotation end = new Rotation(90, 45);
+		assertEquals(new Rotation(10, 5), start.slowlyTurnTowards(end, 10));
+		assertEquals(end, start.slowlyTurnTowards(end, 180));
+		assertEquals(start, start.slowlyTurnTowards(start, 10));
+	}
+	
+	@Test
+	void testSlowlyTurnTowardsAcrossWrappedBoundary()
+	{
+		Rotation start = new Rotation(179, 0);
+		Rotation end = new Rotation(-179, 0);
+		assertEquals(new Rotation(180, 0), start.slowlyTurnTowards(end, 1));
+	}
+	
+	@Test
+	void testAddAndClampPitch()
+	{
+		Rotation start = new Rotation(10, 80);
+		assertEquals(new Rotation(15, 100), start.add(5, 20));
+		assertEquals(new Rotation(15, 90), start.add(5, 20).clampPitch());
+		assertEquals(new Rotation(10, -90), start.withPitch(-100).clampPitch());
+		assertEquals(start, start.clampPitch());
+	}
+	
+	@Test
+	void testLerp()
+	{
+		Rotation start = new Rotation(10, 20);
+		Rotation end = new Rotation(30, 60);
+		assertEquals(start, Rotation.lerp(0, start, end));
+		assertEquals(end, Rotation.lerp(1, start, end));
+		assertEquals(new Rotation(15, 30), Rotation.lerp(0.25F, start, end));
+	}
+	
+	@Test
+	void testLookVecPrecisionAtDiagonalRotation()
+	{
+		Vec3d vec = new Rotation(45, 45).toLookVec();
+		assertEquals(-0.5, vec.x, 1e-12);
+		assertEquals(-Math.sqrt(0.5), vec.y, 1e-12);
+		assertEquals(0.5, vec.z, 1e-12);
+		assertEquals(1, vec.length(), 1e-12);
 	}
 	
 	@Test

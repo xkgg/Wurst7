@@ -129,7 +129,7 @@ public final class FishingSpotManager
 			// face next spot
 			Rotation needed =
 				RotationUtils.getNeededRotations(nextPos).withPitch(0);
-			if(!RotationUtils.isAlreadyFacing(needed))
+			if(RotationUtils.getLastReportedRotation().getAngleTo(needed) > 1)
 			{
 				RotationUtils.slowlyTurnTowards(needed, 5)
 					.applyToClientPlayer();
@@ -150,7 +150,8 @@ public final class FishingSpotManager
 		
 		// match rotation
 		Rotation nextRot = nextPosRot.rotation();
-		if(!RotationUtils.isAlreadyFacing(nextRot))
+		if(RotationUtils.getLastReportedRotation()
+			.getYawPitchDistanceTo(nextRot) > 1)
 		{
 			RotationUtils.slowlyTurnTowards(nextRot, 5).applyToClientPlayer();
 			return;

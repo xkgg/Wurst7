@@ -7,8 +7,6 @@
  */
 package net.wurstclient.hacks;
 
-import java.util.Comparator;
-import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -17,7 +15,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.wurstclient.Category;
 import net.wurstclient.events.HandleInputListener;
 import net.wurstclient.events.MouseUpdateListener;
@@ -25,9 +22,12 @@ import net.wurstclient.events.PreMotionListener;
 import net.wurstclient.events.RenderListener;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
+import net.wurstclient.settings.AimAtSetting;
+import net.wurstclient.settings.AttackPrioritySetting;
+import net.wurstclient.settings.AttackPrioritySetting.AttackPriority;
 import net.wurstclient.settings.AttackSpeedSliderSetting;
 import net.wurstclient.settings.CheckboxSetting;
-import net.wurstclient.settings.EnumSetting;
+import net.wurstclient.settings.FovSliderSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.SwingHandSetting;
@@ -36,9 +36,10 @@ import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.settings.filters.*;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.EntityUtils;
+import net.wurstclient.util.MouseAimController;
 import net.wurstclient.util.RenderUtils;
-import net.wurstclient.util.Rotation;
 import net.wurstclient.util.RotationUtils;
+import net.wurstclient.util.text.WText;
 
 /**
  * 简易杀戮光环（KillauraLegit）：模拟手动攻击的自动化战斗功能，
@@ -68,15 +69,23 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 		10, 3600, 10, ValueDisplay.DEGREES.withSuffix("/秒"));
 	
 	// 攻击优先级：决定优先攻击哪个实体
-	private final EnumSetting<Priority> priority = new EnumSetting<>("攻击优先级",
-		"决定优先攻击哪个实体。\n" + "§l距离§r - 优先攻击最近的实体。\n"
-			+ "§l角度§r - 优先攻击需要转头幅度最小的实体。\n" + "§l血量§r - 优先攻击血量最低的实体。",
-		Priority.values(), Priority.ANGLE);
+	private final AttackPrioritySetting priority =
+		AttackPrioritySetting.withoutAngleDistOption("攻击优先级",
+			AttackPrioritySetting.genericDescription(), AttackPriority.ANGLE);
 	
 	// 视野范围（FOV）：准星周围可攻击的角度范围
-	private final SliderSetting fov = new SliderSetting("视野范围(FOV)",
-		"视野范围 - 实体离准星的最大角度，超过则忽略该实体。\n" + "360° = 可攻击周围所有实体。", 360, 30, 360, 10,
-		ValueDisplay.DEGREES);
+	private final FovSliderSetting fov = new FovSliderSetting("视野范围(FOV)",
+		WText.translated("description.wurst.setting.generic.fov_combat"), 360);
+	
+	private final AimAtSetting aimAt = new AimAtSetting(
+		AimAtSetting.genericDescription(this), AimAtSetting.AimAt.CENTER);
+	
+	private final SliderSetting ignoreMouseInput =
+		new SliderSetting("Ignore mouse input",
+			WText.translated(
+				"description.wurst.setting.generic.ignore_mouse_input",
+				getName()),
+			0, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
 	// 挥动手臂样式：无副手选项（仅主手攻击）
 	private final SwingHandSetting swingHand =
@@ -121,12 +130,9 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 			FilterArmorStandsSetting.genericCombat(false), // 盔甲架过滤
 			FilterCrystalsSetting.genericCombat(false)); // 水晶过滤
 	
+	private final MouseAimController mouseAim = new MouseAimController();
 	// 当前攻击目标
 	private Entity target;
-	// 目标偏航角（Yaw）
-	private float nextYaw;
-	// 目标俯仰角（Pitch）
-	private float nextPitch;
 	
 	public KillauraLegitHack()
 	{
@@ -139,6 +145,8 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 		addSetting(rotationSpeed); // 添加转头速度设置
 		addSetting(priority); // 添加攻击优先级设置
 		addSetting(fov); // 添加视野范围设置
+		addSetting(aimAt);
+		addSetting(ignoreMouseInput);
 		addSetting(swingHand); // 添加挥动手臂样式设置
 		addSetting(damageIndicator); // 添加伤害指示器设置
 		
@@ -151,6 +159,7 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 	{
 		// 禁用冲突的战斗类功能
 		WURST.getHax().aimAssistHack.setEnabled(false);
+		WURST.getHax().autoFishHack.setEnabled(false);
 		WURST.getHax().clickAuraHack.setEnabled(false);
 		WURST.getHax().crystalAuraHack.setEnabled(false);
 		WURST.getHax().fightBotHack.setEnabled(false);
@@ -181,6 +190,7 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 		EVENTS.remove(RenderListener.class, this);
 		// 清空攻击目标
 		target = null;
+		mouseAim.reset();
 	}
 	
 	@Override
@@ -193,62 +203,52 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 		if(MC.currentScreen instanceof HandledScreen)
 			return;
 		
-		// 筛选可攻击的实体
-		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities();
 		double rangeSq = range.getValueSq(); // 攻击范围的平方（优化性能）
-		// 过滤：在攻击范围内的实体
-		stream =
-			stream.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
-		
-		// 过滤：在视野范围内的实体（FOV<360时）
-		if(fov.getValue() < 360.0)
-			stream = stream.filter(e -> RotationUtils.getAngleToLookVec(
-				e.getBoundingBox().getCenter()) <= fov.getValue() / 2.0);
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities()
+			.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq)
+			.filter(fov.asEntityPredicate(aimAt::getAimPoint))
+			.filter(e -> BlockUtils.hasLineOfSight(aimAt.getAimPoint(e)));
 		
 		// 应用实体过滤规则
 		stream = entityFilters.applyTo(stream);
 		
 		// 按优先级选择攻击目标
-		target = stream.min(priority.getSelected().comparator).orElse(null);
+		target =
+			stream.min(priority.getComparator(aimAt::getAimPoint)).orElse(null);
 		if(target == null)
 			return;
 		
-		// 检查视线是否畅通（无方块阻挡）
-		if(!BlockUtils.hasLineOfSight(target.getBoundingBox().getCenter()))
-		{
-			target = null;
-			return;
-		}
-		
 		// 自动切换最优武器（如果AutoSword启用）
-		WURST.getHax().autoSwordHack.setSlot(target);
+		if(!MC.player.isUsingItem())
+			WURST.getHax().autoSwordHack.setSlot(target);
 	}
 	
 	@Override
 	public void onPreMotion()
 	{
 		if(target == null)
+		{
+			mouseAim.reset();
 			return;
+		}
 		
-		// 客户端侧转向目标实体
-		faceEntityClient(target);
+		mouseAim.tick(aimAt.getAimPoint(target), rotationSpeed.getValueI());
 	}
 	
 	@Override
 	public void onHandleInput()
 	{
-		// 无目标时跳过
-		if(target == null)
-			return;
-		
 		// 更新攻击计时器
 		speed.updateTimer();
 		// 攻击冷却未结束时跳过
 		if(!speed.isTimeToAttack())
 			return;
 		
+		if(target == null || MC.player.isUsingItem())
+			return;
+		
 		// 未对准目标时跳过
-		if(!RotationUtils.isFacingBox(target.getBoundingBox(),
+		if(!RotationUtils.isFacingBoxServerSide(target.getBoundingBox(),
 			range.getValue()))
 			return;
 		
@@ -260,50 +260,11 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 		speed.resetTimer(speedRandMS.getValue());
 	}
 	
-	/**
-	 * 客户端侧缓慢转向目标实体（模拟手动转头）
-	 *
-	 * @param entity
-	 *            目标实体
-	 * @return 是否已对准目标
-	 */
-	private boolean faceEntityClient(Entity entity)
-	{
-		// 获取对准目标所需的旋转角度
-		Box box = entity.getBoundingBox();
-		Rotation needed = RotationUtils.getNeededRotations(box.getCenter());
-		
-		// 缓慢转向目标中心（按转头速度限制）
-		Rotation next = RotationUtils.slowlyTurnTowards(needed,
-			rotationSpeed.getValueI() / 20F);
-		nextYaw = next.yaw();
-		nextPitch = next.pitch();
-		
-		// 检查是否已对准目标中心
-		if(RotationUtils.isAlreadyFacing(needed))
-			return true;
-		
-		// 未对准中心时，检查是否对准目标包围盒内任意位置
-		return RotationUtils.isFacingBox(box, range.getValue());
-	}
-	
 	@Override
 	public void onMouseUpdate(MouseUpdateEvent event)
 	{
-		// 无目标或玩家未加载时跳过
-		if(target == null || MC.player == null)
-			return;
-		
-		// 计算需要调整的角度差值
-		int diffYaw = (int)(nextYaw - MC.player.getYaw());
-		int diffPitch = (int)(nextPitch - MC.player.getPitch());
-		// 角度差值过小（<1度）时跳过
-		if(MathHelper.abs(diffYaw) < 1 && MathHelper.abs(diffPitch) < 1)
-			return;
-		
-		// 调整鼠标移动量，模拟手动转头
-		event.setDeltaX(event.getDefaultDeltaX() + diffYaw);
-		event.setDeltaY(event.getDefaultDeltaY() + diffPitch);
+		if(target != null)
+			mouseAim.applyTo(event, ignoreMouseInput.getValue());
 	}
 	
 	@Override
@@ -338,35 +299,5 @@ public final class KillauraLegitHack extends Hack implements UpdateListener,
 		RenderUtils.drawSolidBox(matrixStack, box, quadColor, false);
 		// 绘制轮廓方框
 		RenderUtils.drawOutlinedBox(matrixStack, box, lineColor, false);
-	}
-	
-	/**
-	 * 攻击优先级枚举：距离/角度/血量
-	 */
-	private enum Priority
-	{
-		DISTANCE("距离", EntityUtils::distanceToHitboxSq), // 按距离排序（近→远）
-		
-		ANGLE("角度",
-			e -> RotationUtils
-				.getAngleToLookVec(e.getBoundingBox().getCenter())), // 按角度排序（小→大）
-		
-		HEALTH("血量", e -> e instanceof LivingEntity
-			? ((LivingEntity)e).getHealth() : Integer.MAX_VALUE); // 按血量排序（低→高）
-		
-		private final String name; // 显示名称
-		private final Comparator<Entity> comparator; // 比较器
-		
-		private Priority(String name, ToDoubleFunction<Entity> keyExtractor)
-		{
-			this.name = name;
-			comparator = Comparator.comparingDouble(keyExtractor);
-		}
-		
-		@Override
-		public String toString()
-		{
-			return name;
-		}
 	}
 }

@@ -7,8 +7,7 @@
  */
 package net.wurstclient.hacks;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
 import java.util.stream.Stream;
 
 import net.minecraft.entity.Entity;
@@ -17,7 +16,10 @@ import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
+import net.wurstclient.settings.AimAtSetting;
+import net.wurstclient.settings.AimAtSetting.AimAt;
 import net.wurstclient.settings.AttackSpeedSliderSetting;
+import net.wurstclient.settings.FovSliderSetting;
 import net.wurstclient.settings.PauseAttackOnContainersSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
@@ -36,8 +38,11 @@ public final class MultiAuraHack extends Hack implements UpdateListener
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
 	
-	private final SliderSetting fov =
-		new SliderSetting("视角范围", 360, 30, 360, 10, ValueDisplay.DEGREES);
+	private final FovSliderSetting fov =
+		FovSliderSetting.genericCombat("视角范围", 360);
+	
+	private final AimAtSetting aimAt =
+		new AimAtSetting(AimAtSetting.genericDescription(this), AimAt.AUTO);
 	
 	private final SwingHandSetting swingHand = new SwingHandSetting(
 		SwingHandSetting.genericCombatDescription(this), SwingHand.CLIENT);
@@ -56,6 +61,7 @@ public final class MultiAuraHack extends Hack implements UpdateListener
 		addSetting(range);
 		addSetting(speed);
 		addSetting(fov);
+		addSetting(aimAt);
 		addSetting(swingHand);
 		addSetting(pauseOnContainers);
 		
@@ -97,19 +103,14 @@ public final class MultiAuraHack extends Hack implements UpdateListener
 			return;
 		
 		// get entities
-		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities();
 		double rangeSq = range.getValueSq();
-		stream =
-			stream.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
-		
-		if(fov.getValue() < 360.0)
-			stream = stream.filter(e -> RotationUtils.getAngleToLookVec(
-				e.getBoundingBox().getCenter()) <= fov.getValue() / 2.0);
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities()
+			.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq)
+			.filter(fov.asEntityPredicate(aimAt::getAimPoint));
 		
 		stream = entityFilters.applyTo(stream);
 		
-		ArrayList<Entity> entities =
-			stream.collect(Collectors.toCollection(ArrayList::new));
+		List<Entity> entities = stream.toList();
 		if(entities.isEmpty())
 			return;
 		
@@ -118,8 +119,7 @@ public final class MultiAuraHack extends Hack implements UpdateListener
 		// attack entities
 		for(Entity entity : entities)
 		{
-			RotationUtils
-				.getNeededRotations(entity.getBoundingBox().getCenter())
+			RotationUtils.getNeededRotations(aimAt.getAimPoint(entity))
 				.sendPlayerLookPacket();
 			
 			MC.interactionManager.attackEntity(MC.player, entity);

@@ -19,6 +19,7 @@ import net.minecraft.client.gui.screen.AccessibilityOnboardingScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.world.CreateWorldScreen;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
+import net.minecraft.sound.SoundCategory;
 
 public final class WurstE2ETestClient implements ModInitializer
 {
@@ -40,6 +41,8 @@ public final class WurstE2ETestClient implements ModInitializer
 	{
 		System.out.println("Starting Wurst End-to-End Tests");
 		waitForResourceLoading();
+		submitAndWait(mc -> mc.options
+			.getSoundVolumeOption(SoundCategory.MASTER).setValue(0.0));
 		
 		if(submitAndGet(mc -> mc.options.onboardAccessibility))
 		{
@@ -183,6 +186,19 @@ public final class WurstE2ETestClient implements ModInitializer
 			CombatBackportTest::testTpAuraCooldown);
 		runScenario("BackportMotionEvents",
 			MotionBackportTest::testMotionEvents);
+		runScenario("Backport757Fov", Upstream757Test::testFov);
+		runScenario("Backport757LegacySettings",
+			Upstream757Test::testLegacySettings);
+		runScenario("Backport757LineOfSight",
+			Upstream757Test::testLineOfSightSelection);
+		runScenario("Backport757AttackTiming",
+			Upstream757Test::testAttackTiming);
+		runScenario("Backport757AimAt", Upstream757Test::testAimAt);
+		runScenario("Backport757MouseAim", Upstream757Test::testMouseAim);
+		runScenario("Backport757AutoFish",
+			Upstream757Test::testAutoFishExclusion);
+		runScenario("Backport757EventManager",
+			Upstream757Test::testEventManager);
 		runScenario("BackportHighJumpAccuracy",
 			MotionBackportTest::testHighJumpAccuracy);
 		runScenario("BackportMixinCompatibility",

@@ -8,8 +8,6 @@
 package net.wurstclient.hacks;
 
 import java.awt.Color;
-import java.util.Comparator;
-import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -18,7 +16,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
@@ -30,8 +27,9 @@ import net.wurstclient.events.GUIRenderListener;
 import net.wurstclient.events.RenderListener;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
+import net.wurstclient.settings.AttackPrioritySetting;
+import net.wurstclient.settings.AttackPrioritySetting.AttackPriority;
 import net.wurstclient.settings.ColorSetting;
-import net.wurstclient.settings.EnumSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.filterlists.EntityFilterList;
@@ -43,12 +41,9 @@ import net.wurstclient.util.RotationUtils;
 public final class BowAimbotHack extends Hack
 	implements UpdateListener, RenderListener, GUIRenderListener
 {
-	private final EnumSetting<Priority> priority = new EnumSetting<>("优先级",
-		"决定首先攻击哪个实体。\n" + "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
-			+ "\u00a7l角度\u00a7r - 攻击需要最少头部移动的实体。\n"
-			+ "\u00a7l角度+距离\u00a7r - 角度和距离的混合。通常最能确定你想瞄准的目标。\n"
-			+ "\u00a7l生命值\u00a7r - 攻击最弱的实体。",
-		Priority.values(), Priority.ANGLE_DIST);
+	private final AttackPrioritySetting priority = new AttackPrioritySetting(
+		"优先级", AttackPrioritySetting.genericDescription(),
+		AttackPriority.ANGLE_DIST);
 	
 	private final SliderSetting predictMovement = new SliderSetting("预测移动",
 		"控制弓箭自瞄的移动预测算法强度。", 0.2, 0, 2, 0.01, ValueDisplay.PERCENTAGE);
@@ -179,7 +174,9 @@ public final class BowAimbotHack extends Hack
 		Stream<Entity> stream = s.filter(EntityUtils.IS_ATTACKABLE_RANGED);
 		stream = entityFilters.applyTo(stream);
 		
-		return stream.min(priority.getSelected().comparator).orElse(null);
+		return stream
+			.min(priority.getComparator(e -> e.getBoundingBox().getCenter()))
+			.orElse(null);
 	}
 	
 	@Override
@@ -225,36 +222,4 @@ public final class BowAimbotHack extends Hack
 		context.drawText(tr, message, msgX1 + 2, msgY1 + 1, 0xFFFFFFFF, false);
 	}
 	
-	private enum Priority
-	{
-		DISTANCE("距离", EntityUtils::distanceToHitboxSq),
-		
-		ANGLE("角度",
-			e -> RotationUtils
-				.getAngleToLookVec(e.getBoundingBox().getCenter())),
-		
-		ANGLE_DIST("角度+距离",
-			e -> Math
-				.pow(RotationUtils
-					.getAngleToLookVec(e.getBoundingBox().getCenter()), 2)
-				+ EntityUtils.distanceToHitboxSq(e)),
-		
-		HEALTH("生命值", e -> e instanceof LivingEntity
-			? ((LivingEntity)e).getHealth() : Integer.MAX_VALUE);
-		
-		private final String name;
-		private final Comparator<Entity> comparator;
-		
-		private Priority(String name, ToDoubleFunction<Entity> keyExtractor)
-		{
-			this.name = name;
-			comparator = Comparator.comparingDouble(keyExtractor);
-		}
-		
-		@Override
-		public String toString()
-		{
-			return name;
-		}
-	}
 }

@@ -10,6 +10,7 @@ package net.wurstclient.hacks;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import net.minecraft.client.util.math.MatrixStack;
@@ -309,14 +310,21 @@ public final class AutoFarmHack extends Hack
 	
 	private void harvestByMining(List<BlockPos> blocksToMine)
 	{
+		double rangeSq = range.getValueSq();
+		Stream<BlockBreakingParams> stream = blocksToMine.stream()
+			.map(BlockBreaker::getBlockBreakingParams).filter(Objects::nonNull)
+			.filter(params -> params.distanceSq() <= rangeSq)
+			.filter(params -> !checkLOS.isChecked() || params.lineOfSight())
+			.sorted(BlockBreaker.comparingParams());
+		
 		if(MC.player.getAbilities().creativeMode
 			&& facing.getSelected() == Facing.OFF)
 		{
 			MC.interactionManager.cancelBlockBreaking();
 			overlay.resetProgress();
 			
-			List<BlockPos> blocks = cache.filterOutRecentBlocks(
-				blocksToMine.stream().filter(this::hasValidBreakingParams));
+			List<BlockPos> blocks = cache
+				.filterOutRecentBlocks(stream.map(BlockBreakingParams::pos));
 			if(blocks.isEmpty())
 				return;
 			
@@ -326,10 +334,8 @@ public final class AutoFarmHack extends Hack
 			return;
 		}
 		
-		currentlyHarvesting = blocksToMine.stream().filter(pos -> {
-			BlockBreakingParams params = getValidBreakingParams(pos);
-			return params != null && breakOneBlock(params);
-		}).findFirst().orElse(null);
+		currentlyHarvesting = stream.filter(this::breakOneBlock)
+			.map(BlockBreakingParams::pos).findFirst().orElse(null);
 		
 		if(currentlyHarvesting == null)
 		{
@@ -359,20 +365,5 @@ public final class AutoFarmHack extends Hack
 		
 		MC.interactionManager.cancelBlockBreaking();
 		overlay.resetProgress();
-	}
-	
-	private boolean hasValidBreakingParams(BlockPos pos)
-	{
-		return getValidBreakingParams(pos) != null;
-	}
-	
-	private BlockBreakingParams getValidBreakingParams(BlockPos pos)
-	{
-		BlockBreakingParams params = BlockBreaker.getBlockBreakingParams(pos);
-		if(params == null || params.distanceSq() > range.getValueSq()
-			|| checkLOS.isChecked() && !params.lineOfSight())
-			return null;
-		
-		return params;
 	}
 }

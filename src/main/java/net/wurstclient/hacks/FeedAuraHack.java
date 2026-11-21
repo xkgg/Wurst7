@@ -21,13 +21,14 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.HandleInputListener;
 import net.wurstclient.events.PreMotionListener;
 import net.wurstclient.events.RenderListener;
 import net.wurstclient.hack.Hack;
+import net.wurstclient.settings.AimAtSetting;
+import net.wurstclient.settings.AimAtSetting.AimAt;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
@@ -47,6 +48,9 @@ public final class FeedAuraHack extends Hack
 	private final FilterBabiesSetting filterBabies =
 		new FilterBabiesSetting("不会喂食幼年动物。\n" + "节省食物，但不会加速幼年动物的生长。", true);
 	
+	private final AimAtSetting aimAt =
+		new AimAtSetting(AimAtSetting.genericDescription(this), AimAt.AUTO);
+	
 	private final CheckboxSetting filterUntamed =
 		new CheckboxSetting("过滤未驯服", "不会喂食尚未被驯服的可驯服动物。", false);
 	
@@ -63,6 +67,7 @@ public final class FeedAuraHack extends Hack
 		super("喂养光环");
 		setCategory(Category.OTHER);
 		addSetting(range);
+		addSetting(aimAt);
 		addSetting(filterBabies);
 		addSetting(filterUntamed);
 		addSetting(filterHorses);
@@ -113,7 +118,7 @@ public final class FeedAuraHack extends Hack
 		clickTarget = targets.get(random.nextInt(targets.size()));
 		renderTarget = clickTarget;
 		WURST.getRotationFaker()
-			.faceVectorPacket(clickTarget.getBoundingBox().getCenter());
+			.faceVectorPacket(aimAt.getAimPoint(clickTarget));
 	}
 	
 	@Override
@@ -129,12 +134,8 @@ public final class FeedAuraHack extends Hack
 		if(im.isBreakingBlock() || player.isRiding())
 			return;
 		
-		// create realistic hit result
-		Box box = clickTarget.getBoundingBox();
-		Vec3d start = MC.player.getEyePos();
-		Vec3d end = box.getCenter();
-		Vec3d hitVec = box.raycast(start, end).orElse(start);
-		EntityHitResult hitResult = new EntityHitResult(clickTarget, hitVec);
+		EntityHitResult hitResult = EntityUtils.createHitResult(clickTarget,
+			aimAt.getAimPoint(clickTarget));
 		
 		ActionResult actionResult =
 			im.interactEntityAtLocation(player, clickTarget, hitResult, hand);

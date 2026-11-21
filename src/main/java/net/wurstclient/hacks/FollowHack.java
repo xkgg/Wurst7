@@ -259,7 +259,7 @@ public final class FollowHack extends Hack
 			// 4. 转向目标实体并向前移动（超过跟随距离时）
 			WURST.getRotationFaker()
 				.faceVectorClient(entity.getBoundingBox().getCenter());
-			double distanceSq = Math.pow(distance.getValue(), 2);
+			double distanceSq = distance.getValueSq();
 			MC.options.forwardKey
 				.setPressed(MC.player.squaredDistanceTo(entity.getX(),
 					MC.player.getY(), entity.getZ()) > distanceSq);
@@ -308,7 +308,7 @@ public final class FollowHack extends Hack
 		protected boolean checkDone()
 		{
 			Vec3d center = Vec3d.ofCenter(current);
-			double distanceSq = Math.pow(distance.getValue(), 2);
+			double distanceSq = distance.getValueSq();
 			// 到达跟随距离内时标记寻路完成
 			return done = entity.squaredDistanceTo(center) <= distanceSq;
 		}

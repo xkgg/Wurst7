@@ -170,7 +170,7 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	private boolean placeCrystal(BlockPos pos)
 	{
 		Vec3d eyesPos = MC.player.getEyePos();
-		double rangeSq = Math.pow(range.getValue(), 2);
+		double rangeSq = range.getValueSq();
 		Vec3d posVec = Vec3d.ofCenter(pos);
 		double distanceSqPosVec = eyesPos.squaredDistanceTo(posVec);
 		
@@ -216,7 +216,7 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	
 	private ArrayList<Entity> getNearbyCrystals()
 	{
-		double rangeSq = Math.pow(range.getValue(), 2);
+		double rangeSq = range.getValueSq();
 		
 		Comparator<Entity> furthestFromPlayer =
 			Comparator.<Entity> comparingDouble(EntityUtils::distanceToHitboxSq)
@@ -232,7 +232,7 @@ public final class CrystalAuraHack extends Hack implements UpdateListener
 	
 	private ArrayList<Entity> getNearbyTargets()
 	{
-		double rangeSq = Math.pow(range.getValue(), 2);
+		double rangeSq = range.getValueSq();
 		
 		Comparator<Entity> furthestFromPlayer =
 			Comparator.<Entity> comparingDouble(EntityUtils::distanceToHitboxSq)

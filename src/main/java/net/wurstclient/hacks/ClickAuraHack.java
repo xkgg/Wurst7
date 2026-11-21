@@ -7,21 +7,22 @@
  */
 package net.wurstclient.hacks;
 
-import java.util.Comparator;
-import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Hand;
 import net.wurstclient.Category;
 import net.wurstclient.SearchTags;
 import net.wurstclient.events.LeftClickListener;
 import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
+import net.wurstclient.settings.AimAtSetting;
+import net.wurstclient.settings.AimAtSetting.AimAt;
+import net.wurstclient.settings.AttackPrioritySetting;
+import net.wurstclient.settings.AttackPrioritySetting.AttackPriority;
 import net.wurstclient.settings.AttackSpeedSliderSetting;
-import net.wurstclient.settings.EnumSetting;
+import net.wurstclient.settings.FovSliderSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.filterlists.EntityFilterList;
@@ -38,14 +39,15 @@ public final class ClickAuraHack extends Hack
 	private final AttackSpeedSliderSetting speed =
 		new AttackSpeedSliderSetting();
 	
-	private final EnumSetting<Priority> priority = new EnumSetting<>("优先级",
-		"决定首先攻击哪个实体。\n" + "\u00a7l距离\u00a7r - 攻击最近的实体。\n"
-			+ "\u00a7l角度\u00a7r - 攻击需要最少头部移动的实体。\n"
-			+ "\u00a7l生命值\u00a7r - 攻击最弱的实体。",
-		Priority.values(), Priority.ANGLE);
+	private final AttackPrioritySetting priority =
+		AttackPrioritySetting.withoutAngleDistOption("优先级",
+			AttackPrioritySetting.genericDescription(), AttackPriority.ANGLE);
 	
-	private final SliderSetting fov =
-		new SliderSetting("视野", 360, 30, 360, 10, ValueDisplay.DEGREES);
+	private final FovSliderSetting fov =
+		FovSliderSetting.genericCombat("视野", 360);
+	
+	private final AimAtSetting aimAt =
+		new AimAtSetting(AimAtSetting.genericDescription(this), AimAt.CENTER);
 	
 	private final EntityFilterList entityFilters =
 		EntityFilterList.genericMeleeCombat();
@@ -59,6 +61,7 @@ public final class ClickAuraHack extends Hack
 		addSetting(speed);
 		addSetting(priority);
 		addSetting(fov);
+		addSetting(aimAt);
 		
 		entityFilters.forEach(this::addSetting);
 	}
@@ -112,27 +115,22 @@ public final class ClickAuraHack extends Hack
 	{
 		// set entity
 		ClientPlayerEntity player = MC.player;
-		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities();
-		
-		double rangeSq = Math.pow(range.getValue(), 2);
-		stream =
-			stream.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
-		
-		if(fov.getValue() < 360.0)
-			stream = stream.filter(e -> RotationUtils.getAngleToLookVec(
-				e.getBoundingBox().getCenter()) <= fov.getValue() / 2.0);
+		double rangeSq = range.getValueSq();
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities()
+			.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq)
+			.filter(fov.asEntityPredicate(aimAt::getAimPoint));
 		
 		stream = entityFilters.applyTo(stream);
 		
 		Entity target =
-			stream.min(priority.getSelected().comparator).orElse(null);
+			stream.min(priority.getComparator(aimAt::getAimPoint)).orElse(null);
 		if(target == null)
 			return;
 		
 		WURST.getHax().autoSwordHack.setSlot(target);
 		
 		// face entity
-		RotationUtils.getNeededRotations(target.getBoundingBox().getCenter())
+		RotationUtils.getNeededRotations(aimAt.getAimPoint(target))
 			.sendPlayerLookPacket();
 		
 		// attack entity
@@ -141,30 +139,4 @@ public final class ClickAuraHack extends Hack
 		speed.resetTimer();
 	}
 	
-	private enum Priority
-	{
-		DISTANCE("距离", EntityUtils::distanceToHitboxSq),
-		
-		ANGLE("角度",
-			e -> RotationUtils
-				.getAngleToLookVec(e.getBoundingBox().getCenter())),
-		
-		HEALTH("生命值", e -> e instanceof LivingEntity
-			? ((LivingEntity)e).getHealth() : Integer.MAX_VALUE);
-		
-		private final String name;
-		private final Comparator<Entity> comparator;
-		
-		private Priority(String name, ToDoubleFunction<Entity> keyExtractor)
-		{
-			this.name = name;
-			comparator = Comparator.comparingDouble(keyExtractor);
-		}
-		
-		@Override
-		public String toString()
-		{
-			return name;
-		}
-	}
 }

@@ -25,6 +25,7 @@ import net.wurstclient.events.PreMotionListener.PreMotionEvent;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.AttackSpeedSliderSetting;
 import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.util.Rotation;
 
 public enum CombatBackportTest
 {
@@ -81,11 +82,17 @@ public enum CombatBackportTest
 			var target = EntityType.COW.create(mc.world);
 			float yaw = mc.player.getYaw();
 			float pitch = mc.player.getPitch();
+			var speed = (AttackSpeedSliderSetting)hax.killauraHack.getSettings()
+				.get("速度");
+			double previousSpeed = speed.getValue();
 			try
 			{
+				speed.setValue(20);
 				for(Hack hack : hacks)
 				{
 					hack.setEnabled(true);
+					speed.resetTimer();
+					speed.updateTimer();
 					mc.player.setYaw(0);
 					mc.player.setPitch(0);
 					target.setPosition(mc.player.getPos().add(0, 0, 3));
@@ -94,8 +101,9 @@ public enum CombatBackportTest
 					EventManager.fire(PreMotionEvent.INSTANCE);
 					float nextYaw = hack == hax.killauraHack
 						? wurst.getRotationFaker().getServerYaw()
-						: (float)readField(hack, "nextYaw");
-					assertTrue(nextYaw > 20, hack.getName()
+						: ((Rotation)readField(readField(hack, "mouseAim"),
+							"nextTickRot")).yaw();
+					assertTrue(nextYaw > 10, hack.getName()
 						+ " did not aim at the target's new position");
 					hack.setEnabled(false);
 					wurst.getRotationFaker().applyIfNeeded();
@@ -105,6 +113,7 @@ public enum CombatBackportTest
 			{
 				for(Hack hack : hacks)
 					hack.setEnabled(false);
+				speed.setValue(previousSpeed);
 				wurst.getRotationFaker().applyIfNeeded();
 				wurst.getRotationFaker().restoreIfNeeded();
 				mc.player.setYaw(yaw);

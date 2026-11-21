@@ -78,11 +78,18 @@ public enum MenuAndTranslationTest
 			var translator = WurstClient.INSTANCE.getTranslator();
 			for(String key : new String[]{
 				"description.wurst.setting.aimassist.fov",
-				"description.wurst.setting.aimassist.aim_at",
+				"description.wurst.setting.generic.aim_at",
 				"description.wurst.setting.generic.aim_at.auto",
 				"description.wurst.setting.generic.aim_at.head",
 				"description.wurst.setting.generic.aim_at.center",
 				"description.wurst.setting.generic.aim_at.feet",
+				"description.wurst.setting.generic.attack_priority",
+				"description.wurst.setting.generic.attack_priority.distance",
+				"description.wurst.setting.generic.attack_priority.angle",
+				"description.wurst.setting.generic.attack_priority.angle_dist",
+				"description.wurst.setting.generic.attack_priority.health",
+				"description.wurst.setting.generic.fov_combat",
+				"description.wurst.setting.generic.ignore_mouse_input",
 				"description.wurst.setting.anchoraura.range",
 				"description.wurst.setting.antiafk.wait_time",
 				"description.wurst.setting.follow.filter_players",
@@ -91,7 +98,7 @@ public enum MenuAndTranslationTest
 				"description.wurst.setting.generic.filter_golems_combat",
 				"gui.wurst.altmanager.add.title"})
 			{
-				String value = translator.translate(key);
+				String value = translator.translate(key, "测试功能");
 				assertTrue(
 					!value.equals(key) && value.codePoints()
 						.anyMatch(c -> c >= 0x4E00 && c <= 0x9FFF),

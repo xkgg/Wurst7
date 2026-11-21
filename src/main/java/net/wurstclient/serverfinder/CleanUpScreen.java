@@ -34,7 +34,7 @@ public class CleanUpScreen extends Screen
 	private boolean removeAll;
 	private boolean cleanupFailed = true;
 	private boolean cleanupOutdated = true;
-	private boolean cleanupRename = true;
+	private boolean cleanupRename = false;
 	private boolean cleanupUnknown = true;
 	private boolean cleanupGriefMe;
 	

@@ -20,10 +20,10 @@
 
 ## Minecraft 1.20.1 Backport
 
-This fork backports Wurst **7.56.2** from the official `1.21.11` branch while
+This fork backports Wurst **7.57** from the official `1.21.11` branch while
 keeping **Minecraft 1.20.1**, Java 17 compatibility, and the existing Chinese
 customizations. The upstream revision, ported fixes, and verification results
-are listed in the [backport changelog](docs/更新记录-2026-11-04.md).
+are listed in the [backport changelog](docs/更新记录-2026-11-21.md).
 
 ## Installation
 

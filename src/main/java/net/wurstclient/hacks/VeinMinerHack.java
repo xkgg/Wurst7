@@ -144,14 +144,9 @@ public final class VeinMinerHack extends Hack
 			.getAllInBoxStream(eyesBlock, blockRange)
 			.filter(this::shouldBreakBlock)
 			.map(BlockBreaker::getBlockBreakingParams).filter(Objects::nonNull)
-			.filter(params -> params.distanceSq() <= rangeSq);
-		
-		// 如果启用了视线检测，则过滤掉视线被遮挡的方块
-		if(checkLOS.isChecked())
-			stream = stream.filter(BlockBreakingParams::lineOfSight);
-		
-		// 按优先级排序
-		stream = stream.sorted(BlockBreaker.comparingParams());
+			.filter(params -> params.distanceSq() <= rangeSq)
+			.filter(params -> !checkLOS.isChecked() || params.lineOfSight())
+			.sorted(BlockBreaker.comparingParams());
 		
 		// 创造模式下一次性破坏所有符合条件的方块
 		if(MC.player.getAbilities().creativeMode)

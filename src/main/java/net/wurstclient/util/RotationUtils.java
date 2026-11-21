@@ -64,42 +64,47 @@ public enum RotationUtils
 		return MathHelper.wrapDegrees(currentYaw - neededYaw);
 	}
 	
-	/**
-	 * Returns true if the player is already facing within 1 degree of the
-	 * specified rotation.
-	 */
-	public static boolean isAlreadyFacing(Rotation rotation)
+	public static double getYawPitchDistanceToLookVec(Vec3d vec)
 	{
-		return getAngleToLastReportedLookVec(rotation) <= 1.0;
+		ClientPlayerEntity player = MC.player;
+		Rotation current = new Rotation(player.getYaw(), player.getPitch());
+		Rotation needed = getNeededRotations(vec);
+		return current.getYawPitchDistanceTo(needed);
 	}
 	
 	public static double getAngleToLastReportedLookVec(Vec3d vec)
 	{
 		Rotation needed = getNeededRotations(vec);
-		return getAngleToLastReportedLookVec(needed);
+		return getLastReportedRotation().getAngleTo(needed);
 	}
 	
-	public static double getAngleToLastReportedLookVec(Rotation rotation)
+	public static Rotation getLastReportedRotation()
 	{
 		ClientPlayerEntity player = MC.player;
 		
 		// lastYaw/Pitch do not get updated when the player is in a vehicle
-		Rotation lastReported = player.hasVehicle()
+		return player.hasVehicle()
 			? new Rotation(player.getYaw(), player.getPitch())
 			: new Rotation(player.lastYaw, player.lastPitch);
-		
-		return lastReported.getAngleTo(rotation);
+	}
+	
+	public static double getDegreesPerMouseUnit()
+	{
+		double sensitivity =
+			MC.options.getMouseSensitivity().getValue() * 0.6F + 0.2F;
+		return sensitivity * sensitivity * sensitivity * 8 * 0.15F;
 	}
 	
 	/**
 	 * Returns true if the player is facing anywhere within the given box
 	 * and is no further away than the given range.
 	 */
-	public static boolean isFacingBox(Box box, double range)
+	public static boolean isFacingBoxServerSide(Box box, double range)
 	{
 		Vec3d start = MC.player.getEyePos();
-		Vec3d end = start.add(getServerLookVec().multiply(range));
-		return box.raycast(start, end).isPresent();
+		Vec3d end =
+			start.add(getLastReportedRotation().toLookVec().multiply(range));
+		return box.contains(start) || box.raycast(start, end).isPresent();
 	}
 	
 	/**
@@ -109,25 +114,7 @@ public enum RotationUtils
 	 */
 	public static Rotation slowlyTurnTowards(Rotation end, float maxChange)
 	{
-		float startYaw = MC.player.prevYaw;
-		float startPitch = MC.player.prevPitch;
-		float endYaw = end.yaw();
-		float endPitch = end.pitch();
-		
-		float yawChange = Math.abs(MathHelper.wrapDegrees(endYaw - startYaw));
-		float pitchChange =
-			Math.abs(MathHelper.wrapDegrees(endPitch - startPitch));
-		
-		float maxChangeYaw = pitchChange == 0 ? maxChange
-			: Math.min(maxChange, maxChange * yawChange / pitchChange);
-		float maxChangePitch = yawChange == 0 ? maxChange
-			: Math.min(maxChange, maxChange * pitchChange / yawChange);
-		
-		float nextYaw = limitAngleChange(startYaw, endYaw, maxChangeYaw);
-		float nextPitch =
-			limitAngleChange(startPitch, endPitch, maxChangePitch);
-		
-		return new Rotation(nextYaw, nextPitch);
+		return getLastReportedRotation().slowlyTurnTowards(end, maxChange);
 	}
 	
 	/**

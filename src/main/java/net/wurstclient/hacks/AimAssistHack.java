@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Vec3d;
 import net.wurstclient.Category;
 import net.wurstclient.events.MouseUpdateListener;
 import net.wurstclient.events.PreMotionListener;
@@ -20,13 +19,14 @@ import net.wurstclient.events.UpdateListener;
 import net.wurstclient.hack.Hack;
 import net.wurstclient.settings.AimAtSetting;
 import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.settings.FovSliderSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.settings.filterlists.EntityFilterList;
 import net.wurstclient.settings.filters.*;
 import net.wurstclient.util.BlockUtils;
 import net.wurstclient.util.EntityUtils;
-import net.wurstclient.util.Rotation;
+import net.wurstclient.util.MouseAimController;
 import net.wurstclient.util.RotationUtils;
 import net.wurstclient.util.text.WText;
 import net.wurstclient.SearchTags;
@@ -38,21 +38,21 @@ public final class AimAssistHack extends Hack
 	private final SliderSetting range =
 		new SliderSetting("范围", 4.5, 1, 6, 0.05, ValueDisplay.DECIMAL);
 	
-	private final SliderSetting rotationSpeed = new SliderSetting("旋转速度", 600,
+	private final SliderSetting rotationSpeed = new SliderSetting("旋转速度", 300,
 		10, 3600, 10, ValueDisplay.DEGREES.withSuffix("/s"));
 	
-	private final SliderSetting fov =
-		new SliderSetting("FOV", "description.wurst.setting.aimassist.fov", 120,
-			30, 360, 10, ValueDisplay.DEGREES);
+	private final FovSliderSetting fov = new FovSliderSetting("FOV",
+		WText.translated("description.wurst.setting.aimassist.fov"), 120);
 	
 	private final AimAtSetting aimAt = new AimAtSetting(
-		WText.translated("description.wurst.setting.aimassist.aim_at"),
-		AimAtSetting.AimAt.AUTO);
+		AimAtSetting.genericDescription(this), AimAtSetting.AimAt.CENTER);
 	
 	private final SliderSetting ignoreMouseInput =
 		new SliderSetting("Ignore mouse input",
-			"description.wurst.setting.aimassist.ignore_mouse_input", 0, 0, 1,
-			0.01, ValueDisplay.PERCENTAGE);
+			WText.translated(
+				"description.wurst.setting.generic.ignore_mouse_input",
+				getName()),
+			0, 0, 1, 0.01, ValueDisplay.PERCENTAGE);
 	
 	private final CheckboxSetting checkLOS =
 		new CheckboxSetting("Check line of sight",
@@ -60,7 +60,7 @@ public final class AimAssistHack extends Hack
 	
 	private final CheckboxSetting aimWhileBlocking =
 		new CheckboxSetting("Aim while blocking",
-			"description.wurst.setting.aimassist.aim_while_blocking", false);
+			"description.wurst.setting.aimassist.aim_while_blocking", true);
 	
 	private final EntityFilterList entityFilters =
 		new EntityFilterList(FilterPlayersSetting.genericCombat(false),
@@ -94,9 +94,8 @@ public final class AimAssistHack extends Hack
 			FilterArmorStandsSetting.genericCombat(true),
 			FilterCrystalsSetting.genericCombat(true));
 	
+	private final MouseAimController mouseAim = new MouseAimController();
 	private Entity target;
-	private float nextYaw;
-	private float nextPitch;
 	
 	public AimAssistHack()
 	{
@@ -140,6 +139,7 @@ public final class AimAssistHack extends Hack
 		EVENTS.remove(PreMotionListener.class, this);
 		EVENTS.remove(MouseUpdateListener.class, this);
 		target = null;
+		mouseAim.reset();
 	}
 	
 	@Override
@@ -158,78 +158,42 @@ public final class AimAssistHack extends Hack
 		if(target == null)
 			return;
 		
-		Vec3d hitVec = aimAt.getAimPoint(target);
-		if(checkLOS.isChecked() && !BlockUtils.hasLineOfSight(hitVec))
-		{
-			target = null;
-			return;
-		}
-		
 		WURST.getHax().autoSwordHack.setSlot(target);
+	}
+	
+	private void chooseTarget()
+	{
+		double rangeSq = range.getValueSq();
+		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities()
+			.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq)
+			.filter(fov.asEntityPredicate(aimAt::getAimPoint))
+			.filter(e -> !checkLOS.isChecked()
+				|| BlockUtils.hasLineOfSight(aimAt.getAimPoint(e)));
+		
+		stream = entityFilters.applyTo(stream);
+		
+		target = stream
+			.min(Comparator.comparingDouble(e -> RotationUtils
+				.getYawPitchDistanceToLookVec(aimAt.getAimPoint(e))))
+			.orElse(null);
 	}
 	
 	@Override
 	public void onPreMotion()
 	{
 		if(target == null)
+		{
+			mouseAim.reset();
 			return;
+		}
 		
-		// get needed rotation
-		Rotation needed =
-			RotationUtils.getNeededRotations(aimAt.getAimPoint(target));
-		
-		// turn towards center of boundingBox
-		Rotation next = RotationUtils.slowlyTurnTowards(needed,
-			rotationSpeed.getValueI() / 20F);
-		nextYaw = next.yaw();
-		nextPitch = next.pitch();
-	}
-	
-	private void chooseTarget()
-	{
-		Stream<Entity> stream = EntityUtils.getMeleeAttackableEntities();
-		
-		double rangeSq = range.getValueSq();
-		stream =
-			stream.filter(e -> EntityUtils.distanceToHitboxSq(e) <= rangeSq);
-		
-		if(fov.getValue() < 360.0)
-			stream = stream.filter(e -> RotationUtils.getAngleToLookVec(
-				aimAt.getAimPoint(e)) <= fov.getValue() / 2.0);
-		
-		stream = entityFilters.applyTo(stream);
-		
-		target = stream
-			.min(Comparator.comparingDouble(
-				e -> RotationUtils.getAngleToLookVec(aimAt.getAimPoint(e))))
-			.orElse(null);
+		mouseAim.tick(aimAt.getAimPoint(target), rotationSpeed.getValueI());
 	}
 	
 	@Override
 	public void onMouseUpdate(MouseUpdateEvent event)
 	{
-		if(target == null || MC.player == null)
-			return;
-		
-		float curYaw = MC.player.getYaw();
-		float curPitch = MC.player.getPitch();
-		int diffYaw = (int)(nextYaw - curYaw);
-		int diffPitch = (int)(nextPitch - curPitch);
-		
-		// If we are <1 degree off but still missing the hitbox,
-		// slightly exaggerate the difference to fix that.
-		if(diffYaw == 0 && diffPitch == 0 && !RotationUtils
-			.isFacingBox(target.getBoundingBox(), range.getValue()))
-		{
-			diffYaw = nextYaw < curYaw ? -1 : 1;
-			diffPitch = nextPitch < curPitch ? -1 : 1;
-		}
-		
-		double inputFactor = 1 - ignoreMouseInput.getValue();
-		int mouseInputX = (int)(event.getDefaultDeltaX() * inputFactor);
-		int mouseInputY = (int)(event.getDefaultDeltaY() * inputFactor);
-		
-		event.setDeltaX(mouseInputX + diffYaw);
-		event.setDeltaY(mouseInputY + diffPitch);
+		if(target != null)
+			mouseAim.applyTo(event, ignoreMouseInput.getValue());
 	}
 }
